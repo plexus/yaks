@@ -51,7 +51,7 @@ module PlexusSerializers
             )
           ),
           "linked" => Hamster.hash(
-            "pets" => Hamster.list(
+            "pets" => Hamster.set(
               Hamster.hash("pet_name" => "sabi", "id" => "4"),
               Hamster.hash("pet_name" => "wabi", "id" => "3")
             )

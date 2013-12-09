@@ -45,7 +45,7 @@ module PlexusSerializers
               collection.flat_map do |object|
                 object.associated_objects(name)
               end
-            ).map(&method(:fold_object)).to_list
+            ).map(&method(:fold_object))
           ]
         end
       )
