@@ -8,7 +8,7 @@ module Yaks
     def_delegator :attributes, :[]
 
     def associated_objects(association_name)
-      associations.detect {|association| association_name = association.name }.objects
+      associations.detect {|association| association_name == association.name }.objects
     end
 
     def has_associated_objects?

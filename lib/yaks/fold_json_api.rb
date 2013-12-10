@@ -15,9 +15,11 @@ module Yaks
     private
 
     def fold_object(object)
-      (object.has_associated_objects? ?
-        object.attributes.merge(Hamster.hash(links: link_ids(object))) :
-        object.attributes).reduce(Hamster.hash) {|hsh, key, value| hsh.put(key.to_s, value)}
+      if object.has_associated_objects?
+        object.attributes.merge(Hamster.hash(links: link_ids(object)))
+      else
+        object.attributes
+      end
     end
 
     def link_ids(object)

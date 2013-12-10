@@ -17,8 +17,11 @@ Gem::Specification.new do |gem|
   gem.test_files       = `git ls-files -- spec`.split($/)
   gem.extra_rdoc_files = %w[README.md]
 
-  gem.add_runtime_dependency 'hamster'
-  gem.add_runtime_dependency 'concord'
+  gem.add_runtime_dependency 'hamster'    , '~> 0.4.3' # 128k , flog: 1851.8
+  gem.add_runtime_dependency 'inflection' , '~> 1.0.0' #  12k , flog:  226.8
+  gem.add_runtime_dependency 'concord'    , '~> 0.1.4' #   8k , flog:   62.3
+
+  # For comparison, ActiveSupport has a flog score of 11134.7
 
   gem.add_development_dependency 'virtus'
   gem.add_development_dependency 'rspec'
