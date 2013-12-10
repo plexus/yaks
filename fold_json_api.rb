@@ -1,5 +1,5 @@
-module PlexusSerializers
-  class JsonApiFolder
+module Yaks
+  class FoldJsonApi
     include Concord.new(:collection)
     extend Forwardable
 

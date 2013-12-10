@@ -1,12 +1,8 @@
-module PlexusSerializers
+module Yaks
   class Serializer
     extend ClassMethods
 
     attr_accessor :object
-
-    def serializer_lookup(obj)
-      Object.const_get("#{obj.class.name}Serializer")
-    end
 
     def serialize_collection(enumerable)
       SerializableCollection.new(root_key, identity_key, enumerable.map(&method(:serializable_object)))

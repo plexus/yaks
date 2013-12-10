@@ -1,4 +1,4 @@
-module PlexusSerializers
+module Yaks
   class SerializableCollection
     include Concord.new(:root_key, :identity_key, :objects)
     extend Forwardable

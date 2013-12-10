@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    plexus_serializers (0.0.0)
+    yaks (0.0.0)
       concord
       hamster
 
@@ -52,6 +52,6 @@ PLATFORMS
 
 DEPENDENCIES
   hamster!
-  plexus_serializers!
+  yaks!
   rspec
   virtus

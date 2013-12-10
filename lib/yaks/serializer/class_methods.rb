@@ -1,4 +1,4 @@
-module PlexusSerializers
+module Yaks
   class Serializer
     module ClassMethods
 

@@ -1,4 +1,4 @@
-module PlexusSerializers
+module Yaks
   class SerializableObject
     include Concord.new(:attributes, :associations)
     extend Forwardable

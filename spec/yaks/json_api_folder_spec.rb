@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-module PlexusSerializers
-  describe JsonApiFolder do
+module Yaks
+  describe FoldJsonApi do
     let(:collection) {
       SerializableCollection.new(
         'friends',
@@ -39,7 +39,7 @@ module PlexusSerializers
     }
 
     specify do
-      expect( JsonApiFolder.new(collection).fold ).to eq(
+      expect( FoldJsonApi.new(collection).fold ).to eq(
         Hamster.hash(
           "friends" => Hamster.list(
             Hamster.hash(
