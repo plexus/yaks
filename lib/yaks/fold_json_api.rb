@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Yaks
   class FoldJsonApi
     include Concord.new(:collection)
@@ -11,11 +13,16 @@ module Yaks
     end
 
     def fold
-      Hamster.hash(
-        root_key => collection.map(&method(:fold_object)),
-        "linked" => fold_associated_objects
-      )
+      if collection.empty?
+        {}
+      else
+        {
+          root_key => collection.map(& λ(:fold_object) ),
+          "linked" => fold_associated_objects
+        }
+      end
     end
+    alias call fold
 
     private
 
@@ -57,7 +64,7 @@ module Yaks
 
           [
             one ? pluralize(name.to_s) : name,
-            Hamster.set(*objects).map(&method(:fold_object))
+            Hamster.set(*objects).map(& λ(:fold_object) )
           ]
         end
       )

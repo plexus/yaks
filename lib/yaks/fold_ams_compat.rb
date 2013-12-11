@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Yaks
   class FoldAmsCompat < FoldJsonApi
     include Util

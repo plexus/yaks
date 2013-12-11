@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Yaks
   class Serializer
     module ClassMethods
@@ -12,7 +14,7 @@ module Yaks
       end
 
       def delegate_to_object(*attrs)
-        attrs.reject(&method(:method_defined?)).each(&method(:def_delegator).to_proc.curry.(:object))
+        attrs.reject(& λ(:method_defined?) ).each(& λ(:def_delegator).(:object) )
       end
 
       def attributes(*attrs)
