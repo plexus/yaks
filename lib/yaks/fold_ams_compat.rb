@@ -8,11 +8,13 @@ module Yaks
     def_delegator :collection, :root_key
 
     def fold
-      Hamster.hash(
-        root_key => collection.map(&method(:fold_object)),
-      ).merge(
-        fold_associated_objects
-      )
+      if collection.empty?
+        {}
+      else
+        Hamster.hash(
+          root_key => collection.map(& λ(:fold_object) ),
+        ).merge( fold_associated_objects )
+      end
     end
     alias call fold
 
