@@ -5,6 +5,8 @@ module Yaks
 
     public :root_key, :identity_key
 
-    def_delegators :objects, :map, :flat_map, :empty?
+    def_delegators :objects, :map, :flat_map, :empty?, :count
+
+    EmptyCollection = new(Undefined, Undefined, [])
   end
 end

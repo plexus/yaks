@@ -1,6 +1,5 @@
 module Yaks
   class FoldAmsCompat < FoldJsonApi
-    include Concord.new(:collection)
     include Util
     extend Forwardable
 
@@ -13,6 +12,7 @@ module Yaks
         fold_associated_objects
       )
     end
+    alias call fold
 
     private
 

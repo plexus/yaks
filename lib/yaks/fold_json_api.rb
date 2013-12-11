@@ -6,6 +6,10 @@ module Yaks
 
     def_delegator :collection, :root_key
 
+    def self.call(collection)
+      new(collection).fold
+    end
+
     def fold
       Hamster.hash(
         root_key => collection.map(&method(:fold_object)),
@@ -46,13 +50,14 @@ module Yaks
       )
       Hamster.hash(
         association_names.map do |name, one|
+
+          objects = collection.flat_map do |object|
+            object.associated_objects(name)
+          end
+
           [
             one ? pluralize(name.to_s) : name,
-            Hamster.set(*
-              collection.flat_map do |object|
-                object.associated_objects(name)
-              end
-            ).map(&method(:fold_object))
+            Hamster.set(*objects).map(&method(:fold_object))
           ]
         end
       )

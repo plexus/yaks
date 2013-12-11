@@ -1,10 +1,12 @@
 module Yaks
   class Primitivize
+    include Concord.new(:object)
+
     def self.call(object)
-      new.call(object)
+      new(object).call
     end
 
-    def call(object)
+    def call
       case object
       when String, TrueClass, FalseClass, NilClass, Numeric
         object
@@ -12,10 +14,10 @@ module Yaks
         object.to_s
       when Hash, Hamster::Hash
         object.to_enum(:each).with_object({}) do |(key, value), output|
-          output[self.(key)] = self.(value)
+          output[self.class.(key)] = self.class.(value)
         end
       when Enumerable, Hamster::Enumerable
-        object.map(&method(:call)).to_a
+        object.map(&self.class.method(:call)).to_a
       else
         raise "don't know how to turn #{object.class} (#{object.inspect}) into a primitive"
       end

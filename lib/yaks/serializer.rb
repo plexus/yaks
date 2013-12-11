@@ -1,14 +1,15 @@
 module Yaks
   class Serializer
-    include Yaks
+    include Util, Lookup
     extend ClassMethods
 
-    attr_accessor :object
-    attr_reader :serializer_lookup, :root_key
+    attr_reader :serializer_lookup, :root_key, :object, :options
 
-    def initialize(options = {})
+    def initialize(object, options = {})
+      @object            = object
       @serializer_lookup = options.fetch(:serializer_lookup) { Yaks.default_serializer_lookup }
-      @root_key = options.fetch(:root_key) { self.class._root_key }
+      @root_key          = options.fetch(:root_key) { self.class._root_key }
+      @options           = options
     end
 
     def identity_key
@@ -27,34 +28,26 @@ module Yaks
       attributes
     end
 
-    def serializable_collection(enumerable)
-      SerializableCollection.new(root_key, identity_key, enumerable.map(&method(:serializable_object)))
-    end
-
-    def serializable_object(object)
-      self.object = object
+    def serializable_object
       SerializableObject.new(
-        serializable_attributes(object),
-        serializable_associations(object)
+        serializable_attributes,
+        serializable_associations
       )
     end
 
-    def serializable_attributes(object)
+    def serializable_attributes
       Hash(filter(attributes).map {|attr| [attr, send(attr)] })
     end
 
-    def serializable_associations(object)
+    def serializable_associations
       Hamster.enumerate(filter(associations.map(&:last)).each).map do |name|
         type = associations.detect {|type, n| name == n }.first
         if type == :has_one
           obj        = send(name)
-          serializer = serializer_lookup.(obj).new
-          objects    = List(serializer.serializable_object(obj))
+          objects    = List(serializer_for(obj).serializable_object)
         else
-          serializer = nil
           objects = Hamster.enumerate(send(name).each).map do |obj|
-            serializer ||= serializer_lookup.(obj).new
-            serializer.serializable_object(obj)
+            serializer_for(obj).serializable_object
           end
         end
         SerializableAssociation.new( SerializableCollection.new(name, :id, objects), type == :has_one )

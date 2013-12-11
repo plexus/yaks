@@ -1,6 +1,7 @@
 module Yaks
   class Serializer
     module ClassMethods
+      include Forwardable
       include Util
 
       protected
@@ -10,38 +11,23 @@ module Yaks
         has_one
       end
 
+      def delegate_to_object(*attrs)
+        attrs.reject(&method(:method_defined?)).each(&method(:def_delegator).to_proc.curry.(:object))
+      end
+
       def attributes(*attrs)
         _attributes.concat attrs
-
-        attrs.each do |attr|
-          unless method_defined?(attr)
-            define_method attr do
-              object.send attr
-            end
-          end
-        end
+        delegate_to_object(*attrs)
       end
 
       def has_one(*attrs)
         _associations.concat(attrs.map {|a| [:has_one, a] })
-        attrs.each do |attr|
-          unless method_defined?(attr)
-            define_method attr do
-              object.send attr
-            end
-          end
-        end
+        delegate_to_object(*attrs)
       end
 
       def has_many(*attrs)
         _associations.concat(attrs.map {|a| [:has_many, a] })
-        attrs.each do |attr|
-          unless method_defined?(attr)
-            define_method attr do
-              object.send attr
-            end
-          end
-        end
+        delegate_to_object(*attrs)
       end
 
       def root_key(key)

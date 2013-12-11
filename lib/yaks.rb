@@ -7,28 +7,18 @@ require 'inflection'
 module Yaks
   Undefined = Object.new
 
-  class << self
+  module ClassMethods
     def default_serializer_lookup(obj = Undefined)
       return method(:default_serializer_lookup) if obj == Undefined
-      if obj.respond_to?(:to_str)
-        Object.const_get("#{Util.singular(Util.camelize(obj.to_str))}Serializer")
-      else
-        Object.const_get("#{obj.class.name}Serializer")
-      end
+      Object.const_get("#{obj.class.name}Serializer")
+    end
+
+    def dump(objects, options = {})
+      Yaks::Pipeline.new(objects, options).call
     end
   end
+  extend ClassMethods
 
-  def List(*args)
-    Hamster.list(*args)
-  end
-
-  def Hash(*args)
-    Hamster.hash(*args)
-  end
-
-  def Set(*args)
-    Hamster.set(*args)
-  end
 end
 
 require 'yaks/util'
@@ -38,6 +28,8 @@ require 'yaks/serializable_association'
 require 'yaks/fold_json_api'
 require 'yaks/fold_ams_compat'
 require 'yaks/serializer/class_methods'
+require 'yaks/serializer/lookup'
 require 'yaks/serializer'
+require 'yaks/collection_serializer'
 require 'yaks/primitivize'
-require 'yaks/dumper'
+require 'yaks/pipeline'
