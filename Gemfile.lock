@@ -1,3 +1,9 @@
+GIT
+  remote: git://github.com/harukizaemon/hamster.git
+  revision: aaf874b20bd31c2d984ae131dbf58d9a9bc2b379
+  specs:
+    hamster (0.4.3)
+
 PATH
   remote: .
   specs:
@@ -5,11 +11,6 @@ PATH
       concord (~> 0.1.4)
       hamster (~> 0.4.3)
       inflection (~> 1.0.0)
-
-PATH
-  remote: /home/arne/github/hamster
-  specs:
-    hamster (0.4.3)
 
 GEM
   remote: https://rubygems.org/

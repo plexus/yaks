@@ -1,4 +1,6 @@
-# Yankee Alpha Kilo Serializers
+# Yaks Serializers
+
+Turn your models into JSON or whatever.
 
 ```ruby
 class ShowSerializer < Yaks::Serializer
