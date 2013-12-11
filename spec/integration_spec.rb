@@ -26,7 +26,7 @@ describe Yaks, 'integration tests' do
                 "id"    => 1,
                 "links" => {
                   'pets'      => [2, 3],
-                  'pet_peeve' => [4]
+                  'pet_peeve' => 4
                 }
               }
             ],

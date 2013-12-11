@@ -1,6 +1,7 @@
 module Yaks
   class FoldJsonApi
     include Concord.new(:collection)
+    include Util
     extend Forwardable
 
     def_delegator :collection, :root_key
@@ -30,19 +31,23 @@ module Yaks
     end
 
     def fold_association_ids(hash, association)
-      hash.put(association.name, association.identities)
+      if association.one?
+        hash.put(association.name, association.identities.first)
+      else
+        hash.put(association.name, association.identities)
+      end
     end
 
     def fold_associated_objects
       association_names = Hamster.set(*
         collection.flat_map do |object|
-          object.associations.map(&:name)
+          object.associations.map{|ass| [ass.name, ass.one?] }
         end
       )
       Hamster.hash(
-        association_names.map do |name|
+        association_names.map do |name, one|
           [
-            name,
+            one ? pluralize(name.to_s) : name,
             Hamster.set(*
               collection.flat_map do |object|
                 object.associated_objects(name)

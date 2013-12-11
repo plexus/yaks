@@ -1,47 +1,55 @@
 module Yaks
   class Serializer
+    include Yaks
     extend ClassMethods
 
     attr_accessor :object
-    attr_reader :serializer_lookup
+    attr_reader :serializer_lookup, :root_key
 
-    def initialize(serializer_lookup = Yaks.default_serializer_lookup)
-      @serializer_lookup = serializer_lookup
-    end
-
-    def serialize_collection(enumerable)
-      SerializableCollection.new(root_key, identity_key, enumerable.map(&method(:serializable_object)))
-    end
-
-    def root_key
-      self.class._root_key
+    def initialize(options = {})
+      @serializer_lookup = options.fetch(:serializer_lookup) { Yaks.default_serializer_lookup }
+      @root_key = options.fetch(:root_key) { self.class._root_key }
     end
 
     def identity_key
       self.class._identity_key
     end
 
-    def serializable_object(object)
-      self.object = object
-      SerializableObject.new(attributes(object), associations(object))
+    def attributes
+      self.class._attributes
     end
 
-    def attributes(object)
-      Hamster.hash(
-        self.class._attributes.map do |attr|
-          [attr, send(attr)]
-        end
+    def associations
+      self.class._associations
+    end
+
+    def filter(attributes)
+      attributes
+    end
+
+    def serializable_collection(enumerable)
+      SerializableCollection.new(root_key, identity_key, enumerable.map(&method(:serializable_object)))
+    end
+
+    def serializable_object(object)
+      self.object = object
+      SerializableObject.new(
+        serializable_attributes(object),
+        serializable_associations(object)
       )
     end
 
-    def associations(object)
-      return Hamster::EmptyList if self.class._associations.nil?
+    def serializable_attributes(object)
+      Hash(filter(attributes).map {|attr| [attr, send(attr)] })
+    end
 
-      Hamster.enumerate(self.class._associations.each).map do |type, name|
+    def serializable_associations(object)
+      Hamster.enumerate(filter(associations.map(&:last)).each).map do |name|
+        type = associations.detect {|type, n| name == n }.first
         if type == :has_one
           obj        = send(name)
           serializer = serializer_lookup.(obj).new
-          objects    = Hamster.list(serializer.serializable_object(obj))
+          objects    = List(serializer.serializable_object(obj))
         else
           serializer = nil
           objects = Hamster.enumerate(send(name).each).map do |obj|
@@ -49,7 +57,7 @@ module Yaks
             serializer.serializable_object(obj)
           end
         end
-        SerializableAssociation.new( SerializableCollection.new(name, :id, objects) )
+        SerializableAssociation.new( SerializableCollection.new(name, :id, objects), type == :has_one )
       end
     end
   end
