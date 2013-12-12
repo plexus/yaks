@@ -11,7 +11,7 @@ module Yaks
 
   module ClassMethods
     def default_serializer_lookup(obj = Undefined)
-      return λ(:default_serializer_lookup) if obj == Undefined
+      return method(:default_serializer_lookup) if obj == Undefined
       Object.const_get("#{obj.class.name}Serializer")
     end
 
