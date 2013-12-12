@@ -24,9 +24,21 @@ module Yaks
       self.class._associations
     end
 
+    # Methods that can be overridden in derived classed
+
     def filter(attributes)
       attributes
     end
+
+    def load_attribute(name)
+      send(name)
+    end
+
+    def load_association(name)
+      send(name)
+    end
+
+    ###
 
     def serializable_object
       SerializableObject.new(
@@ -36,17 +48,18 @@ module Yaks
     end
 
     def serializable_attributes
-      Hash(filter(attributes).map {|attr| [attr, send(attr)] })
+      Hash(filter(attributes).map {|attr| [attr, load_attribute(attr)] })
     end
 
     def serializable_associations
-      Hamster.enumerate(filter(associations.map(&:last)).each).map do |name|
+      assoc_names = filter(self.associations.map(&:last)).to_enum
+      Hamster.enumerate(assoc_names).map do |name|
         type = associations.detect {|type, n| name == n }.first
         if type == :has_one
-          obj        = send(name)
-          objects    = List(serializer_for(obj).serializable_object)
+          obj        = load_association(name)
+          objects    = obj.nil? ? List() : List(serializer_for(obj).serializable_object)
         else
-          objects = Hamster.enumerate(send(name).each).map do |obj|
+          objects = Hamster.enumerate(load_association(name).each).map do |obj|
             serializer_for(obj).serializable_object
           end
         end
