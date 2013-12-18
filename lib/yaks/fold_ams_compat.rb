@@ -12,7 +12,7 @@ module Yaks
         {}
       else
         Hamster.hash(
-          root_key => collection.map(& λ(:fold_object) ),
+          root_key => collection.map(& μ(:fold_object) ),
         ).merge( fold_associated_objects )
       end
     end

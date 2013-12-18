@@ -33,9 +33,20 @@ module Yaks
     def curry_method(name)
       method(name).to_proc.curry
     end
-    alias λ curry_method
-    alias hakell curry_method
-    alias schönefinkel curry_method
+    alias μ curry_method
+
+    def curry_symbol(symbol, *args)
+      ->(obj) { obj.method(symbol).to_proc.curry.(*args) }
+    end
+    alias σ curry_symbol
+
+    def extract_options(args)
+      if args.last.is_a? Hash
+        [args.take(args.count-1), args.last]
+      else
+        [args, {}]
+      end
+    end
 
   end
 end

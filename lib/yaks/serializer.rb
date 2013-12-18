@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Yaks
   class Serializer
     include Util, Lookup
@@ -52,18 +54,9 @@ module Yaks
     end
 
     def serializable_associations
-      assoc_names = filter(self.associations.map(&:last)).to_enum
-      Hamster.enumerate(assoc_names).map do |name|
-        type = associations.detect {|type, n| name == n }.first
-        if type == :has_one
-          obj        = load_association(name)
-          objects    = obj.nil? ? List() : List(serializer_for(obj).serializable_object)
-        else
-          objects = Hamster.enumerate(load_association(name).each).map do |obj|
-            serializer_for(obj).serializable_object
-          end
-        end
-        SerializableAssociation.new( SerializableCollection.new(name, :id, objects), type == :has_one )
+      filter(associations.map(&:name)).to_list.map do |association_name|
+        association = associations.detect {|assoc| assoc.name == association_name }
+        association.serializable_for( load_association(association.name), μ(:serializer_for) )
       end
     end
   end

@@ -14,7 +14,7 @@ module Yaks
       end
 
       def delegate_to_object(*attrs)
-        attrs.reject(& λ(:method_defined?) ).each(& λ(:def_delegator).(:object) )
+        attrs.reject(& μ(:method_defined?) ).each(& μ(:def_delegator).(:object) )
       end
 
       def attributes(*attrs)
@@ -23,12 +23,14 @@ module Yaks
       end
 
       def has_one(*attrs)
-        _associations.concat(attrs.map {|a| [:has_one, a] })
+        attrs, opts = extract_options(attrs)
+        _associations.concat(attrs.map {|a| Association.new(a, true, opts) })
         delegate_to_object(*attrs)
       end
 
       def has_many(*attrs)
-        _associations.concat(attrs.map {|a| [:has_many, a] })
+        attrs, opts = extract_options(attrs)
+        _associations.concat(attrs.map {|a| Association.new(a, false, opts) })
         delegate_to_object(*attrs)
       end
 

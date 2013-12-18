@@ -17,7 +17,7 @@ module Yaks
         {}
       else
         {
-          root_key => collection.map(& λ(:fold_object) ),
+          root_key => collection.map(& μ(:fold_object) ),
           "linked" => fold_associated_objects
         }
       end
@@ -28,17 +28,14 @@ module Yaks
 
     def fold_object(object)
       if object.has_associated_objects?
-        object.attributes.merge(Hamster.hash(links: link_ids(object)))
+        object.attributes.merge Hash(links: link_ids(object))
       else
         object.attributes
       end
     end
 
     def link_ids(object)
-      object.associations.reduce(
-        Hamster.hash,
-        &method(:fold_association_ids)
-      )
+      object.associations.reduce(Hash(), &μ(:fold_association_ids))
     end
 
     def fold_association_ids(hash, association)
@@ -50,21 +47,17 @@ module Yaks
     end
 
     def fold_associated_objects
-      association_names = Hamster.set(*
+      association_names = Set(*
         collection.flat_map do |object|
           object.associations.map{|ass| [ass.name, ass.one?] }
         end
       )
-      Hamster.hash(
+      Hash(
         association_names.map do |name, one|
+          objects = collection.flat_map(& σ(:associated_objects, name) )
 
-          objects = collection.flat_map do |object|
-            object.associated_objects(name)
-          end
-
-          [
-            one ? pluralize(name.to_s) : name,
-            Hamster.set(*objects).map(& λ(:fold_object) )
+          [ one ? pluralize(name.to_s) : name,
+            Hamster.set(*objects).map(& μ(:fold_object) )
           ]
         end
       )

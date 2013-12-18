@@ -1,6 +1,6 @@
 module Yaks
   class SerializableAssociation
-    include Concord.new(:collection, :one)
+    include Concord.new(:collection, :one, :options)
     extend Forwardable
 
     def_delegator :collection, :root_key, :name
