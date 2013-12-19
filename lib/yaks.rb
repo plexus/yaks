@@ -24,8 +24,8 @@ module Yaks
 end
 
 require 'yaks/util'
-require 'yaks/serializable_collection'
-require 'yaks/serializable_object'
+require 'yaks/resource_collection'
+require 'yaks/resource'
 require 'yaks/serializable_association'
 require 'yaks/fold_json_api'
 require 'yaks/fold_ams_compat'

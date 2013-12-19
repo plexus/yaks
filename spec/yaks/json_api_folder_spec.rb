@@ -3,27 +3,27 @@ require 'spec_helper'
 module Yaks
   describe FoldJsonApi do
     let(:collection) {
-      SerializableCollection.new(
+      ResourceCollection.new(
         'friends',
         :id,
         Hamster.list(
-          SerializableObject.new(
+          Resource.new(
             Hamster.hash(
               id: '3',
               name: 'john'
             ),
             Hamster.list(
               SerializableAssociation.new(
-                SerializableCollection.new(
+                ResourceCollection.new(
                   'pets', :id,
                   Hamster.list(
-                    SerializableObject.new(Hamster.hash(
+                    Resource.new(Hamster.hash(
                         id: '3',
                         pet_name: 'wabi'
                     ),
                       Hamster.list
                     ),
-                    SerializableObject.new(Hamster.hash(
+                    Resource.new(Hamster.hash(
                         id: '4',
                         pet_name: 'sabi'
                     ),

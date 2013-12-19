@@ -42,8 +42,8 @@ module Yaks
 
     ###
 
-    def serializable_object
-      SerializableObject.new(
+    def resource
+      Resource.new(
         serializable_attributes,
         serializable_associations
       )
