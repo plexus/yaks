@@ -1,9 +1,13 @@
 module Yaks
   class Resource
-    attr_reader :attributes
+    include Equalizer.new(:links, :attributes, :subresources)
 
-    def initialize(attributes)
-      @attributes = Yaks::Hash(attributes)
+    attr_reader :links, :attributes, :subresources
+
+    def initialize(attributes, links, subresources)
+      @links        = Yaks::List(links)
+      @attributes   = Yaks::Hash(attributes)
+      @subresources = Yaks::Hash(subresources)
     end
   end
 end

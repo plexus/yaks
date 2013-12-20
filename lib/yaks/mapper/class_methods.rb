@@ -8,26 +8,26 @@ module Yaks
 
       CONFIG_METHODS = [
         :attributes,
-        # :link,
+        :link,
         # :profile,
         # :embed,
-        # :has_one,
+        :has_one,
         # :has_many
       ]
 
-      def __mapper_config
-        @__mapper_config ||= MapperConfig.new
-        @__mapper_config = yield(@__mapper_config) if block_given?
-        @__mapper_config
+      def config
+        @config ||= Config.new
+        @config = yield(@config) if block_given?
+        @config
       end
 
       def inherited(child)
-        child.__mapper_config { @__mapper_config }
+        child.config { @config }
       end
 
       CONFIG_METHODS.each do |method_name|
         define_method method_name do |*args|
-          __mapper_config &σ(method_name, *args)
+          config &σ(method_name, *args)
         end
       end
 
