@@ -8,5 +8,5 @@ require 'yaks'
 require 'virtus'
 
 require_relative 'support/models'
-require_relative 'support/serializers'
+require_relative 'support/mappers'
 require_relative 'support/fixtures'

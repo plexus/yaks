@@ -1,6 +1,6 @@
 module Yaks
   class Pipeline
-    include Util, Serializer::Lookup
+    include Util, Mapper::Lookup
 
     attr_reader :objects, :serializer_lookup, :fold, :options, :steps
 
@@ -10,7 +10,7 @@ module Yaks
       format             = options.fetch(:format) { :json_api }
       @fold              = Yaks.const_get("Fold#{camelize(format.to_s)}") if format.is_a?(Symbol)
       @options           = options
-      @steps             = options.fetch(:steps) { [CollectionSerializer, fold, Primitivize] }
+      @steps             = options.fetch(:steps) { [ResourceCollectionBuilder, fold, Primitivize] }
       @steps            += options.fetch(:extra_steps) { [] }
     end
 

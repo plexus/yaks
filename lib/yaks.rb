@@ -10,13 +10,24 @@ module Yaks
   Undefined = Object.new
 
   module ClassMethods
-    def default_serializer_lookup(obj = Undefined)
-      return method(:default_serializer_lookup) if obj == Undefined
-      Object.const_get("#{obj.class.name}Serializer")
+    def Hash(object)
+      return object if object.is_a? Hamster::Hash
+      Hamster.hash(object)
     end
 
-    def dump(objects, options = {})
-      Yaks::Pipeline.new(objects, options).call
+    def List(*entries)
+      case entries.size
+      when 0
+        Hamster.list
+      when 1
+        if entries.first.respond_to? :to_list
+          entries.first.to_list
+        else
+          Hamster.list(*entries.compact)
+        end
+      else
+        Hamster.list(*entries)
+      end
     end
   end
   extend ClassMethods
@@ -24,15 +35,7 @@ module Yaks
 end
 
 require 'yaks/util'
-require 'yaks/resource_collection'
 require 'yaks/resource'
-require 'yaks/serializable_association'
-require 'yaks/fold_json_api'
-require 'yaks/fold_ams_compat'
-require 'yaks/association'
-require 'yaks/serializer/class_methods'
-require 'yaks/serializer/lookup'
-require 'yaks/serializer'
-require 'yaks/collection_serializer'
-require 'yaks/primitivize'
-require 'yaks/pipeline'
+require 'yaks/mapper_config'
+require 'yaks/mapper/class_methods'
+require 'yaks/mapper'

@@ -1,5 +1,5 @@
 module Yaks
-  class CollectionSerializer < Serializer
+  class ResourceCollectionBuilder < Mapper
     alias :collection :object
 
     def resource_collection
