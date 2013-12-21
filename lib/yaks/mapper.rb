@@ -18,7 +18,6 @@ module Yaks
 
     def to_resource
       Resource.new(
-        nil,
         map_attributes,
         map_links,
         map_subresources

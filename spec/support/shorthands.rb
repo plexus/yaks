@@ -1,7 +1,7 @@
 shared_context 'shorthands' do
   let(:resource) {
     ->(attrs) {
-      Yaks::Resource.new(nil, Yaks::Hash(attrs), nil, nil)
+      Yaks::Resource.new(Yaks::Hash(attrs), nil, nil)
     }
   }
 

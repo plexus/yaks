@@ -16,6 +16,7 @@ require 'yaks/default_policy'
 
 module Yaks
   Undefined = Object.new
+
   YAKS_DEFAULT_OPTIONS = {
     policy: DefaultPolicy,
     profile_registry: NullProfileRegistry.new

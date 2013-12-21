@@ -1,14 +1,18 @@
 module Yaks
   class Resource
-    include Equalizer.new(:uri, :links, :attributes, :subresources)
+    include Equalizer.new(:links, :attributes, :subresources)
 
-    attr_reader :uri, :links, :attributes, :subresources
+    attr_reader :links, :attributes, :subresources
 
-    def initialize(uri, attributes, links, subresources)
-      @uri          = uri
+    def initialize(attributes, links, subresources)
       @links        = Yaks::List(links)
       @attributes   = Yaks::Hash(attributes)
       @subresources = Yaks::Hash(subresources)
+    end
+
+    def uri
+      self_link = links_by_rel(:self).first
+      self_link.uri if self_link
     end
 
     def links_by_rel(rel)
