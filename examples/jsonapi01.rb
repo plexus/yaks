@@ -15,33 +15,38 @@ require 'yaks'
 require 'json'
 
 class Author
+  include Virtus.model
   attribute :id, Integer
 end
 
 class Comment
+  include Virtus.model
   attribute :id, Integer
 end
 
 class Post
   include Virtus.model
-
   attribute :id, Integer
   attribute :title, String
   attribute :author, Author
   attribute :comments, Array[Comment]
 end
 
-class PostMapper
+class AuthorMapper < Yaks::Mapper
+  attributes :id
+end
+
+class CommentMapper < Yaks::Mapper
+  attributes :id
+end
+
+class PostMapper < Yaks::Mapper
   profile :post
 
   attributes :id, :title, :links
 
   has_one :author, mapper: AuthorMapper, embed: :ids
   has_many :comments, mapper: CommentMapper, embed: :ids
-end
-
-profile_reg = Yaks::ProfileRegistry.new do
-  profile :post, 'http://foo.com/apidoc/post'
 end
 
 post = Post.new(

@@ -3,7 +3,7 @@
 module Yaks
   class Mapper
     extend ClassMethods, Forwardable
-    include Util
+    include Util, CrossCutting
 
     def_delegators 'self.class', :config
     def_delegators :config, :attributes, :links, :associations
@@ -48,14 +48,6 @@ module Yaks
       respond_to?(name) ? send(name) : subject.send(name)
     end
     alias load_association load_attribute
-
-    def policy
-      options[:policy]
-    end
-
-    def profile_registry
-      options[:profile_registry]
-    end
 
     def profile
       config.profile || policy.derive_missing_profile_from_mapper(self)

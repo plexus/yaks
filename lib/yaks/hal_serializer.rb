@@ -6,7 +6,6 @@
 
 module Yaks
   class HalSerializer < Serializer
-    include Util
 
     def serialize
       Primitivize.(

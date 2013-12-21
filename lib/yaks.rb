@@ -8,6 +8,7 @@ require 'inflection'
 require 'uri_template'
 
 require 'yaks/util'
+require 'yaks/cross_cutting'
 require 'yaks/primitivize'
 
 require 'yaks/profile_registry'
@@ -60,3 +61,4 @@ require 'yaks/mapper'
 
 require 'yaks/serializer'
 require 'yaks/hal_serializer'
+require 'yaks/json_api_serializer'

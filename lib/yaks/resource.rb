@@ -11,5 +11,13 @@ module Yaks
       @subresources = Yaks::Hash(subresources)
     end
 
+    def links_by_rel(rel)
+      links.select {|link| link.rel == rel}
+    end
+
+    def [](attr)
+      attributes[attr]
+    end
+
   end
 end
