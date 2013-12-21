@@ -1,6 +1,7 @@
 module Yaks
   class Resource
     include Equalizer.new(:links, :attributes, :subresources)
+    include Enumerable
 
     attr_reader :links, :attributes, :subresources
 
@@ -15,12 +16,26 @@ module Yaks
       self_link.uri if self_link
     end
 
+    def profile
+      link = links_by_rel(:profile).first
+      link.uri if link
+    end
+
     def links_by_rel(rel)
       links.select {|link| link.rel == rel}
     end
 
     def [](attr)
       attributes[attr]
+    end
+
+    def each
+      return to_enum unless block_given?
+      yield self
+    end
+
+    def collection?
+      false
     end
 
   end

@@ -26,11 +26,11 @@ module Yaks
 
     def map_links
       mapped = links.map &σ(:expand_with, μ(:load_attribute))
-      if config.profile
-        mapped.cons(Resource::Link.new(:profile, profile_registry.find_uri(config.profile), {}))
-      else
-        mapped
-      end
+      mapped.cons(Resource::Link.new(:profile, profile_registry.find_by_type(profile_type), {}))
+    end
+
+    def profile_type
+      config.profile || policy.derive_profile_from_mapper(self)
     end
 
     def map_attributes

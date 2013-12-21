@@ -14,8 +14,8 @@ module Yaks
     end
 
     def profile_name
-      (profile = resource.links_by_rel(:profile).first) &&
-        profile_registry.find_type(profile.uri)
+      (profile = resource.profile) &&
+        profile_registry.find_by_uri(profile)
     end
 
   end

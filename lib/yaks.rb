@@ -18,7 +18,7 @@ module Yaks
   Undefined = Object.new
 
   YAKS_DEFAULT_OPTIONS = {
-    policy: DefaultPolicy,
+    policy: DefaultPolicy.new,
     profile_registry: NullProfileRegistry.new
   }
 
@@ -59,6 +59,7 @@ require 'yaks/mapper/has_many'
 require 'yaks/mapper/config'
 require 'yaks/mapper/class_methods'
 require 'yaks/mapper'
+require 'yaks/collection_mapper'
 
 require 'yaks/serializer'
 require 'yaks/hal_serializer'

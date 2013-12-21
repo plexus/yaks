@@ -25,19 +25,22 @@ module Yaks
       end
     end
 
-    def find_uri(type)
+    def find_by_type(type)
       self.class.profiles[type]
     end
 
-    def find_type(by_uri)
+    def find_by_uri(by_uri)
       self.class.profiles.detect {|type, uri| uri == by_uri}.first
     end
   end
 
   class NullProfileRegistry
-    def find_uri(type)
-      type
+    def find_by_type(type)
+      type.to_s
     end
-    alias find_type find_uri
+
+    def find_by_uri(uri)
+      uri.to_sym
+    end
   end
 end

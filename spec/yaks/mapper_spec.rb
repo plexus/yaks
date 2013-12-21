@@ -30,7 +30,7 @@ describe Yaks::Mapper do
 
     context 'with a dummy registry' do
       it 'should create a link with the profile name as the uri' do
-        expect(mapper_class.new(instance).map_links).to eq Yaks::List(resource_link[:profile, :show])
+        expect(mapper_class.new(instance).map_links).to eq Yaks::List(resource_link[:profile, 'show'])
       end
     end
 
