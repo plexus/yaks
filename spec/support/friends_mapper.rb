@@ -8,6 +8,7 @@ class FriendMapper < Yaks::Mapper
   end
 
   has_one :pet_peeve, mapper: PetPeeveMapper
+  has_many :pets, mapper: PetMapper
 
   # has_one :production_company,          # retrieve as `show.production_company`
   #         profile: :company,            # use the company profile link from the registry, e.g. 'http://foo.api/profiles/company'

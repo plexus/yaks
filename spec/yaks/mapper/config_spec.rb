@@ -46,8 +46,17 @@ describe Yaks::Mapper::Config do
       let(:config) { subject.has_one :mother, mapper: Yaks::Mapper }
 
       it 'should have the association configured' do
-        expect(config.associations).to eq Yaks::List(Yaks::Mapper::HasOne.new(:mother, Yaks::Mapper))
+        expect(config.associations).to eq Yaks::List(Yaks::Mapper::HasOne.new(:mother, Yaks::Mapper, Yaks::List()))
       end
+    end
+
+    describe 'has_many' do
+      let(:config) { subject.has_many :shoes, mapper: Yaks::Mapper }
+
+      it 'should have the association configured' do
+        expect(config.associations).to eq Yaks::List(Yaks::Mapper::HasMany.new(:shoes, Yaks::Mapper, Yaks::List()))
+      end
+
     end
   end
 end

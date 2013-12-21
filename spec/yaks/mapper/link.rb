@@ -3,6 +3,10 @@ module Yaks
     class Link
       include Concord.new(:rel, :template)
 
+      def rel?(rel)
+        self.rel == rel
+      end
+
       def expand(variables)
         uri_template.expand(variables)
       end

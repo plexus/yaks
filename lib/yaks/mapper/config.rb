@@ -37,11 +37,20 @@ module Yaks
       # (profile)
 
       def has_one(name, options = {})
+        add_association(HasOne, name, options)
+      end
+
+      def has_many(name, options = {})
+        add_association(HasMany, name, options)
+      end
+
+      def add_association(type, name, options = {})
         new(
           associations: @associations.cons(
-            HasOne.new(
+            type.new(
               name,
-              options.fetch(:mapper)
+              options.fetch(:mapper),
+              options.fetch(:links) { Yaks::List() }
             )
           )
         )

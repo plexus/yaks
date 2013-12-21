@@ -12,7 +12,7 @@ module Yaks
         # :profile,
         # :embed,
         :has_one,
-        # :has_many
+        :has_many
       ]
 
       def config
