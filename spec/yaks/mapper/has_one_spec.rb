@@ -7,7 +7,7 @@ describe Yaks::Mapper::HasOne do
 
   let(:name)     { 'William S. Burroughs' }
   let(:mapper)   { AuthorMapper }
-  let(:has_one)  { described_class.new(:author, :author, mapper, []) }
+  let(:has_one)  { described_class.new(:author, :author, mapper, [], {}) }
   let(:author)   { Struct.new(:name).new(name) }
 
   it 'should map to a single Resource' do

@@ -60,7 +60,8 @@ module Yaks
               name,
               options.fetch(:as) { name },
               options.fetch(:mapper),
-              options.fetch(:links) { Yaks::List() }
+              options.fetch(:links) { Yaks::List() },
+              options.reject {|k,v| [:as, :mapper, :links].include?(k) }
             )
           )
         )
