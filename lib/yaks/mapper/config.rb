@@ -3,10 +3,11 @@ module Yaks
     class Config
       include Equalizer.new(:attributes)
 
-      def initialize(attributes = Hamster.list, links = Hamster.list, associations = Hamster.list)
+      def initialize(attributes = Hamster.list, links = Hamster.list, associations = Hamster.list, profile = nil)
         @attributes   = attributes
         @links        = links
         @associations = associations
+        @profile      = profile
         freeze
       end
 
@@ -15,6 +16,7 @@ module Yaks
           updates.fetch(:attributes)   { attributes   },
           updates.fetch(:links)        { links        },
           updates.fetch(:associations) { associations },
+          updates.fetch(:profile)      { profile      },
         )
       end
 
@@ -28,6 +30,13 @@ module Yaks
       def link(rel, template, options = {})
         new(
           links: @links.cons(Link.new(rel, template, options))
+        )
+      end
+
+      def profile(type = Undefined)
+        return @profile if type == Undefined
+        new(
+          profile: type
         )
       end
 

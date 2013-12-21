@@ -39,6 +39,14 @@ describe Yaks::Mapper::Config do
         expect(config.links).to eq Yaks::List(Yaks::Mapper::Link.new(:self, '/foo/bar/{id}'))
       end
     end
+
+    describe 'setting a profile' do
+      let(:config) { subject.profile :post }
+
+      it 'should set the profile name' do
+        expect(config.profile).to eq :post
+      end
+    end
   end
 
   describe 'associations' do

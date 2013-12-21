@@ -7,8 +7,18 @@ require 'concord'
 require 'inflection'
 require 'uri_template'
 
+require 'yaks/util'
+require 'yaks/primitivize'
+
+require 'yaks/profile_registry'
+require 'yaks/default_policy'
+
 module Yaks
   Undefined = Object.new
+  YAKS_DEFAULT_OPTIONS = {
+    policy: DefaultPolicy,
+    profile_registry: NullProfileRegistry.new
+  }
 
   module ClassMethods
     def Hash(object = nil)
@@ -35,9 +45,6 @@ module Yaks
   extend ClassMethods
 
 end
-
-require 'yaks/util'
-require 'yaks/primitivize'
 
 require 'yaks/resource'
 require 'yaks/resource/link'

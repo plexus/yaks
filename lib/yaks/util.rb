@@ -44,8 +44,8 @@ module Yaks
       ->(*args) { procs.map &σ(:call, *args) }
     end
 
-    def curry_symbol(symbol, *args)
-      ->(obj) { obj.method(symbol).to_proc.curry.(*args) }
+    def curry_symbol(symbol, *args, &blk)
+      ->(obj) { obj.method(symbol).to_proc.curry.(*args, &blk) }
     end
     alias σ curry_symbol
 

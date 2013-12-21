@@ -9,7 +9,7 @@ module Yaks
       CONFIG_METHODS = [
         :attributes,
         :link,
-        # :profile,
+        :profile,
         # :embed,
         :has_one,
         :has_many

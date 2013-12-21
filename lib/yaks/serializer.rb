@@ -9,7 +9,7 @@ module Yaks
 
     def initialize(resource, options = {})
       @resource = resource
-      @options  = options
+      @options  = {}.merge(options)
     end
 
   end
