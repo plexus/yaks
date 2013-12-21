@@ -19,13 +19,7 @@ module Yaks
     end
 
     def map_links
-      links.map do |link|
-        link.expand_to_resource_link(
-          link.variables.map.with_object({}) do |var, hsh|
-            hsh[var]=load_attribute(var)
-          end
-        )
-      end
+      links.map &σ(:expand_with, μ(:load_attribute))
     end
 
     def map_attributes

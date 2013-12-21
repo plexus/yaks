@@ -25,9 +25,9 @@ module Yaks
         )
       end
 
-      def link(rel, template)
+      def link(rel, template, options = {})
         new(
-          links: @links.cons(Link.new(rel, template))
+          links: @links.cons(Link.new(rel, template, options))
         )
       end
 

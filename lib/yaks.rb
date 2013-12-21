@@ -37,9 +37,12 @@ module Yaks
 end
 
 require 'yaks/util'
+require 'yaks/primitivize'
+
 require 'yaks/resource'
 require 'yaks/resource/link'
 require 'yaks/collection_resource'
+
 require 'yaks/mapper/link'
 require 'yaks/mapper/association'
 require 'yaks/mapper/has_one'
@@ -47,3 +50,6 @@ require 'yaks/mapper/has_many'
 require 'yaks/mapper/config'
 require 'yaks/mapper/class_methods'
 require 'yaks/mapper'
+
+require 'yaks/serializer'
+require 'yaks/hal_serializer'

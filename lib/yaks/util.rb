@@ -10,7 +10,7 @@ module Yaks
       str.gsub(/::/, '/')
         .gsub(/(?<!^|\/)([A-Z])(?=[a-z$])|(?<=[a-z])([A-Z])/, '_\1\2')
         .tr("-", "_")
-        .downcase!
+        .downcase
     end
 
     def camelize(str)
