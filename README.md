@@ -1,79 +1,55 @@
-# Yaks Serializers
+# Yaks
 
-Turn your models into JSON or whatever. It is designed to support multiple formats, including non-json formats.
+### One Stop Hypermedia Shopping ###
 
-At the moment it supports
+Yaks is a tool for turning your domain models into Hypermedia resources.
 
-* [JSON-API](http://jsonapi.org), the [id style](http://jsonapi.org/format/#id-based-json-api)
-* AMS compat, identical to ActiveModel::Serializers with `embed :ids, include: true`
+There are at the moment a number of competing media types for building Hypermedia APIs. These all add a layer of semantics on top of a low level serialization format such as JSON or XML. Even though they each have their own design goals, the core features mostly overlap. They typically provide a way to represent resources (entities), and resource collections, consisting of
 
-Yaks is syntax compatible with a subset of ActiveModel::Serializers.
+* Data in key-value format, possibly with composite values
+* Embedded resources
+* Links to related resources
+* Outbound links that have a specific relation to the resource
 
-It does the serialization in two distinct phases. It first creates a (lazy) collection of the objects with their attributes and associations that need to be serialized, and in a second phase "folds" this into primitives (Hash, Array, String, Numeric, etc.) that can be passed to `JSON.dump` or similar.
+They might also contain extra control data to specify possible future interactions, not unlike HTML forms.
 
-The implementation follows the principle of separating policy from mechanism. For example, by default the serializer class is inferred from the model name in a certain way, but this is policy that can be easily changed.
+These different efforts to specify media types for Hypermedia clients and servers base themselves on the same set of internet standards, such as [RFC4288 Media types](http://tools.ietf.org/html/rfc4288), [RFC5988 Web Linking](http://tools.ietf.org/html/rfc5988), [RFC6906 The "profile" link relation](http://tools.ietf.org/search/rfc6906) and [RFC6570 URI Templates](http://tools.ietf.org/html/rfc6570).
 
-For each object type you want to serialize, implement a serializer like so (demonstrating here with [Virtus](https://github.com/solnic/virtus) models)
+## Yaks Resources
 
-```ruby
-class Post
-  include Virtus.model
+At the core of Yaks is the concept of a Resource, consisting of key-value attributes, RFC5988 style links, and embedded sub-resources. These standards are embraced as far as practically possible, for instance to find the URI that uniquely defines a resource, we look at the 'self' link. To distinguish different types of resources we use the 'profile' link.
 
-  attribute :id, Integer
-  attribute :title, String
-  attribute :body, String
-end
+## Mappers
 
-class PostSerializer < Yaks::Serializer
-  attributes :id, :title, :body
-end
-
-JSON.dump(
-  Yaks.dump('posts', [Post.new(id: 2, title: 'foo', body: 'bar')])
-)
-```
-
-By default which serializer to use is inferred from the class name. To change that, pass in a `:serializer_lookup` object that responds to `call(object)` and returns the right serializer class.
-
-By default objects are identified by their `:id`, to change that, configure an `identity_key`
+To turn your domain models into resources, you define mappers, for example :
 
 ```ruby
-class PostSerializer < Yaks::Serializer
-  attributes :href, :title, :body
-  identity_key :href
+class PostMapper < BaseMapper
+  link :self, '/api/posts/{id}'
+
+  attributes :id, :title
+
+  has_one :author
+  has_many :comments
 end
 ```
 
-Serialize associations by defining `has_one` and `has_many`
+Now you can use this to create a Resource
 
 ```ruby
-class ShowSerializer < Yaks::Serializer
-  attributes :id, :name, :description, :dates
-
-  has_many :events
-  has_one :event_category
-
-  def description
-    object.description(:long)
-  end
-
-  def dates
-    events.map(&:day)
-  end
-end
-
-class EventSerializer < Yaks::Serializer
-  attributes :id, :name
-end
-
-class EventCategorySerializer < Yaks::Serializer
-  attributes :id, :name
-end
-
-json = JSON.dump(
-  Yaks::Dumper.new(format: :json_api).dump('shows', Show.upcoming)
-)
+resource = PostMapper.new(post).to_resource
 ```
+
+## Serializers
+
+A resource can be turned in to a specific media type representation, for example [HAL](http://stateless.co/hal_specification.html) using a Serializer
+
+```ruby
+hal = Yaks::HalSerializer.new(resource).serialize
+puts JSON.dump(hal)
+```
+
+This will give you back a composite types consisting of primitives that have a mapping to JSON, so you can use your favorite JSON encoder to turn this into a character stream.
 
 ## Non-Features
 
@@ -83,71 +59,6 @@ json = JSON.dump(
 * Adding extra output formats does not require altering existing code
 * Has no opinion on what to use for final JSON encoding (json, multi_json, yajl, oj, etc.)
 
-## Formats
-
-* :json_api
-
-```json
-{
-   "shows" : [
-      {
-         "dates" : [ "next Sunday" ],
-         "name" : "Piglet gets his groove back",
-         "id" : 5,
-         "description" : "Once in a lifetime...",
-         "links" : {
-            "event_category" : 2,
-            "events" : [ 7 ]
-         }
-      }
-   ],
-   "linked" : {
-      "event_categories" : [
-         {
-            "name" : "Drama",
-            "id" : 2
-         }
-      ],
-      "events" : [
-         {
-            "name" : "Sneak preview",
-            "id" : 7
-         }
-      ]
-   }
-}
-```
-
-* :ams_compat
-
-```json
-{
-   "shows" : [
-      {
-         "dates" : [ "next Sunday" ],
-         "name" : "Piglet gets his groove back",
-         "id" : 5,
-         "description" : null,
-         "event_ids" : [ 7 ],
-         "event_category_id" : 2
-      }
-   ],
-   "event_categories" : [{
-         "name" : "Drama",
-         "id" : 2
-   }],
-   "events" : [{
-         "Name" : "Sneak preview",
-         "id" : 7
-   }]
-}
-```
-
-## Maturity
-
-Infantile. Crazy what these kids get up to.
-
-requires current master of Hamster.
 
 ## License
 

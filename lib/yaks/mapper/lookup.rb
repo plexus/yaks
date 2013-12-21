@@ -1,5 +1,5 @@
 module Yaks
-  class Serializer
+  class Mapper
     module Lookup
 
       def serializer_for(object_or_key)

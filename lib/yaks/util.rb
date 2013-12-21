@@ -10,7 +10,7 @@ module Yaks
       str.gsub(/::/, '/')
         .gsub(/(?<!^|\/)([A-Z])(?=[a-z$])|(?<=[a-z])([A-Z])/, '_\1\2')
         .tr("-", "_")
-        .downcase!
+        .downcase
     end
 
     def camelize(str)
@@ -35,8 +35,17 @@ module Yaks
     end
     alias μ curry_method
 
-    def curry_symbol(symbol, *args)
-      ->(obj) { obj.method(symbol).to_proc.curry.(*args) }
+    def identity_function
+      ->(x) {x}
+    end
+    alias ι identity_function
+
+    def juxt(*procs)
+      ->(*args) { procs.map &σ(:call, *args) }
+    end
+
+    def curry_symbol(symbol, *args, &blk)
+      ->(obj) { obj.method(symbol).to_proc.curry.(*args, &blk) }
     end
     alias σ curry_symbol
 
