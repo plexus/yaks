@@ -22,7 +22,11 @@ module Yaks
     end
 
     def serialize_link(name, resource)
-      [ name, resource.collection? ? resource.map(&σ(:[], :id)) : resource[:id] ]
+      if options[:embed] == :links
+        [ name, resource.uri ]
+      else
+        [ name, resource.collection? ? resource.map(&σ(:[], :id)) : resource[:id] ]
+      end
     end
 
     def serialize_linked(subresources)

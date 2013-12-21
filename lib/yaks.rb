@@ -48,6 +48,7 @@ module Yaks
 
 end
 
+require 'yaks/resource/link_lookup'
 require 'yaks/resource'
 require 'yaks/resource/link'
 require 'yaks/collection_resource'
@@ -58,6 +59,7 @@ require 'yaks/mapper/has_one'
 require 'yaks/mapper/has_many'
 require 'yaks/mapper/config'
 require 'yaks/mapper/class_methods'
+require 'yaks/mapper/shared_methods'
 require 'yaks/mapper'
 require 'yaks/collection_mapper'
 

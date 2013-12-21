@@ -3,7 +3,7 @@
 module Yaks
   class Mapper
     extend ClassMethods, Forwardable
-    include Util, CrossCutting
+    include Util, SharedMethods
 
     def_delegators 'self.class', :config
     def_delegators :config, :attributes, :links, :associations
@@ -22,11 +22,6 @@ module Yaks
         map_links,
         map_subresources
       )
-    end
-
-    def map_links
-      mapped = links.map &σ(:expand_with, μ(:load_attribute))
-      mapped.cons(Resource::Link.new(:profile, profile_registry.find_by_type(profile_type), {}))
     end
 
     def profile_type

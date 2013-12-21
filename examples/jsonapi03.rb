@@ -22,24 +22,34 @@ class Person
   attribute :name, String
 end
 
-class Post
-  include Virtus.model
-  attribute :id, String
-  attribute :title, String
-  attribute :author, Person
-end
 
 class Comment
   include Virtus.model
   attribute :id, String
 end
 
+class Post
+  include Virtus.model
+  attribute :id, String
+  attribute :title, String
+  attribute :author, Person
+  attribute :comments, Array[Comment]
+end
+
 class BaseMapper < Yaks::Mapper
-  link :self, 'http://example.com/{profile_type}/{id}'
+  link :self, 'http://example.com/{plural_profile_type}/{id}'
+
+  def plural_profile_type
+    pluralize(profile_type.to_s)
+  end
 end
 
 class CollectionMapper < Yaks::CollectionMapper
-  link :self, 'http://example.com/{profile_type}/{id*}'
+  link :self, 'http://example.com/{plural_profile_type}/{id*}'
+
+  def plural_profile_type
+    pluralize(profile_type.to_s)
+  end
 end
 
 class CommentMapper < BaseMapper
@@ -54,13 +64,13 @@ class PostMapper < BaseMapper
   attributes :id, :title, :links
 
   has_one :author, mapper: PersonMapper
-  has_many :comments, mapper: Comment, collection_mapper: CollectionMapper
+  has_many :comments, mapper: CommentMapper, collection_mapper: CollectionMapper
 end
 
 post = Post.new(
   id: 1,
   title: "Rails is Omakase",
-  author: Person.new(id: "9", name: "@d2h"),
+  author: Person.new(id: "1", name: "@d2h"),
   comments: [5, 12, 17, 20].map {|id| Comment.new(id: id.to_s)}
 )
 

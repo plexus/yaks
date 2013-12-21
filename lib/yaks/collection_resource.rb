@@ -1,15 +1,16 @@
 module Yaks
   class CollectionResource
     include Equalizer.new(:uri, :links, :members)
-    include Enumerable
+    include Enumerable, Resource::LinkLookup
+
     extend Forwardable
 
-    attr_reader :uri, :links, :members
+    attr_reader :links, :members
 
     def_delegators :members, :each
 
-    def initialize(uri, members)
-      @uri     = uri
+    def initialize(links, members)
+      @links   = Yaks::List(links)
       @members = Yaks::List(members)
     end
 
