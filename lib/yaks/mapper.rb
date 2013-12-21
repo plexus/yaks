@@ -3,7 +3,8 @@
 module Yaks
   class Mapper
     extend ClassMethods, Forwardable
-    include Util, SharedMethods
+    include Util, MapLinks, CrossCutting
+
 
     def_delegators 'self.class', :config
     def_delegators :config, :attributes, :links, :associations

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 module Yaks
   class CollectionMapper
-    include Util, Mapper::SharedMethods
+    include Util, Mapper::MapLinks, CrossCutting
     extend Mapper::ClassMethods
 
     attr_reader :collection, :resource_mapper, :options

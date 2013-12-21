@@ -59,7 +59,7 @@ require 'yaks/mapper/has_one'
 require 'yaks/mapper/has_many'
 require 'yaks/mapper/config'
 require 'yaks/mapper/class_methods'
-require 'yaks/mapper/shared_methods'
+require 'yaks/mapper/map_links'
 require 'yaks/mapper'
 require 'yaks/collection_mapper'
 
