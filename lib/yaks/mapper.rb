@@ -18,6 +18,8 @@ module Yaks
     end
 
     def to_resource
+      return NullResource.new if subject.nil?
+
       Resource.new(
         map_attributes,
         map_links,

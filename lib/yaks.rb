@@ -50,6 +50,7 @@ end
 
 require 'yaks/resource/link_lookup'
 require 'yaks/resource'
+require 'yaks/null_resource'
 require 'yaks/resource/link'
 require 'yaks/collection_resource'
 
