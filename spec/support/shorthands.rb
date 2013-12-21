@@ -13,4 +13,10 @@ shared_context 'shorthands' do
       )
     }
   }
+
+  let(:resource_link) {
+    ->(rel, uri, options = {}) {
+      Yaks::Resource::Link.new(rel, uri, options)
+    }
+  }
 end

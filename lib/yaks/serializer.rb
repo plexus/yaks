@@ -1,10 +1,16 @@
 module Yaks
   class Serializer
-    attr_reader :resource
-    private :resource
+    extend Forwardable
 
-    def initialize(resource)
+    attr_reader :resource, :options
+    def_delegators :resource, :links, :attributes, :subresources
+
+    protected :resource, :links, :attributes, :subresources, :options
+
+    def initialize(resource, options = {})
       @resource = resource
+      @options  = options
     end
+
   end
 end

@@ -28,8 +28,7 @@ module Yaks
 
     def map_subresources
       associations.map do |association|
-        name = association.name
-        [ name, association.map_resource(load_association(name)) ]
+        [ association.key, association.map_resource(load_association(association.name)) ]
       end
     end
 

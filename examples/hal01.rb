@@ -1,74 +1,15 @@
-require 'virtus'
-require 'yaks'
-require 'json'
+# http://stateless.co/hal_specification.html
 
-class Order
-  include Virtus.model
-  attribute :id, Integer
-  attribute :basket_id, Integer
-  attribute :customer_id, Integer
-  attribute :total, Numeric
-  attribute :currency, String
-  attribute :status, String
-end
+# There are still some affordances missing to support all of HAL, in particular
+# for this example to ability to generate links based on composite content
+# (ea:admin) is not implemented, neither is explicit support for CURIEs (compact
+# URI shorthand syntax), although this examples works around that by manually
+# encoding the CURIE prefixes.
 
-class OrderSet
-  include Virtus.model
-  attribute :currently_processing, Integer
-  attribute :shipped_today, Integer
-  attribute :orders, Array[Order]
-end
+# The 'next' link from the example below is also ommitted, pagination is an aspect
+# that will be implemented generically
 
-class OrderMapper < Yaks::Mapper
-  link :self, '/orders/{id}'
-  link :basket, '/baskets/{basket_id}'
-  link :customer, '/baskets/{customer_id}'
-
-  attributes :total, :currency, :status
-end
-
-class OrderSetMapper < Yaks::Mapper
-  link :self, '/orders'
-  link :curies, 'http://example.com/docs/rels/{rel}', name: "ea", expand: false
-  link :"ea:find", "/orders{?id}", expand: false
-
-  attributes :currentlyProcessing, :shippedToday
-
-  has_many :orders, as: :"ea:order", mapper: OrderMapper
-
-  def load_attribute(name)
-    super(Yaks::Util.underscore(name.to_s))
-  end
-end
-
-order_set = OrderSet.new(
-  currently_processing: 14,
-  shipped_today: 20,
-  orders: [
-    Order.new(
-      id: 123,
-      basket_id: 98712,
-      customer_id: 7809,
-      total: 30.00,
-      currency: "USD",
-      status: "shipped"
-    ),
-    Order.new(
-      id: 124,
-      basket_id: 97213,
-      customer_id: 12369,
-      total: 20.00,
-      currency: "USD",
-      status: "processing"
-    )
-  ]
-)
-
-resource = OrderSetMapper.new(order_set).to_resource
-
-hal = Yaks::HalSerializer.new(resource).to_hal
-
-puts JSON.dump(hal)
+# Example from the specification, approximated with Yaks below
 
 # {
 #     "_links": {
@@ -108,3 +49,78 @@ puts JSON.dump(hal)
 #         }]
 #     }
 # }
+
+require 'virtus'
+require 'yaks'
+require 'json'
+
+class Order
+  include Virtus.model
+  attribute :id, Integer
+  attribute :basket_id, Integer
+  attribute :customer_id, Integer
+  attribute :total, Numeric
+  attribute :currency, String
+  attribute :status, String
+end
+
+class OrderSet
+  include Virtus.model
+  attribute :currently_processing, Integer
+  attribute :shipped_today, Integer
+  attribute :orders, Array[Order]
+end
+
+class OrderMapper < Yaks::Mapper
+  link :self, '/orders/{id}'
+  link :"ea:basket", '/baskets/{basket_id}'
+  link :"ea:customer", '/customers/{customer_id}'
+
+  attributes :total, :currency, :status
+end
+
+class OrderSetMapper < Yaks::Mapper
+  link :self, '/orders'
+  link :curies, 'http://example.com/docs/rels/{rel}', name: "ea", expand: false
+  link :"ea:find", "/orders{?id}", expand: false
+
+  attributes :currentlyProcessing, :shippedToday
+
+  has_many :orders, as: :"ea:order", mapper: OrderMapper
+
+  # Having the attributes be encoded in CamelCase is such a common
+  # use case we might have to make this a setting
+
+  def load_attribute(name)
+    super(Yaks::Util.underscore(name.to_s))
+  end
+end
+
+order_set = OrderSet.new(
+  currently_processing: 14,
+  shipped_today: 20,
+  orders: [
+    Order.new(
+      id: 123,
+      basket_id: 98712,
+      customer_id: 7809,
+      total: 30.00,
+      currency: "USD",
+      status: "shipped"
+    ),
+    Order.new(
+      id: 124,
+      basket_id: 97213,
+      customer_id: 12369,
+      total: 20.00,
+      currency: "USD",
+      status: "processing"
+    )
+  ]
+)
+
+resource = OrderSetMapper.new(order_set).to_resource
+
+hal = Yaks::HalSerializer.new(resource, singular_links: [:self, :"ea:find", :"ea:basket", :"ea:customer"]).to_hal
+
+puts JSON.dump(hal)

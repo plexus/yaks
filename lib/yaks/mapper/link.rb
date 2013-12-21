@@ -16,11 +16,13 @@ module Yaks
       end
 
       def expand_with(callable)
-        return template unless expand?
-        expand_to_resource_link(
-          variables.map.with_object({}) do |var, hsh|
-            hsh[var] = callable.(var)
-          end
+        return make_resource_link(template) unless expand?
+        make_resource_link(
+          expand(
+            variables.map.with_object({}) do |var, hsh|
+              hsh[var] = callable.(var)
+            end
+          )
         )
       end
 
@@ -36,8 +38,20 @@ module Yaks
         uri_template.variables
       end
 
-      def expand_to_resource_link(variables)
-        Resource::Link.new(rel, expand(variables))
+      PROPAGATE_OPTIONS = [:name]
+
+      def resource_link_options
+        Hash[*
+          PROPAGATE_OPTIONS.flat_map do |key|
+            options[key] ? [key, options[key]] : []
+          end
+        ].merge(
+          templated: !expand?
+        )
+      end
+
+      def make_resource_link(uri)
+        Resource::Link.new(rel, uri, resource_link_options)
       end
     end
   end

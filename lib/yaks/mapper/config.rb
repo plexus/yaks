@@ -49,6 +49,7 @@ module Yaks
           associations: @associations.cons(
             type.new(
               name,
+              options.fetch(:as) { name },
               options.fetch(:mapper),
               options.fetch(:links) { Yaks::List() }
             )

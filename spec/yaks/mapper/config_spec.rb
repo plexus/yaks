@@ -46,7 +46,7 @@ describe Yaks::Mapper::Config do
       let(:config) { subject.has_one :mother, mapper: Yaks::Mapper }
 
       it 'should have the association configured' do
-        expect(config.associations).to eq Yaks::List(Yaks::Mapper::HasOne.new(:mother, Yaks::Mapper, Yaks::List()))
+        expect(config.associations).to eq Yaks::List(Yaks::Mapper::HasOne.new(:mother, :mother, Yaks::Mapper, Yaks::List()))
       end
     end
 
@@ -54,9 +54,16 @@ describe Yaks::Mapper::Config do
       let(:config) { subject.has_many :shoes, mapper: Yaks::Mapper }
 
       it 'should have the association configured' do
-        expect(config.associations).to eq Yaks::List(Yaks::Mapper::HasMany.new(:shoes, Yaks::Mapper, Yaks::List()))
+        expect(config.associations).to eq Yaks::List(Yaks::Mapper::HasMany.new(:shoes, :shoes, Yaks::Mapper, Yaks::List()))
       end
+    end
 
+    context 'with an :as alternate key' do
+      let(:config) { subject.has_many :shoes, as: :footwear, mapper: Yaks::Mapper }
+
+      it 'should have the given value as its "key"' do
+        expect(config.associations.first.key).to eq :footwear
+      end
     end
   end
 end

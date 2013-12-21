@@ -3,10 +3,11 @@ module Yaks
     class Association
       include Equalizer.new(:name, :mapper, :links)
 
-      attr_reader :name, :mapper, :links
+      attr_reader :name, :key, :mapper, :links
 
-      def initialize(name, mapper, links)
+      def initialize(name, key, mapper, links)
         @name   = name
+        @key    = key
         @mapper = mapper
         @links  = links
       end
