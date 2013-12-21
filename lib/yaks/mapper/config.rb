@@ -58,10 +58,10 @@ module Yaks
           associations: @associations.cons(
             type.new(
               name,
-              options.fetch(:as) { name },
-              options.fetch(:mapper),
-              options.fetch(:links) { Yaks::List() },
-              options.reject {|k,v| [:as, :mapper, :links].include?(k) }
+              options.fetch(:as)     { name },
+              options.fetch(:mapper) { Undefined },
+              options.fetch(:links)  { Yaks::List() },
+              options.reject         {|k,v| [:as, :mapper, :links].include?(k) }
             )
           )
         )

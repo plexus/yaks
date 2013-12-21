@@ -3,10 +3,17 @@
 module Yaks
   class JsonApiSerializer < Serializer
     def serialize
-      serialized = {
-        pluralize(profile_name.to_s) => Array(serialize_resource(resource))
-      }
-      serialized.merge!('linked' => serialize_linked(subresources)) if options[:embed] == :resources
+      serialized = Yaks::Hash(
+        pluralize(profile_name.to_s) => resource.map(&method(:serialize_resource))
+      )
+
+      if options[:embed] == :resources
+        linked = resource.reduce(Yaks::Hash()) do |memo, res|
+          serialize_linked_subresources(res.subresources, memo)
+        end
+        serialized = serialized.put('linked', linked)
+      end
+
       Primitivize.( serialized )
     end
     alias to_json_api serialize
@@ -29,20 +36,24 @@ module Yaks
       end
     end
 
-    def serialize_linked(subresources)
-      result = {}
-      subresources.each do |name, resources|
-        resources.each do |resource|
-          result = result.merge(serialize_subresource(resource)) {|old, new| old.concat(new) }
-        end
+    def serialize_linked_subresources(subresources, linked)
+      subresources.reduce(linked) do |memo, name, resources|
+        serialize_linked_resources(resources, memo)
       end
-      result
     end
 
-    def serialize_subresource(resource)
-      {
-        pluralize(profile_registry.find_by_uri(resource.profile).to_s) => [serialize_resource(resource)]
-      }.merge(serialize_linked(resource.subresources)) {|old, new| old.concat(new) }
+    def serialize_linked_resources(resources, linked)
+      resources.reduce(linked) do |memo, resource|
+        serialize_subresource(resource, memo)
+      end
+    end
+
+    # {shows => [{id: 3, name: 'foo'}]}
+    def serialize_subresource(resource, linked)
+      key = pluralize(profile_registry.find_by_uri(resource.profile).to_s)
+      set = linked.fetch(key) { Hamster.set }
+      linked = linked.put(key, set << serialize_resource(resource))
+      serialize_linked_subresources(resource.subresources, linked)
     end
   end
 end

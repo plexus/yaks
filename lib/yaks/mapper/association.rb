@@ -1,10 +1,11 @@
 module Yaks
   class Mapper
     class Association
-      include Equalizer.new(:name, :mapper, :links)
+      include Equalizer.new(:name, :_mapper, :links)
+      include CrossCutting
 
-      attr_reader :name, :key, :mapper, :links, :options
-      private :mapper, :links, :options
+      attr_reader :name, :key, :links, :options
+      private :links, :options
 
       def initialize(name, key, mapper, links, options)
         @name    = name
@@ -18,8 +19,19 @@ module Yaks
         links.detect {|link| link.rel? :self }
       end
 
-      def map_to_resource_pair(loader)
-        [ key, map_resource(loader.(name)) ]
+      def map_to_resource_pair(loader, options)
+        [ key, map_resource(loader.(name), options) ]
+      end
+
+      private
+
+      def mapper(opts = nil)
+        return _mapper unless _mapper == Undefined
+        opts[:policy].derive_missing_mapper_for_association(self)
+      end
+
+      def _mapper
+        @mapper
       end
     end
   end

@@ -5,12 +5,12 @@ module Yaks
     extend ClassMethods, Forwardable
     include Util, MapLinks, CrossCutting
 
-
     def_delegators 'self.class', :config
     def_delegators :config, :attributes, :links, :associations
 
     attr_reader :subject, :options
     private :subject, :options
+    alias object subject
 
     def initialize(subject, options = {})
       @subject = subject
@@ -30,12 +30,13 @@ module Yaks
     end
 
     def map_attributes
-      attributes.map &juxt(ι, μ(:load_attribute))
+      filter(attributes).map &juxt(ι, μ(:load_attribute))
     end
 
     def map_subresources
-      associations.map do |association|
-        association.map_to_resource_pair(μ(:load_association))
+      filtered = filter(associations.map(&:name))
+      associations.select{|assoc| filtered.include? assoc.name}.map do |association|
+        association.map_to_resource_pair(μ(:load_association), options)
       end
     end
 
@@ -46,6 +47,10 @@ module Yaks
 
     def profile
       config.profile || policy.derive_missing_profile_from_mapper(self)
+    end
+
+    def filter(attrs)
+      attrs
     end
 
   end

@@ -61,7 +61,7 @@ class PersonMapper < BaseMapper
 end
 
 class PostMapper < BaseMapper
-  attributes :id, :title, :links
+  attributes :id, :title
 
   has_one :author, mapper: PersonMapper
   has_many :comments, mapper: CommentMapper, collection_mapper: CollectionMapper
