@@ -5,7 +5,7 @@ module Yaks
     def serialize
       Primitivize.(
         {
-          profile_name => attributes.merge(Yaks::Hash(:links => serialize_embedded))
+          pluralize(profile_name.to_s) => Array(attributes.merge(Yaks::Hash(:links => serialize_embedded)))
         }
       )
     end
