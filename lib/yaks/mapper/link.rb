@@ -38,16 +38,10 @@ module Yaks
         uri_template.variables
       end
 
-      PROPAGATE_OPTIONS = [:name]
-
       def resource_link_options
-        Hash[*
-          PROPAGATE_OPTIONS.flat_map do |key|
-            options[key] ? [key, options[key]] : []
-          end
-        ].merge(
-          templated: !expand?
-        )
+        options
+          .reject{|k,v| [:expand].include? k}
+          .merge( templated: !expand? )
       end
 
       def make_resource_link(uri)

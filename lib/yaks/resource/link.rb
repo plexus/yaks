@@ -4,7 +4,6 @@ module Yaks
       include Equalizer.new(:rel, :uri)
 
       attr_reader :rel, :uri, :options
-      private :options
 
       def initialize(rel, uri, options)
         @rel, @uri, @options = rel, uri, options
