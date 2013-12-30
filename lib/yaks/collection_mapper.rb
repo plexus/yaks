@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 module Yaks
   class CollectionMapper
     include Util, Mapper::MapLinks, CrossCutting

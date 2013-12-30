@@ -6,6 +6,7 @@ $LOAD_PATH.unshift(ROOT.join('lib'))
 
 require 'yaks'
 require 'virtus'
+require 'json'
 
 require_relative 'support/models'
 require_relative 'support/pet_mapper'
@@ -13,3 +14,8 @@ require_relative 'support/pet_peeve_mapper'
 require_relative 'support/friends_mapper'
 require_relative 'support/fixtures'
 require_relative 'support/shorthands'
+require_relative 'support/shared_contexts'
+
+def load_json_fixture(name)
+  JSON.parse(ROOT.join('spec/json', name + '.json').read)
+end

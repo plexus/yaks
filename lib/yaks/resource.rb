@@ -3,7 +3,7 @@ module Yaks
     include Equalizer.new(:links, :attributes, :subresources)
     include Enumerable, LinkLookup
 
-    attr_reader :links, :attributes, :subresources
+    attr_reader :attributes, :links, :subresources
 
     def initialize(attributes, links, subresources)
       @attributes   = Yaks::Hash(attributes)

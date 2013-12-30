@@ -1,0 +1,66 @@
+{
+   "_links" : {
+      "profile" : [
+         {
+            "href" : "http://api.example.com/doc/plant_collection"
+         }
+      ],
+      "self" : [
+         {
+            "href" : "http://api.example.com/plants"
+         }
+      ]
+   },
+   "_embedded" : {
+      "http://api.example.com/doc/plant_collection" : [
+         {
+            "_links" : {
+               "profile" : [
+                  {
+                     "href" : "http://api.example.com/doc/plant"
+                  }
+               ],
+               "self" : [
+                  {
+                     "href" : "http://api.example.com/plants/7/plain_grass"
+                  }
+               ]
+            },
+            "name" : "Plain grass",
+            "type" : "grass"
+         },
+         {
+            "_links" : {
+               "profile" : [
+                  {
+                     "href" : "http://api.example.com/doc/plant"
+                  }
+               ],
+               "self" : [
+                  {
+                     "href" : "http://api.example.com/plants/15/oak"
+                  }
+               ]
+            },
+            "name" : "Oak",
+            "type" : "tree"
+         },
+         {
+            "_links" : {
+               "profile" : [
+                  {
+                     "href" : "http://api.example.com/doc/plant"
+                  }
+               ],
+               "self" : [
+                  {
+                     "href" : "http://api.example.com/plants/33/passiflora"
+                  }
+               ]
+            },
+            "name" : "Passiflora",
+            "type" : "flower"
+         }
+      ]
+   }
+}

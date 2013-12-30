@@ -15,18 +15,14 @@ module Yaks
     protected
 
     def serialize_resource(resource)
-      if resource.collection?
-        resource.map(&μ(:serialize_resource))
-      else
-        result = resource.attributes
-        result = result.put(:_links, serialize_links(resource.links))
-        result = result.put(:_embedded, serialize_embedded(resource.subresources)) unless resource.subresources.empty?
-        result
-      end
+      result = resource.attributes
+      result = result.put(:_links, serialize_links(resource.links))
+      result = result.put(:_embedded, serialize_embedded(resource.subresources)) unless resource.subresources.empty?
+      result
     end
 
     def serialize_links(links)
-      links.reduce(Yaks::Hash(), &μ(:serialize_link))
+      links.reduce(Yaks::Hash(), &method(:serialize_link))
     end
 
     def serialize_link(memo, link)
@@ -42,17 +38,10 @@ module Yaks
     end
 
     def serialize_embedded(subresources)
-      subresources.map &μ(:serialize_subresource)
-    end
-
-    def serialize_subresource(name, resource)
-      [name, serialize_resource(resource) ]
-    end
-
-    def cond_merge(hash, *optionals)
-      optionals.reduce(hash) do |memo, (key, value, cond)|
-        cond ? memo.merge(key => value) : memo
+      subresources.map do |name, resources|
+        [name, resources.map( &method(:serialize_resource) )]
       end
     end
+
   end
 end
