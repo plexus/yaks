@@ -25,14 +25,14 @@ module Yaks
     end
 
     def serialize_links(subresources)
-      Yaks::Hash(subresources.map &μ(:serialize_link))
+      Yaks::Hash(subresources.map &method(:serialize_link))
     end
 
     def serialize_link(name, resource)
       if options[:embed] == :links
         [ name, resource.uri ]
       else
-        [ name, resource.collection? ? resource.map(&σ(:[], :id)) : resource[:id] ]
+        [ name, resource.collection? ? resource.map(&curry_symbol(:[]).(:id)) : resource[:id] ]
       end
     end
 

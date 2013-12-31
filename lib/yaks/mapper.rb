@@ -32,13 +32,13 @@ module Yaks
     end
 
     def map_attributes
-      filter(attributes).map &juxt(ι, μ(:load_attribute))
+      filter(attributes).map &juxt(identity_function, method(:load_attribute))
     end
 
     def map_subresources
       filtered = filter(associations.map(&:name))
       associations.select{|assoc| filtered.include? assoc.name}.map do |association|
-        association.map_to_resource_pair(μ(:load_association), options)
+        association.map_to_resource_pair(method(:load_association), options)
       end
     end
 
