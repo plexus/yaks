@@ -33,9 +33,22 @@ module Yaks
       Yaks::Hash()
     end
 
+    # Make a CollectionResource quack like a resource.
+    #
+    # At the moment this is only for HAL, which always assumes
+    # a singular resource at the top level, this way it can treat
+    # whatever it gets as a single resource with links and subresources,
+    # we just push the collection down one level.
+    #
+    # Once inside subresources the HAL serializer does check if a resource
+    # is a collection, since there it does make a distinction, and because
+    # in that case it will iterate with each/map rather than calling subresources,
+    # this doesn't cause infinite recursion. Not very pretty, needs looking at.
+    #
+    # :(
     def subresources
       if members && members.any?
-        Yaks::Hash( profile => members )
+        Yaks::Hash( profile => self )
       else
         Yaks::Hash()
       end

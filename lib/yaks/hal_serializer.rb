@@ -38,8 +38,15 @@ module Yaks
     end
 
     def serialize_embedded(subresources)
-      subresources.map do |name, resources|
-        [name, resources.map( &method(:serialize_resource) )]
+      subresources.map do |rel, resources|
+        [
+          rel,
+          if resources.collection?
+            resources.map( &method(:serialize_resource) )
+          else
+            serialize_resource(resources)
+          end
+        ]
       end
     end
 
