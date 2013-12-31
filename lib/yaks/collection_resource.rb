@@ -16,7 +16,7 @@ module Yaks
   # members.
   class CollectionResource
     include Equalizer.new(:links, :members)
-    include Enumerable, Resource::LinkLookup
+    include Enumerable, LinkLookup
 
     extend Forwardable
 

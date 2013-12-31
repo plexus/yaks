@@ -8,6 +8,7 @@ require 'inflection'
 require 'uri_template'
 
 require 'yaks/util'
+require 'yaks/link_lookup'
 require 'yaks/shared_options'
 require 'yaks/primitivize'
 
@@ -49,7 +50,7 @@ module Yaks
 
 end
 
-require 'yaks/resource/link_lookup'
+
 require 'yaks/resource'
 require 'yaks/null_resource'
 require 'yaks/resource/link'
