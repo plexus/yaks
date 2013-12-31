@@ -13,6 +13,7 @@ require 'yaks/shared_options'
 require 'yaks/primitivize'
 
 require 'yaks/profile_registry'
+require 'yaks/rel_registry'
 require 'yaks/default_policy'
 
 module Yaks
@@ -21,6 +22,7 @@ module Yaks
   YAKS_DEFAULT_OPTIONS = {
     policy: DefaultPolicy.new,
     profile_registry: NullProfileRegistry.new,
+    rel_registry: NullRelRegistry.new,
     singular_links: [:self]
   }
 

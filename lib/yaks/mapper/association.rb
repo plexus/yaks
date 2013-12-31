@@ -19,8 +19,13 @@ module Yaks
         links.detect {|link| link.rel? :self }
       end
 
-      def map_to_resource_pair(loader, options)
-        [ key, map_resource(loader.(name), options) ]
+      # @param [Symbol] src_type
+      #   The profile type of the resource that contains the association
+      # @param [Proc] loader
+      #   A lambda that can retrieve an association by its name
+      # @param [Hash] options
+      def map_to_resource_pair(src_type, loader, options)
+        [ options[:rel_registry].lookup(src_type, key), map_resource(loader.(name), options) ]
       end
 
       private

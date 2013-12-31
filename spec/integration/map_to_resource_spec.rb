@@ -17,8 +17,8 @@ describe 'Mapping domain models to Resource objects' do
 
   its(:subresources) {
     should eq Yaks::Hash(
-      pet_peeve: resource[{id: 4, type: 'parsing with regexps'}, [resource_link[:profile, 'pet_peeve']]],
-      pets: Yaks::CollectionResource.new(
+      "rel:src=friend&dest=pet_peeve" => resource[{id: 4, type: 'parsing with regexps'}, [resource_link[:profile, 'pet_peeve']]],
+      "rel:src=friend&dest=pets" => Yaks::CollectionResource.new(
         [resource_link[:profile, 'pet']],
         [
           resource[{:id => 2, :species => "dog", :name => "boingboing"}, [resource_link[:profile, 'pet']]],
