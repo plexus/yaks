@@ -43,4 +43,18 @@ module Yaks
       uri.to_sym
     end
   end
+
+  class TemplateProfileRegistry
+    def initialize(template)
+      @template = URITemplate.new(template)
+    end
+
+    def find_by_type(type)
+      @template.expand(type: type)
+    end
+
+    def find_by_uri(uri)
+      @template.extract(uri).fetch(:type) { uri }.to_sym
+    end
+  end
 end
