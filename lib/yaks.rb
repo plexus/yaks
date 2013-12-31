@@ -19,7 +19,8 @@ module Yaks
 
   YAKS_DEFAULT_OPTIONS = {
     policy: DefaultPolicy.new,
-    profile_registry: NullProfileRegistry.new
+    profile_registry: NullProfileRegistry.new,
+    singular_links: [:self]
   }
 
   module ClassMethods
