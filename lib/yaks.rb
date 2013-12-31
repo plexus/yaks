@@ -23,7 +23,7 @@ module Yaks
     policy: DefaultPolicy.new,
     profile_registry: NullProfileRegistry.new,
     rel_registry: NullRelRegistry.new,
-    singular_links: [:self]
+    singular_links: [:self, :profile]
   }
 
   module ClassMethods
