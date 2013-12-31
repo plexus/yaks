@@ -8,7 +8,7 @@ require 'inflection'
 require 'uri_template'
 
 require 'yaks/util'
-require 'yaks/cross_cutting'
+require 'yaks/shared_options'
 require 'yaks/primitivize'
 
 require 'yaks/profile_registry'

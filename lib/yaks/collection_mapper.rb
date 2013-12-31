@@ -2,7 +2,7 @@
 
 module Yaks
   class CollectionMapper
-    include Util, Mapper::MapLinks, CrossCutting
+    include Util, Mapper::MapLinks, SharedOptions
     extend Mapper::ClassMethods
 
     attr_reader :collection, :resource_mapper, :options
