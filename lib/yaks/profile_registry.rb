@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 module Yaks
-  # oRFC6906 The "profile" link relation http://tools.ietf.org/search/rfc6906
+  # RFC6906 The "profile" link relation http://tools.ietf.org/search/rfc6906
   class ProfileRegistry
     class << self
       include Util
