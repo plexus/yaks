@@ -15,8 +15,13 @@ module Yaks
     protected
 
     def serialize_resource(resource)
+      # The HAL spec doesn't say explicitly how to deal missing values,
+      # looking at client behavior (Hyperagent) it seems safer to return an empty
+      # resource.
+      #
+      # return nil if resource.is_a? NullResource
       result = resource.attributes
-      result = result.put(:_links, serialize_links(resource.links))
+      result = result.put(:_links, serialize_links(resource.links)) unless resource.links.empty?
       result = result.put(:_embedded, serialize_embedded(resource.subresources)) unless resource.subresources.empty?
       result
     end
