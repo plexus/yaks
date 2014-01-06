@@ -2,6 +2,7 @@ module Yaks
   class Mapper
     class Link
       include Concord.new(:rel, :template, :options)
+      include Util
 
       def initialize(rel, template, options = {})
         @rel, @template, @options = rel, template, options
@@ -16,13 +17,19 @@ module Yaks
       end
 
       def expand_with(callable)
-        return make_resource_link(template) unless expand?
+        return template unless expand?
+        expand(
+          variables.map.with_object({}) do |var, hsh|
+            hsh[var] = callable.(var)
+          end
+        )
+      end
+
+      def map_to_resource_link(mapper)
         make_resource_link(
-          expand(
-            variables.map.with_object({}) do |var, hsh|
-              hsh[var] = callable.(var)
-            end
-          )
+          rel,
+          expand_with(mapper.method(:load_attribute)),
+          resource_link_options(mapper)
         )
       end
 
@@ -38,14 +45,29 @@ module Yaks
         uri_template.variables
       end
 
-      def resource_link_options
-        options
-          .reject{|k,v| [:expand].include? k}
-          .merge( templated: !expand? )
+      # Link properties defined in HAL
+      # href
+      # templated
+      # typed
+      # deprecation
+      # name
+      # profile
+      # title
+      # hreflang
+
+      def resource_link_options(mapper)
+        options = self.options
+        options = options.merge(title: resolve_title(options[:title], mapper)) if options.has_key?(:title)
+        options = options.merge( templated: true ) unless expand?
+        options.reject{|k,v| [:expand].include? k}
       end
 
-      def make_resource_link(uri)
-        Resource::Link.new(rel, uri, resource_link_options)
+      def resolve_title(title_proc, mapper)
+        Resolve(title_proc, mapper)
+      end
+
+      def make_resource_link(rel, uri, options)
+        Resource::Link.new(rel, uri, options)
       end
     end
   end

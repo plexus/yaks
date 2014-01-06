@@ -30,6 +30,36 @@ module Yaks
       Hamster.set(*args)
     end
 
+    # Turn what is maybe a Proc into its result (or itself)
+    #
+    # When input can be either a value or a proc that returns a value,
+    # this conversion function can be used to resolve the thing to a
+    # value.
+    #
+    # The proc can be evaluated (instance_evaled) in a certain context,
+    # or evaluated as a closure.
+    #
+    # @param [Object|Proc] maybe_proc
+    #   A proc or a plain value
+    # @param [Object] context
+    #   (optional) A context used to instance_eval the proc
+    def Resolve(maybe_proc, context = nil)
+      if maybe_proc.respond_to?(:to_proc)
+        if context
+          if maybe_proc.to_proc.arity > 0
+            context.instance_eval(&maybe_proc)
+          else
+            # In case it's a lambda with zero arity instance_eval fails
+            context.instance_exec(&maybe_proc)
+          end
+        else
+          maybe_proc.()
+        end
+      else
+        maybe_proc
+      end
+    end
+
     def curry_method(name)
       method(name).to_proc.curry
     end
@@ -48,6 +78,7 @@ module Yaks
       ->(obj) { obj.method(symbol).to_proc.curry.(*args, &blk) }
     end
     alias σ curry_symbol
+    alias send_with_args curry_symbol
 
     def extract_options(args)
       if args.last.is_a? Hash

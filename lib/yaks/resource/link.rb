@@ -1,7 +1,7 @@
 module Yaks
   class Resource
     class Link
-      include Equalizer.new(:rel, :uri)
+      include Equalizer.new(:rel, :uri, :options)
 
       attr_reader :rel, :uri, :options
 

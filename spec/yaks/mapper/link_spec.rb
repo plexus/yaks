@@ -17,14 +17,14 @@ describe Yaks::Mapper::Link do
 
   describe 'expand_with' do
     it 'should look up expansion values through the provided callable' do
-      expect(link.expand_with(->(var){ var.upcase })).to eq resource_link[:next, '/foo/bar/X/Y']
+      expect(link.expand_with(->(var){ var.upcase })).to eq '/foo/bar/X/Y'
     end
 
     context 'with expansion turned off' do
       let(:options) { {expand: false} }
 
       it 'should keep the template in the response' do
-        expect(link.expand_with(->{ })).to eq resource_link[:next, '/foo/bar/{x}/{y}', templated: true]
+        expect(link.expand_with(->{ })).to eq '/foo/bar/{x}/{y}'
       end
 
       its(:expand?) { should be_false }
@@ -34,7 +34,7 @@ describe Yaks::Mapper::Link do
       let(:template) { '/orders' }
 
       it 'should return the link as is' do
-        expect(link.expand_with(->{ })).to eq resource_link[:next, '/orders', templated: true]
+        expect(link.expand_with(->{ })).to eq '/orders'
       end
     end
   end
