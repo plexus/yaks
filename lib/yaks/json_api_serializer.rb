@@ -32,7 +32,7 @@ module Yaks
       if options[:embed] == :links
         [ name, resource.uri ]
       else
-        [ name, resource.collection? ? resource.map(&curry_symbol(:[]).(:id)) : resource[:id] ]
+        [ name, resource.collection? ? resource.map(&curry_symbol(:[], :id)) : resource[:id] ]
       end
     end
 
