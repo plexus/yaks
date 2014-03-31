@@ -107,6 +107,19 @@ end
 
 To prevent a link to be expanded, add `expand: false` as an option. Now the actual template will be rendered in the result, so clients can use it to generate links from.
 
+You can pass a symbol instead of a template, in that case the symbol will be used as a method name on the object to retrieve the link. You can override this behavior just like with attributes.
+
+```ruby
+class FooMapper < Yaks::Mapper
+  link 'http://api.foo.com/rels/go_home', :home_url
+  # by default calls object.home_url
+
+  def home_url
+    object.setting('home_url')
+  end
+end
+```
+
 ### Associations
 
 Use `has_one` for an association that returns a single object, or `has_many` for embedding a collection.

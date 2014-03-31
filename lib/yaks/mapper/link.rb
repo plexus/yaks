@@ -17,6 +17,7 @@ module Yaks
       end
 
       def expand_with(callable)
+        return callable.(template) if template.is_a? Symbol
         return template unless expand?
         expand(
           variables.map.with_object({}) do |var, hsh|
