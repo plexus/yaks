@@ -7,7 +7,7 @@ GIT
 PATH
   remote: .
   specs:
-    yaks (0.1.0)
+    yaks (0.2.0)
       concord (~> 0.1.4)
       hamster (~> 0.4.3)
       inflection (~> 1.0.0)
@@ -19,7 +19,7 @@ GEM
     adamantium (0.1.0)
       ice_nine (~> 0.9)
       thread_safe (~> 0.1.2)
-    atomic (1.1.14)
+    atomic (1.1.16)
     axiom-types (0.0.5)
       descendants_tracker (~> 0.0.1)
       ice_nine (~> 0.9)
