@@ -2,13 +2,11 @@
 [![Build Status](https://secure.travis-ci.org/plexus/yaks.png?branch=master)][travis]
 [![Dependency Status](https://gemnasium.com/plexus/yaks.png)][gemnasium]
 [![Code Climate](https://codeclimate.com/github/plexus/yaks.png)][codeclimate]
-[![Coverage Status](https://coveralls.io/repos/plexus/yaks/badge.png?branch=master)][coveralls]
 
 [gem]: https://rubygems.org/gems/yaks
 [travis]: https://travis-ci.org/plexus/yaks
 [gemnasium]: https://gemnasium.com/plexus/yaks
 [codeclimate]: https://codeclimate.com/github/plexus/yaks
-[coveralls]: https://coveralls.io/r/plexus/yaks
 
 # Yaks
 
