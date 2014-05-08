@@ -96,7 +96,7 @@ end
 
 ### Links
 
-You can specify link templates that will be expanded with model attributes. The link relation name should be a registered [IANA link relation](http://www.iana.org/assignments/link-relations/link-relations.xhtml) or a URL.
+You can specify link templates that will be expanded with model attributes. The link relation name should be a registered [IANA link relation](http://www.iana.org/assignments/link-relations/link-relations.xhtml) or a URL. The template syntax follows [RFC6570 URI templates](http://tools.ietf.org/html/rfc6570).
 
 ```ruby
 class FooMapper < Yaks::Mapper
@@ -163,13 +163,13 @@ JSON-API has no concept of outbound links, so these will not be rendered, but th
 
 ## Policy over Configuration
 
-It's an old adagio in the Ruby/Rails world to have "Convention over Configuration", mostly to derive values that were not given explicitly. Typically based on things having similar names and a 1-1 derivable relationship.
+It's an old adage in the Ruby/Rails world to have "Convention over Configuration", mostly to derive values that were not given explicitly. Typically based on things having similar names and a 1-1 derivable relationship.
 
 This saves a lot of typing, but for the uninitiated it can also create confusion, the implicitness makes it hard to follow what's going on.
 
 What's worse, is that often the Configuration part is skimmed over, making it very hard to deviate from the Golden Standard.
 
-There is another old adagio, "Policy vs Mechanism". Implement the mechanisms, but don't dictate the policy.
+There is another old adage, "Policy vs Mechanism". Implement the mechanisms, but don't dictate the policy.
 
 In Yaks whenever missing values need to be inferred, like finding an unspecified mapper for a relation, this is handled by a policy object. The default is `Yaks::DefaultPolicy`, you can go there to find all the rules of inference. Subclass it and override to fit your needs, then pass it in to each mapper/serializer, they will pass it on to whatever objects they call.
 
@@ -189,7 +189,7 @@ PostMapper.new(post, policy: MyPolicy.new)
 
 ## Acknowledgment
 
-The mapper syntax is largely borrowed from ActiveModel::Serializers, which in turn closely mimics the syntax of ActiveRecord models. It's a great concise syntax that still offers plenty of flexibility, so to not reinvent the wheel we stick to the existing syntax as far as practical, although there are several extensions and deviations.
+The mapper syntax is largely borrowed from ActiveModel::Serializers, which in turn closely mimics the syntax of ActiveRecord models. It's a great concise syntax that still offers plenty of flexibility, so to not reinvent the wheel I've stuck to the existing syntax as far as practical, although there are several extensions and deviations.
 
 ## How to contribute
 
@@ -214,7 +214,6 @@ To add a feature
 * Only serializes what explicitly has a Serializer, will never call to_json/as_json
 * Adding extra output formats does not require altering existing code
 * Has no opinion on what to use for final JSON encoding (json, multi_json, yajl, oj, etc.)
-
 
 ## License
 
