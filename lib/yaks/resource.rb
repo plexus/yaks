@@ -23,6 +23,5 @@ module Yaks
     def collection?
       false
     end
-
   end
 end

@@ -21,11 +21,16 @@ module Yaks
 
       # @param [Symbol] src_type
       #   The profile type of the resource that contains the association
-      # @param [Proc] loader
-      #   A lambda that can retrieve an association by its name
+      # @param [#call] loader
+      #   A callable that can retrieve an association by its name
       # @param [Hash] options
+      # @return Array[rel, resource]
+      #   Returns the rel (registered type or URI) + the associated, mapped resource
       def map_to_resource_pair(src_type, loader, options)
-        [ options[:rel_registry].lookup(src_type, key), map_resource(loader.(name), options) ]
+        [
+          options[:rel_registry].lookup(src_type, key),
+          map_resource(loader.(name), options)
+        ]
       end
 
       private
