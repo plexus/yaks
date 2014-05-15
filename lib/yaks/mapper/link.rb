@@ -1,8 +1,11 @@
 module Yaks
   class Mapper
     class Link
+      extend Forwardable
       include Concord.new(:rel, :template, :options)
       include Util
+
+      def_delegators :uri_template, :expand, :expand_partial
 
       def initialize(rel, template, options = {})
         @rel, @template, @options = rel, template, options
@@ -12,18 +15,29 @@ module Yaks
         self.rel == rel
       end
 
-      def expand?
-        options.fetch(:expand) {true}
+      def expand
+        options.fetch(:expand) { true }
+      end
+      alias expand? expand
+
+      # link 'http://{only}/{certain}/{variables}/{not_expanded}, expand: [:only, :certain, :variables]
+      def expand_partial?
+        expand.respond_to?(:map)
       end
 
-      def expand_with(callable)
-        return callable.(template) if template.is_a? Symbol
+      def expand_with(lookup)
+        # link :method_that_returns_link
+        return lookup.call(template) if template.is_a? Symbol
+
+        # link 'http://link/{template}', expand: false
+        # link 'http://link/{template}', expand: [:only, :some, :fields]
         return template unless expand?
-        expand(
-          variables.map.with_object({}) do |var, hsh|
-            hsh[var] = callable.(var)
-          end
-        )
+
+        if expand_partial?
+          uri_template.expand_partial(expansion_mapping(lookup)).to_s
+        else
+          uri_template.expand(expansion_mapping(lookup))
+        end
       end
 
       def map_to_resource_link(mapper)
@@ -34,16 +48,22 @@ module Yaks
         )
       end
 
-      def expand(variables)
-        uri_template.expand(variables)
-      end
-
       def uri_template
         @uri_template ||= URITemplate.new(template)
       end
 
-      def variables
-        uri_template.variables
+      def template_variables
+        if expand_partial?
+          uri_template.variables & expand.map(&:to_s)
+        else
+          uri_template.variables
+        end
+      end
+
+      def expansion_mapping(lookup)
+        template_variables.map.with_object({}) do |var, hsh|
+          hsh[var] = lookup.call(var)
+        end
       end
 
       # Link properties defined in HAL
@@ -59,7 +79,7 @@ module Yaks
       def resource_link_options(mapper)
         options = self.options
         options = options.merge(title: resolve_title(options[:title], mapper)) if options.has_key?(:title)
-        options = options.merge( templated: true ) unless expand?
+        options = options.merge( templated: true ) if !expand? || expand_partial?
         options.reject{|k,v| [:expand].include? k}
       end
 

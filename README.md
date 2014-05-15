@@ -105,6 +105,22 @@ end
 
 To prevent a link to be expanded, add `expand: false` as an option. Now the actual template will be rendered in the result, so clients can use it to generate links from.
 
+To partially expand the template, pass an array with field names to expand. e.g.
+
+```ruby
+class ProductMapper < Yaks::Mapper
+  link 'http://api.foo.com/rels/line_item', '/api/line_items?product_id={product_id}&quantity={quantity}', expand: [:product_id]
+end
+
+# "_links": {
+#    "http://api.foo.com/rels/line_item": {
+#      "href": "/api/line_items?product_id=273&quantity={quantity}",
+#      "templated": true
+#    }
+# }
+
+```
+
 You can pass a symbol instead of a template, in that case the symbol will be used as a method name on the object to retrieve the link. You can override this behavior just like with attributes.
 
 ```ruby
