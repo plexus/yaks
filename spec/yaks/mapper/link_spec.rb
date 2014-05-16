@@ -11,7 +11,7 @@ describe Yaks::Mapper::Link do
 
   its(:template_variables) { should eq ['x', 'y'] }
   its(:uri_template) { should eq URITemplate.new(template) }
-  its(:expand?) { should be_true }
+  its(:expand) { should be_true }
 
   describe '#rel?' do
     it 'should return true if the relation matches' do
@@ -20,6 +20,18 @@ describe Yaks::Mapper::Link do
 
     it 'should return false if the relation does not match' do
       expect(link.rel?(:previous)).to be_false
+    end
+
+    context 'with URI rels' do
+      let(:rel) { 'http://foo/bar/rel' }
+
+      it 'should return true if the relation matches' do
+        expect(link.rel?('http://foo/bar/rel')).to be_true
+      end
+
+      it 'should return false if the relation does not match' do
+        expect(link.rel?('http://foo/bar/other')).to be_false
+      end
     end
   end
 
@@ -55,8 +67,26 @@ describe Yaks::Mapper::Link do
     end
   end
 
-  describe 'map_to_resource_link' do
+  describe '#map_to_resource_link' do
     subject(:resource_link) { link.map_to_resource_link(mapper) }
+
+    its(:rel) { should eq :next }
+
+    it 'should not have a title' do
+      expect(resource_link.options.key?(:title)).to be_false
+    end
+
+    it 'should not be templated' do
+      expect(resource_link.options[:templated]).to be_false
+    end
+
+    context 'with extra options' do
+      let(:options) { {title: 'foo', expand: [:x], foo: :bar} }
+
+      it 'should pass on unknown options' do
+        expect(resource_link.options[:foo]).to eql :bar
+      end
+    end
 
     let(:mapper) do
       double(Yaks::Mapper).tap do |m|
@@ -75,12 +105,20 @@ describe Yaks::Mapper::Link do
     context 'with expansion turned off' do
       let(:options) { {expand: false} }
 
-      it 'should set the link to templated: true' do
+      it 'should be templated' do
         expect(resource_link.options[:templated]).to be_true
       end
 
-      it 'should not set :expand on the resource link' do
+      it 'should not propagate :expand' do
         expect(resource_link.options.key?(:expand)).to be_false
+      end
+    end
+
+    context 'with partial expansion' do
+      let(:options) { {expand: [:x]} }
+
+      it 'should be templated' do
+        expect(resource_link.options[:templated]).to be_true
       end
     end
 

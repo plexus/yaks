@@ -36,7 +36,7 @@ describe Yaks::Mapper::Config do
       let(:config) { subject.link(:self, '/foo/bar/{id}') }
 
       it 'should have it in the link list' do
-        expect(config.links).to eq Yaks::List(Yaks::Mapper::Link.new(:self, '/foo/bar/{id}'))
+        expect(config.links).to eq Yaks::List(Yaks::Mapper::Link.new(:self, '/foo/bar/{id}', {}))
       end
     end
 

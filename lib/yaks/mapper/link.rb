@@ -7,12 +7,12 @@ module Yaks
 
       def_delegators :uri_template, :expand, :expand_partial
 
-      def initialize(rel, template, options = {})
+      def initialize(rel, template, options)
         @rel, @template, @options = rel, template, options
       end
 
       def rel?(rel)
-        self.rel == rel
+        rel().eql? rel
       end
 
       def expand
@@ -42,7 +42,7 @@ module Yaks
       typecheck '#call -> String', :expand_with
 
       def map_to_resource_link(mapper)
-        make_resource_link(
+        Resource::Link.new(
           rel,
           expand_with(mapper.method(:load_attribute)),
           resource_link_options(mapper)
@@ -79,18 +79,14 @@ module Yaks
       # hreflang
 
       def resource_link_options(mapper)
-        options = self.options
-        options = options.merge(title: resolve_title(options[:title], mapper)) if options.has_key?(:title)
-        options = options.merge( templated: true ) if !expand? || expand_partial?
+        options = options()
+        options = options.merge(title: Resolve(options[:title], mapper)) if options.key?(:title)
+        options = options.merge(templated: true) if templated?
         options.reject{|key| key.equal? :expand }
       end
 
-      def resolve_title(title_proc, mapper)
-        Resolve(title_proc, mapper)
-      end
-
-      def make_resource_link(rel, uri, options)
-        Resource::Link.new(rel, uri, options)
+      def templated?
+        !expand? || expand_partial?
       end
     end
   end
