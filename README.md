@@ -64,6 +64,7 @@ For example, if you are representing data that is stored in a Hash, you could do
 class PostHashMapper < Yaks::Mapper
   attributes :id, :body
 
+  # @param name [Symbol]
   def load_attribute(name)
     object[name]
   end

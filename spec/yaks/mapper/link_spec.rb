@@ -9,7 +9,7 @@ describe Yaks::Mapper::Link do
   let(:template) { '/foo/bar/{x}/{y}' }
   let(:options)  { {} }
 
-  its(:template_variables) { should eq ['x', 'y'] }
+  its(:template_variables) { should eq [:x, :y] }
   its(:uri_template) { should eq URITemplate.new(template) }
   its(:expand?) { should be_true }
 
@@ -62,7 +62,15 @@ describe Yaks::Mapper::Link do
       let(:options) { { expand: [:y] } }
 
       it 'should only expand the given variables' do
-        expect(link.expand_with({'y' => 7}.method(:[]))).to eq '/foo/bar/{x}/7'
+        expect(link.expand_with({:y => 7}.method(:[]))).to eql '/foo/bar/{x}/7'
+      end
+    end
+
+    context 'with a symbol for a template' do
+      let(:template) { :a_symbol }
+
+      it 'should use the lookup mechanism for finding the link' do
+        expect(link.expand_with({:a_symbol => '/foo/foo'}.method(:[]))).to eq '/foo/foo'
       end
     end
   end
@@ -90,7 +98,7 @@ describe Yaks::Mapper::Link do
 
     let(:mapper) do
       double(Yaks::Mapper).tap do |m|
-        m.stub(:load_attribute) {|a| {'x' => 3, 'y' => 4}[a] }
+        m.stub(:load_attribute) {|a| {:x => 3, :y => 4}[a] }
       end
     end
 

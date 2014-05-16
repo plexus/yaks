@@ -49,12 +49,12 @@ module Yaks
       end
 
       def template_variables
-        options.fetch(:expand) { uri_template.variables }.map(&:to_s)
+        options.fetch(:expand) { uri_template.variables }.map(&:to_sym)
       end
 
       def expansion_mapping(lookup)
-        template_variables.map.with_object({}) do |var, hsh|
-          hsh[var] = lookup.call(var)
+        template_variables.map.with_object({}) do |name, hsh|
+          hsh[name] = lookup.call(name)
         end
       end
 
