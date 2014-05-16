@@ -1,7 +1,7 @@
 module Yaks
   class Mapper
     class Link
-      extend Forwardable
+      extend Forwardable, Typecheck
       include Concord.new(:rel, :template, :options)
       include Util
 
@@ -39,6 +39,7 @@ module Yaks
           uri_template.expand(expansion_mapping(lookup))
         end
       end
+      typecheck '#call -> String', :expand_with
 
       def map_to_resource_link(mapper)
         make_resource_link(
@@ -47,14 +48,15 @@ module Yaks
           resource_link_options(mapper)
         )
       end
+      typecheck '#load_attribute -> Yaks::Resource::Link', :map_to_resource_link
 
       def uri_template
-        @uri_template ||= URITemplate.new(template)
+        URITemplate.new(template)
       end
 
       def template_variables
         if expand_partial?
-          uri_template.variables & expand.map(&:to_s)
+          expand.map(&:to_s)
         else
           uri_template.variables
         end
@@ -80,7 +82,7 @@ module Yaks
         options = self.options
         options = options.merge(title: resolve_title(options[:title], mapper)) if options.has_key?(:title)
         options = options.merge( templated: true ) if !expand? || expand_partial?
-        options.reject{|k,v| [:expand].include? k}
+        options.reject{|key| key.equal? :expand }
       end
 
       def resolve_title(title_proc, mapper)

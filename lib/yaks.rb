@@ -6,6 +6,7 @@ require 'hamster'
 require 'concord'
 require 'inflection'
 require 'uri_template'
+require 'typecheck'
 
 require 'yaks/util'
 require 'yaks/link_lookup'

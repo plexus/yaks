@@ -13,6 +13,10 @@ module Yaks
         options[:name]
       end
 
+      def title
+        options[:title]
+      end
+
       def templated?
         options.fetch(:templated) { false }
       end

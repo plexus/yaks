@@ -21,6 +21,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'inflection'   , '~> 1.0.0' #  12k , flog:  226.8
   gem.add_runtime_dependency 'concord'      , '~> 0.1.4' #   8k , flog:   62.3
   gem.add_runtime_dependency 'uri_template' , '~> 0.6.0' # 104k , flog: 1521.4
+  gem.add_runtime_dependency 'typecheck'    , '~> 0.1.1'
 
   # For comparison, ActiveSupport has a flog score of 11134.7
 
