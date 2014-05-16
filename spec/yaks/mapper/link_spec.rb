@@ -11,7 +11,7 @@ describe Yaks::Mapper::Link do
 
   its(:template_variables) { should eq ['x', 'y'] }
   its(:uri_template) { should eq URITemplate.new(template) }
-  its(:expand) { should be_true }
+  its(:expand?) { should be_true }
 
   describe '#rel?' do
     it 'should return true if the relation matches' do

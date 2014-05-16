@@ -1,11 +1,34 @@
 module Yaks
   class Mapper
+    # A Yaks::Mapper::Link is part of a mapper's configuration. It captures
+    # what is set through the mapper's class level `#link` function, and is
+    # capable of generating a `Yaks::Resource::Link` for a given mapper
+    # instance (and hence subject).
+    #
+    # @example
+    #   link :self, 'http://api.foo.org/users/{id}', title: ->{ "User #{object.name}" }
+    #   link :profile, 'http://apidocs.foo.org/profiles/users'
+    #   link 'http://apidocs.foo.org/rels/friends', 'http://api.foo.org/users/{id}/friends?page={page}', expand: [:id]
+    #
+    # It takes a relationship identifier, a URI template and an options hash.
+    #
+    # @param rel [Symbol|String] Either a registered relationship type (Symbol)
+    #   or a relationship URI. See [RFC5988 Web Linking](http://tools.ietf.org/html/rfc5988)
+    # @param template [String] A [RFC6570](http://tools.ietf.org/html/rfc6570) URI template
+    # @param template [Symbol] A method name that generates the link. No more expansion is done afterwards
+    # @option expand [Boolean] pass false to pass on the URI template in the response,
+    #   instead of expanding the variables
+    # @option expand [Array[Symbol]] pass a list of variable names to only expand those,
+    #   and return a partially expanded URI template in the response
+    # @option title [String] Give the link a title
+    # @option title [#to_proc] Block that returns the title. If it takes an argument,
+    #   it will receive the mapper instance as argument. Otherwise it is evaluated in the mapper context
     class Link
-      extend Forwardable, Typecheck
+      extend Forwardable
       include Concord.new(:rel, :template, :options)
       include Util
 
-      def_delegators :uri_template, :expand, :expand_partial
+      def_delegators :uri_template, :expand_partial
 
       def initialize(rel, template, options)
         @rel, @template, @options = rel, template, options
@@ -15,51 +38,18 @@ module Yaks
         rel().eql? rel
       end
 
-      def expand
+      # A link is templated if it does not expand, or only partially
+      def templated?
+        !options.fetch(:expand) { true }.equal? true
+      end
+
+      # Does this link need expansion, full or partially
+      def expand?
         options.fetch(:expand) { true }
-      end
-      alias expand? expand
-
-      # link 'http://{only}/{certain}/{variables}/{not_expanded}, expand: [:only, :certain, :variables]
-      def expand_partial?
-        expand.respond_to?(:map)
-      end
-
-      def expand_with(lookup)
-        # link :method_that_returns_link
-        return lookup.call(template) if template.is_a? Symbol
-
-        # link 'http://link/{template}', expand: false
-        # link 'http://link/{template}', expand: [:only, :some, :fields]
-        return template unless expand?
-
-        if expand_partial?
-          uri_template.expand_partial(expansion_mapping(lookup)).to_s
-        else
-          uri_template.expand(expansion_mapping(lookup))
-        end
-      end
-      typecheck '#call -> String', :expand_with
-
-      def map_to_resource_link(mapper)
-        Resource::Link.new(
-          rel,
-          expand_with(mapper.method(:load_attribute)),
-          resource_link_options(mapper)
-        )
-      end
-      typecheck '#load_attribute -> Yaks::Resource::Link', :map_to_resource_link
-
-      def uri_template
-        URITemplate.new(template)
       end
 
       def template_variables
-        if expand_partial?
-          expand.map(&:to_s)
-        else
-          uri_template.variables
-        end
+        options.fetch(:expand) { uri_template.variables }.map(&:to_s)
       end
 
       def expansion_mapping(lookup)
@@ -68,15 +58,27 @@ module Yaks
         end
       end
 
-      # Link properties defined in HAL
-      # href
-      # templated
-      # typed
-      # deprecation
-      # name
-      # profile
-      # title
-      # hreflang
+      def uri_template
+        URITemplate.new(template)
+      end
+
+      def map_to_resource_link(mapper)
+        Resource::Link.new(
+          rel,
+          expand_with(mapper.method(:load_attribute)),
+          resource_link_options(mapper)
+        )
+      end
+
+      def expand_with(lookup)
+        return lookup.call(template) if template.is_a? Symbol
+
+        if expand?
+          expand_partial(expansion_mapping(lookup)).to_s
+        else
+          template
+        end
+      end
 
       def resource_link_options(mapper)
         options = options()
@@ -85,9 +87,6 @@ module Yaks
         options.reject{|key| key.equal? :expand }
       end
 
-      def templated?
-        !expand? || expand_partial?
-      end
     end
   end
 end
