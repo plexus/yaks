@@ -1,14 +1,12 @@
 module Yaks
   class Mapper
     class HasMany < Association
-      def map_resource(collection, opts)
-        opts = opts.merge(options)
-        collection_mapper(opts).new(collection, mapper(opts), opts).to_resource
+      def map_resource(collection, policy)
+        collection_mapper.new(collection, association_mapper(policy), policy).to_resource
       end
 
-      def collection_mapper(opts)
-        opts = opts.merge(options)
-        opts.fetch(:collection_mapper) { CollectionMapper }
+      def collection_mapper
+        options.fetch(:collection_mapper) { CollectionMapper }
       end
     end
   end

@@ -2,31 +2,31 @@
 
 module Yaks
   class CollectionMapper
-    include Util, Mapper::MapLinks, SharedOptions
+    include Util, FP
     extend Mapper::ClassMethods
 
-    attr_reader :collection, :resource_mapper, :options
-    private :collection, :resource_mapper, :options
+    attr_reader :collection, :resource_mapper, :policy
+    private :collection, :resource_mapper
 
     def_delegators 'self.class', :config
     def_delegators :config, :links
 
-    def initialize(collection, resource_mapper, options = {})
+    def initialize(collection, resource_mapper, policy)
       @collection      = collection
       @resource_mapper = resource_mapper
-      @options         = YAKS_DEFAULT_OPTIONS.merge(options)
+      @policy          = policy
     end
 
     def to_resource
-      CollectionResource.new(map_links, collection.map {|obj| resource_mapper.new(obj, options).to_resource})
+      CollectionResource.new(map_links, collection.map {|obj| resource_mapper.new(obj, policy).to_resource})
     end
 
     def load_attribute(name)
       respond_to?(name) ? send(name) : collection.map(&name.to_sym)
     end
 
-    def profile_type
-      resource_mapper.new(nil, options).profile_type
+    def map_links
+      links.map &send_with_args(:map_to_resource_link, self)
     end
 
   end

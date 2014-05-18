@@ -1,7 +1,7 @@
 module Yaks
   class Serializer
     extend Forwardable
-    include Util, SharedOptions
+    include Util
 
     attr_reader :resource, :options
     def_delegators :resource, :links, :attributes, :subresources

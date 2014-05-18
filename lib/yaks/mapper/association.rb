@@ -2,7 +2,6 @@ module Yaks
   class Mapper
     class Association
       include Equalizer.new(:name, :mapper, :links)
-      include SharedOptions
 
       attr_reader :name, :key, :mapper, :links, :options
       private :links, :options

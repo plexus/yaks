@@ -11,20 +11,14 @@ require 'typecheck'
 require 'yaks/util'
 require 'yaks/fp'
 require 'yaks/link_lookup'
-require 'yaks/shared_options'
 require 'yaks/primitivize'
 
-require 'yaks/profile_registry'
-require 'yaks/rel_registry'
 require 'yaks/default_policy'
 
 module Yaks
   Undefined = Object.new
 
   YAKS_DEFAULT_OPTIONS = {
-    policy: DefaultPolicy.new,
-    profile_registry: NullProfileRegistry.new,
-    rel_registry: NullRelRegistry.new,
     singular_links: [:self, :profile]
   }
 
@@ -66,7 +60,6 @@ require 'yaks/mapper/has_one'
 require 'yaks/mapper/has_many'
 require 'yaks/mapper/config'
 require 'yaks/mapper/class_methods'
-require 'yaks/mapper/map_links'
 require 'yaks/mapper'
 require 'yaks/collection_mapper'
 

@@ -11,6 +11,6 @@ describe Yaks::Mapper::HasOne do
   let(:author)   { Struct.new(:name).new(name) }
 
   it 'should map to a single Resource' do
-    expect(has_one.map_resource(author, {})).to eq resource[{name: name}, [resource_link[:profile, 'author']]]
+    expect(has_one.map_resource(author, {})).to eq resource[{name: name}, []]
   end
 end
