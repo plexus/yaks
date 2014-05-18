@@ -3,18 +3,18 @@
 module Yaks
   class Mapper
     extend ClassMethods, Forwardable
-    include Util, MapLinks, SharedOptions
+    include Util, FP, MapLinks
 
     def_delegators 'self.class', :config
     def_delegators :config, :attributes, :links, :associations
 
-    attr_reader :subject, :options
-    private :subject, :options
+    attr_reader :subject, :policy
+    private :subject
     alias object subject
 
-    def initialize(subject, options = {})
+    def initialize(subject, policy)
       @subject = subject
-      @options = YAKS_DEFAULT_OPTIONS.merge(options)
+      @policy  = policy
     end
 
     def to_resource
@@ -27,33 +27,29 @@ module Yaks
       )
     end
 
-    def profile_type
-      config.profile || policy.derive_profile_from_mapper(self)
-    end
-
     def map_attributes
       filter(attributes).map &juxt(identity_function, method(:load_attribute))
+    end
+
+    def map_links
+      links.map &send_with_args(:map_to_resource_link, self)
     end
 
     def map_subresources
       attributes = filter(associations.map(&:name))
       associations.select{|assoc| attributes.include? assoc.name}.map do |association|
         association.map_to_resource_pair(
-          profile_type,
+          self,
           method(:load_association),
-          options.merge(parent: subject)
+          policy
         )
       end
     end
 
     def load_attribute(name)
-      respond_to?(name) ? send(name) : subject.send(name)
+      respond_to?(name) ? public_send(name) : subject.public_send(name)
     end
     alias load_association load_attribute
-
-    def profile
-      config.profile || policy.derive_missing_profile_from_mapper(self)
-    end
 
     def filter(attrs)
       attrs

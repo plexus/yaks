@@ -1,10 +1,10 @@
 module Yaks
   class Mapper
     class Association
-      include Equalizer.new(:name, :_mapper, :links)
+      include Equalizer.new(:name, :mapper, :links)
       include SharedOptions
 
-      attr_reader :name, :key, :links, :options
+      attr_reader :name, :key, :mapper, :links, :options
       private :links, :options
 
       def initialize(name, key, mapper, links, options)
@@ -15,34 +15,23 @@ module Yaks
         @options = options
       end
 
-      def self_link
-        links.detect {|link| link.rel? :self }
-      end
-
-      # @param [Symbol] src_type
-      #   The profile type of the resource that contains the association
-      # @param [#call] loader
+      # @param [#call] lookup
       #   A callable that can retrieve an association by its name
       # @param [Hash] options
       # @return Array[rel, resource]
       #   Returns the rel (registered type or URI) + the associated, mapped resource
-      def map_to_resource_pair(src_type, loader, options)
+      def map_to_resource_pair(parent_mapper, lookup, policy)
         [
-          options[:rel_registry].lookup(src_type, key),
-          map_resource(loader.(name), options)
+          options.fetch(:rel) { policy.derive_rel_from_association(parent_mapper, self) },
+          map_resource(lookup.call(name), policy)
         ]
       end
 
-      private
-
-      def mapper(opts = nil)
-        return _mapper unless _mapper == Undefined
-        opts[:policy].derive_missing_mapper_for_association(self)
+      def association_mapper(policy)
+        return @mapper unless @mapper == Undefined
+        policy.derive_mapper_from_association(self)
       end
 
-      def _mapper
-        @mapper
-      end
     end
   end
 end

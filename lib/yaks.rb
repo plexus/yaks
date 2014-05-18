@@ -9,6 +9,7 @@ require 'uri_template'
 require 'typecheck'
 
 require 'yaks/util'
+require 'yaks/fp'
 require 'yaks/link_lookup'
 require 'yaks/shared_options'
 require 'yaks/primitivize'

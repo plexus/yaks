@@ -60,26 +60,6 @@ module Yaks
       end
     end
 
-    def curry_method(name)
-      method(name).to_proc.curry
-    end
-    alias μ curry_method
-
-    def identity_function
-      ->(x) {x}
-    end
-    alias ι identity_function
-
-    def juxt(*procs)
-      ->(*args) { procs.map &σ(:call, *args) }
-    end
-
-    def curry_symbol(symbol, *args, &blk)
-      ->(obj) { obj.method(symbol).to_proc.curry.(*args, &blk) }
-    end
-    alias σ curry_symbol
-    alias send_with_args curry_symbol
-
     def extract_options(args)
       if args.last.is_a? Hash
         [args.take(args.count-1), args.last]

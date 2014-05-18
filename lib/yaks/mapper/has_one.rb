@@ -1,9 +1,8 @@
 module Yaks
   class Mapper
     class HasOne < Association
-      def map_resource(instance, opts)
-        opts = opts.merge(options)
-        mapper(opts).new(instance, opts).to_resource
+      def map_resource(instance, policy)
+        association_mapper(policy).new(instance, policy).to_resource
       end
     end
   end

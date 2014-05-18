@@ -5,6 +5,7 @@ module Yaks
     module ClassMethods
       include Forwardable
       include Util
+      include FP
 
       CONFIG_METHODS = [
         :attributes,
@@ -27,7 +28,7 @@ module Yaks
 
       CONFIG_METHODS.each do |method_name|
         define_method method_name do |*args|
-          config &σ(method_name, *args)
+          config &send_with_args(method_name, *args)
         end
       end
 

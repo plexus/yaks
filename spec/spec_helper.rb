@@ -19,3 +19,7 @@ require_relative 'support/shared_contexts'
 def load_json_fixture(name)
   JSON.parse(ROOT.join('spec/json', name + '.json').read)
 end
+
+RSpec.configure do |rspec|
+  rspec.backtrace_exclusion_patterns = [] if ENV['FULLSTACK']
+end
