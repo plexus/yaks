@@ -1,49 +1,36 @@
 module Yaks
   class Mapper
     class Config
-      include Equalizer.new(:attributes)
+      include Equalizer.new(:attributes, :links, :associations)
 
-      def initialize(attributes = Hamster.list, links = Hamster.list, associations = Hamster.list, profile = nil)
-        @attributes   = attributes
-        @links        = links
-        @associations = associations
-        @profile      = profile
-        freeze
+      attr_reader :links, :associations
+
+      def initialize(attributes, links, associations)
+        @attributes   = Yaks::List(attributes)
+        @links        = Yaks::List(links)
+        @associations = Yaks::List(associations)
       end
 
-      def new(updates)
+      def updated(updates)
         self.class.new(
           updates.fetch(:attributes)   { attributes   },
           updates.fetch(:links)        { links        },
-          updates.fetch(:associations) { associations },
-          updates.fetch(:profile)      { profile      },
+          updates.fetch(:associations) { associations }
         )
       end
 
       def attributes(*attrs)
         return @attributes if attrs.empty?
-        new(
+        updated(
           attributes: @attributes + attrs.to_list
         )
       end
 
       def link(rel, template, options = {})
-        new(
+        updated(
           links: @links.cons(Link.new(rel, template, options))
         )
       end
-
-      def profile(type = Undefined)
-        return @profile if type.equal? Undefined
-        new(
-          profile: type
-        )
-      end
-
-      # key
-      # embed_style
-      # rel
-      # (profile)
 
       def has_one(name, options = {})
         add_association(HasOne, name, options)
@@ -53,8 +40,8 @@ module Yaks
         add_association(HasMany, name, options)
       end
 
-      def add_association(type, name, options = {})
-        new(
+      def add_association(type, name, options)
+        updated(
           associations: @associations.cons(
             type.new(
               name,
@@ -64,14 +51,6 @@ module Yaks
             )
           )
         )
-      end
-
-      def links
-        @links
-      end
-
-      def associations
-        @associations
       end
     end
   end
