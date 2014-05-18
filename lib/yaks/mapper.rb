@@ -37,7 +37,7 @@ module Yaks
 
     def map_subresources
       attributes = filter(associations.map(&:name))
-      associations.select{|assoc| attributes.include? assoc.name}.map do |association|
+      associations.select{|assoc| attributes.include? assoc.name }.map do |association|
         association.map_to_resource_pair(
           self,
           method(:load_association),

@@ -1,17 +1,13 @@
 module Yaks
   class Mapper
     class Association
-      include Equalizer.new(:name, :mapper, :links)
+      include Equalizer.new(:name, :mapper, :rel)
 
-      attr_reader :name, :key, :mapper, :links, :options
-      private :links, :options
+      attr_reader :name, :mapper, :rel, :collection_mapper
 
-      def initialize(name, key, mapper, links, options)
-        @name    = name
-        @key     = key
-        @mapper  = mapper
-        @links   = links
-        @options = options
+      def initialize(name, mapper, rel, collection_mapper)
+        @name, @mapper, @rel, @collection_mapper =
+          name, mapper, rel, collection_mapper
       end
 
       # @param [#call] lookup
@@ -21,13 +17,18 @@ module Yaks
       #   Returns the rel (registered type or URI) + the associated, mapped resource
       def map_to_resource_pair(parent_mapper, lookup, policy)
         [
-          options.fetch(:rel) { policy.derive_rel_from_association(parent_mapper, self) },
-          map_resource(lookup.call(name), policy)
+          map_rel(parent_mapper, policy),
+          map_resource(lookup[name], policy)
         ]
       end
 
+      def map_rel(parent_mapper, policy)
+        return @rel unless @rel.equal?(Undefined)
+        policy.derive_rel_from_association(parent_mapper, self)
+      end
+
       def association_mapper(policy)
-        return @mapper unless @mapper == Undefined
+        return @mapper unless @mapper.equal?(Undefined)
         policy.derive_mapper_from_association(self)
       end
 

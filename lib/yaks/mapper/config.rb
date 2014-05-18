@@ -34,7 +34,7 @@ module Yaks
       end
 
       def profile(type = Undefined)
-        return @profile if type == Undefined
+        return @profile if type.equal? Undefined
         new(
           profile: type
         )
@@ -58,10 +58,9 @@ module Yaks
           associations: @associations.cons(
             type.new(
               name,
-              options.fetch(:as)     { name },
-              options.fetch(:mapper) { Undefined },
-              options.fetch(:links)  { Yaks::List() },
-              options.reject         {|k,v| [:as, :mapper, :links].include?(k) }
+              options.fetch(:mapper)            { Undefined },
+              options.fetch(:rel)               { Undefined },
+              options.fetch(:collection_mapper) { Undefined },
             )
           )
         )

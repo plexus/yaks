@@ -6,7 +6,8 @@ module Yaks
       end
 
       def collection_mapper
-        options.fetch(:collection_mapper) { CollectionMapper }
+        return @collection_mapper unless @collection_mapper.equal? Undefined
+        CollectionMapper
       end
     end
   end

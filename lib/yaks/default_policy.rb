@@ -8,7 +8,7 @@ module Yaks
 
     def derive_rel_from_association(mapper, association)
       mapper_name = underscore(mapper.class.name.sub(/Mapper$/, ''))
-      "rel:src=#{mapper_name}&dest=#{association.key}"
+      "rel:src=#{mapper_name}&dest=#{association.name}"
     end
 
   end
