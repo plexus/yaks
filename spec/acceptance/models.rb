@@ -9,7 +9,7 @@ class Work
 end
 
 class LiteratureBaseMapper < Yaks::Mapper
-  link :profile, 'http://literature.example.com/profiles/{key_name}'
+  link :profile, 'http://literature.example.com/profiles/{mapper_name}'
 end
 
 class ScholarMapper < LiteratureBaseMapper

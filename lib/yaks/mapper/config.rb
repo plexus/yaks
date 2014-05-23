@@ -1,12 +1,12 @@
 module Yaks
   class Mapper
     class Config
-      include Equalizer.new(:attributes, :links, :associations)
+      include Equalizer.new(:name, :attributes, :links, :associations)
 
-      attr_reader :links, :associations, :key_name
+      attr_reader :links, :associations
 
-      def initialize(key_name, attributes, links, associations)
-        @key_name     = key_name
+      def initialize(name, attributes, links, associations)
+        @name         = name
         @attributes   = Yaks::List(attributes)
         @links        = Yaks::List(links)
         @associations = Yaks::List(associations)
@@ -14,15 +14,16 @@ module Yaks
 
       def updated(updates)
         self.class.new(
-          updates.fetch(:key_name)     { key_name     },
+          updates.fetch(:name)         { name         },
           updates.fetch(:attributes)   { attributes   },
           updates.fetch(:links)        { links        },
           updates.fetch(:associations) { associations }
         )
       end
 
-      def key(key)
-        updated(key_name: key)
+      def name(name = Undefined)
+        return @name if name.equal?(Undefined)
+        updated(name: name)
       end
 
       def attributes(*attrs)

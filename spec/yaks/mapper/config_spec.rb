@@ -3,15 +3,16 @@ require 'spec_helper'
 describe Yaks::Mapper::Config do
   Undefined = Yaks::Undefined
 
-  subject(:config) { described_class.new([], [], []) }
+  subject(:config) { described_class.new(nil, [], [], []) }
 
   its(:attributes)   { should be_a Hamster::List }
   its(:links)        { should be_a Hamster::List }
   its(:associations) { should be_a Hamster::List }
 
   describe '#initialize' do
-    subject(:config) { described_class.new([:a], [:b], [:c]) }
+    subject(:config) { described_class.new('foo', [:a], [:b], [:c]) }
 
+    its(:name)         { should eql 'foo' }
     its(:attributes)   { should eql Hamster.list(:a) }
     its(:links)        { should eql Hamster.list(:b) }
     its(:associations) { should eql Hamster.list(:c) }
@@ -20,13 +21,16 @@ describe Yaks::Mapper::Config do
   describe '#updated' do
     context 'with no updates' do
       let(:config) {
-        super().attributes(:a, :b, :c)
+        super()
+          .name('foo')
+          .attributes(:a, :b, :c)
           .link(:foo, 'http://bar')
           .has_many(:bars)
       }
 
       it 'should update attributes' do
         expect(config.updated(attributes: [:foo])).to eql described_class.new(
+          'foo',
           [:foo],
           [Yaks::Mapper::Link.new(:foo, 'http://bar', {})],
           [Yaks::Mapper::HasMany.new(:bars, Undefined, Undefined, Undefined)]
@@ -35,6 +39,7 @@ describe Yaks::Mapper::Config do
 
       it 'should update links' do
         expect(config.updated(links: [:foo])).to eql described_class.new(
+          'foo',
           [:a, :b, :c],
           [:foo],
           [Yaks::Mapper::HasMany.new(:bars, Undefined, Undefined, Undefined)]
@@ -43,6 +48,7 @@ describe Yaks::Mapper::Config do
 
       it 'should update associations' do
         expect(config.updated(associations: [:foo])).to eql described_class.new(
+          'foo',
           [:a, :b, :c],
           [Yaks::Mapper::Link.new(:foo, 'http://bar', {})],
           [:foo]
