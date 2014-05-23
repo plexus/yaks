@@ -1,0 +1,8 @@
+--- !ruby/object:Scholar
+name: "孔子"
+pinyin: "Kongzi"
+latinized: "Confucius"
+works:
+  - !ruby/object:Work
+    chinese_name: "論語"
+    english_name: "Analects"

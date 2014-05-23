@@ -55,5 +55,9 @@ module Yaks
       attrs
     end
 
+    def key_name
+      config.key_name || policy.derive_key_from_mapper(self)
+    end
+
   end
 end

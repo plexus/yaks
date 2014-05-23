@@ -3,9 +3,10 @@ module Yaks
     class Config
       include Equalizer.new(:attributes, :links, :associations)
 
-      attr_reader :links, :associations
+      attr_reader :links, :associations, :key_name
 
-      def initialize(attributes, links, associations)
+      def initialize(key_name, attributes, links, associations)
+        @key_name     = key_name
         @attributes   = Yaks::List(attributes)
         @links        = Yaks::List(links)
         @associations = Yaks::List(associations)
@@ -13,10 +14,15 @@ module Yaks
 
       def updated(updates)
         self.class.new(
+          updates.fetch(:key_name)     { key_name     },
           updates.fetch(:attributes)   { attributes   },
           updates.fetch(:links)        { links        },
           updates.fetch(:associations) { associations }
         )
+      end
+
+      def key(key)
+        updated(key_name: key)
       end
 
       def attributes(*attrs)

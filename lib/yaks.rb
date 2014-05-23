@@ -22,7 +22,11 @@ module Yaks
     singular_links: [:self, :profile]
   }
 
-  module ClassMethods
+  class << self
+    def new(&blk)
+      Yaks::Config.new(&blk)
+    end
+
     def Hash(object = nil)
       return object             if object.is_a? Hamster::Hash
       return Hamster::EmptyHash if object.nil?
@@ -44,7 +48,6 @@ module Yaks
       end
     end
   end
-  extend ClassMethods
 
 end
 
@@ -66,3 +69,4 @@ require 'yaks/collection_mapper'
 require 'yaks/serializer'
 require 'yaks/hal_serializer'
 require 'yaks/json_api_serializer'
+require 'yaks/config'
