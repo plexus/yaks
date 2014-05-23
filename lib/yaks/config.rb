@@ -3,38 +3,63 @@ module Yaks
     class DSL
       attr_reader :config
 
-      def initialize(config, &blk)
+      def initialize(config, blk)
         @config = config
-      end
-
-      def format(fmt)
-        config.format = fmt
-      end
-
-      def policy(klass = DefaultPolicy, &blk)
-        if block_given?
-          klass = Class.new(klass, &blk)
+        @policy_class = Class.new(DefaultPolicy)
+        @policies     = []
+        instance_eval(&blk)
+        @policies.each do |policy_blk|
+          @policy_class.class_eval &policy_blk
         end
-        config.policy = klass.new
+        config.policy_class = @policy_class
+      end
+
+      def format(format, options)
+        config.format_options[format] = options
+      end
+
+      def policy(klass = Undefined, &blk)
+        @policy_class = klass unless klass.equal? Undefined
+        @policies << blk if blk
+      end
+
+      def rel_template(templ)
+        config.policy_options[:rel_template] = templ
+      end
+
+      DefaultPolicy.public_instance_methods(false).each do |method|
+        define_method method do |&blk|
+          @policies << proc {
+            define_method method, &blk
+          }
+        end
       end
     end
 
-    attr_accessor :format, :policy
+    attr_accessor :format_options, :default_format, :policy_class, :policy_options
 
     def initialize(&blk)
-      @format = :hal
-      @policy = DefaultPolicy.new
-      DSL.new(self).instance_eval(&blk)
+      @format_options = Hash.new({})
+      @default_format = :hal
+      @policy_class   = nil
+      @policy_options = {}
+      DSL.new(self, blk)
     end
 
-    def serializer
+    def policy
+      @policy ||= @policy_class.new(@policy_options)
+    end
+
+    def serializer_class(format)
       Yaks.const_get("#{Util.camelize(format.to_s)}Serializer")
     end
 
     def serialize(model, opts = {})
-      mapper   = opts.fetch(:mapper) { policy.derive_mapper_from_model(model) }
-      resource = mapper.new(model, policy).to_resource
-      serializer.new(resource).serialize
+      mapper     = opts.fetch(:mapper) { policy.derive_mapper_from_model(model) }
+      resource   = mapper.new(model, policy).to_resource
+      format     = opts.fetch(:format) { @default_format }
+      serialized = serializer_class(format).new(resource, format_options[format]).call
+      Primitivize.call(serialized)
     end
   end
 end

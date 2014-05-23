@@ -20,6 +20,10 @@ def load_json_fixture(name)
   JSON.parse(ROOT.join('spec/json', name + '.json').read)
 end
 
+def load_yaml_fixture(name)
+  YAML.load(ROOT.join('spec/yaml', name + '.yaml').read)
+end
+
 RSpec.configure do |rspec|
   rspec.backtrace_exclusion_patterns = [] if ENV['FULLSTACK']
 end
