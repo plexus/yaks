@@ -5,7 +5,7 @@ describe Yaks::Mapper::HasMany do
     Class.new(Yaks::Mapper) do
       has_many :shoes,
         rel: 'http://foo/shoes',
-        mapper: Class.new(Yaks::Mapper) { attributes :size, :color }
+        mapper: Class.new(Yaks::Mapper) { type 'shoes' ; attributes :size, :color }
     end
   end
 
@@ -21,10 +21,10 @@ describe Yaks::Mapper::HasMany do
   it 'should map the subresources' do
     expect(closet_mapper.new(closet, Yaks::DefaultPolicy.new).map_subresources).to eql(
       "http://foo/shoes" => Yaks::CollectionResource.new(
-        [],
-        [
-          Yaks::Resource.new(attributes: {:size => 9, :color => :blue}),
-          Yaks::Resource.new(attributes: {:size => 11.5, :color => :red})
+        type: 'shoes',
+        members: [
+          Yaks::Resource.new(type: 'shoes', attributes: {:size => 9, :color => :blue}),
+          Yaks::Resource.new(type: 'shoes', attributes: {:size => 11.5, :color => :red})
         ]
       )
     )

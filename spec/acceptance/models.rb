@@ -1,11 +1,11 @@
 require 'anima'
 
 class Scholar
-  include Anima.new(:name, :pinyin, :latinized, :works)
+  include Anima.new(:id, :name, :pinyin, :latinized, :works)
 end
 
 class Work
-  include Anima.new(:chinese_name, :english_name)
+  include Anima.new(:id, :chinese_name, :english_name)
 end
 
 class LiteratureBaseMapper < Yaks::Mapper
@@ -13,7 +13,7 @@ class LiteratureBaseMapper < Yaks::Mapper
 end
 
 class ScholarMapper < LiteratureBaseMapper
-  attributes :name, :pinyin, :latinized
+  attributes :id, :name, :pinyin, :latinized
   has_many :works
   link :self, "http://literature.example.com/authors/{downcased_pinyin}"
 
@@ -23,5 +23,5 @@ class ScholarMapper < LiteratureBaseMapper
 end
 
 class WorkMapper < LiteratureBaseMapper
-  attributes :chinese_name, :english_name
+  attributes :id, :chinese_name, :english_name
 end

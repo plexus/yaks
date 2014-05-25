@@ -13,7 +13,7 @@ shared_examples_for 'JSON output format' do |yaks, format, name|
   it { should eql output }
 end
 
-describe 'Acceptance test' do
+describe Yaks::HalSerializer do
   yaks_rel_template = Yaks.new do
     rel_template "http://literature.example.com/rel/{association_name}"
   end
@@ -32,12 +32,16 @@ describe 'Acceptance test' do
     end
   end
 
-  json_api = Yaks.new do
-    default_format :json_api
-  end
 
   include_examples 'JSON output format' , yaks_rel_template    , :hal      , 'confucius'
   include_examples 'JSON output format' , yaks_policy_dsl      , :hal      , 'confucius'
   include_examples 'JSON output format' , yaks_policy_override , :hal      , 'confucius'
-  #include_examples 'JSON output format' , json_api             , :json_api , 'confucius'
+end
+
+describe Yaks::JsonApiSerializer do
+  config = Yaks.new do
+    default_format :json_api
+  end
+
+  include_examples 'JSON output format' , config , :json_api , 'confucius'
 end

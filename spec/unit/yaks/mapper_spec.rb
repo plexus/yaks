@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Yaks::Mapper do
   subject(:mapper)       { mapper_class.new(instance, policy) }
 
-  let(:mapper_class) { Class.new(Yaks::Mapper) }
+  let(:mapper_class) { Class.new(Yaks::Mapper) { type 'foo' } }
   let(:instance)     { double(foo: 'hello', bar: 'world') }
   let(:policy)       { nil }
   let(:options)      { {} }
@@ -56,7 +56,7 @@ describe Yaks::Mapper do
   describe '#map_subresources' do
     let(:instance)      { double(widget: widget) }
     let(:widget)        { double(type: 'super_widget') }
-    let(:widget_mapper) { Class.new(Yaks::Mapper) }
+    let(:widget_mapper) { Class.new(Yaks::Mapper) { type 'widget' } }
     let(:policy)        { double('Policy') }
 
     describe 'has_one' do
@@ -72,13 +72,13 @@ describe Yaks::Mapper do
 
 
       it 'should have the subresource in the resource' do
-        expect(mapper.to_resource.subresources).to eq("http://foo.bar/rels/widgets" => Yaks::Resource.new(attributes: {:type => "super_widget"}))
+        expect(mapper.to_resource.subresources).to eq("http://foo.bar/rels/widgets" => Yaks::Resource.new(type: 'widget', attributes: {:type => "super_widget"}))
       end
 
       context 'with explicit mapper and rel' do
         it 'should delegate to the given mapper' do
           expect(mapper.map_subresources).to eq(
-            "http://foo.bar/rels/widgets" => Yaks::Resource.new(attributes: {:type => "super_widget"})
+            "http://foo.bar/rels/widgets" => Yaks::Resource.new(type: 'widget', attributes: {:type => "super_widget"})
           )
         end
       end
@@ -94,7 +94,7 @@ describe Yaks::Mapper do
             widget_mapper
           }
           expect(mapper.map_subresources).to eq(
-            "http://foo.bar/rels/widgets" => Yaks::Resource.new(attributes: {:type => "super_widget"})
+            "http://foo.bar/rels/widgets" => Yaks::Resource.new(type: 'widget', attributes: {:type => "super_widget"})
           )
         end
       end
@@ -111,7 +111,7 @@ describe Yaks::Mapper do
             'http://rel/rel'
           }
           expect(mapper.map_subresources).to eq(
-            "http://rel/rel" => Yaks::Resource.new(attributes: {:type => "super_widget"})
+            "http://rel/rel" => Yaks::Resource.new(type: 'widget', attributes: {:type => "super_widget"})
           )
         end
       end

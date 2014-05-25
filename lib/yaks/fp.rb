@@ -11,10 +11,6 @@ module Yaks
     end
     I = identity_function
 
-    def juxt(*procs)
-      ->(*args) { procs.map &send_with_args(:call, *args) }
-    end
-
     def curry_symbol(symbol, *args, &blk)
       ->(obj) { obj.method(symbol).to_proc.curry.(*args, &blk) }
     end

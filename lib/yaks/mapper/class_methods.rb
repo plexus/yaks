@@ -8,6 +8,7 @@ module Yaks
       include FP
 
       CONFIG_METHODS = [
+        :type,
         :attributes,
         :link,
         :profile,

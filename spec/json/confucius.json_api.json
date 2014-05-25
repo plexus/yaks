@@ -1,17 +1,22 @@
-{ "scholars": [{
-    "name": "孔子",
-    "pinyin": "Kongzi",
-    "latinized": "Confucius",
-    "links": {
-      "self":    { "href": "http://literature.example.com/authors/kongzi"  },
-      "profile": { "href": "http://literature.example.com/profiles/scholar" }
+{
+  "scholars": [
+    {
+      "id": 9,
+      "name": "孔子",
+      "pinyin": "Kongzi",
+      "latinized": "Confucius",
+      "links": {
+        "works": [11]
+      }
     }
-  }],
-  "works": [{
-    "chinese_name": "論語",
-    "english_name": "Analects",
-    "_links": {
-      "profile": { "href": "http://literature.example.com/profiles/work"  }
-    }
-  }]
+  ],
+  "linked": {
+    "works": [
+      {
+        "id": 11,
+        "chinese_name": "論語",
+        "english_name": "Analects"
+      }
+    ]
+  }
 }

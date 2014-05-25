@@ -9,12 +9,10 @@ module Yaks
         pluralize(resource.type) => resource.map(&method(:serialize_resource))
       }
 
-      if options[:embed] == :resources
-        linked = resource.each_with_object({}) do |res, hsh|
-          serialize_linked_subresources(res.subresources, hsh)
-        end
-        serialized = serialized.merge('linked' => linked)
+      linked = resource.each_with_object({}) do |res, hsh|
+        serialize_linked_subresources(res.subresources, hsh)
       end
+      serialized = serialized.merge('linked' => linked)
 
       Primitivize.( serialized )
     end
@@ -28,16 +26,12 @@ module Yaks
 
     def serialize_links(subresources)
       subresources.each_with_object({}) do |(name, resource), hsh|
-        hsh[name] = serialize_link(resource)
+        hsh[pluralize(resource.type)] = serialize_link(resource)
       end
     end
 
     def serialize_link(resource)
-      if options[:embed] == :links
-        resource.uri
-      else
-        resource.collection? ? resource.map(&curry_symbol(:[], :id)) : resource[:id]
-      end
+      resource.collection? ? resource.map(&curry_symbol(:[], :id)) : resource[:id]
     end
 
     def serialize_linked_subresources(subresources, hsh)

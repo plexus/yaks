@@ -1,6 +1,7 @@
 # unreleased
 
 * Introduce Yaks.new as the main public interface
+* Fix JsonApiSerializer and make it compliant with current spec
 * Remove Hamster dependency, Yaks new uses plain old Ruby arrays and hashes
 * Remove RelRegistry and ProfileRegistry in favor of a simpler explicit syntax + policy based fallback
 * add more policy derivation hooks, plus make DefaultPolicy template for rel urls configurable

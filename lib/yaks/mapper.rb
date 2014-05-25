@@ -21,6 +21,7 @@ module Yaks
       return NullResource.new if subject.nil?
 
       Resource.new(
+        type:         mapper_name,
         attributes:   map_attributes,
         links:        map_links,
         subresources: map_subresources
@@ -60,7 +61,7 @@ module Yaks
     end
 
     def mapper_name
-      config.name || policy.derive_key_from_mapper(self)
+      config.type || policy.derive_type_from_mapper_class(self.class)
     end
 
   end

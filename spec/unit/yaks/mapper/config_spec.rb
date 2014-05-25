@@ -8,7 +8,7 @@ describe Yaks::Mapper::Config do
   describe '#initialize' do
     subject(:config) { described_class.new('foo', [:a], [:b], [:c]) }
 
-    its(:name)         { should eql 'foo' }
+    its(:type)         { should eql 'foo' }
     its(:attributes)   { should eql [:a] }
     its(:links)        { should eql [:b] }
     its(:associations) { should eql [:c] }
@@ -18,7 +18,7 @@ describe Yaks::Mapper::Config do
     context 'with no updates' do
       let(:config) {
         super()
-          .name('foo')
+          .type('foo')
           .attributes(:a, :b, :c)
           .link(:foo, 'http://bar')
           .has_many(:bars)

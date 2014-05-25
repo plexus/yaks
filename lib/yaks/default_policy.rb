@@ -14,8 +14,8 @@ module Yaks
       Kernel.const_get(model.class.name + 'Mapper')
     end
 
-    def derive_key_from_mapper(mapper)
-      underscore(mapper.class.name.sub(/Mapper$/, ''))
+    def derive_type_from_mapper_class(mapper_class)
+      underscore(mapper_class.to_s.sub(/Mapper$/, ''))
     end
 
     def derive_mapper_from_association(association)
@@ -24,7 +24,7 @@ module Yaks
 
     def derive_rel_from_association(mapper, association)
       URITemplate.new(@options[:rel_template]).expand(
-        mapper_name: derive_key_from_mapper(mapper),
+        mapper_name: derive_type_from_mapper_class(mapper.class),
         association_name: association.name
       )
     end

@@ -1,4 +1,5 @@
 {
+  "id": 9,
   "name": "孔子",
   "pinyin": "Kongzi",
   "latinized": "Confucius",
@@ -9,6 +10,7 @@
   "_embedded": {
     "http://literature.example.com/rel/works": [
       {
+        "id": 11,
         "chinese_name": "論語",
         "english_name": "Analects",
         "_links": {

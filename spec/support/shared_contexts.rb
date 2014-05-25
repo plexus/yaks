@@ -1,5 +1,5 @@
 shared_context 'collection resource' do
-  let(:resource) { Yaks::CollectionResource.new(links, members) }
+  let(:resource) { Yaks::CollectionResource.new(links: links, members: members) }
   let(:links)    { [] }
   let(:members)  { [] }
 end

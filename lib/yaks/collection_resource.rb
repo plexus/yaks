@@ -15,18 +15,19 @@ module Yaks
   # In the second case a collection has a single "subresource", being its
   # members.
   class CollectionResource
-    include Equalizer.new(:links, :members)
+    include Equalizer.new(:type, :links, :members)
     include Enumerable, LinkLookup
 
     extend Forwardable
 
-    attr_reader :links, :members
+    attr_reader :type, :links, :members
 
     def_delegators :members, :each
 
-    def initialize(links, members)
-      @links   = links
-      @members = members
+    def initialize(options)
+      @type    = options.fetch(:type, nil)
+      @links   = options.fetch(:links, [])
+      @members = options.fetch(:members, [])
     end
 
     def attributes

@@ -18,7 +18,11 @@ module Yaks
     end
 
     def to_resource
-      CollectionResource.new(map_links, collection.map {|obj| resource_mapper.new(obj, policy).to_resource})
+      CollectionResource.new(
+        type: resource_mapper.config.type || policy.derive_type_from_mapper_class(resource_mapper),
+        links: map_links,
+        members: collection.map {|obj| resource_mapper.new(obj, policy).to_resource }
+      )
     end
 
     def load_attribute(name)
