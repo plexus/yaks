@@ -22,9 +22,8 @@ module Yaks
         config.default_format = format
       end
 
-      def policy(klass = Undefined, &blk)
-        @policy_class = klass unless klass.equal? Undefined
-        @policies << blk if blk
+      def policy(klass)
+        @policy_class = klass
       end
 
       def rel_template(templ)
@@ -50,7 +49,7 @@ module Yaks
     end
 
     def policy
-      @policy ||= @policy_class.new(@policy_options)
+      @policy_class.new(@policy_options)
     end
 
     def serializer_class(format)

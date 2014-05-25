@@ -24,18 +24,8 @@ describe Yaks::HalSerializer do
     end
   end
 
-  yaks_policy_override = Yaks.new do
-    policy do
-      def derive_rel_from_association(mapper, association)
-        "http://literature.example.com/rel/#{association.name}"
-      end
-    end
-  end
-
-
   include_examples 'JSON output format' , yaks_rel_template    , :hal      , 'confucius'
   include_examples 'JSON output format' , yaks_policy_dsl      , :hal      , 'confucius'
-  include_examples 'JSON output format' , yaks_policy_override , :hal      , 'confucius'
 end
 
 describe Yaks::JsonApiSerializer do

@@ -52,6 +52,7 @@ end
 * DONE 3 lib/yaks/version.rb
 * DONE 13 lib/yaks/mapper/has_many.rb
 * DONE 9 lib/yaks/mapper/has_one.rb
+* DONE 79 lib/yaks/config.rb
 *   79 lib/yaks/mapper/config.rb
 *   73 lib/yaks.rb
 * DONE 72 lib/yaks/util.rb

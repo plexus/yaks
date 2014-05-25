@@ -1,0 +1,29 @@
+{
+  "id": 1,
+  "name": "john",
+  "_links": {
+    "copyright": [
+      {
+        "href": "/api/copyright/2024"
+      }
+    ]
+  },
+  "_embedded": {
+    "http://api.mysuperfriends.com/pet_peeve": {
+      "id": 4,
+      "type": "parsing with regexps"
+    },
+    "http://api.mysuperfriends.com/pets": [
+      {
+        "id": 2,
+        "name": "boingboing",
+        "species": "dog"
+      },
+      {
+        "id": 3,
+        "name": "wassup",
+        "species": "cat"
+      }
+    ]
+  }
+}

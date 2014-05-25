@@ -44,7 +44,7 @@ module Yaks
     end
 
     def singular?(rel)
-      options.fetch(:singular_links) { [] }.include?(rel)
+      !options.fetch(:plural_links) { [] }.include?(rel)
     end
 
     def serialize_embedded(subresources)

@@ -51,4 +51,18 @@ describe Yaks::Config do
     end
   end
 
+
+  describe '#serialize' do
+    include_context 'fixtures'
+
+    configure do
+      rel_template 'http://api.mysuperfriends.com/{association_name}'
+      format :hal, plural_links: [:copyright]
+    end
+
+    specify do
+      expect(config.serialize(john)).to eql(load_json_fixture 'john.hal')
+    end
+  end
+
 end

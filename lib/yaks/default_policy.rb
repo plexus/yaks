@@ -6,6 +6,8 @@ module Yaks
       rel_template: "rel:src={mapper_name}&dest={association_name}"
     }
 
+    attr_reader :options
+
     def initialize(options = {})
       @options = DEFAULTS.merge(options)
     end
