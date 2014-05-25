@@ -28,7 +28,9 @@ module Yaks
     end
 
     def map_attributes
-      filter(attributes).map &juxt(identity_function, method(:load_attribute))
+      filter(attributes).each_with_object({}) do |attr, memo|
+        memo[attr] = load_attribute(attr)
+      end
     end
 
     def map_links
@@ -36,13 +38,15 @@ module Yaks
     end
 
     def map_subresources
-      attributes = filter(associations.map(&:name))
-      associations.select{|assoc| attributes.include? assoc.name }.map do |association|
-        association.map_to_resource_pair(
+      attributes   = filter(associations.map(&:name))
+      associations = associations().select{|assoc| attributes.include? assoc.name }
+      associations.each_with_object({}) do |association, memo|
+        rel, subresource = association.map_to_resource_pair(
           self,
           method(:load_association),
           policy
         )
+        memo[rel] = subresource
       end
     end
 

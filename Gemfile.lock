@@ -1,17 +1,9 @@
-GIT
-  remote: git://github.com/harukizaemon/hamster.git
-  revision: 019cca9ca407b018c15a991b47937ab2cc14bd36
-  specs:
-    hamster (1.0.1.pre.rc.1)
-
 PATH
   remote: .
   specs:
     yaks (0.3.0)
       concord (~> 0.1.4)
-      hamster
       inflection (~> 1.0.0)
-      typecheck (~> 0.1.1)
       uri_template (~> 0.6.0)
 
 GEM
@@ -86,7 +78,7 @@ GEM
     rspec-mocks (2.14.6)
     slop (3.5.0)
     thread_safe (0.3.3)
-    typecheck (0.1.1)
+    thread_safe (0.3.3-java)
     unparser (0.1.12)
       abstract_type (~> 0.0.7)
       adamantium (~> 0.2.0)
@@ -102,10 +94,10 @@ GEM
       equalizer (~> 0.0.9)
 
 PLATFORMS
+  java
   ruby
 
 DEPENDENCIES
-  hamster!
   mutant-rspec
   rake
   rspec (~> 2.14)

@@ -7,15 +7,15 @@ module Yaks
     end
 
     def attributes
-      Yaks::Hash()
+      {}
     end
 
     def links
-      Yaks::List()
+      []
     end
 
     def subresources
-      Yaks::Hash()
+      {}
     end
 
     def [](*)

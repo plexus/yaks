@@ -3,15 +3,15 @@
 module Yaks
   class JsonApiSerializer < Serializer
     def serialize
-      serialized = Yaks::Hash(
+      serialized = {
         pluralize(profile_name.to_s) => resource.map(&method(:serialize_resource))
-      )
+      }
 
       if options[:embed] == :resources
-        linked = resource.reduce(Yaks::Hash()) do |memo, res|
-          serialize_linked_subresources(res.subresources, memo)
+        linked = resource.each_with_object({}) do |res, hsh|
+          serialize_linked_subresources(res.subresources, hsh)
         end
-        serialized = serialized.put('linked', linked)
+        serialized = serialized.merge('linked' => linked)
       end
 
       Primitivize.( serialized )
@@ -20,12 +20,12 @@ module Yaks
 
     def serialize_resource(resource)
       result = resource.attributes
-      result = result.merge(Yaks::Hash(:links => serialize_links(resource.subresources))) unless resource.subresources.empty?
+      result = result.merge(:links => serialize_links(resource.subresources)) unless resource.subresources.empty?
       result
     end
 
     def serialize_links(subresources)
-      Yaks::Hash(subresources.map &method(:serialize_link))
+      Hash[*subresources.map(&method(:serialize_link))]
     end
 
     def serialize_link(name, resource)
@@ -36,14 +36,14 @@ module Yaks
       end
     end
 
-    def serialize_linked_subresources(subresources, linked)
-      subresources.reduce(linked) do |memo, name, resources|
-        serialize_linked_resources(resources, memo)
+    def serialize_linked_subresources(subresources, hsh)
+      subresources.each_with_object(hsh) do |(name, resources), hsh|
+        serialize_linked_resources(resources, hsh)
       end
     end
 
     def serialize_linked_resources(resources, linked)
-      resources.reduce(linked) do |memo, resource|
+      resources.each_with_object(linked) do |resource, memo|
         serialize_subresource(resource, memo)
       end
     end
@@ -51,8 +51,8 @@ module Yaks
     # {shows => [{id: 3, name: 'foo'}]}
     def serialize_subresource(resource, linked)
       key = pluralize(profile_registry.find_by_uri(resource.profile).to_s)
-      set = linked.fetch(key) { Hamster.set }
-      linked = linked.put(key, set << serialize_resource(resource))
+      set = linked.fetch(key) { Set.new }
+      linked = linked[key] = (set << serialize_resource(resource))
       serialize_linked_subresources(resource.subresources, linked)
     end
   end

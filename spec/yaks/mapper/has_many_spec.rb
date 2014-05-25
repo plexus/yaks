@@ -19,13 +19,14 @@ describe Yaks::Mapper::HasMany do
   }
 
   it 'should map the subresources' do
-    expect(closet_mapper.new(closet, Yaks::DefaultPolicy.new).map_subresources[0][0]).to eql "http://foo/shoes"
-    expect(closet_mapper.new(closet, Yaks::DefaultPolicy.new).map_subresources[0][1]).to eql Yaks::CollectionResource.new(
-      [],
-      [
-        Yaks::Resource.new({:size => 9, :color => :blue}, [], {}),
-        Yaks::Resource.new({:size => 11.5, :color => :red}, [], {})
-      ]
+    expect(closet_mapper.new(closet, Yaks::DefaultPolicy.new).map_subresources).to eql(
+      "http://foo/shoes" => Yaks::CollectionResource.new(
+        [],
+        [
+          Yaks::Resource.new({:size => 9, :color => :blue}, [], {}),
+          Yaks::Resource.new({:size => 11.5, :color => :red}, [], {})
+        ]
+      )
     )
   end
 

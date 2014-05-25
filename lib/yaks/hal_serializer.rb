@@ -21,21 +21,26 @@ module Yaks
       #
       # return nil if resource.is_a? NullResource
       result = resource.attributes
-      result = result.put(:_links, serialize_links(resource.links)) unless resource.links.empty?
-      result = result.put(:_embedded, serialize_embedded(resource.subresources)) unless resource.subresources.empty?
+      result = result.merge(:_links => serialize_links(resource.links)) unless resource.links.empty?
+      result = result.merge(:_embedded => serialize_embedded(resource.subresources)) unless resource.subresources.empty?
       result
     end
 
     def serialize_links(links)
-      links.reduce(Yaks::Hash(), &method(:serialize_link))
+      links.reduce({}, &method(:serialize_link))
     end
 
     def serialize_link(memo, link)
-      memo.put(link.rel) {|links|
-        slink = {href: link.uri}.merge(link.options.reject{|k,_| k==:templated})
-        slink.merge!(templated: true) if link.templated?
-        singular?(link.rel) ? slink : Yaks::List(links).cons(slink)
-      }
+      hal_link = {href: link.uri}
+      hal_link.merge!(link.options.reject{|k,_| k==:templated})
+      hal_link.merge!(templated: true) if link.templated?
+
+      memo[link.rel] = if singular?(link.rel)
+                         hal_link
+                       else
+                         Array(memo[link.rel]) + [hal_link]
+                       end
+      memo
     end
 
     def singular?(rel)
@@ -43,15 +48,12 @@ module Yaks
     end
 
     def serialize_embedded(subresources)
-      subresources.map do |rel, resources|
-        [
-          rel,
-          if resources.collection?
-            resources.map( &method(:serialize_resource) )
-          else
-            serialize_resource(resources)
-          end
-        ]
+      subresources.each_with_object({}) do |(rel, resources), memo|
+        memo[rel] = if resources.collection?
+                      resources.map( &method(:serialize_resource) )
+                    else
+                      serialize_resource(resources)
+                    end
       end
     end
 

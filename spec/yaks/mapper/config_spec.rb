@@ -5,17 +5,13 @@ describe Yaks::Mapper::Config do
 
   subject(:config) { described_class.new(nil, [], [], []) }
 
-  its(:attributes)   { should be_a Hamster::List }
-  its(:links)        { should be_a Hamster::List }
-  its(:associations) { should be_a Hamster::List }
-
   describe '#initialize' do
     subject(:config) { described_class.new('foo', [:a], [:b], [:c]) }
 
     its(:name)         { should eql 'foo' }
-    its(:attributes)   { should eql Hamster.list(:a) }
-    its(:links)        { should eql Hamster.list(:b) }
-    its(:associations) { should eql Hamster.list(:c) }
+    its(:attributes)   { should eql [:a] }
+    its(:links)        { should eql [:b] }
+    its(:associations) { should eql [:c] }
   end
 
   describe '#updated' do
@@ -60,13 +56,13 @@ describe Yaks::Mapper::Config do
   describe '#attributes' do
     context 'an empty config' do
       it 'should return an empty attributes list' do
-        expect(config.attributes).to eq Yaks::List()
+        expect(config.attributes).to eq []
       end
     end
 
     it 'should add attributes' do
       expect(config.attributes(:foo, :bar, :baz).attributes)
-        .to eq Hamster.list(:foo, :bar, :baz)
+        .to eq [:foo, :bar, :baz]
     end
 
     it 'should be chainable' do
@@ -75,14 +71,14 @@ describe Yaks::Mapper::Config do
           .attributes(:foo, :bar)
           .attributes(:baz)
           .attributes
-      ).to eq Hamster.list(:foo, :bar, :baz)
+      ).to eq [:foo, :bar, :baz]
     end
   end
 
   describe '#links' do
     context 'an empty config' do
       it 'should have an empty link list' do
-        expect(config.links).to eq Yaks::List()
+        expect(config.links).to eq []
       end
     end
 

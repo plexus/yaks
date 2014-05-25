@@ -25,12 +25,12 @@ module Yaks
     def_delegators :members, :each
 
     def initialize(links, members)
-      @links   = Yaks::List(links)
-      @members = Yaks::List(members)
+      @links   = links
+      @members = members
     end
 
     def attributes
-      Yaks::Hash()
+      {}
     end
 
     # Make a CollectionResource quack like a resource.
@@ -48,9 +48,9 @@ module Yaks
     # :(
     def subresources
       if members && members.any?
-        Yaks::Hash( profile => self )
+        { profile => self }
       else
-        Yaks::Hash()
+        {}
       end
     end
 

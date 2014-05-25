@@ -18,18 +18,6 @@ module Yaks
         .gsub!(/(?:^|_)(.)/) { $1.upcase          }
     end
 
-    def List(*args)
-      Hamster.list(*args)
-    end
-
-    def Hash(*args)
-      Hamster.hash(*args)
-    end
-
-    def Set(*args)
-      Hamster.set(*args)
-    end
-
     # Turn what is maybe a Proc into its result (or itself)
     #
     # When input can be either a value or a proc that returns a value,

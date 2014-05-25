@@ -6,9 +6,9 @@ module Yaks
     attr_reader :attributes, :links, :subresources
 
     def initialize(attributes, links, subresources)
-      @attributes   = Yaks::Hash(attributes)
-      @links        = Yaks::List(links)
-      @subresources = Yaks::Hash(subresources)
+      @attributes   = attributes
+      @links        = links
+      @subresources = subresources
     end
 
     def [](attr)

@@ -23,13 +23,13 @@ module Yaks
       object.to_s
     end
 
-    map Hash, Hamster::Hash do
+    map Hash do
       object.to_enum(:each).with_object({}) do |(key, value), output|
         output[self.class.(key)] = self.class.(value)
       end
     end
 
-    map Enumerable, Hamster::Enumerable do
+    map Enumerable do
       object.map(&self.class.method(:call)).to_a
     end
 

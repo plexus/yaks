@@ -21,7 +21,7 @@ describe Yaks::Mapper do
     end
 
     it 'should load them from the model' do
-      expect(mapper.map_attributes).to eq [[:foo, 'hello'], [:bar, 'world']]
+      expect(mapper.map_attributes).to eq(foo: 'hello', bar: 'world')
     end
 
     context 'with attribute filtering' do
@@ -34,7 +34,7 @@ describe Yaks::Mapper do
       end
 
       it 'should only map the non-filtered attributes' do
-        expect(mapper.map_attributes).to eq [[:bar, 'world']]
+        expect(mapper.map_attributes).to eq(:bar => 'world')
       end
     end
   end
@@ -74,14 +74,14 @@ describe Yaks::Mapper do
 
 
       it 'should have the subresource in the resource' do
-        expect(mapper.to_resource.subresources).to eq Yaks::Hash("http://foo.bar/rels/widgets" => Yaks::Resource.new({:type => "super_widget"}, [], {}))
+        expect(mapper.to_resource.subresources).to eq("http://foo.bar/rels/widgets" => Yaks::Resource.new({:type => "super_widget"}, [], {}))
       end
 
       context 'with explicit mapper and rel' do
         it 'should delegate to the given mapper' do
-          expect(mapper.map_subresources).to eq [
-            ["http://foo.bar/rels/widgets", Yaks::Resource.new({:type => "super_widget"}, [], {})]
-          ]
+          expect(mapper.map_subresources).to eq(
+            "http://foo.bar/rels/widgets" => Yaks::Resource.new({:type => "super_widget"}, [], {})
+          )
         end
       end
 
@@ -95,9 +95,9 @@ describe Yaks::Mapper do
             expect(assoc).to be_a Yaks::Mapper::HasOne
             widget_mapper
           }
-          expect(mapper.map_subresources).to eq [
-            ["http://foo.bar/rels/widgets", Yaks::Resource.new({:type => "super_widget"}, [], {})]
-          ]
+          expect(mapper.map_subresources).to eq(
+            "http://foo.bar/rels/widgets" => Yaks::Resource.new({:type => "super_widget"}, [], {})
+          )
         end
       end
 
@@ -112,9 +112,9 @@ describe Yaks::Mapper do
             expect(assoc).to be_a Yaks::Mapper::HasOne
             'http://rel/rel'
           }
-          expect(mapper.map_subresources).to eq [
-            ["http://rel/rel", Yaks::Resource.new({:type => "super_widget"}, [], {})]
-          ]
+          expect(mapper.map_subresources).to eq(
+            "http://rel/rel" => Yaks::Resource.new({:type => "super_widget"}, [], {})
+          )
         end
       end
 
@@ -126,7 +126,7 @@ describe Yaks::Mapper do
         end
 
         it 'should not map the resource' do
-          expect(mapper.map_subresources).to eq []
+          expect(mapper.map_subresources).to eq({})
         end
       end
     end
@@ -145,7 +145,7 @@ describe Yaks::Mapper do
       end
 
       it 'should get the attribute from the mapper' do
-        expect(mapper.map_attributes).to eq [[:fooattr, 'hello my friend'], [:bar, 'world']]
+        expect(mapper.map_attributes).to eq(fooattr: 'hello my friend', bar: 'world')
       end
     end
   end

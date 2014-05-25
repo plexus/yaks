@@ -9,7 +9,7 @@ describe Yaks::Mapper::ClassMethods do
     end
 
     it 'should allow setting them' do
-      expect( subject.attributes ).to eq Hamster.list(:foo, :bar)
+      expect( subject.attributes ).to eq [:foo, :bar]
     end
 
     describe 'with inheritance' do
@@ -17,11 +17,11 @@ describe Yaks::Mapper::ClassMethods do
       before { child.attributes(:baz) }
 
       it 'should inherit attributes from the parent' do
-        expect(child.attributes).to eq Hamster.list(:foo, :bar, :baz)
+        expect(child.attributes).to eq [:foo, :bar, :baz]
       end
 
       it 'should not alter the parent' do
-        expect(subject.attributes).to eq Hamster.list(:foo, :bar)
+        expect(subject.attributes).to eq [:foo, :bar]
       end
     end
   end

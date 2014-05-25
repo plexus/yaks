@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 
 require 'forwardable'
+require 'set'
 
-require 'hamster'
 require 'concord'
 require 'inflection'
 require 'uri_template'
-require 'typecheck'
 
 require 'yaks/util'
 require 'yaks/fp'
@@ -25,27 +24,6 @@ module Yaks
   class << self
     def new(&blk)
       Yaks::Config.new(&blk)
-    end
-
-    def Hash(object = nil)
-      return object             if object.is_a? Hamster::Hash
-      return Hamster::EmptyHash if object.nil?
-      Hamster.hash(object)
-    end
-
-    def List(*entries)
-      case entries.size
-      when 0
-        Hamster::EmptyList
-      when 1
-        if entries.first.respond_to? :to_list
-          entries.first.to_list
-        else
-          Hamster.list(*entries.compact)
-        end
-      else
-        Hamster.list(*entries)
-      end
     end
   end
 

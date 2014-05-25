@@ -7,9 +7,9 @@ module Yaks
 
       def initialize(name, attributes, links, associations)
         @name         = name
-        @attributes   = Yaks::List(attributes)
-        @links        = Yaks::List(links)
-        @associations = Yaks::List(associations)
+        @attributes   = attributes
+        @links        = links
+        @associations = associations
       end
 
       def updated(updates)
@@ -29,13 +29,13 @@ module Yaks
       def attributes(*attrs)
         return @attributes if attrs.empty?
         updated(
-          attributes: @attributes + attrs.to_list
+          attributes: @attributes + attrs
         )
       end
 
       def link(rel, template, options = {})
         updated(
-          links: @links.cons(Link.new(rel, template, options))
+          links: @links + [Link.new(rel, template, options)]
         )
       end
 
@@ -49,14 +49,14 @@ module Yaks
 
       def add_association(type, name, options)
         updated(
-          associations: @associations.cons(
+          associations: @associations + [
             type.new(
               name,
               options.fetch(:mapper)            { Undefined },
               options.fetch(:rel)               { Undefined },
               options.fetch(:collection_mapper) { Undefined },
             )
-          )
+          ]
         )
       end
     end
