@@ -17,7 +17,7 @@ Gem::Specification.new do |gem|
   gem.test_files       = `git ls-files -- spec`.split($/)
   gem.extra_rdoc_files = %w[README.md]
 
-  gem.add_runtime_dependency 'inflection'   , '~> 1.0.0'
+  gem.add_runtime_dependency 'inflection'   , '~> 1.0'
   gem.add_runtime_dependency 'concord'      , '~> 0.1.4'
   gem.add_runtime_dependency 'uri_template' , '~> 0.6.0'
 
