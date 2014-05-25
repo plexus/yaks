@@ -3,11 +3,11 @@ module Yaks
     class DSL
       attr_reader :config
 
-      def initialize(config, blk)
+      def initialize(config, &blk)
         @config = config
         @policy_class = Class.new(DefaultPolicy)
         @policies     = []
-        instance_eval(&blk)
+        instance_eval(&blk) if blk
         @policies.each do |policy_blk|
           @policy_class.class_eval &policy_blk
         end
@@ -45,9 +45,8 @@ module Yaks
     def initialize(&blk)
       @format_options = Hash.new({})
       @default_format = :hal
-      @policy_class   = nil
       @policy_options = {}
-      DSL.new(self, blk)
+      DSL.new(self, &blk)
     end
 
     def policy
@@ -56,6 +55,10 @@ module Yaks
 
     def serializer_class(format)
       Yaks.const_get("#{Util.camelize(format.to_s)}Serializer")
+    end
+
+    def options_for_format(format)
+      format_options[format]
     end
 
     def serialize(model, opts = {})
