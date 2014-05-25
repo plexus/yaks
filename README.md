@@ -48,10 +48,39 @@ class PostMapper < Yaks::Mapper
 end
 ```
 
-Now you can use this to create a Resource
+Configure a Yaks instance and start serializing!
 
 ```ruby
-resource = PostMapper.new(post).to_resource
+yaks = Yaks.new
+yaks.serialize(post)
+```
+
+or a bit more elaborate
+
+```ruby
+yaks = Yaks.new do
+  default_format :json_api
+  rel_template 'http://api.example.com/rels/{association_name}'
+  format_options(:hal, plural_links: [:copyright])
+end
+
+yaks.serialize(post, mapper: PostMapper, format: :hal)
+```
+
+Yaks by default will find your mappers for you if they follow the naming convention of appending 'Mapper' to the model class name. This (and all other "conventions") can be easily redefined though, see below. If you have your mappers inside a module, use `mapper_namespace`.
+
+```ruby
+module API
+  module Mappers
+    class PostMapper < Yaks::Mapper
+      #...
+    end
+  end
+end
+
+yaks = Yaks.new do
+  mapper_namespace API::Mappers
+end
 ```
 
 ### Attributes
@@ -146,35 +175,53 @@ Options
 * `:collection_mapper` : For mapping the collection as a whole, this defaults to Yaks::CollectionMapper, but you can subclass it for example to add links or attributes on the collection itself
 * `:policy` : supply an alternative Policy object
 
-## Serializers
+## Resources and Serializers
 
-A resource can be turned in to a specific media type representation, for example [HAL](http://stateless.co/hal_specification.html) using a Serializer
+Yaks uses an intermediate "Resource" representation to support multiple output formats. A mapper turns a domain model into a `Yaks::Resource`. A serializer (e.g. `Yaks::HalSerializer`) takes the resource and outputs the structure of the target format.
+
+Since version 0.4 the recommended API is through `Yaks.new {...}.serialize`. This will give you back a composite types consisting of primitives that have a mapping to JSON, so you can use your favorite JSON encoder to turn this into a character stream.
 
 ```ruby
-hal = Yaks::HalSerializer.new(resource).serialize
+my_yaks = Yaks.new
+hal = my_yaks.serialize(model)
 puts JSON.dump(hal)
 ```
 
-This will give you back a composite types consisting of primitives that have a mapping to JSON, so you can use your favorite JSON encoder to turn this into a character stream.
+There are at least a handful of JSON libraries and implementations for Ruby out there, with different trade-offs. Yaks does not impose an opinion on which one to use
 
 ### Yaks::HalSerializer
 
-Serializes to HAL. In HAL one decides when building an API which links can only be singular (e.g. self), and which are always represented as an array. So the HalSerializer understand the `:singular_links` option.
+Serializes to HAL, this is chose by default. In HAL one decides when building an API which links can only be singular (e.g. self), and which are always represented as an array. Yaks defaults to singular as I've found it to be the most common case. If you want specific links to be plural, then configure their rel href as such.
 
 ```ruby
-hal = Yaks::HalSerializer.new(resource, singular_links: [:self, :"ea:find", :"ea:basket"])
+hal = Yaks.new do
+  format_options hal, plural_links: ['http://api.example.com/rels/foo']
+end
 ```
 
-CURIEs are not explicitly supported, but it's possible to use them with some effort, see `examples/hal01.rb` for an example.
+CURIEs are not explicitly supported (yet), but it's possible to use them with some effort, see `examples/hal01.rb` for an example.
 
 The line between a singular resource and a collection is fuzzy in HAL. To stick close to the spec you're best to create your own singular types that represent collections, rather than rendering a top level CollectionResource.
 
 ### Yaks::JsonApiSerializer
 
-JSON-API has no concept of outbound links, so these will not be rendered, but the profile link information will be used to derive the root key.
+JSON-API has no concept of outbound links, so these will not be rendered. Instead the key will be inferred from the mapper class name by default. This can be changed per mapper:
 
-* `embed: :resources` : Embed resources in a `{"linked":` section, referenced by id
-* `embed: :links` : Use URL style JSON-API
+```ruby
+class AnimalMapper
+  key :pet
+end
+```
+
+Or the policy can be overridden:
+
+```ruby
+yaks = Yaks.new do
+  derive_type_from_mapper_class do |mapper_class|
+    piglatinize(mapper_class.to_s.sub(/Mapper$/, ''))
+  end
+end
+```
 
 ## Policy over Configuration
 
@@ -186,21 +233,45 @@ What's worse, is that often the Configuration part is skimmed over, making it ve
 
 There is another old adage, "Policy vs Mechanism". Implement the mechanisms, but don't dictate the policy.
 
-In Yaks whenever missing values need to be inferred, like finding an unspecified mapper for a relation, this is handled by a policy object. The default is `Yaks::DefaultPolicy`, you can go there to find all the rules of inference. Subclass it and override to fit your needs, then pass it in to each mapper/serializer, they will pass it on to whatever objects they call.
+In Yaks whenever missing values need to be inferred, like finding an unspecified mapper for a relation, this is handled by a policy object. The default is `Yaks::DefaultPolicy`, you can go there to find all the rules of inference. Single rules of inference can be redefined directly in the Yaks configuration:
 
 ```ruby
-PostMapper.new(post, policy: MyPolicy.new)
+yaks = Yaks.new do
+  derive_mapper_from_model do |model|
+    # ...
+  end
+
+  derive_type_from_mapper_class do |mapper_class|
+    # ...
+  end
+
+  derive_mapper_from_association do |association|
+    # ...
+  end
+
+  derive_rel_from_association do |mapper, association|
+    # ...
+  end
+end
 ```
 
-## ProfileRegistry , RelationRegistry
+You can also subclass or create from scratch your own policy class
 
-...
+```ruby
+class MyPolicy < DefaultPolicy
+  #...
+end
 
-## Future plans
+yaks = Yaks.new do
+  policy MyPolicy
+end
+```
 
-* Collection+JSON
-* Siren
-* Examples on how to integrate with web frameworks
+## Usage
+
+Yaks is used in production by [Ticketsolve](http://www.ticketsolve.com/). You can find an example API endpoint [here](http://leicestersquaretheatre.ticketsolve.com/api).
+
+Get in touch if you like to see your name and API here.
 
 ## Acknowledgment
 
@@ -222,13 +293,11 @@ To add a feature
 1. Open an issue as soon as possible to gather feedback
 2. Same as above, fork, push to named branch, make a pull-request
 
-## Non-Features
+## Lightweight
 
-* No core extensions
-* Minimal dependencies
-* Only serializes what explicitly has a Serializer, will never call to_json/as_json
-* Adding extra output formats does not require altering existing code
-* Has no opinion on what to use for final JSON encoding (json, multi_json, yajl, oj, etc.)
+Yaks is a lean library. It only depends on a few other tiny libraries (inflection, concord, uri_template). It has no core extensions (monkey patches). There is deliberately no built-in "integration" with existing frameworks, since the API is simply enough. You just call it.
+
+If this approach sounds appealing, have a look at [microrb.com](http://microrb.com/).
 
 ## License
 
