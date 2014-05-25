@@ -32,7 +32,12 @@ describe 'Acceptance test' do
     end
   end
 
-  include_examples 'JSON output format', yaks_rel_template   , :hal, 'confucius'
-  include_examples 'JSON output format', yaks_policy_dsl     , :hal, 'confucius'
-  include_examples 'JSON output format', yaks_policy_override, :hal, 'confucius'
+  json_api = Yaks.new do
+    default_format :json_api
+  end
+
+  include_examples 'JSON output format' , yaks_rel_template    , :hal      , 'confucius'
+  include_examples 'JSON output format' , yaks_policy_dsl      , :hal      , 'confucius'
+  include_examples 'JSON output format' , yaks_policy_override , :hal      , 'confucius'
+  #include_examples 'JSON output format' , json_api             , :json_api , 'confucius'
 end

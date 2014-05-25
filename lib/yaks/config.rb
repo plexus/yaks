@@ -18,6 +18,10 @@ module Yaks
         config.format_options[format] = options
       end
 
+      def default_format(format)
+        config.default_format = format
+      end
+
       def policy(klass = Undefined, &blk)
         @policy_class = klass unless klass.equal? Undefined
         @policies << blk if blk

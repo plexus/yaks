@@ -1,0 +1,17 @@
+{ "scholars": [{
+    "name": "孔子",
+    "pinyin": "Kongzi",
+    "latinized": "Confucius",
+    "links": {
+      "self":    { "href": "http://literature.example.com/authors/kongzi"  },
+      "profile": { "href": "http://literature.example.com/profiles/scholar" }
+    }
+  }],
+  "works": [{
+    "chinese_name": "論語",
+    "english_name": "Analects",
+    "_links": {
+      "profile": { "href": "http://literature.example.com/profiles/work"  }
+    }
+  }]
+}

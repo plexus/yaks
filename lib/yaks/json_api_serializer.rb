@@ -2,9 +2,11 @@
 
 module Yaks
   class JsonApiSerializer < Serializer
-    def serialize
+    include FP
+
+    def call
       serialized = {
-        pluralize(profile_name.to_s) => resource.map(&method(:serialize_resource))
+        pluralize(resource.type) => resource.map(&method(:serialize_resource))
       }
 
       if options[:embed] == :resources
@@ -16,7 +18,7 @@ module Yaks
 
       Primitivize.( serialized )
     end
-    alias to_json_api serialize
+    alias serialize call
 
     def serialize_resource(resource)
       result = resource.attributes
@@ -25,14 +27,16 @@ module Yaks
     end
 
     def serialize_links(subresources)
-      Hash[*subresources.map(&method(:serialize_link))]
+      subresources.each_with_object({}) do |(name, resource), hsh|
+        hsh[name] = serialize_link(resource)
+      end
     end
 
-    def serialize_link(name, resource)
+    def serialize_link(resource)
       if options[:embed] == :links
-        [ name, resource.uri ]
+        resource.uri
       else
-        [ name, resource.collection? ? resource.map(&curry_symbol(:[], :id)) : resource[:id] ]
+        resource.collection? ? resource.map(&curry_symbol(:[], :id)) : resource[:id]
       end
     end
 
@@ -50,7 +54,7 @@ module Yaks
 
     # {shows => [{id: 3, name: 'foo'}]}
     def serialize_subresource(resource, linked)
-      key = pluralize(profile_registry.find_by_uri(resource.profile).to_s)
+      key = pluralize(resource.type)
       set = linked.fetch(key) { Set.new }
       linked = linked[key] = (set << serialize_resource(resource))
       serialize_linked_subresources(resource.subresources, linked)

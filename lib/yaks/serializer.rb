@@ -13,10 +13,5 @@ module Yaks
       @options  = YAKS_DEFAULT_OPTIONS.merge(options)
     end
 
-    def profile_name
-      (profile = resource.profile) &&
-        profile_registry.find_by_uri(profile)
-    end
-
   end
 end

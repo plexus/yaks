@@ -15,6 +15,9 @@ module Yaks
       attributes[attr]
     end
 
+    # def type
+    # end
+
     def each
       return to_enum unless block_given?
       yield self
