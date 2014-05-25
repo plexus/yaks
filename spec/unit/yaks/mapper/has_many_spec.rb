@@ -23,8 +23,8 @@ describe Yaks::Mapper::HasMany do
       "http://foo/shoes" => Yaks::CollectionResource.new(
         [],
         [
-          Yaks::Resource.new({:size => 9, :color => :blue}, [], {}),
-          Yaks::Resource.new({:size => 11.5, :color => :red}, [], {})
+          Yaks::Resource.new(attributes: {:size => 9, :color => :blue}),
+          Yaks::Resource.new(attributes: {:size => 11.5, :color => :red})
         ]
       )
     )

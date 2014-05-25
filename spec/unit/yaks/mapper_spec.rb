@@ -72,13 +72,13 @@ describe Yaks::Mapper do
 
 
       it 'should have the subresource in the resource' do
-        expect(mapper.to_resource.subresources).to eq("http://foo.bar/rels/widgets" => Yaks::Resource.new({:type => "super_widget"}, [], {}))
+        expect(mapper.to_resource.subresources).to eq("http://foo.bar/rels/widgets" => Yaks::Resource.new(attributes: {:type => "super_widget"}))
       end
 
       context 'with explicit mapper and rel' do
         it 'should delegate to the given mapper' do
           expect(mapper.map_subresources).to eq(
-            "http://foo.bar/rels/widgets" => Yaks::Resource.new({:type => "super_widget"}, [], {})
+            "http://foo.bar/rels/widgets" => Yaks::Resource.new(attributes: {:type => "super_widget"})
           )
         end
       end
@@ -94,7 +94,7 @@ describe Yaks::Mapper do
             widget_mapper
           }
           expect(mapper.map_subresources).to eq(
-            "http://foo.bar/rels/widgets" => Yaks::Resource.new({:type => "super_widget"}, [], {})
+            "http://foo.bar/rels/widgets" => Yaks::Resource.new(attributes: {:type => "super_widget"})
           )
         end
       end
@@ -111,7 +111,7 @@ describe Yaks::Mapper do
             'http://rel/rel'
           }
           expect(mapper.map_subresources).to eq(
-            "http://rel/rel" => Yaks::Resource.new({:type => "super_widget"}, [], {})
+            "http://rel/rel" => Yaks::Resource.new(attributes: {:type => "super_widget"})
           )
         end
       end

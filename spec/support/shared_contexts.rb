@@ -23,25 +23,22 @@ shared_context 'plant collection resource' do
 
   let(:plain_grass) do
     Yaks::Resource.new(
-      {name: "Plain grass", type: "grass"},
-      [plain_grass_self_link, plant_profile_link],
-      {}
+      attributes: {name: "Plain grass", type: "grass"},
+      links: [plain_grass_self_link, plant_profile_link]
     )
   end
 
   let(:oak) do
     Yaks::Resource.new(
-      {name: "Oak", type: "tree"},
-      [oak_self_link, plant_profile_link],
-      {}
+      attributes: {name: "Oak", type: "tree"},
+      links: [oak_self_link, plant_profile_link],
     )
   end
 
   let(:passiflora) do
     Yaks::Resource.new(
-      {name: "Passiflora", type: "flower"},
-      [passiflora_self_link, plant_profile_link],
-      {}
+      attributes: {name: "Passiflora", type: "flower"},
+      links: [passiflora_self_link, plant_profile_link],
     )
   end
 end

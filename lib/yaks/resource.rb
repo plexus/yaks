@@ -1,14 +1,15 @@
 module Yaks
   class Resource
-    include Equalizer.new(:links, :attributes, :subresources)
+    include Equalizer.new(:type, :links, :attributes, :subresources)
     include Enumerable, LinkLookup
 
-    attr_reader :attributes, :links, :subresources
+    attr_reader :type, :attributes, :links, :subresources
 
-    def initialize(attributes, links, subresources)
-      @attributes   = attributes
-      @links        = links
-      @subresources = subresources
+    def initialize(options)
+      @type         = options.fetch(:type, nil)
+      @attributes   = options.fetch(:attributes, {})
+      @links        = options.fetch(:links, [])
+      @subresources = options.fetch(:subresources, {})
     end
 
     def [](attr)

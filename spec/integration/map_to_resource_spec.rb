@@ -13,12 +13,12 @@ describe 'Mapping domain models to Resource objects' do
 
   its(:subresources) {
     should eq(
-      "rel:src=friend&dest=pet_peeve" => Yaks::Resource.new({id: 4, type: 'parsing with regexps'}, [], {}),
+      "rel:src=friend&dest=pet_peeve" => Yaks::Resource.new(attributes: {id: 4, type: 'parsing with regexps'}),
       "rel:src=friend&dest=pets" => Yaks::CollectionResource.new(
         [],
         [
-          Yaks::Resource.new({:id => 2, :species => "dog", :name => "boingboing"}, [], {}),
-          Yaks::Resource.new({:id => 3, :species => "cat", :name => "wassup"}, [], {})
+          Yaks::Resource.new(attributes: {:id => 2, :species => "dog", :name => "boingboing"}),
+          Yaks::Resource.new(attributes: {:id => 3, :species => "cat", :name => "wassup"})
         ]
       )
     )

@@ -21,9 +21,9 @@ module Yaks
       return NullResource.new if subject.nil?
 
       Resource.new(
-        map_attributes,
-        map_links,
-        map_subresources
+        attributes:   map_attributes,
+        links:        map_links,
+        subresources: map_subresources
       )
     end
 
