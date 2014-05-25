@@ -60,7 +60,7 @@ end
 *   59 lib/yaks/hal_serializer.rb
 *   43 lib/yaks/primitivize.rb
 *   37 lib/yaks/mapper/class_methods.rb
-*   33 lib/yaks/collection_mapper.rb
+* DONE 33 lib/yaks/collection_mapper.rb
 *   28 lib/yaks/null_resource.rb
 * DONE 27 lib/yaks/resource.rb
 *   25 lib/yaks/resource/link.rb
