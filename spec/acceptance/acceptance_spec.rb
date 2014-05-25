@@ -4,9 +4,9 @@ require 'json'
 
 require_relative './models'
 
-shared_examples_for 'JSON output format' do |yaks, name|
+shared_examples_for 'JSON output format' do |yaks, format, name|
   let(:input)  { load_yaml_fixture name }
-  let(:output) { load_json_fixture name }
+  let(:output) { load_json_fixture "#{name}.#{format}" }
 
   subject { yaks.serialize(input) }
 
@@ -32,7 +32,7 @@ describe 'Acceptance test' do
     end
   end
 
-  include_examples 'JSON output format', yaks_rel_template, 'confucius'
-  include_examples 'JSON output format', yaks_policy_dsl,   'confucius'
-  include_examples 'JSON output format', yaks_policy_override,   'confucius'
+  include_examples 'JSON output format', yaks_rel_template   , :hal, 'confucius'
+  include_examples 'JSON output format', yaks_policy_dsl     , :hal, 'confucius'
+  include_examples 'JSON output format', yaks_policy_override, :hal, 'confucius'
 end

@@ -15,6 +15,7 @@ task :default => :mutant
 
 task :mutant do
   pattern = ENV.fetch('PATTERN', 'Yaks*')
-  result  = Mutant::CLI.run(%w[-Ilib -ryaks --use rspec --score 100] + [pattern])
+  opts    = ENV.fetch('MUTANT_OPTS', '').split(' ')
+  result  = Mutant::CLI.run(%w[-Ilib -ryaks --use rspec --score 100] + opts + [pattern])
   fail unless result == Mutant::CLI::EXIT_SUCCESS
 end
