@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe Yaks::Mapper do
-  include_context 'shorthands'
-
   subject(:mapper)       { mapper_class.new(instance, policy) }
 
   let(:mapper_class) { Class.new(Yaks::Mapper) }

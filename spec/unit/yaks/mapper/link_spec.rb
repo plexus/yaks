@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe Yaks::Mapper::Link do
-  include_context 'shorthands'
-
   subject(:link) { described_class.new(rel, template, options) }
 
   let(:rel)      { :next }
