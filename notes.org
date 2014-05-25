@@ -1,0 +1,64 @@
+* DONE Get rid of profile/rel registry, use policy instead
+* DONE pass around policy explicitly instead of through options
+* DONE introduce name/type separate from profile
+** DONE mapper
+** DONE Resource
+* DONE allow setting rel types directly on associations, with fallback to policy
+* top-level automatic links, e.g. for self and profile
+* make HAL plural/singular links configurable from the Yaks.new
+* make primitivize configuration instance based, not global
+* CURIES
+* DONE switch to hash-based init of Resource to make it more extensible
+* DONE add Resource#type
+* DONE not 100% happy yet about nameing of mapper#mapper_name / config#name. Maybe use `type` across the board?
+* DONE Fix JsonAPISerializer
+* Have JsonApi add self links as href: attributes
+
+Ticketsolve::Api::Yaks = ::Yaks.new do
+  policy do
+    def derive...
+  end
+
+  hal_options.plural_link '...'
+
+  primitivize Date, Time do |o|
+    o.iso8601
+  end
+
+  rel_template "http://literature.example.com/rel/#{association_name}"
+
+  link :self, "http://api.com/{key}/{id}"
+  link :profile, "http://api.com/profile/{key}"
+
+  # and/or
+  derive_rel_from_association do |mapper, association|
+    "http://literature.example.com/rel/#{association.name}"
+  end
+end
+
+
+
+* DONE 59 lib/yaks/mapper.rb
+* DONE 92 lib/yaks/mapper/link.rb
+* DONE 37 lib/yaks/mapper/association.rb
+* DONE 3 lib/yaks/version.rb
+* DONE 13 lib/yaks/mapper/has_many.rb
+* DONE 9 lib/yaks/mapper/has_one.rb
+*   79 lib/yaks/mapper/config.rb
+*   73 lib/yaks.rb
+* DONE 72 lib/yaks/util.rb
+*   65 lib/yaks/collection_resource.rb
+*   59 lib/yaks/json_api_serializer.rb
+*   59 lib/yaks/hal_serializer.rb
+*   43 lib/yaks/primitivize.rb
+*   37 lib/yaks/mapper/class_methods.rb
+*   33 lib/yaks/collection_mapper.rb
+*   28 lib/yaks/null_resource.rb
+* DONE 27 lib/yaks/resource.rb
+*   25 lib/yaks/resource/link.rb
+*   23 lib/yaks/link_lookup.rb
+*   23 lib/yaks/fp.rb
+*   22 lib/yaks/serializer.rb
+*   15 lib/yaks/shared_options.rb
+*   15 lib/yaks/default_policy.rb
+*   10 lib/yaks/mapper/map_links.rb
