@@ -3,7 +3,8 @@ module Yaks
     include Util
 
     DEFAULTS = {
-      rel_template: "rel:src={mapper_name}&dest={association_name}"
+      rel_template: "rel:src={mapper_name}&dest={association_name}",
+      namespace: Kernel
     }
 
     attr_reader :options
@@ -13,7 +14,7 @@ module Yaks
     end
 
     def derive_mapper_from_model(model)
-      Kernel.const_get(model.class.name + 'Mapper')
+      @options[:namespace].const_get(model.class.name + 'Mapper')
     end
 
     def derive_type_from_mapper_class(mapper_class)

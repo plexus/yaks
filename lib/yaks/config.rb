@@ -30,6 +30,10 @@ module Yaks
         config.policy_options[:rel_template] = templ
       end
 
+      def mapper_namespace(namespace)
+        config.policy_options[:namespace] = namespace
+      end
+
       DefaultPolicy.public_instance_methods(false).each do |method|
         define_method method do |&blk|
           @policies << proc {

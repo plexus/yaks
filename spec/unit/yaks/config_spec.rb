@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe Yaks::Config do
+  include_context 'fixtures'
+
   def self.configure(&blk)
     subject(:config) { described_class.new(&blk) }
   end
@@ -53,8 +55,6 @@ describe Yaks::Config do
 
 
   describe '#serialize' do
-    include_context 'fixtures'
-
     configure do
       rel_template 'http://api.mysuperfriends.com/{association_name}'
       format :hal, plural_links: [:copyright]
@@ -62,6 +62,21 @@ describe Yaks::Config do
 
     specify do
       expect(config.serialize(john)).to eql(load_json_fixture 'john.hal')
+    end
+  end
+
+  describe '#mapper_namespace' do
+    module MyMappers
+      class PetMapper < Yaks::Mapper
+      end
+    end
+
+    configure do
+      mapper_namespace MyMappers
+    end
+
+    specify do
+      expect(config.policy.derive_mapper_from_model(boingboing)).to eql(MyMappers::PetMapper)
     end
   end
 
