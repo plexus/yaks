@@ -16,7 +16,7 @@ module Yaks
   # members.
   class CollectionResource
     include Equalizer.new(:type, :links, :members)
-    include Enumerable, LinkLookup
+    include Enumerable
 
     extend Forwardable
 
@@ -49,7 +49,8 @@ module Yaks
     # :(
     def subresources
       if members && members.any?
-        { profile => self }
+        profile_link = links.select{|link| link.rel.equal? :profile}.first.uri
+        { profile_link => self }
       else
         {}
       end

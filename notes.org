@@ -1,18 +1,26 @@
+0.4
+
 * DONE Get rid of profile/rel registry, use policy instead
 * DONE pass around policy explicitly instead of through options
 * DONE introduce name/type separate from profile
 ** DONE mapper
 ** DONE Resource
 * DONE allow setting rel types directly on associations, with fallback to policy
-* top-level automatic links, e.g. for self and profile
-* make HAL plural/singular links configurable from the Yaks.new
-* make primitivize configuration instance based, not global
-* CURIES
 * DONE switch to hash-based init of Resource to make it more extensible
 * DONE add Resource#type
 * DONE not 100% happy yet about nameing of mapper#mapper_name / config#name. Maybe use `type` across the board?
 * DONE Fix JsonAPISerializer
+* top-level automatic links, e.g. for self and profile
+* make HAL plural/singular links configurable from the Yaks.new
+* make primitivize configuration instance based, not global
 * Have JsonApi add self links as href: attributes
+* Move examples to acceptance tests
+* Select mapper based on content type
+* move to 100% mutcov
+
+pre 0.5
+
+* CURIES/namespaces
 
 Ticketsolve::Api::Yaks = ::Yaks.new do
   policy do
@@ -56,7 +64,6 @@ end
 *   28 lib/yaks/null_resource.rb
 * DONE 27 lib/yaks/resource.rb
 *   25 lib/yaks/resource/link.rb
-*   23 lib/yaks/link_lookup.rb
 *   23 lib/yaks/fp.rb
 *   22 lib/yaks/serializer.rb
 *   15 lib/yaks/shared_options.rb

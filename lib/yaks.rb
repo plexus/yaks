@@ -9,7 +9,6 @@ require 'uri_template'
 
 require 'yaks/util'
 require 'yaks/fp'
-require 'yaks/link_lookup'
 require 'yaks/primitivize'
 
 require 'yaks/default_policy'

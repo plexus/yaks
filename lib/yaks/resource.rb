@@ -1,7 +1,7 @@
 module Yaks
   class Resource
     include Equalizer.new(:type, :links, :attributes, :subresources)
-    include Enumerable, LinkLookup
+    include Enumerable
 
     attr_reader :type, :attributes, :links, :subresources
 
@@ -27,5 +27,6 @@ module Yaks
     def collection?
       false
     end
+
   end
 end
