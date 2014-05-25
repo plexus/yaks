@@ -45,7 +45,7 @@ describe Yaks::Config do
 
   context 'with format options' do
     configure do
-      format :hal, plural_links: [:self, :profile]
+      format_options :hal, plural_links: [:self, :profile]
     end
 
     specify do
@@ -57,7 +57,7 @@ describe Yaks::Config do
   describe '#serialize' do
     configure do
       rel_template 'http://api.mysuperfriends.com/{association_name}'
-      format :hal, plural_links: [:copyright]
+      format_options :hal, plural_links: [:copyright]
     end
 
     specify do

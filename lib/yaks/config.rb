@@ -14,7 +14,7 @@ module Yaks
         config.policy_class = @policy_class
       end
 
-      def format(format, options)
+      def format_options(format, options)
         config.format_options[format] = options
       end
 
