@@ -11,9 +11,8 @@ module Yaks
     end
     I = identity_function
 
-    def curry_symbol(symbol, *args, &blk)
-      ->(obj) { obj.method(symbol).to_proc.curry.(*args, &blk) }
+    def send_with_args(symbol, *args, &blk)
+      ->(obj) { obj.method(symbol).(*args, &blk) }
     end
-    alias send_with_args curry_symbol
   end
 end

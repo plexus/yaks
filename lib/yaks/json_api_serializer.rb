@@ -31,7 +31,7 @@ module Yaks
     end
 
     def serialize_link(resource)
-      resource.collection? ? resource.map(&curry_symbol(:[], :id)) : resource[:id]
+      resource.collection? ? resource.map(&send_with_args(:[], :id)) : resource[:id]
     end
 
     def serialize_linked_subresources(subresources, hsh)

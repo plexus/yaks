@@ -55,7 +55,7 @@ end
 *   79 lib/yaks/mapper/config.rb
 *   73 lib/yaks.rb
 * DONE 72 lib/yaks/util.rb
-*   65 lib/yaks/collection_resource.rb
+* DONE 65 lib/yaks/collection_resource.rb
 *   59 lib/yaks/json_api_serializer.rb
 *   59 lib/yaks/hal_serializer.rb
 *   43 lib/yaks/primitivize.rb
@@ -64,7 +64,7 @@ end
 *   28 lib/yaks/null_resource.rb
 * DONE 27 lib/yaks/resource.rb
 *   25 lib/yaks/resource/link.rb
-*   23 lib/yaks/fp.rb
+* DONE 23 lib/yaks/fp.rb
 *   22 lib/yaks/serializer.rb
 *   15 lib/yaks/shared_options.rb
 *   15 lib/yaks/default_policy.rb
