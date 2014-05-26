@@ -44,4 +44,22 @@ describe Yaks::Mapper do
       end
     end
   end
+
+  describe 'links' do
+    context 'multiple of the same rel' do
+      before do
+        mapper_class.class_eval do
+          link :self, '/foo/me'
+          link :self, '/foo/this'
+        end
+
+        it 'should map them both' do
+          expect(mapper_class.new(instance).to_resource.links).to eql [
+            Yaks::Resource::Link.new(:self, '/foo/me', {}),
+            Yaks::Resource::Link.new(:self, '/foo/this', {})
+          ]
+        end
+      end
+    end
+  end
 end

@@ -27,7 +27,7 @@ module Yaks
     end
 
     def serialize_links(links)
-      links.reduce(Yaks::Hash(), &method(:serialize_link))
+      links.reverse.reduce(Yaks::Hash(), &method(:serialize_link))
     end
 
     def serialize_link(memo, link)
