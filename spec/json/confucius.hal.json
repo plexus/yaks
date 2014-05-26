@@ -14,7 +14,8 @@
         "chinese_name": "論語",
         "english_name": "Analects",
         "_links": {
-          "profile": { "href": "http://literature.example.com/profiles/work"  }
+          "self":    { "href": "http://literature.example.com/work/11" },
+          "profile": { "href": "http://literature.example.com/profiles/work" }
         }
       }
     ]

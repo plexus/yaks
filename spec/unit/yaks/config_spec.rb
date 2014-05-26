@@ -12,6 +12,7 @@ describe Yaks::Config do
 
     its(:default_format) { should equal :hal }
     its(:policy_class)   { should < Yaks::DefaultPolicy }
+
     it 'should have empty format options' do
       expect(config.options_for_format(:hal)).to eql({})
     end
@@ -52,7 +53,6 @@ describe Yaks::Config do
       expect(config.options_for_format(:hal)).to eql(plural_links: [:self, :profile])
     end
   end
-
 
   describe '#serialize' do
     configure do

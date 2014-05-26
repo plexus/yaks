@@ -51,6 +51,25 @@ describe Yaks::Mapper do
     it 'should use the link in the resource' do
       expect(mapper.to_resource.links).to include Yaks::Resource::Link.new(:profile, 'http://foo/bar', {})
     end
+
+    context 'with the same link rel defined multiple times' do
+      before do
+        mapper_class.class_eval do
+          link(:self, 'http://foo/bam')
+          link(:self, 'http://foo/baz')
+          link(:self, 'http://foo/baq')
+        end
+      end
+
+      it 'should map all the links' do
+        expect(mapper.map_links).to eq [
+          Yaks::Resource::Link.new(:profile, 'http://foo/bar', {}),
+          Yaks::Resource::Link.new(:self, 'http://foo/bam', {}),
+          Yaks::Resource::Link.new(:self, 'http://foo/baz', {}),
+          Yaks::Resource::Link.new(:self, 'http://foo/baq', {})
+        ]
+      end
+    end
   end
 
   describe '#map_subresources' do

@@ -95,6 +95,20 @@ describe Yaks::Mapper::Config do
       end
     end
 
+    describe 'links with the same rel' do
+      let(:config) {
+        subject
+          .link(:self, '/foo/self')
+          .link(:self, '/foo/me')
+      }
+
+      it 'should have the links in the defined order' do
+        expect(config.links).to eql [
+          Yaks::Mapper::Link.new(:self, '/foo/self', {}),
+          Yaks::Mapper::Link.new(:self, '/foo/me', {})
+        ]
+      end
+    end
   end
 
   describe '#has_one' do

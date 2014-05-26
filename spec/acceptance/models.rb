@@ -10,6 +10,7 @@ end
 
 class LiteratureBaseMapper < Yaks::Mapper
   link :profile, 'http://literature.example.com/profiles/{mapper_name}'
+  link :self, 'http://literature.example.com/{mapper_name}/{id}'
 end
 
 class ScholarMapper < LiteratureBaseMapper
