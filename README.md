@@ -304,6 +304,10 @@ Yaks is a lean library. It only depends on a few other tiny libraries (inflectio
 
 If this approach sounds appealing, have a look at [microrb.com](http://microrb.com/).
 
+## Is it any good
+
+[Yes](https://news.ycombinator.com/item?id=3067434)
+
 ## License
 
 MIT
