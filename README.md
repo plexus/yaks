@@ -118,7 +118,7 @@ Implement `filter(attrs)` to filter out specific attributes, e.g. based on optio
 
 ```ruby
 def filter(attrs)
-  attrs.reject{|attr| options[:exclude].include? attr
+  attrs.reject{|attr| options[:exclude].include? attr }
 end
 ```
 
@@ -170,16 +170,15 @@ Use `has_one` for an association that returns a single object, or `has_many` for
 
 Options
 
-* `:as` : use a different name for the association in the result
 * `:mapper` : Use a specific for each instance, will be derived from the class name if omitted (see Policy vs Configuration)
 * `:collection_mapper` : For mapping the collection as a whole, this defaults to Yaks::CollectionMapper, but you can subclass it for example to add links or attributes on the collection itself
-* `:policy` : supply an alternative Policy object
+* `:rel` : Set the relation (symbol or URI) this association has with the object. Will be derived from the association name and the configured rel_template if ommitted
 
 ## Resources and Serializers
 
 Yaks uses an intermediate "Resource" representation to support multiple output formats. A mapper turns a domain model into a `Yaks::Resource`. A serializer (e.g. `Yaks::HalSerializer`) takes the resource and outputs the structure of the target format.
 
-Since version 0.4 the recommended API is through `Yaks.new {...}.serialize`. This will give you back a composite types consisting of primitives that have a mapping to JSON, so you can use your favorite JSON encoder to turn this into a character stream.
+Since version 0.4 the recommended API is through `Yaks.new {...}.serialize`. This will give you back a composite value consisting of primitives that have a mapping to JSON, so you can use your favorite JSON encoder to turn this into a character stream.
 
 ```ruby
 my_yaks = Yaks.new
@@ -191,11 +190,11 @@ There are at least a handful of JSON libraries and implementations for Ruby out 
 
 ### Yaks::HalSerializer
 
-Serializes to HAL, this is chose by default. In HAL one decides when building an API which links can only be singular (e.g. self), and which are always represented as an array. Yaks defaults to singular as I've found it to be the most common case. If you want specific links to be plural, then configure their rel href as such.
+Serializes to HAL, this is chosen by default. In HAL one decides when building an API which links can only be singular (e.g. self), and which are always represented as an array. Yaks defaults to singular as I've found it to be the most common case. If you want specific links to be plural, then configure their rel href as such.
 
 ```ruby
 hal = Yaks.new do
-  format_options hal, plural_links: ['http://api.example.com/rels/foo']
+  format_options :hal, plural_links: ['http://api.example.com/rels/foo']
 end
 ```
 
@@ -223,13 +222,17 @@ yaks = Yaks.new do
 end
 ```
 
+### More formats
+
+Are planned... at the moment HAL is the only format I actually use, so it's the one that's best supported. Adding formats that follow the resource=(attributes, links, subresources) structure or a subset thereof is straightforward. More features, e.g. forms/actions such as used in Mason might be added in the future.
+
 ## Policy over Configuration
 
 It's an old adage in the Ruby/Rails world to have "Convention over Configuration", mostly to derive values that were not given explicitly. Typically based on things having similar names and a 1-1 derivable relationship.
 
 This saves a lot of typing, but for the uninitiated it can also create confusion, the implicitness makes it hard to follow what's going on.
 
-What's worse, is that often the Configuration part is skimmed over, making it very hard to deviate from the Golden Standard.
+What's worse, is that often the Configuration part is skipped entirely, making it very hard to deviate from the Golden Standard.
 
 There is another old adage, "Policy vs Mechanism". Implement the mechanisms, but don't dictate the policy.
 
@@ -292,6 +295,8 @@ To add a feature
 
 1. Open an issue as soon as possible to gather feedback
 2. Same as above, fork, push to named branch, make a pull-request
+
+Yaks uses [Mutation Testing](https://github.com/mbj/mutant). Run `rake mutant` and look for percentage coverage. In general this should only go up.
 
 ## Lightweight
 
