@@ -282,6 +282,16 @@ Get in touch if you like to see your name and API here.
 
 The mapper syntax is largely borrowed from ActiveModel::Serializers, which in turn closely mimics the syntax of ActiveRecord models. It's a great concise syntax that still offers plenty of flexibility, so to not reinvent the wheel I've stuck to the existing syntax as far as practical, although there are several extensions and deviations.
 
+## Lightweight
+
+Yaks is a lean library. It only depends on a few other tiny libraries (inflection, concord, uri_template). It has no core extensions (monkey patches). There is deliberately no built-in "integration" with existing frameworks, since the API is simply enough. You just call it.
+
+If this approach sounds appealing, have a look at [microrb.com](http://microrb.com/).
+
+## Is it any good
+
+[Yes](https://news.ycombinator.com/item?id=3067434)
+
 ## How to contribute
 
 Run the tests, the examples, try it with your own stuff and leave your impressions in the issues. Or discuss on API-craft.
@@ -300,16 +310,8 @@ To add a feature
 
 Yaks uses [Mutation Testing](https://github.com/mbj/mutant). Run `rake mutant` and look for percentage coverage. In general this should only go up.
 
-## Lightweight
-
-Yaks is a lean library. It only depends on a few other tiny libraries (inflection, concord, uri_template). It has no core extensions (monkey patches). There is deliberately no built-in "integration" with existing frameworks, since the API is simply enough. You just call it.
-
-If this approach sounds appealing, have a look at [microrb.com](http://microrb.com/).
-
-## Is it any good
-
-[Yes](https://news.ycombinator.com/item?id=3067434)
-
 ## License
 
-MIT
+MIT License (Expat License), see [LICENSE](./LICENSE)
+
+![](shaved_yak.gif)
