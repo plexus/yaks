@@ -8,9 +8,11 @@
 [gemnasium]: https://gemnasium.com/plexus/yaks
 [codeclimate]: https://codeclimate.com/github/plexus/yaks
 
-# Yaks
+# Yak Serializers
 
 ### One Stop Hypermedia Shopping ###
+
+*We already did the shaving for you*
 
 Yaks is a tool for turning your domain models into Hypermedia resources.
 

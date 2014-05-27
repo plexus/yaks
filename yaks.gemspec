@@ -7,7 +7,7 @@ Gem::Specification.new do |gem|
   gem.version     = Yaks::VERSION
   gem.authors     = [ 'Arne Brasseur' ]
   gem.email       = [ 'arne@arnebrasseur.net' ]
-  gem.description = 'Serialize to JSON-API and similar'
+  gem.description = 'Serialize to hypermedia. HAL, JSON-API, etc.'
   gem.summary     = gem.description
   gem.homepage    = 'https://github.com/plexus/yaks'
   gem.license     = 'MIT'
