@@ -190,9 +190,9 @@ puts JSON.dump(hal)
 
 There are at least a handful of JSON libraries and implementations for Ruby out there, with different trade-offs. Yaks does not impose an opinion on which one to use
 
-### Yaks::HalSerializer
+### HAL
 
-Serializes to HAL, this is chosen by default. In HAL one decides when building an API which links can only be singular (e.g. self), and which are always represented as an array. Yaks defaults to singular as I've found it to be the most common case. If you want specific links to be plural, then configure their rel href as such.
+This is the default. In HAL one decides when building an API which links can only be singular (e.g. self), and which are always represented as an array. Yaks defaults to singular as I've found it to be the most common case. If you want specific links to be plural, then configure their rel href as such.
 
 ```ruby
 hal = Yaks.new do
@@ -204,7 +204,11 @@ CURIEs are not explicitly supported (yet), but it's possible to use them with so
 
 The line between a singular resource and a collection is fuzzy in HAL. To stick close to the spec you're best to create your own singular types that represent collections, rather than rendering a top level CollectionResource.
 
-### Yaks::JsonApiSerializer
+### JSON-API
+
+```ruby
+default_format :json_api
+```
 
 JSON-API has no concept of outbound links, so these will not be rendered. Instead the key will be inferred from the mapper class name by default. This can be changed per mapper:
 
@@ -223,6 +227,14 @@ yaks = Yaks.new do
   end
 end
 ```
+
+### Collection+JSON
+
+```ruby
+default_format :collection_json
+```
+
+Subresources aren't mapped because Collection+JSON doesn't really have that concept, and the other way around templates and queries don't exist (yet) in Yaks.
 
 ### More formats
 
