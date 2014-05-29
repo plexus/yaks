@@ -1,0 +1,9 @@
+---
+- !ruby/object:Youtypeitwepostit::Message
+  id: 12091295723803341
+  text: "massage"
+  date_posted: "2014-05-29T07:56:58.035Z"
+- !ruby/object:Youtypeitwepostit::Message
+  id: 613856331910938
+  text: "Squid!"
+  date_posted: "2013-03-28T21:51:08.406Z"

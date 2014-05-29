@@ -1,0 +1,45 @@
+{
+    "collection" :
+    {
+        "version" : "1.0",
+        "href" : "http://www.youtypeitwepostit.com/api/",
+
+        "items" :
+        [
+            {
+                "href": "http://www.youtypeitwepostit.com/api/12091295723803341",
+                "data": [
+                    {
+                        "name": "text",
+                        "value": "massage"
+                    },
+                    {
+                        "name": "date_posted",
+                        "value": "2014-05-29T07:56:58.035Z"
+                    }
+                ],
+                "links" :
+                [
+                    { "rel": "profile", "href" : "http://www.youtypeitwepostit.com/profiles/message" }
+                ]
+            },
+            {
+                "href": "http://www.youtypeitwepostit.com/api/613856331910938",
+                "data": [
+                    {
+                        "name": "text",
+                        "value": "Squid!"
+                    },
+                    {
+                        "name": "date_posted",
+                        "value": "2013-03-28T21:51:08.406Z"
+                    }
+                ],
+                "links" :
+                [
+                    { "rel": "profile", "href" : "http://www.youtypeitwepostit.com/profiles/message" }
+                ]
+            }
+        ]
+    }
+}

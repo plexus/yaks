@@ -35,3 +35,12 @@ describe Yaks::JsonApiSerializer do
 
   include_examples 'JSON output format' , config , :json_api , 'confucius'
 end
+
+describe Yaks::CollectionJsonSerializer do
+  config = Yaks.new do
+    default_format :collection_json
+    mapper_namespace Youtypeitwepostit
+  end
+
+  include_examples 'JSON output format' , config , :collection , 'youtypeitwepostit'
+end

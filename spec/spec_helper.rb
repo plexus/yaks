@@ -14,6 +14,7 @@ require_relative 'support/pet_peeve_mapper'
 require_relative 'support/friends_mapper'
 require_relative 'support/fixtures'
 require_relative 'support/shared_contexts'
+require_relative 'support/youtypeit_models_mappers'
 
 def load_json_fixture(name)
   JSON.parse(ROOT.join('spec/json', name + '.json').read)
