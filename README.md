@@ -16,6 +16,8 @@
 
 Yaks is a tool for turning your domain models into Hypermedia resources.
 
+**If you're just starting out with Yaks it is currently recommended to run directly from master until 0.4.0 comes out.**
+
 There are at the moment a number of competing media types for building Hypermedia APIs. These all add a layer of semantics on top of a low level serialization format such as JSON or XML. Even though they each have their own design goals, the core features mostly overlap. They typically provide a way to represent resources (entities), and resource collections, consisting of
 
 * Data in key-value format, possibly with composite values
