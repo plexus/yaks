@@ -7,11 +7,6 @@
 module Yaks
   class HalSerializer < Serializer
 
-    def call
-      serialize_resource(resource)
-    end
-    alias serialize call
-
     protected
 
     def serialize_resource(resource)

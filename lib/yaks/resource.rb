@@ -28,5 +28,11 @@ module Yaks
       false
     end
 
+    def self_link
+      links.find do |link|
+        link.rel == :self
+      end
+    end
+
   end
 end

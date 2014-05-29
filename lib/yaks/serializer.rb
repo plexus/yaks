@@ -13,5 +13,10 @@ module Yaks
       @options  = YAKS_DEFAULT_OPTIONS.merge(options)
     end
 
+    def call
+      serialize_resource(resource)
+    end
+    alias serialize call
+
   end
 end

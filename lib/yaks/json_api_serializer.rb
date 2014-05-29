@@ -14,7 +14,7 @@ module Yaks
       end
       serialized = serialized.merge('linked' => linked)
 
-      Primitivize.( serialized )
+      serialized
     end
     alias serialize call
 

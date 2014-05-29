@@ -14,7 +14,13 @@ module Yaks
     end
 
     def derive_mapper_from_model(model)
-      @options[:namespace].const_get(model.class.name + 'Mapper')
+      if model.respond_to? :to_ary
+        if @options[:namespace].const_defined?(:CollectionMapper)
+          @options[:namespace].const_get(:CollectionMapper)
+        end
+      else
+        @options[:namespace].const_get(model.class.name + 'Mapper')
+      end
     end
 
     def derive_type_from_mapper_class(mapper_class)
