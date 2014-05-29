@@ -19,7 +19,8 @@ module Yaks
           @options[:namespace].const_get(:CollectionMapper)
         end
       else
-        @options[:namespace].const_get(model.class.name + 'Mapper')
+        name = model.class.name.split('::').last
+        @options[:namespace].const_get(name + 'Mapper')
       end
     end
 
