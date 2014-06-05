@@ -17,7 +17,7 @@ module Yaks
       @policy  = policy
     end
 
-    def to_resource
+    def call
       return NullResource.new if subject.nil?
 
       Resource.new(
@@ -27,6 +27,7 @@ module Yaks
         subresources: map_subresources
       )
     end
+    alias to_resource call
 
     def map_attributes
       filter(attributes).each_with_object({}) do |attr, memo|

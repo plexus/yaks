@@ -34,6 +34,10 @@ module Yaks
         config.policy_options[:namespace] = namespace
       end
 
+      def map(*args, &blk)
+        config.primitivize.map(*args, blk)
+      end
+
       DefaultPolicy.public_instance_methods(false).each do |method|
         define_method method do |&blk|
           @policies << proc {
@@ -43,12 +47,13 @@ module Yaks
       end
     end
 
-    attr_accessor :format_options, :default_format, :policy_class, :policy_options
+    attr_accessor :format_options, :default_format, :policy_class, :policy_options, :primitivize
 
     def initialize(&blk)
       @format_options = Hash.new({})
       @default_format = :hal
       @policy_options = {}
+      @primitivize =  Primitivize.create
       DSL.new(self, &blk)
     end
 
@@ -69,7 +74,7 @@ module Yaks
       resource   = mapper.new(model, policy).to_resource
       format     = opts.fetch(:format) { @default_format }
       serialized = serializer_class(format).new(resource, format_options[format]).call
-      Primitivize.call(serialized)
+      primitivize.call(serialized)
     end
   end
 end
