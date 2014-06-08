@@ -34,8 +34,8 @@ module Yaks
         config.policy_options[:namespace] = namespace
       end
 
-      def map(*args, &blk)
-        config.primitivize.map(*args, blk)
+      def map_to_primitive(*args, &blk)
+        config.primitivize.map(*args, &blk)
       end
 
       DefaultPolicy.public_instance_methods(false).each do |method|

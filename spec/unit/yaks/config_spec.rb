@@ -80,4 +80,27 @@ RSpec.describe Yaks::Config do
     end
   end
 
+  describe '#map_to_primitive' do
+    class TheMapper < Yaks::Mapper
+      attributes :a_date
+    end
+
+    TheModel = Struct.new(:a_date)
+
+    configure do
+      map_to_primitive Date do |object|
+        object.iso8601
+      end
+    end
+
+    let(:model) {
+      TheModel.new(Date.new(2014, 5, 6))
+    }
+
+    specify do
+      expect(config.serialize(model, mapper: TheMapper)).to eq({"a_date"=>"2014-05-06"})
+    end
+
+  end
+
 end
