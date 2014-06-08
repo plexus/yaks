@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Yaks::Mapper::HasMany do
+RSpec.describe Yaks::Mapper::HasMany do
   let(:closet_mapper) do
     Class.new(Yaks::Mapper) do
       has_many :shoes,

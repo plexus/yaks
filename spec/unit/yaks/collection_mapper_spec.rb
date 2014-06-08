@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Yaks::CollectionMapper do
+RSpec.describe Yaks::CollectionMapper do
   include_context 'fixtures'
 
   subject(:mapper) { described_class.new(collection, resource_mapper, policy) }

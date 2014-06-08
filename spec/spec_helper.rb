@@ -1,4 +1,5 @@
 require 'pathname'
+require 'rspec/its'
 
 ROOT = Pathname(__FILE__).join('../..')
 
@@ -26,4 +27,6 @@ end
 
 RSpec.configure do |rspec|
   rspec.backtrace_exclusion_patterns = [] if ENV['FULLSTACK']
+  #rspec.disable_monkey_patching!
+  rspec.raise_errors_for_deprecations!
 end

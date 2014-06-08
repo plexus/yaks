@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Yaks::CollectionResource do
+RSpec.describe Yaks::CollectionResource do
   subject(:collection) { described_class.new(init_opts) }
   let(:init_opts) { {} }
 

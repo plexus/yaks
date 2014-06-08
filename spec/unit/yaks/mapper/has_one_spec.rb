@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Yaks::Mapper::HasOne do
+RSpec.describe Yaks::Mapper::HasOne do
   AuthorMapper = Class.new(Yaks::Mapper) { attributes :name }
 
   let(:name)     { 'William S. Burroughs' }

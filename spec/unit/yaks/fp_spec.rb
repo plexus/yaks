@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Yaks::FP do
+RSpec.describe Yaks::FP do
   include described_class
 
   describe '#curry_method' do

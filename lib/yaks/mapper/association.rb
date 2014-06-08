@@ -32,6 +32,10 @@ module Yaks
         policy.derive_mapper_from_association(self)
       end
 
+      # @abstract
+      def map_resource(object, policy)
+      end
+
     end
   end
 end

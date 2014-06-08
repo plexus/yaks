@@ -22,7 +22,8 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'uri_template' , '~> 0.6.0'
 
   gem.add_development_dependency 'virtus'
-  gem.add_development_dependency 'rspec', '~> 2.14'
+  gem.add_development_dependency 'rspec', '~> 3.0'
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'mutant-rspec'
+  gem.add_development_dependency 'rspec-its'
 end

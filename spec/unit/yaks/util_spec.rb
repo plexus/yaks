@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Yaks::Util do
+RSpec.describe Yaks::Util do
   include Yaks::Util
 
   describe '#Resolve' do

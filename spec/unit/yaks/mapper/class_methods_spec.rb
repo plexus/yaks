@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Yaks::Mapper::ClassMethods do
+RSpec.describe Yaks::Mapper::ClassMethods do
   subject { Class.new { extend Yaks::Mapper::ClassMethods } }
 
   describe 'attributes' do

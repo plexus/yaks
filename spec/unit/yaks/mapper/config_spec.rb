@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Yaks::Mapper::Config do
+RSpec.describe Yaks::Mapper::Config do
   Undefined = Yaks::Undefined
 
   subject(:config) { described_class.new(nil, [], [], []) }

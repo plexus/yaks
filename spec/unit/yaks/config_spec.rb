@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Yaks::Config do
+RSpec.describe Yaks::Config do
   include_context 'fixtures'
 
   def self.configure(&blk)

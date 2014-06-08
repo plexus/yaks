@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Yaks::Mapper::Association do
+RSpec.describe Yaks::Mapper::Association do
   include Yaks::FP
 
   let(:name)              { :shoes       }
@@ -8,16 +8,14 @@ describe Yaks::Mapper::Association do
   let(:rel)               { Yaks::Undefined }
   let(:collection_mapper) { Yaks::Undefined }
   let(:parent_mapper)     { Yaks::Undefined }
-  let(:map_resource)      { Yaks::FP::I }
-  let(:lookup)            { Yaks::FP::I }
+  let(:map_resource)      { ->(obj, policy) {} }
+  let(:lookup)            { ->(*) {} }
   let(:policy)            { Yaks::DefaultPolicy.new }
 
   its(:name) { should equal :shoes }
 
   subject(:association) do
-    described_class
-      .new(name, mapper, rel, collection_mapper)
-      .tap &send_with_args(:stub, :map_resource, &map_resource)
+    described_class.new(name, mapper, rel, collection_mapper)
   end
 
   describe '#map_to_resource_pair' do

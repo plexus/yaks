@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Mapping domain models to Resource objects' do
+RSpec.describe 'Mapping domain models to Resource objects' do
   include_context 'fixtures'
 
   subject { mapper.to_resource }

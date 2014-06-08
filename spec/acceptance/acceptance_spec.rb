@@ -4,7 +4,7 @@ require 'json'
 
 require_relative './models'
 
-shared_examples_for 'JSON output format' do |yaks, format, name|
+RSpec.shared_examples_for 'JSON output format' do |yaks, format, name|
   let(:input)  { load_yaml_fixture name }
   let(:output) { load_json_fixture "#{name}.#{format}" }
 
@@ -13,7 +13,7 @@ shared_examples_for 'JSON output format' do |yaks, format, name|
   it { should eql output }
 end
 
-describe Yaks::HalSerializer do
+RSpec.describe Yaks::HalSerializer do
   yaks_rel_template = Yaks.new do
     rel_template "http://literature.example.com/rel/{association_name}"
   end
@@ -28,7 +28,7 @@ describe Yaks::HalSerializer do
   include_examples 'JSON output format' , yaks_policy_dsl      , :hal      , 'confucius'
 end
 
-describe Yaks::JsonApiSerializer do
+RSpec.describe Yaks::JsonApiSerializer do
   config = Yaks.new do
     default_format :json_api
   end
@@ -36,7 +36,7 @@ describe Yaks::JsonApiSerializer do
   include_examples 'JSON output format' , config , :json_api , 'confucius'
 end
 
-describe Yaks::CollectionJsonSerializer do
+RSpec.describe Yaks::CollectionJsonSerializer do
   config = Yaks.new do
     default_format :collection_json
     mapper_namespace Youtypeitwepostit
