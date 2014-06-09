@@ -78,24 +78,18 @@ RSpec.describe Yaks::Mapper::Link do
 
     its(:rel) { should eq :next }
 
+    let(:object) { Struct.new(:x,:y).new(3,4) }
+
     let(:mapper) do
-      double(Yaks::Mapper)
+      Yaks::Mapper.new(object, nil)
     end
 
     context 'with attributes' do
-      before do
-        expect(mapper).to receive(:load_attribute)
-          .with(:x).and_return(3)
-        expect(mapper).to receive(:load_attribute)
-          .with(:y).and_return(4)
-      end
-
       it 'should not have a title' do
         expect(resource_link.options.key?(:title)).to be false
       end
 
       it 'should not be templated' do
-        expect(mapper).to receive(:load_attribute) {|a| {:x => 3, :y => 4}[a] }.twice
         expect(resource_link.options[:templated]).to be_falsey
       end
 
