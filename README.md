@@ -178,6 +178,34 @@ Options
 * `:collection_mapper` : For mapping the collection as a whole, this defaults to Yaks::CollectionMapper, but you can subclass it for example to add links or attributes on the collection itself
 * `:rel` : Set the relation (symbol or URI) this association has with the object. Will be derived from the association name and the configured rel_template if ommitted
 
+## Custom attribute/link/subresource handling
+
+When inheriting from `Yaks::Mapper`, you can override `map_attributes`, `map_links` and `map_resources` to skip (or augment) above methods, and instead implement your own custom mechanism. For example
+
+```ruby
+class ErrorMapper < Yaks::Mapper
+  link :profile, '/api/error'
+
+  def map_attributes
+    attrs = {
+      http_code: 500,
+      message: object.to_s,
+      type: object.class.name.underscore
+    }
+
+    case object
+    when AllocationException
+      attrs[:http_code] = 422
+    when ActiveRecord::RecordNotFound
+      attrs[:http_code] = 404
+      attrs[:type] = "record_not_found"
+    end
+
+    attrs
+  end
+end
+```
+
 ## Resources and Serializers
 
 Yaks uses an intermediate "Resource" representation to support multiple output formats. A mapper turns a domain model into a `Yaks::Resource`. A serializer (e.g. `Yaks::HalSerializer`) takes the resource and outputs the structure of the target format.
