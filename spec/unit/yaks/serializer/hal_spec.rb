@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Yaks::HalSerializer do
+RSpec.describe Yaks::Serializer::Hal do
   include_context 'plant collection resource'
 
   subject { Yaks::Primitivize.create.call(described_class.new(resource).serialize) }

@@ -61,19 +61,31 @@ module Yaks
       @policy_class.new(@policy_options)
     end
 
-    def serializer_class(format)
-      Yaks.const_get("#{Util.camelize(format.to_s)}Serializer")
+    def serializer_class(opts, env)
+      if env.key? 'HTTP_ACCEPT'
+        accept = Rack::Accept::Charset.new(env['HTTP_ACCEPT'])
+        mime_type = accept.best_of(Yaks::Serializer.mime_types)
+        return Yaks::Serializer.by_mime_type(mime_type) if mime_type
+      end
+      Yaks::Serializer.by_name(opts.fetch(:format) { @default_format })
+    end
+
+    def format_name(opts)
+      opts.fetch(:format) { @default_format }
     end
 
     def options_for_format(format)
       format_options[format]
     end
 
-    def serialize(model, opts = {})
+    # model                => Yaks::Resource
+    # Yaks::Resource       => serialized structure
+    # serialized structure => serialized flat
+
+    def serialize(model, opts = {}, env = {})
       mapper     = opts.fetch(:mapper) { policy.derive_mapper_from_model(model) }
       resource   = mapper.new(model, policy).to_resource
-      format     = opts.fetch(:format) { @default_format }
-      serialized = serializer_class(format).new(resource, format_options[format]).call
+      serialized = serializer_class(opts, env).new(resource, format_options[format_name(opts)]).call
       primitivize.call(serialized)
     end
   end

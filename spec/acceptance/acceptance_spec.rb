@@ -13,7 +13,7 @@ RSpec.shared_examples_for 'JSON output format' do |yaks, format, name|
   it { should eql output }
 end
 
-RSpec.describe Yaks::HalSerializer do
+RSpec.describe Yaks::Serializer::Hal do
   yaks_rel_template = Yaks.new do
     rel_template "http://literature.example.com/rel/{association_name}"
   end
@@ -28,7 +28,7 @@ RSpec.describe Yaks::HalSerializer do
   include_examples 'JSON output format' , yaks_policy_dsl      , :hal      , 'confucius'
 end
 
-RSpec.describe Yaks::JsonApiSerializer do
+RSpec.describe Yaks::Serializer::JsonApi do
   config = Yaks.new do
     default_format :json_api
   end
@@ -36,7 +36,7 @@ RSpec.describe Yaks::JsonApiSerializer do
   include_examples 'JSON output format' , config , :json_api , 'confucius'
 end
 
-RSpec.describe Yaks::CollectionJsonSerializer do
+RSpec.describe Yaks::Serializer::CollectionJson do
   config = Yaks.new do
     default_format :collection_json
     mapper_namespace Youtypeitwepostit
