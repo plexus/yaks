@@ -284,7 +284,7 @@ In Yaks whenever missing values need to be inferred, like finding an unspecified
 
 ```ruby
 yaks = Yaks.new do
-  derive_mapper_from_model do |model|
+  derive_mapper_from_object do |model|
     # ...
   end
 

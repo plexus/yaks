@@ -8,17 +8,23 @@ module Yaks
     def_delegators 'self.class', :config
     def_delegators :config, :attributes, :links, :associations
 
-    attr_reader :subject, :policy
-    private :subject
-    alias object subject
+    attr_reader :object, :context
 
-    def initialize(subject, policy)
-      @subject = subject
-      @policy  = policy
+    def initialize(object, context)
+      @object  = object
+      @context = context
+    end
+
+    def policy
+      context.fetch(:policy)
+    end
+
+    def env
+      context.fetch(:env)
     end
 
     def call
-      return NullResource.new if subject.nil?
+      return NullResource.new if object.nil?
 
       Resource.new(
         type:         mapper_name,
@@ -43,17 +49,17 @@ module Yaks
       attributes   = filter(associations.map(&:name))
       associations = associations().select{|assoc| attributes.include? assoc.name }
       associations.each_with_object({}) do |association, memo|
-        rel, subresource = association.map_to_resource_pair(
+        rel, subresource = association.create_subresource(
           self,
           method(:load_association),
-          policy
+          context
         )
         memo[rel] = subresource
       end
     end
 
     def load_attribute(name)
-      respond_to?(name) ? public_send(name) : subject.public_send(name)
+      respond_to?(name) ? public_send(name) : object.public_send(name)
     end
     alias load_association load_attribute
 

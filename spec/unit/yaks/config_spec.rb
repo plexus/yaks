@@ -76,7 +76,7 @@ RSpec.describe Yaks::Config do
     end
 
     specify do
-      expect(config.policy.derive_mapper_from_model(boingboing)).to eql(MyMappers::PetMapper)
+      expect(config.policy.derive_mapper_from_object(boingboing)).to eql(MyMappers::PetMapper)
     end
   end
 

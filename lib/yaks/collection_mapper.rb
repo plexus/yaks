@@ -2,12 +2,15 @@
 
 module Yaks
   class CollectionMapper < Mapper
-    attr_reader :collection, :resource_mapper
-    alias collection subject
+    attr_reader :collection
+    alias collection object
 
-    def initialize(collection, resource_mapper = Undefined, policy)
-      super(collection, policy)
-      @resource_mapper = resource_mapper
+    def initialize(collection, context)
+      super(collection, context)
+    end
+
+    def resource_mapper
+      context[:resource_mapper]
     end
 
     def to_resource
@@ -16,7 +19,7 @@ module Yaks
         links: map_links,
         attributes: map_attributes,
         members: collection.map do |obj|
-          mapper_for_model(obj).new(obj, policy).to_resource
+          mapper_for_model(obj).new(obj, context).to_resource
         end
       )
     end
@@ -24,13 +27,14 @@ module Yaks
     private
 
     def collection_type
-      return if resource_mapper.equal? Undefined
+      return unless context.key?(:resource_mapper)
       resource_mapper.config.type || policy.derive_type_from_mapper_class(resource_mapper)
     end
 
     def mapper_for_model(model)
-      return resource_mapper unless resource_mapper.equal? Undefined
-      policy.derive_mapper_from_model(model)
+      context.fetch(:resource_mapper) do
+        policy.derive_mapper_from_object(model)
+      end
     end
   end
 end

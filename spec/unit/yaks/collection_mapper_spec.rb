@@ -3,7 +3,13 @@ require 'spec_helper'
 RSpec.describe Yaks::CollectionMapper do
   include_context 'fixtures'
 
-  subject(:mapper) { described_class.new(collection, resource_mapper, policy) }
+  subject(:mapper) { described_class.new(collection, context) }
+  let(:context) {
+    { resource_mapper: resource_mapper,
+      policy: policy,
+      env: {}
+    }
+  }
   let(:collection) { [] }
   let(:resource_mapper) { Class.new(Yaks::Mapper) { type 'the_type' } }
   let(:policy) { Yaks::DefaultPolicy.new }
@@ -38,7 +44,7 @@ RSpec.describe Yaks::CollectionMapper do
     subject(:mapper) {
       Class.new(Yaks::CollectionMapper) do
         attributes :foo, :bar
-      end.new(collection, resource_mapper, policy)
+      end.new(collection, context)
     }
 
     let(:collection) {
@@ -62,7 +68,7 @@ RSpec.describe Yaks::CollectionMapper do
     subject(:mapper) {
       Class.new(Yaks::CollectionMapper) do
         link :self, 'http://api.example.com/orders'
-      end.new(collection, resource_mapper, policy)
+      end.new(collection, context)
     }
 
     its(:to_resource) {

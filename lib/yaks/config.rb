@@ -82,9 +82,13 @@ module Yaks
     # Yaks::Resource       => serialized structure
     # serialized structure => serialized flat
 
-    def serialize(model, opts = {}, env = {})
-      mapper     = opts.fetch(:mapper) { policy.derive_mapper_from_model(model) }
-      resource   = mapper.new(model, policy).to_resource
+    def serialize(object, opts = {}, env = {})
+      context = {
+        policy: policy,
+        env: env
+      }
+      mapper     = opts.fetch(:mapper) { policy.derive_mapper_from_object(object) }
+      resource   = mapper.new(object, context).to_resource
       serialized = serializer_class(opts, env).new(resource, format_options[format_name(opts)]).call
       primitivize.call(serialized)
     end

@@ -19,7 +19,7 @@ RSpec.describe Yaks::Mapper::HasMany do
   }
 
   it 'should map the subresources' do
-    expect(closet_mapper.new(closet, Yaks::DefaultPolicy.new).map_subresources).to eql(
+    expect(closet_mapper.new(closet, policy: Yaks::DefaultPolicy.new, env: {}).map_subresources).to eql(
       "http://foo/shoes" => Yaks::CollectionResource.new(
         type: 'shoes',
         members: [

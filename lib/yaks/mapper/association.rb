@@ -12,13 +12,12 @@ module Yaks
 
       # @param [#call] lookup
       #   A callable that can retrieve an association by its name
-      # @param [Hash] options
       # @return Array[rel, resource]
       #   Returns the rel (registered type or URI) + the associated, mapped resource
-      def map_to_resource_pair(parent_mapper, lookup, policy)
+      def create_subresource(parent_mapper, lookup, context)
         [
-          map_rel(parent_mapper, policy),
-          map_resource(lookup[name], policy)
+          map_rel(parent_mapper, context.fetch(:policy)),
+          map_resource(lookup[name], context)
         ]
       end
 
@@ -33,7 +32,7 @@ module Yaks
       end
 
       # @abstract
-      def map_resource(object, policy)
+      def map_resource(object, context)
       end
 
     end

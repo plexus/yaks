@@ -13,7 +13,7 @@ module Yaks
       @options = DEFAULTS.merge(options)
     end
 
-    def derive_mapper_from_model(model)
+    def derive_mapper_from_object(model)
       if model.respond_to? :to_ary
         if @options[:namespace].const_defined?(:CollectionMapper)
           @options[:namespace].const_get(:CollectionMapper)

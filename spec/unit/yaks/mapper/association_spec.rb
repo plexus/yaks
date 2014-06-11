@@ -11,6 +11,7 @@ RSpec.describe Yaks::Mapper::Association do
   let(:map_resource)      { ->(obj, policy) {} }
   let(:lookup)            { ->(*) {} }
   let(:policy)            { Yaks::DefaultPolicy.new }
+  let(:context)           { { policy: policy, env: {} } }
 
   its(:name) { should equal :shoes }
 
@@ -18,9 +19,9 @@ RSpec.describe Yaks::Mapper::Association do
     described_class.new(name, mapper, rel, collection_mapper)
   end
 
-  describe '#map_to_resource_pair' do
+  describe '#create_subresource' do
     subject(:resource_pair) do
-      association.map_to_resource_pair(parent_mapper, lookup, policy)
+      association.create_subresource(parent_mapper, lookup, context)
     end
 
     context 'with a rel specified' do
@@ -47,7 +48,7 @@ RSpec.describe Yaks::Mapper::Association do
     it 'should delegate to the map_resource method, to be overridden in child classes' do
       expect(association)
         .to receive(:map_resource)
-        .with('unmapped resource', policy)
+        .with('unmapped resource', context)
         .and_return('mapped resource')
 
       expect(resource_pair[1]).to eql 'mapped resource'
