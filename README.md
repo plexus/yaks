@@ -12,7 +12,7 @@
 
 ### One Stop Hypermedia Shopping ###
 
-*We already did the shaving for you*
+*We did the shaving for you*
 
 Yaks is a tool for turning your domain models into Hypermedia resources.
 
@@ -208,7 +208,7 @@ end
 
 ## Resources and Serializers
 
-Yaks uses an intermediate "Resource" representation to support multiple output formats. A mapper turns a domain model into a `Yaks::Resource`. A serializer (e.g. `Yaks::HalSerializer`) takes the resource and outputs the structure of the target format.
+Yaks uses an intermediate "Resource" representation to support multiple output formats. A mapper turns a domain model into a `Yaks::Resource`. A serializer (e.g. `Yaks::Serializer::Hal`) takes the resource and outputs the structure of the target format.
 
 Since version 0.4 the recommended API is through `Yaks.new {...}.serialize`. This will give you back a composite value consisting of primitives that have a mapping to JSON, so you can use your favorite JSON encoder to turn this into a character stream.
 
