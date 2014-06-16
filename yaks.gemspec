@@ -23,9 +23,10 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'rack-accept'  , '~> 0.4.5'
 
   gem.add_development_dependency 'virtus'
-  gem.add_development_dependency 'rspec', '~> 3.0'
+  gem.add_development_dependency 'rspec', '~> 2.99'
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'mutant-rspec'
+  gem.add_development_dependency 'mutant', '0.5.12'
   gem.add_development_dependency 'rspec-its'
   gem.add_development_dependency 'benchmark-ips'
 end

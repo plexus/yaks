@@ -1,10 +1,18 @@
-# v0.4.0 (unreleased)
+# v0.4.0
+
+* Introduce after {} post-processing hook
+* Streamline interfaces and variable names
+* Improve deriving mappers automatically, even with Rails style autoloading
+* Give CollectionResource a members_rel, for HAL-like formats with no top-level collection concept
+* Switch back to using `src` and `dest` as the rel-template keys
+
+# v0.4.0.rc1
 
 * Introduce Yaks.new as the main public interface
 * Fix JsonApiSerializer and make it compliant with current spec
 * Remove Hamster dependency, Yaks new uses plain old Ruby arrays and hashes
-* Remove RelRegistry and ProfileRegistry in favor of a simpler explicit syntax + policy based fallback
-* Add more policy derivation hooks, plus make DefaultPolicy template for rel urls configurable
+* Remove `RelRegistry` and `ProfileRegistry` in favor of a simpler explicit syntax + policy based fallback
+* Add more policy derivation hooks, plus make `DefaultPolicy` template for rel urls configurable
 * Optionally take a Rack env hash, pass it around so mappers can inspect it
 * Honor the HTTP Accept header if it is present in the rack env
 * Add map_to_primitive configuration option

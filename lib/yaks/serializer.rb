@@ -24,7 +24,7 @@ module Yaks
         @serializers[name] = klass
 
         @mime_types  ||= {}
-        @mime_types[mime_type] = klass
+        @mime_types[mime_type] = [name, klass]
       end
 
       def by_name(name)
@@ -32,11 +32,11 @@ module Yaks
       end
 
       def by_mime_type(mime_type)
-        @mime_types.fetch(mime_type)
+        @mime_types.fetch(mime_type)[1]
       end
 
       def mime_types
-        @mime_types.keys
+        @mime_types.inject({}) {|memo, (mime_type, (name, _))| memo[name] = mime_type ; memo }
       end
     end
   end

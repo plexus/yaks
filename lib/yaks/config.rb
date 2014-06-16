@@ -33,9 +33,14 @@ module Yaks
       def mapper_namespace(namespace)
         config.policy_options[:namespace] = namespace
       end
+      alias namespace mapper_namespace
 
       def map_to_primitive(*args, &blk)
         config.primitivize.map(*args, &blk)
+      end
+
+      def after(&block)
+        config.steps << block
       end
 
       DefaultPolicy.public_instance_methods(false).each do |method|
@@ -47,13 +52,14 @@ module Yaks
       end
     end
 
-    attr_accessor :format_options, :default_format, :policy_class, :policy_options, :primitivize
+    attr_accessor :format_options, :default_format, :policy_class, :policy_options, :primitivize, :steps
 
     def initialize(&blk)
       @format_options = Hash.new({})
       @default_format = :hal
       @policy_options = {}
-      @primitivize =  Primitivize.create
+      @primitivize    = Primitivize.create
+      @steps          = [ @primitivize ]
       DSL.new(self, &blk)
     end
 
@@ -64,7 +70,7 @@ module Yaks
     def serializer_class(opts, env)
       if env.key? 'HTTP_ACCEPT'
         accept = Rack::Accept::Charset.new(env['HTTP_ACCEPT'])
-        mime_type = accept.best_of(Yaks::Serializer.mime_types)
+        mime_type = accept.best_of(Yaks::Serializer.mime_types.values)
         return Yaks::Serializer.by_mime_type(mime_type) if mime_type
       end
       Yaks::Serializer.by_name(opts.fetch(:format) { @default_format })
@@ -82,15 +88,16 @@ module Yaks
     # Yaks::Resource       => serialized structure
     # serialized structure => serialized flat
 
-    def serialize(object, opts = {}, env = {})
+    def call(object, opts = {}, env = {})
       context = {
         policy: policy,
         env: env
       }
       mapper     = opts.fetch(:mapper) { policy.derive_mapper_from_object(object) }
-      resource   = mapper.new(object, context).to_resource
+      resource   = mapper.new(context).call(object)
       serialized = serializer_class(opts, env).new(resource, format_options[format_name(opts)]).call
-      primitivize.call(serialized)
+      steps.inject(serialized) {|memo, step| step.call(memo) }
     end
+    alias serialize call
   end
 end

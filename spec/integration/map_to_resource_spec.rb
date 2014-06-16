@@ -3,8 +3,8 @@ require 'spec_helper'
 RSpec.describe 'Mapping domain models to Resource objects' do
   include_context 'fixtures'
 
-  subject { mapper.to_resource }
-  let(:mapper) { FriendMapper.new(john, policy: Yaks::DefaultPolicy.new, env: {}) }
+  subject { mapper.call(john) }
+  let(:mapper) { FriendMapper.new(policy: Yaks::DefaultPolicy.new, env: {}) }
 
   it { should be_a Yaks::Resource }
   its(:type)         { should eql 'friend' }
@@ -19,7 +19,8 @@ RSpec.describe 'Mapping domain models to Resource objects' do
         members: [
           Yaks::Resource.new(type: 'pet', attributes: {:id => 2, :species => "dog", :name => "boingboing"}),
           Yaks::Resource.new(type: 'pet', attributes: {:id => 3, :species => "cat", :name => "wassup"})
-        ]
+        ],
+        members_rel: 'rel:src=collection&dest=pets'
       )
     )
   }

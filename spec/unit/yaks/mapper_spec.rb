@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 RSpec.describe Yaks::Mapper do
-  subject(:mapper)       { mapper_class.new(instance, context) }
+  subject(:mapper)   { mapper_class.new(context) }
+  let(:resource)     { mapper.call(instance) }
 
   let(:mapper_class) { Class.new(Yaks::Mapper) { type 'foo' } }
   let(:instance)     { double(foo: 'hello', bar: 'world') }
@@ -19,7 +20,7 @@ RSpec.describe Yaks::Mapper do
     end
 
     it 'should load them from the model' do
-      expect(mapper.map_attributes).to eq(foo: 'hello', bar: 'world')
+      expect(resource.attributes).to eq(foo: 'hello', bar: 'world')
     end
 
     context 'with attribute filtering' do
@@ -32,7 +33,7 @@ RSpec.describe Yaks::Mapper do
       end
 
       it 'should only map the non-filtered attributes' do
-        expect(mapper.map_attributes).to eq(:bar => 'world')
+        expect(resource.attributes).to eq(:bar => 'world')
       end
     end
   end
@@ -43,13 +44,13 @@ RSpec.describe Yaks::Mapper do
     end
 
     it 'should map the link' do
-      expect(mapper.map_links).to eq [
+      expect(resource.links).to eq [
         Yaks::Resource::Link.new(:profile, 'http://foo/bar', {})
       ]
     end
 
     it 'should use the link in the resource' do
-      expect(mapper.to_resource.links).to include Yaks::Resource::Link.new(:profile, 'http://foo/bar', {})
+      expect(resource.links).to include Yaks::Resource::Link.new(:profile, 'http://foo/bar', {})
     end
 
     context 'with the same link rel defined multiple times' do
@@ -62,7 +63,7 @@ RSpec.describe Yaks::Mapper do
       end
 
       it 'should map all the links' do
-        expect(mapper.map_links).to eq [
+        expect(resource.links).to eq [
           Yaks::Resource::Link.new(:profile, 'http://foo/bar', {}),
           Yaks::Resource::Link.new(:self, 'http://foo/bam', {}),
           Yaks::Resource::Link.new(:self, 'http://foo/baz', {}),
@@ -91,12 +92,12 @@ RSpec.describe Yaks::Mapper do
 
 
       it 'should have the subresource in the resource' do
-        expect(mapper.to_resource.subresources).to eq("http://foo.bar/rels/widgets" => Yaks::Resource.new(type: 'widget', attributes: {:type => "super_widget"}))
+        expect(resource.subresources).to eq("http://foo.bar/rels/widgets" => Yaks::Resource.new(type: 'widget', attributes: {:type => "super_widget"}))
       end
 
       context 'with explicit mapper and rel' do
         it 'should delegate to the given mapper' do
-          expect(mapper.map_subresources).to eq(
+          expect(resource.subresources).to eq(
             "http://foo.bar/rels/widgets" => Yaks::Resource.new(type: 'widget', attributes: {:type => "super_widget"})
           )
         end
@@ -112,7 +113,7 @@ RSpec.describe Yaks::Mapper do
             expect(assoc).to be_a Yaks::Mapper::HasOne
             widget_mapper
           }
-          expect(mapper.map_subresources).to eq(
+          expect(resource.subresources).to eq(
             "http://foo.bar/rels/widgets" => Yaks::Resource.new(type: 'widget', attributes: {:type => "super_widget"})
           )
         end
@@ -129,7 +130,7 @@ RSpec.describe Yaks::Mapper do
             expect(assoc).to be_a Yaks::Mapper::HasOne
             'http://rel/rel'
           }
-          expect(mapper.map_subresources).to eq(
+          expect(resource.subresources).to eq(
             "http://rel/rel" => Yaks::Resource.new(type: 'widget', attributes: {:type => "super_widget"})
           )
         end
@@ -143,7 +144,7 @@ RSpec.describe Yaks::Mapper do
         end
 
         it 'should not map the resource' do
-          expect(mapper.map_subresources).to eq({})
+          expect(resource.subresources).to eq({})
         end
       end
     end
@@ -162,16 +163,14 @@ RSpec.describe Yaks::Mapper do
       end
 
       it 'should get the attribute from the mapper' do
-        expect(mapper.map_attributes).to eq(fooattr: 'hello my friend', bar: 'world')
+        expect(resource.attributes).to eq(fooattr: 'hello my friend', bar: 'world')
       end
     end
   end
 
-  describe '#to_resource' do
-    let(:instance) { nil }
-
+  describe '#call' do
     it 'should return a NullResource when the subject is nil' do
-      expect(mapper.to_resource).to be_a Yaks::NullResource
+      expect(mapper.call(nil)).to be_a Yaks::NullResource
     end
   end
 end

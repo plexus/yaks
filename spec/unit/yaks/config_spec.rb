@@ -56,12 +56,12 @@ RSpec.describe Yaks::Config do
 
   describe '#serialize' do
     configure do
-      rel_template 'http://api.mysuperfriends.com/{association_name}'
+      rel_template 'http://api.mysuperfriends.com/{dest}'
       format_options :hal, plural_links: [:copyright]
     end
 
     specify do
-      expect(config.serialize(john)).to eql(load_json_fixture 'john.hal')
+      expect(config.call(john)).to eql(load_json_fixture 'john.hal')
     end
   end
 

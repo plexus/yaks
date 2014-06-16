@@ -4,7 +4,7 @@
       "self" : { "href" : "http://api.example.com/plants" }
   },
    "_embedded" : {
-      "http://api.example.com/doc/plant_collection" : [
+      "http://api.example.com/rels/plants" : [
          {
             "_links" : {
                "profile" : { "href" : "http://api.example.com/doc/plant" },

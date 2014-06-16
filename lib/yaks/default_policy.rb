@@ -3,7 +3,7 @@ module Yaks
     include Util
 
     DEFAULTS = {
-      rel_template: "rel:src={mapper_name}&dest={association_name}",
+      rel_template: "rel:src={src}&dest={dest}",
       namespace: Kernel
     }
 
@@ -15,11 +15,18 @@ module Yaks
 
     def derive_mapper_from_object(model)
       if model.respond_to? :to_ary
-        if @options[:namespace].const_defined?(:CollectionMapper)
-          @options[:namespace].const_get(:CollectionMapper)
-        else
-          Yaks::CollectionMapper
+        if m = model.first
+          name = m.class.name.split('::').last + 'CollectionMapper'
+          begin
+            return @options[:namespace].const_get(name)
+          rescue NameError
+          end
         end
+        begin
+          return @options[:namespace].const_get(:CollectionMapper)
+        rescue NameError
+        end
+        Yaks::CollectionMapper
       else
         name = model.class.name.split('::').last
         @options[:namespace].const_get(name + 'Mapper')
@@ -27,19 +34,22 @@ module Yaks
     end
 
     def derive_type_from_mapper_class(mapper_class)
-      underscore(mapper_class.to_s.sub(/Mapper$/, ''))
+      underscore(mapper_class.name.split('::').last.sub(/Mapper$/, ''))
     end
 
     def derive_mapper_from_association(association)
-      Object.const_get("#{camelize(singularize(association.name.to_s))}Mapper")
+      @options[:namespace].const_get("#{camelize(singularize(association.name.to_s))}Mapper")
     end
 
     def derive_rel_from_association(mapper, association)
-      URITemplate.new(@options[:rel_template]).expand(
-        mapper_name: derive_type_from_mapper_class(mapper.class),
-        association_name: association.name
-      )
+      expand_rel( derive_type_from_mapper_class(mapper.class), association.name )
     end
 
+    def expand_rel(src_name, dest_name)
+      URITemplate.new(@options[:rel_template]).expand(
+        src: src_name,
+        dest: dest_name
+      )
+    end
   end
 end

@@ -1,10 +1,10 @@
 module Yaks
   class Mapper
     class HasOne < Association
-      def map_resource(instance, context)
+      def map_resource(object, context)
         association_mapper(context.fetch(:policy))
-          .new(instance, context)
-          .to_resource
+          .new(context)
+          .call(object)
       end
     end
   end

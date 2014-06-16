@@ -10,8 +10,7 @@ module Yaks
 
     attr_reader :object, :context
 
-    def initialize(object, context)
-      @object  = object
+    def initialize(context)
       @context = context
     end
 
@@ -23,7 +22,9 @@ module Yaks
       context.fetch(:env)
     end
 
-    def call
+    def call(object)
+      @object = object
+
       return NullResource.new if object.nil?
 
       Resource.new(
@@ -33,7 +34,6 @@ module Yaks
         subresources: map_subresources
       )
     end
-    alias to_resource call
 
     def map_attributes
       filter(attributes).each_with_object({}) do |attr, memo|

@@ -50,7 +50,7 @@ RSpec.describe Yaks::CollectionResource do
     }
 
     its(:subresources) { should eql(
-        'http://rels/collection' => Yaks::CollectionResource.new(
+        'members' => Yaks::CollectionResource.new(
           type: 'order',
           attributes: { total: 10.00 },
           links: [
@@ -63,7 +63,7 @@ RSpec.describe Yaks::CollectionResource do
               links: [Yaks::Resource::Link.new(:self, 'http://order/10', {})],
               attributes: { customer: 'John Doe', price: 10.00 }
             )
-          ]
+          ],
         )
       )
     }
