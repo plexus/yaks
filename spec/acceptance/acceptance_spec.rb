@@ -1,6 +1,4 @@
 require 'spec_helper'
-require 'yaml'
-require 'json'
 
 require_relative './models'
 

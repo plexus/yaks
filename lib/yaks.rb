@@ -2,6 +2,7 @@
 
 require 'forwardable'
 require 'set'
+require 'pathname'
 
 require 'concord'
 require 'inflection'
@@ -16,6 +17,7 @@ require 'yaks/default_policy'
 
 module Yaks
   Undefined = Object.new
+  Root = Pathname(__FILE__).join('../..')
 
   YAKS_DEFAULT_OPTIONS = {
     singular_links: [:self, :profile]
