@@ -17,6 +17,8 @@ module Yaks
       if model.respond_to? :to_ary
         if @options[:namespace].const_defined?(:CollectionMapper)
           @options[:namespace].const_get(:CollectionMapper)
+        else
+          Yaks::CollectionMapper
         end
       else
         name = model.class.name.split('::').last
