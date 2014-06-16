@@ -314,6 +314,30 @@ yaks = Yaks.new do
 end
 ```
 
+## Primitives
+
+For JSON based formats, a final step in serializing is to turn the nested data into primitives that have a JSON equivalent. For example, JSON has no notion of symbols or dates. If your mappers return these types as attributes, then Yaks needs to know how to turn these into primitives. To add extra types, use `map_to_primitive`
+
+```ruby
+Yaks.new do
+  map_to_primitive Date, Time, DateTime do
+    object.iso8601
+  end
+end
+```
+
+This can also be used to transform alternative data structures, like those from Hamster, into Ruby arrays and hashes. Use `call()` to recursively turn things into primitives.
+
+```ruby
+Yaks.new do
+  map_to_primitive Hamster::Vector, Hamster::List do
+    object.map do |item|
+      call(item)
+    end
+  end
+end
+```
+
 ## Usage
 
 Yaks is used in production by [Ticketsolve](http://www.ticketsolve.com/). You can find an example API endpoint [here](http://leicestersquaretheatre.ticketsolve.com/api).
