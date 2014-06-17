@@ -376,8 +376,8 @@ For JSON based formats, a final step in serializing is to turn the nested data i
 
 ```ruby
 Yaks.new do
-  map_to_primitive Date, Time, DateTime do
-    object.iso8601
+  map_to_primitive Date, Time, DateTime do |date|
+    date.iso8601
   end
 end
 ```
@@ -386,8 +386,8 @@ This can also be used to transform alternative data structures, like those from 
 
 ```ruby
 Yaks.new do
-  map_to_primitive Hamster::Vector, Hamster::List do
-    object.map do |item|
+  map_to_primitive Hamster::Vector, Hamster::List do |list|
+    list.map do |item|
       call(item)
     end
   end
