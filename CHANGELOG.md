@@ -1,10 +1,11 @@
 # v0.4.0
 
 * Introduce after {} post-processing hook
-* Streamline interfaces and variable names
+* Streamline interfaces and variable names, especially the use of `call`
 * Improve deriving mappers automatically, even with Rails style autoloading
 * Give CollectionResource a members_rel, for HAL-like formats with no top-level collection concept
-* Switch back to using `src` and `dest` as the rel-template keys
+* Switch back to using `src` and `dest` as the rel-template keys, instead of `association_name`
+* deprecate `mapper_namespace` in favor of `namespace`
 
 # v0.4.0.rc1
 

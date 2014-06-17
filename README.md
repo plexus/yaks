@@ -16,8 +16,6 @@
 
 Yaks is a tool for turning your domain models into Hypermedia resources.
 
-**If you're just starting out with Yaks it is currently recommended to run directly from master until 0.4.0 comes out.**
-
 There are at the moment a number of competing media types for building Hypermedia APIs. These all add a layer of semantics on top of a low level serialization format such as JSON or XML. Even though they each have their own design goals, the core features mostly overlap. They typically provide a way to represent resources (entities), and resource collections, consisting of
 
 * Data in key-value format, possibly with composite values
@@ -64,27 +62,11 @@ or a bit more elaborate
 ```ruby
 yaks = Yaks.new do
   default_format :json_api
-  rel_template 'http://api.example.com/rels/{association_name}'
+  rel_template 'http://api.example.com/rels/{dest}'
   format_options(:hal, plural_links: [:copyright])
 end
 
 yaks.serialize(post, mapper: PostMapper, format: :hal)
-```
-
-Yaks by default will find your mappers for you if they follow the naming convention of appending 'Mapper' to the model class name. This (and all other "conventions") can be easily redefined though, see below. If you have your mappers inside a module, use `mapper_namespace`.
-
-```ruby
-module API
-  module Mappers
-    class PostMapper < Yaks::Mapper
-      #...
-    end
-  end
-end
-
-yaks = Yaks.new do
-  mapper_namespace API::Mappers
-end
 ```
 
 ### Attributes
@@ -177,6 +159,80 @@ Options
 * `:mapper` : Use a specific for each instance, will be derived from the class name if omitted (see Policy vs Configuration)
 * `:collection_mapper` : For mapping the collection as a whole, this defaults to Yaks::CollectionMapper, but you can subclass it for example to add links or attributes on the collection itself
 * `:rel` : Set the relation (symbol or URI) this association has with the object. Will be derived from the association name and the configured rel_template if ommitted
+
+## Namespace
+
+Yaks by default will find your mappers for you if they follow the naming convention of appending 'Mapper' to the model class name. This (and all other "conventions") can be easily redefined though, see below. If you have your mappers inside a module, use `namespace`.
+
+```ruby
+module API
+  module Mappers
+    class PostMapper < Yaks::Mapper
+      #...
+    end
+  end
+end
+
+yaks = Yaks.new do
+  namespace API::Mappers
+end
+```
+
+If your namespace contains a `CollectionMapper`, Yaks will use that instead of `Yaks::CollectionMapper`, e.g.
+
+```ruby
+module API
+  module Mappers
+    class CollectionMapper < Yaks::CollectionMapper
+      link :profile, 'http://api.example.com/profiles/collection'
+    end
+  end
+end
+```
+
+You can also have collection mappers based on the type of members the collection holds, e.g.
+
+```ruby
+module API
+  module Mappers
+    class LineItemCollectionMapper < Yaks::CollectionMapper
+      link :profile, 'http://api.example.com/profiles/line_items'
+      attributes :total
+
+      def total
+        collection.inject(0) do |memo, line_item|
+          memo + line_item.price * line_item.quantity
+        end
+      end
+    end
+  end
+end
+```
+
+Yaks will automatically detect and use this collection when serializing an array of `LineItem` objects.
+
+## Rack env
+
+When serializing, Yaks lets you pass in an `env` hash, which will be made available to all mappers.
+
+```ruby
+yaks = Yaks.new
+yaks.serialize(foo, env: my_env)
+
+class FooMapper
+  attributes :bar
+
+  def bar
+    if env['something']
+      #...
+    end
+  end
+end
+```
+
+You can use this to pass around context, in particular context related to the current HTTP request, e.g. the current logged in user, which is why the recommended use is to pass in the Rack environment.
+
+If `env` contains a `HTTP_ACCEPT` key (Rack's way of representing the `Accept` header), Yaks will return the format that most closely matches what was requested.
 
 ## Custom attribute/link/subresource handling
 
