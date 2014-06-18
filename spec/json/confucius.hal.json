@@ -16,6 +16,35 @@
         "_links": {
           "self":    { "href": "http://literature.example.com/work/11" },
           "profile": { "href": "http://literature.example.com/profiles/work" }
+        },
+        "_embedded": {
+          "http://literature.example.com/rel/quotes": [
+            {
+              "id": 17,
+              "chinese": "廄焚。子退朝，曰：“傷人乎？” 不問馬。"
+            },
+            {
+              "id": 18,
+              "chinese": "子曰：“其恕乎！己所不欲、勿施於人。”"
+            }
+          ],
+          "http://literature.example.com/rel/era": {
+            "id": 99,
+            "name": "Zhou Dynasty"
+          }
+        }
+      },
+      {
+        "id": 12,
+        "chinese_name": "易經",
+        "english_name": "Commentaries to the Yi-jing",
+        "_links": {
+          "self":    { "href": "http://literature.example.com/work/12" },
+          "profile": { "href": "http://literature.example.com/profiles/work" }
+        },
+        "_embedded": {
+          "http://literature.example.com/rel/quotes": [],
+          "http://literature.example.com/rel/era": null
         }
       }
     ]

@@ -6,6 +6,10 @@ module Yaks
           .new(context)
           .call(object)
       end
+
+      def singular_name
+        name.to_s
+      end
     end
   end
 end

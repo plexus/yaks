@@ -1,3 +1,9 @@
+# v0.4.1
+
+* Change how env is passed to yaks.serialize to match docs
+* Fix JSON-API bug (#18 reported by Nicolas Blanco)
+* Don't pluralize has_one association names in JSON-API
+
 # v0.4.0
 
 * Introduce after {} post-processing hook

@@ -12,6 +12,7 @@ require_relative 'support/friends_mapper'
 require_relative 'support/fixtures'
 require_relative 'support/shared_contexts'
 require_relative 'support/youtypeit_models_mappers'
+require_relative 'support/deep_eql'
 
 
 RSpec.configure do |rspec|

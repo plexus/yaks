@@ -5,7 +5,15 @@ class Scholar
 end
 
 class Work
-  include Anima.new(:id, :chinese_name, :english_name)
+  include Anima.new(:id, :chinese_name, :english_name, :quotes, :era)
+end
+
+class Quote
+  include Anima.new(:id, :chinese, :english, :sources)
+end
+
+class Era
+  include Anima.new(:id, :name)
 end
 
 class LiteratureBaseMapper < Yaks::Mapper
@@ -25,4 +33,14 @@ end
 
 class WorkMapper < LiteratureBaseMapper
   attributes :id, :chinese_name, :english_name
+  has_many :quotes
+  has_one  :era
+end
+
+class QuoteMapper < Yaks::Mapper
+  attributes :id, :chinese
+end
+
+class EraMapper < Yaks::Mapper
+  attributes :id, :name
 end

@@ -38,7 +38,7 @@ module Yaks
     end
 
     def derive_mapper_from_association(association)
-      @options[:namespace].const_get("#{camelize(singularize(association.name.to_s))}Mapper")
+      @options[:namespace].const_get("#{camelize(association.singular_name)}Mapper")
     end
 
     def derive_rel_from_association(mapper, association)

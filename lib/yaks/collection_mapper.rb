@@ -20,21 +20,24 @@ module Yaks
     def call(collection)
       @object = collection
 
-      CollectionResource.new(
+      attrs = {
         type: collection_type,
-        members_rel: members_rel,
         links: map_links,
         attributes: map_attributes,
         members: collection.map do |obj|
           mapper_for_model(obj).new(context).call(obj)
         end
-      )
+      }
+
+      attrs[ :members_rel ] = members_rel if members_rel
+
+      CollectionResource.new(attrs)
     end
 
     private
 
     def members_rel
-      policy.expand_rel( 'collection', pluralize( collection_type ) )
+      policy.expand_rel( 'collection', pluralize( collection_type ) ) if collection_type
     end
 
     def collection_type

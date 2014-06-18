@@ -2,6 +2,10 @@ module Yaks
   class NullResource
     include Enumerable
 
+    def initialize(opts = {})
+      @collection = opts.fetch(:collection, false)
+    end
+
     def each
       return to_enum unless block_given?
     end
@@ -21,8 +25,11 @@ module Yaks
     def [](*)
     end
 
+    def type
+    end
+
     def collection?
-      false
+      @collection
     end
   end
 end

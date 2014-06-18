@@ -88,7 +88,8 @@ module Yaks
     # Yaks::Resource       => serialized structure
     # serialized structure => serialized flat
 
-    def call(object, opts = {}, env = {})
+    def call(object, opts = {})
+      env = opts.fetch(:env, {})
       context = {
         policy: policy,
         env: env
