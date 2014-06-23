@@ -3,11 +3,14 @@ require 'spec_helper'
 RSpec.describe Yaks::CollectionMapper do
   include_context 'fixtures'
 
-  subject(:mapper) { described_class.new(context) }
+  subject(:mapper) { mapper_class.new(context) }
+  let(:mapper_class) { described_class }
+
   let(:context) {
     { member_mapper: member_mapper,
       policy: policy,
-      env: {}
+      env: {},
+      mapper_stack: []
     }
   }
   let(:collection) { [] }
@@ -29,8 +32,6 @@ RSpec.describe Yaks::CollectionMapper do
     let(:member_mapper) { PetMapper }
 
     it 'should map the members' do
-      mapper.call(collection)
-
       expect(mapper.call(collection)).to eql Yaks::CollectionResource.new(
         type: 'pet',
         links: [],
@@ -83,6 +84,33 @@ RSpec.describe Yaks::CollectionMapper do
         attributes: { },
         members: [],
         members_rel: 'rel:src=collection&dest=the_types'
+      )
+    end
+  end
+
+  describe 'overriding #collection' do
+    let(:mapper_class) do
+      Class.new(described_class) do
+        type 'pet'
+
+        def collection
+          super.drop(1)
+        end
+      end
+    end
+
+    let(:collection) { [boingboing, wassup]}
+    let(:member_mapper) { PetMapper }
+
+    it 'should use the redefined collection method' do
+      expect(mapper.call(collection)).to eql Yaks::CollectionResource.new(
+        type: 'pet',
+        links: [],
+        attributes: {},
+        members: [
+          Yaks::Resource.new(type: 'pet', attributes: {:id => 3, :species => "cat", :name => "wassup"})
+        ],
+        members_rel: 'rel:src=collection&dest=pets'
       )
     end
   end

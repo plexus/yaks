@@ -2,7 +2,6 @@
 
 module Yaks
   class CollectionMapper < Mapper
-    attr_reader :collection
     alias collection object
 
     def initialize(context)
@@ -24,7 +23,7 @@ module Yaks
         type: collection_type,
         links: map_links,
         attributes: map_attributes,
-        members: collection.map do |obj|
+        members: collection().map do |obj|
           mapper_for_model(obj).new(context).call(obj)
         end
       }

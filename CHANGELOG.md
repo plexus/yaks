@@ -1,3 +1,8 @@
+### Development
+[full changelog](http://github.com/plexus/yaks/compare/v0.4.1...master)
+
+* Make Yaks::CollectionMapper#collection overridable for pagination
+
 # v0.4.1
 
 * Change how env is passed to yaks.serialize to match docs
