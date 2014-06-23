@@ -51,12 +51,14 @@ RSpec.describe Yaks::Primitivize do
     end
 
     context 'with custom mapping' do
+      require 'matrix'
+
       let(:primitivizer) do
         described_class.new.tap do |p|
-          p.map OpenStruct do |os|
-            os.each_pair.with_object({}) do |(k,v), hsh|
-              hsh[call(k)] = call(v)
-            end
+          p.map Vector do |vec|
+            vec.map do |i|
+              call(i)
+            end.to_a
           end
 
           p.map Symbol do |sym|
@@ -66,7 +68,7 @@ RSpec.describe Yaks::Primitivize do
       end
 
       it 'should evaluate in the context of primitivize' do
-        expect( primitivizer.call(OpenStruct.new(:foo => :bars)) ).to eql( 3 => 4 )
+        expect( primitivizer.call( Vector[:foo, :baxxx, :bazz] ) ).to eql( [3, 5, 4] )
       end
     end
 
