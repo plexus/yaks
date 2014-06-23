@@ -44,7 +44,7 @@ module Yaks
     #
     # :(
     def subresources
-      if members.any?
+      if any?
         { members_rel => self }
       else
         {}

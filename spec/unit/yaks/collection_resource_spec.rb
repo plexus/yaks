@@ -12,6 +12,7 @@ RSpec.describe Yaks::CollectionResource do
     its(:attributes)   { should eql({}) }
     its(:members)      { should eql []  }
     its(:subresources) { should eql({}) }
+    its(:members_rel)  { should eql('members') }
   end
 
   context 'with a full constructor' do
@@ -29,7 +30,8 @@ RSpec.describe Yaks::CollectionResource do
             links: [Yaks::Resource::Link.new(:self, 'http://order/10', {})],
             attributes: { customer: 'John Doe', price: 10.00 }
           )
-        ]
+        ],
+        members_rel: 'http://api.example.org/rels/orders'
       }
     }
 
@@ -48,9 +50,10 @@ RSpec.describe Yaks::CollectionResource do
         )
       ]
     }
+    its(:members_rel) { should eq 'http://api.example.org/rels/orders'}
 
     its(:subresources) { should eql(
-        'members' => Yaks::CollectionResource.new(
+        'http://api.example.org/rels/orders' => Yaks::CollectionResource.new(
           type: 'order',
           attributes: { total: 10.00 },
           links: [
@@ -64,6 +67,7 @@ RSpec.describe Yaks::CollectionResource do
               attributes: { customer: 'John Doe', price: 10.00 }
             )
           ],
+          members_rel: 'http://api.example.org/rels/orders'
         )
       )
     }
