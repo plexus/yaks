@@ -3,11 +3,11 @@ module Yaks
     include Enumerable
 
     def initialize(opts = {})
-      @collection = opts.fetch(:collection, false)
+      @collection = opts.fetch(:collection) { false }
     end
 
     def each
-      return to_enum unless block_given?
+      to_enum
     end
 
     def attributes
