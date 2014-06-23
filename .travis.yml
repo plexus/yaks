@@ -4,9 +4,9 @@ rvm:
   - 1.9.3
   - 2.0.0
   - 2.1.2
+  - ruby-head
   - rbx-2
   - jruby
-  - ruby-head
   - jruby-head
 env:
   - RUN=rspec
@@ -16,3 +16,10 @@ matrix:
     - rvm: ruby-head
     - rvm: jruby-head
     - env: RUN=rake
+  exclude:
+    - rvm: jruby
+      env: RUN=rake
+    - rvm: jruby-head
+      env: RUN=rake
+    - rvm: rbx-2
+      env: RUN=rake
