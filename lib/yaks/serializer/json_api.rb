@@ -7,23 +7,28 @@ module Yaks
 
       include FP
 
-      def call
-        serialized = {
-          pluralize(resource.type) => resource.map(&method(:serialize_resource))
-        }
+      def call(resource)
+        main_collection = resource.map(&method(:serialize_resource))
 
-        linked = resource.each_with_object({}) do |res, hsh|
-          serialize_linked_subresources(res.subresources, hsh)
+        { pluralize(resource.type) => main_collection }.tap do |serialized|
+          linked = resource.each_with_object({}) do |res, hsh|
+            serialize_linked_subresources(res.subresources, hsh)
+          end
+          serialized.merge!(linked: linked) unless linked.empty?
         end
-        serialized = serialized.merge('linked' => linked)
-
-        serialized
       end
-      alias serialize call
 
       def serialize_resource(resource)
         result = resource.attributes
-        result = result.merge(:links => serialize_links(resource.subresources)) unless resource.subresources.empty?
+
+        unless resource.subresources.empty?
+          result[:links] = serialize_links(resource.subresources)
+        end
+
+        if resource.self_link && !result.key?(:href)
+          result[:href]  = resource.self_link.uri
+        end
+
         result
       end
 

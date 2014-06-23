@@ -94,10 +94,11 @@ module Yaks
         policy: policy,
         env: env
       }
-      mapper     = opts.fetch(:mapper) { policy.derive_mapper_from_object(object) }
-      resource   = mapper.new(context).call(object)
-      serialized = serializer_class(opts, env).new(resource, format_options[format_name(opts)]).call
-      steps.inject(serialized) {|memo, step| step.call(memo) }
+
+      mapper     = opts.fetch(:mapper) { policy.derive_mapper_from_object(object) }.new(context)
+      serializer = serializer_class(opts, env).new(format_options[format_name(opts)])
+
+      [ mapper, serializer, *steps ].inject(object) {|memo, step| step.call(memo) }
     end
     alias serialize call
   end

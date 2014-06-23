@@ -2,6 +2,7 @@
   "scholars": [
     {
       "id": 9,
+      "href": "http://literature.example.com/scholar/9",
       "name": "孔子",
       "pinyin": "Kongzi",
       "latinized": "Confucius",
@@ -14,6 +15,7 @@
     "works": [
       {
         "id": 11,
+        "href": "http://literature.example.com/work/11",
         "chinese_name": "論語",
         "english_name": "Analects",
         "links": {
@@ -23,6 +25,7 @@
       },
       {
         "id": 12,
+        "href": "http://literature.example.com/work/12",
         "chinese_name": "易經",
         "english_name": "Commentaries to the Yi-jing",
         "links": {}

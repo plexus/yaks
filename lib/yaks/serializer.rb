@@ -3,17 +3,16 @@ module Yaks
     extend Forwardable
     include Util
 
-    attr_reader :resource, :options
+    attr_reader :options
     def_delegators :resource, :links, :attributes, :subresources
 
-    protected :resource, :links, :attributes, :subresources, :options
+    protected :links, :attributes, :subresources, :options
 
-    def initialize(resource, options = {})
-      @resource = resource
+    def initialize(options = {})
       @options  = YAKS_DEFAULT_OPTIONS.merge(options)
     end
 
-    def call
+    def call(resource)
       serialize_resource(resource)
     end
     alias serialize call
