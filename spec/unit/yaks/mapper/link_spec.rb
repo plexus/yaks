@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 RSpec.describe Yaks::Mapper::Link do
+  include_context 'yaks context'
+
   subject(:link) { described_class.new(rel, template, options) }
 
   let(:rel)      { :next }
@@ -11,8 +13,6 @@ RSpec.describe Yaks::Mapper::Link do
   its(:uri_template) { should eq URITemplate.new(template) }
   its(:expand?) { should be true }
 
-  let(:policy)            { Yaks::DefaultPolicy.new }
-  let(:context)           { { policy: policy, env: {} } }
 
   describe '#rel?' do
     it 'should return true if the relation matches' do
@@ -84,7 +84,7 @@ RSpec.describe Yaks::Mapper::Link do
     let(:object) { Struct.new(:x,:y).new(3,4) }
 
     let(:mapper) do
-      Yaks::Mapper.new(context).tap do |mapper|
+      Yaks::Mapper.new(yaks_context).tap do |mapper|
         mapper.call(object)
       end
     end

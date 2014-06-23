@@ -1,4 +1,4 @@
-shared_context 'collection resource' do
+RSpec.shared_context 'collection resource' do
   let(:resource) do
     Yaks::CollectionResource.new(
       links: links,
@@ -10,7 +10,14 @@ shared_context 'collection resource' do
   let(:members)  { [] }
 end
 
-shared_context 'plant collection resource' do
+RSpec.shared_context 'yaks context' do
+  let(:policy)            { Yaks::DefaultPolicy.new }
+  let(:rack_env)          { {} }
+  let(:mapper_stack)      { [] }
+  let(:yaks_context)      { { policy: policy, env: rack_env, mapper_stack: mapper_stack } }
+end
+
+RSpec.shared_context 'plant collection resource' do
   include_context 'collection resource'
 
   let(:links)   { [ plants_self_link, plants_profile_link ] }

@@ -1,6 +1,9 @@
 ### Development
 [full changelog](http://github.com/plexus/yaks/compare/v0.4.1...master)
 
+* JSON-API: render self links as href attributes
+* Keep track of the mapper stack, useful for figuring out if mapping the top level response or not
+* Change Serializer.new(resource, options).serialize to Serializer.new(options).call(resource)
 * Make Yaks::CollectionMapper#collection overridable for pagination
 
 # v0.4.1

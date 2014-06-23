@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 RSpec.describe Yaks::Mapper::HasMany do
+  include_context 'yaks context'
+
   let(:closet_mapper) do
     Class.new(Yaks::Mapper) do
       type 'closet'
@@ -20,7 +22,7 @@ RSpec.describe Yaks::Mapper::HasMany do
   }
 
   it 'should map the subresources' do
-    expect(closet_mapper.new(policy: Yaks::DefaultPolicy.new, env: {}).call(closet).subresources).to eql(
+    expect(closet_mapper.new(yaks_context).call(closet).subresources).to eql(
       "http://foo/shoes" => Yaks::CollectionResource.new(
         type: 'shoe',
         members: [

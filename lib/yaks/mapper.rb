@@ -22,6 +22,10 @@ module Yaks
       context.fetch(:env)
     end
 
+    def mapper_stack
+      context.fetch(:mapper_stack)
+    end
+
     def call(object)
       @object = object
 
@@ -52,7 +56,7 @@ module Yaks
         rel, subresource = association.create_subresource(
           self,
           method(:load_association),
-          context
+          context.merge(mapper_stack: mapper_stack + [self])
         )
         memo[rel] = subresource
       end

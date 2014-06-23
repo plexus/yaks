@@ -2,9 +2,10 @@ require 'spec_helper'
 
 RSpec.describe 'Mapping domain models to Resource objects' do
   include_context 'fixtures'
+  include_context 'yaks context'
 
   subject { mapper.call(john) }
-  let(:mapper) { FriendMapper.new(policy: Yaks::DefaultPolicy.new, env: {}) }
+  let(:mapper) { FriendMapper.new(yaks_context) }
 
   it { should be_a Yaks::Resource }
   its(:type)         { should eql 'friend' }

@@ -92,7 +92,8 @@ module Yaks
       env = opts.fetch(:env, {})
       context = {
         policy: policy,
-        env: env
+        env: env,
+        mapper_stack: []
       }
 
       mapper     = opts.fetch(:mapper) { policy.derive_mapper_from_object(object) }.new(context)

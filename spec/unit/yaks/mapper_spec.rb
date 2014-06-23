@@ -1,14 +1,14 @@
 require 'spec_helper'
 
 RSpec.describe Yaks::Mapper do
-  subject(:mapper)   { mapper_class.new(context) }
+  include_context 'yaks context'
+
+  subject(:mapper)   { mapper_class.new(yaks_context) }
   let(:resource)     { mapper.call(instance) }
 
   let(:mapper_class) { Class.new(Yaks::Mapper) { type 'foo' } }
   let(:instance)     { double(foo: 'hello', bar: 'world') }
-  let(:policy)       { nil }
   let(:options)      { {} }
-  let(:context) {{policy: policy, env: {}}}
 
   describe '#map_attributes' do
     before do
