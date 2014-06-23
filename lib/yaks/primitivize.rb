@@ -37,7 +37,7 @@ module Yaks
         end
 
         p.map Enumerable do |object|
-          object.map(&method(:call)).to_a
+          object.map(&method(:call))
         end
       end
     end
