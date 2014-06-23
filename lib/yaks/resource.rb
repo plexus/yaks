@@ -30,7 +30,7 @@ module Yaks
 
     def self_link
       links.find do |link|
-        link.rel == :self
+        link.rel.equal? :self
       end
     end
 

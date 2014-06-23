@@ -8,6 +8,7 @@ RSpec.describe Yaks::Resource do
   its(:attributes)   { should eql({}) }
   its(:links)        { should eql [] }
   its(:subresources) { should eql({}) }
+  its(:self_link)    { should be_nil }
 
   context 'with a type' do
     let(:init_opts) { { type: 'post' } }
@@ -23,13 +24,30 @@ RSpec.describe Yaks::Resource do
   end
 
   context 'with links' do
-    let(:init_opts) { { links: [Yaks::Resource::Link.new(:self, '/foo/bar', {})] } }
-    its(:links) { should eql [Yaks::Resource::Link.new(:self, '/foo/bar', {})] }
+    let(:init_opts) {
+      {
+        links: [
+          Yaks::Resource::Link.new(:profile, '/foo/bar/profile', {}),
+          Yaks::Resource::Link.new(:self, '/foo/bar', {})
+        ]
+      }
+    }
+    its(:links) { should eql [
+        Yaks::Resource::Link.new(:profile, '/foo/bar/profile', {}),
+        Yaks::Resource::Link.new(:self, '/foo/bar', {})
+      ]
+    }
+
+    its(:self_link) { should eql Yaks::Resource::Link.new(:self, '/foo/bar', {}) }
   end
 
   context 'with subresources' do
     let(:init_opts) { { subresources: { 'comments' => [Yaks::Resource.new(type: 'comment')] } } }
     its(:subresources) { should eql 'comments' => [Yaks::Resource.new(type: 'comment')]  }
+
+    it 'should return an enumerator for #each' do
+      expect(resource.each.with_index.to_a).to eq  [ [resource, 0] ]
+    end
   end
 
   its(:collection?) { should equal false }
