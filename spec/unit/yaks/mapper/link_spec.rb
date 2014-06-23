@@ -81,11 +81,11 @@ RSpec.describe Yaks::Mapper::Link do
 
     its(:rel) { should eq :next }
 
-    let(:object) { Struct.new(:x,:y).new(3,4) }
+    let(:object) { Struct.new(:x, :y, :returns_nil).new(3, 4, nil) }
 
     let(:mapper) do
       Yaks::Mapper.new(yaks_context).tap do |mapper|
-        mapper.call(object)
+        mapper.call(object) # set @object
       end
     end
 
@@ -152,6 +152,13 @@ RSpec.describe Yaks::Mapper::Link do
       end
     end
 
+    context 'with a link generation method that returns nil' do
+      let(:template) { :returns_nil }
+
+      it 'should return nil' do
+        expect(resource_link).to be_nil
+      end
+    end
   end
 
 end

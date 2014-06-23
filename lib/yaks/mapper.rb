@@ -46,7 +46,7 @@ module Yaks
     end
 
     def map_links
-      links.map &send_with_args(:map_to_resource_link, self)
+      links.map(&send_with_args(:map_to_resource_link, self)).compact
     end
 
     def map_subresources

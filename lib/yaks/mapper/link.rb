@@ -63,11 +63,10 @@ module Yaks
       end
 
       def map_to_resource_link(mapper)
-        Resource::Link.new(
-          rel,
-          expand_with(mapper.method(:load_attribute)),
-          resource_link_options(mapper)
-        )
+        uri = expand_with(mapper.method(:load_attribute))
+        return if uri.nil?
+
+        Resource::Link.new(rel, uri, resource_link_options(mapper))
       end
 
       def expand_with(lookup)
