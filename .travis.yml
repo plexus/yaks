@@ -1,15 +1,18 @@
 language: ruby
-script: "bundle exec rspec"
+script: bundle exec $RUN
 rvm:
   - 1.9.3
   - 2.0.0
-  - 2.1.1
+  - 2.1.2
   - rbx-2
   - jruby
   - ruby-head
   - jruby-head
+env:
+  - RUN=rspec
+  - RUN=rake
 matrix:
   allow_failures:
-    - rvm: rbx-2
     - rvm: ruby-head
     - rvm: jruby-head
+    - env: RUN=rake
