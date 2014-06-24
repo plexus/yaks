@@ -12,7 +12,6 @@ module Yaks
         :attributes,
         :link,
         :profile,
-        # :embed,
         :has_one,
         :has_many
       ]
