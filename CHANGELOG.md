@@ -1,5 +1,7 @@
 ### Development
-[full changelog](http://github.com/plexus/yaks/compare/v0.4.1...master)
+[full changelog](http://github.com/plexus/yaks/compare/v0.4.2...master)
+
+### v0.4.2
 
 * JSON-API: render self links as href attributes
 * HAL: render has_one returning nil as null, not as {}
