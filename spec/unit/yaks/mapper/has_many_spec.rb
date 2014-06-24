@@ -42,7 +42,7 @@ RSpec.describe Yaks::Mapper::HasMany do
 
   describe '#collection_mapper' do
     let(:collection_mapper) { Yaks::Undefined }
-    subject(:has_many)  { described_class.new(:name, :mapper, :rel, collection_mapper) }
+    subject(:has_many)  { described_class.new(name: :name, mapper: :mapper, rel: :rel, collection_mapper: collection_mapper) }
 
     context 'when the collection mapper is undefined' do
       it 'should derive one from collection and policy' do

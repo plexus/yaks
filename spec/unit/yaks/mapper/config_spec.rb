@@ -78,7 +78,7 @@ RSpec.describe Yaks::Mapper::Config do
 
       it 'should have the association configured' do
         expect(config.associations).to eq [
-          Yaks::Mapper::HasOne.new(:mother, Yaks::Mapper, Undefined, Undefined)
+          Yaks::Mapper::HasOne.new(name: :mother, mapper: Yaks::Mapper)
         ]
       end
     end
@@ -88,7 +88,7 @@ RSpec.describe Yaks::Mapper::Config do
 
       it 'should have undefined mapper, rel, collection_mapper' do
         expect(config.associations).to eq [
-          Yaks::Mapper::HasOne.new(:mother, Undefined, Undefined, Undefined)
+          Yaks::Mapper::HasOne.new(name: :mother)
         ]
       end
     end
@@ -98,7 +98,7 @@ RSpec.describe Yaks::Mapper::Config do
 
       it 'should have the rel' do
         expect(config.associations).to eq [
-          Yaks::Mapper::HasOne.new(:mother, Undefined, '/api/rels/mother', Undefined)
+          Yaks::Mapper::HasOne.new(name: :mother, rel: '/api/rels/mother')
         ]
       end
 
@@ -111,7 +111,7 @@ RSpec.describe Yaks::Mapper::Config do
 
       it 'should have the association configured' do
         expect(config.associations).to eq [
-          Yaks::Mapper::HasMany.new(:shoes, Yaks::Mapper, Undefined, Undefined)
+          Yaks::Mapper::HasMany.new(name: :shoes, mapper: Yaks::Mapper)
         ]
       end
     end
@@ -121,7 +121,7 @@ RSpec.describe Yaks::Mapper::Config do
 
       it 'should have undefined mapper, rel, collection_mapper' do
         expect(config.associations).to eq [
-          Yaks::Mapper::HasMany.new(:shoes, Undefined, Undefined, Undefined)
+          Yaks::Mapper::HasMany.new(name: :shoes)
         ]
       end
     end
@@ -131,7 +131,7 @@ RSpec.describe Yaks::Mapper::Config do
 
       it 'should have the association configured' do
         expect(config.associations).to eq [
-          Yaks::Mapper::HasMany.new(:shoes, Undefined, Undefined, :a_collection_mapper)
+          Yaks::Mapper::HasMany.new(name: :shoes, collection_mapper: :a_collection_mapper)
         ]
       end
     end
@@ -145,8 +145,8 @@ RSpec.describe Yaks::Mapper::Config do
     }
 
     it 'should have them all present' do
-      expect(config.associations).to include Yaks::Mapper::HasOne.new(:mother, Undefined, Undefined, Undefined)
-      expect(config.associations).to include Yaks::Mapper::HasMany.new(:shoes, Undefined, Undefined, Undefined)
+      expect(config.associations).to include Yaks::Mapper::HasOne.new(name: :mother)
+      expect(config.associations).to include Yaks::Mapper::HasMany.new(name: :shoes)
     end
   end
 end

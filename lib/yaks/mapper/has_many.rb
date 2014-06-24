@@ -3,6 +3,11 @@ module Yaks
     class HasMany < Association
       include Util
 
+      def initialize(options)
+        super
+        @collection_mapper = options.fetch(:collection_mapper, Undefined)
+      end
+
       def map_resource(collection, context)
         return NullResource.new(collection: true) if collection.nil?
         policy        = context.fetch(:policy)

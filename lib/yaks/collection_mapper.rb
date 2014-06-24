@@ -21,8 +21,6 @@ module Yaks
 
       attrs = {
         type: collection_type,
-        links: map_links,
-        attributes: map_attributes,
         members: collection().map do |obj|
           mapper_for_model(obj).new(context).call(obj)
         end
@@ -30,7 +28,11 @@ module Yaks
 
       attrs[ :members_rel ] = members_rel if members_rel
 
-      CollectionResource.new(attrs)
+      map_attributes(
+        map_links(
+          CollectionResource.new(attrs)
+        )
+      )
     end
 
     private

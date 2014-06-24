@@ -16,19 +16,19 @@ RSpec.describe Yaks::Mapper::Association do
   its(:name) { should equal :shoes }
 
   subject(:association) do
-    described_class.new(name, mapper, rel, collection_mapper)
+    described_class.new(name: name, mapper: mapper, rel: rel, collection_mapper: collection_mapper)
   end
 
   describe '#create_subresource' do
-    subject(:resource_pair) do
-      association.create_subresource(parent_mapper, lookup, context)
+    subject(:resource) do
+      association.add_to_resource(Yaks::Resource.new, parent_mapper, lookup, context)
     end
 
     context 'with a rel specified' do
       let(:rel) { 'http://api.com/rels/shoes' }
 
       it 'should use the specified rel' do
-        expect(resource_pair[0]).to eql 'http://api.com/rels/shoes'
+        expect(resource.subresources.keys).to eql [ 'http://api.com/rels/shoes' ]
       end
     end
 
@@ -39,7 +39,7 @@ RSpec.describe Yaks::Mapper::Association do
           .with(parent_mapper, association)
           .and_return('http://api.com/rel/derived')
 
-        expect(resource_pair[0]).to eql 'http://api.com/rel/derived'
+        expect(resource.subresources.keys).to eql [ 'http://api.com/rel/derived' ]
       end
     end
 
@@ -51,7 +51,7 @@ RSpec.describe Yaks::Mapper::Association do
         .with('unmapped resource', context)
         .and_return('mapped resource')
 
-      expect(resource_pair[1]).to eql 'mapped resource'
+      expect(resource.subresources.values).to eql ['mapped resource']
     end
   end
 

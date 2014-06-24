@@ -16,6 +16,7 @@ module Yaks
   # members.
   class CollectionResource < Resource
     include Equalizer.new(:type, :links, :attributes, :members, :members_rel)
+    include FP::HashUpdatable.new(:type, :links, :attributes, :members, :members_rel)
     include Enumerable
 
     extend Forwardable

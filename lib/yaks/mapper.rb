@@ -31,34 +31,41 @@ module Yaks
 
       return NullResource.new if object.nil?
 
-      Resource.new(
-        type:         mapper_name,
-        attributes:   map_attributes,
-        links:        map_links,
-        subresources: map_subresources
-      )
-    end
-
-    def map_attributes
-      filter(attributes).each_with_object({}) do |attr, memo|
-        memo[attr] = load_attribute(attr)
+      [ :map_attributes,
+        :map_links,
+        :map_subresources
+      ].inject(Resource.new(type: mapper_name)) do |resource, method|
+        send(method, resource)
       end
     end
 
-    def map_links
-      links.map(&send_with_args(:map_to_resource_link, self)).compact
+    def map_attributes(resource)
+      resource.update_attributes(
+        filter(attributes).each_with_object({}) do |attr, memo|
+          memo[attr] = load_attribute(attr)
+        end
+      )
     end
 
-    def map_subresources
+    def map_links(resource)
+      links.inject(resource) do |resource, mapper_link|
+        resource_link = mapper_link.map_to_resource_link(self)
+        next resource unless resource_link
+        resource.add_link(resource_link)
+      end
+    end
+
+    def map_subresources(resource)
       attributes   = filter(associations.map(&:name))
       associations = associations().select{|assoc| attributes.include? assoc.name }
-      associations.each_with_object({}) do |association, memo|
-        rel, subresource = association.create_subresource(
+
+      associations.inject(resource) do |resource, association|
+        association.add_to_resource(
+          resource,
           self,
           method(:load_association),
           context.merge(mapper_stack: mapper_stack + [self])
         )
-        memo[rel] = subresource
       end
     end
 

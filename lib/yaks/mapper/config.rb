@@ -27,6 +27,10 @@ module Yaks
         update(links: @links + [Link.new(rel, template, options)])
       end
 
+      def add_association(type, name, options)
+        update(associations: @associations + [type.new(options.merge(name: name))])
+      end
+
       def has_one(name, options = {})
         add_association(HasOne, name, options)
       end
@@ -35,18 +39,6 @@ module Yaks
         add_association(HasMany, name, options)
       end
 
-      def add_association(type, name, options)
-        update(
-          associations: @associations + [
-            type.new(
-              name,
-              options.fetch(:mapper)            { Undefined },
-              options.fetch(:rel)               { Undefined },
-              options.fetch(:collection_mapper) { Undefined },
-            )
-          ]
-        )
-      end
     end
   end
 end

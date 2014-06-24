@@ -6,7 +6,7 @@ module Yaks
 
     attr_reader :type, :attributes, :links, :subresources
 
-    def initialize(options)
+    def initialize(options = {})
       @type         = options.fetch(:type, nil)
       @attributes   = options.fetch(:attributes, {})
       @links        = options.fetch(:links, [])
