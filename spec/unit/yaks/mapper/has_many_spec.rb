@@ -3,7 +3,9 @@ require 'spec_helper'
 RSpec.describe Yaks::Mapper::HasMany do
   include_context 'yaks context'
 
-  let(:closet_mapper) do
+  let(:closet_mapper) { closet_mapper_class.new(yaks_context) }
+
+  let(:closet_mapper_class) do
     Class.new(Yaks::Mapper) do
       type 'closet'
       has_many :shoes,
@@ -11,6 +13,10 @@ RSpec.describe Yaks::Mapper::HasMany do
         mapper: Class.new(Yaks::Mapper) { type 'shoe' ; attributes :size, :color }
     end
   end
+
+  subject(:shoe_association) { closet_mapper.associations.first }
+
+  its(:singular_name) { should eq 'shoe' }
 
   let(:closet) {
     double(
@@ -22,7 +28,7 @@ RSpec.describe Yaks::Mapper::HasMany do
   }
 
   it 'should map the subresources' do
-    expect(closet_mapper.new(yaks_context).call(closet).subresources).to eql(
+    expect(closet_mapper.call(closet).subresources).to eql(
       "http://foo/shoes" => Yaks::CollectionResource.new(
         type: 'shoe',
         members: [

@@ -4,11 +4,13 @@ RSpec.describe Yaks::Resource do
   subject(:resource) { described_class.new(init_opts) }
   let(:init_opts) { {} }
 
-  its(:type)         { should be_nil }
-  its(:attributes)   { should eql({}) }
-  its(:links)        { should eql [] }
-  its(:subresources) { should eql({}) }
-  its(:self_link)    { should be_nil }
+  its(:type)           { should be_nil }
+  its(:attributes)     { should eql({}) }
+  its(:links)          { should eql [] }
+  its(:subresources)   { should eql({}) }
+  its(:self_link)      { should be_nil }
+  its(:null_resource?) { should be false }
+  its(:collection?)    { should be false }
 
   context 'with a type' do
     let(:init_opts) { { type: 'post' } }
@@ -50,7 +52,6 @@ RSpec.describe Yaks::Resource do
     end
   end
 
-  its(:collection?) { should equal false }
 
   it 'should act as a collection of one' do
     expect(resource.each.to_a).to eql [resource]

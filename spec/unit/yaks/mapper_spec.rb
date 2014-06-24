@@ -8,9 +8,10 @@ RSpec.describe Yaks::Mapper do
 
   let(:mapper_class) { Class.new(Yaks::Mapper) { type 'foo' } }
   let(:instance)     { double(foo: 'hello', bar: 'world') }
-  let(:options)      { {} }
 
-  describe '#map_attributes' do
+  its(:env) { should equal rack_env }
+
+  context 'with attributes' do
     before do
       mapper_class.attributes :foo, :bar
     end
@@ -38,7 +39,7 @@ RSpec.describe Yaks::Mapper do
     end
   end
 
-  describe '#map_links' do
+  context 'with links' do
     before do
       mapper_class.link :profile, 'http://foo/bar'
     end
@@ -73,7 +74,7 @@ RSpec.describe Yaks::Mapper do
     end
   end
 
-  describe '#map_subresources' do
+  context 'with subresources' do
     let(:instance)      { double(widget: widget) }
     let(:widget)        { double(type: 'super_widget') }
     let(:widget_mapper) { Class.new(Yaks::Mapper) { type 'widget' } }
@@ -150,25 +151,23 @@ RSpec.describe Yaks::Mapper do
     end
   end
 
-  describe '#load_attributes' do
-    context 'when the mapper implements a method with the attribute name' do
-      before do
-        mapper_class.class_eval do
-          attributes :fooattr, :bar
+  context 'when the mapper implements a method with the attribute name' do
+    before do
+      mapper_class.class_eval do
+        attributes :fooattr, :bar
 
-          def fooattr
-            "#{object.foo} my friend"
-          end
+        def fooattr
+          "#{object.foo} my friend"
         end
       end
+    end
 
-      it 'should get the attribute from the mapper' do
-        expect(resource.attributes).to eq(fooattr: 'hello my friend', bar: 'world')
-      end
+    it 'should get the attribute from the mapper' do
+      expect(resource.attributes).to eq(fooattr: 'hello my friend', bar: 'world')
     end
   end
 
-  describe '#call' do
+  context 'with a nil subject' do
     it 'should return a NullResource when the subject is nil' do
       expect(mapper.call(nil)).to be_a Yaks::NullResource
     end

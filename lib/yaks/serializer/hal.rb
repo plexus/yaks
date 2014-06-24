@@ -45,7 +45,7 @@ module Yaks
           memo[rel] = if resources.collection?
                         resources.map( &method(:serialize_resource) )
                       else
-                        serialize_resource(resources)
+                        serialize_resource(resources) unless resources.null_resource?
                       end
         end
       end

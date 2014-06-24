@@ -31,5 +31,9 @@ module Yaks
     def collection?
       @collection
     end
+
+    def null_resource?
+      true
+    end
   end
 end

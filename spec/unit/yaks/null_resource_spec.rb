@@ -3,10 +3,11 @@ require 'spec_helper'
 RSpec.describe Yaks::NullResource do
   subject(:null_resource) { described_class.new }
 
-  its(:attributes)   { should eq Hash[] }
-  its(:links)        { should eq [] }
-  its(:subresources) { should eq Hash[] }
-  its(:collection?)  { should be false }
+  its(:attributes)     { should eq Hash[] }
+  its(:links)          { should eq [] }
+  its(:subresources)   { should eq Hash[] }
+  its(:collection?)    { should be false }
+  its(:null_resource?) { should be true }
 
   it { should respond_to :[] }
 

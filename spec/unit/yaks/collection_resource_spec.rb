@@ -4,7 +4,8 @@ RSpec.describe Yaks::CollectionResource do
   subject(:collection) { described_class.new(init_opts) }
   let(:init_opts) { {} }
 
-  its(:collection?) { should equal true }
+  its(:collection?)    { should be true }
+  its(:null_resource?) { should be false }
 
   context 'with nothing passed in the contstructor' do
     its(:type)         { should be_nil  }

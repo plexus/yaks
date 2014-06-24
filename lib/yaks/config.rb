@@ -70,10 +70,10 @@ module Yaks
     def serializer_class(opts, env)
       if env.key? 'HTTP_ACCEPT'
         accept = Rack::Accept::Charset.new(env['HTTP_ACCEPT'])
-        mime_type = accept.best_of(Yaks::Serializer.mime_types.values)
-        return Yaks::Serializer.by_mime_type(mime_type) if mime_type
+        mime_type = accept.best_of(Serializer.mime_types.values)
+        return Serializer.by_mime_type(mime_type) if mime_type
       end
-      Yaks::Serializer.by_name(opts.fetch(:format) { @default_format })
+      Serializer.by_name(opts.fetch(:format) { @default_format })
     end
 
     def format_name(opts)

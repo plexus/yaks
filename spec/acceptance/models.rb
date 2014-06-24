@@ -24,7 +24,9 @@ end
 class ScholarMapper < LiteratureBaseMapper
   attributes :id, :name, :pinyin, :latinized
   has_many :works
-  link :self, "http://literature.example.com/authors/{downcased_pinyin}"
+
+  link 'http://literature.example.com/rels/quotes', 'http://literature.example.com/quotes/?author={downcased_pinyin}&q={query}', expand: [:downcased_pinyin]
+  link :self, 'http://literature.example.com/authors/{downcased_pinyin}'
 
   def downcased_pinyin
     object.pinyin.downcase

@@ -24,15 +24,18 @@ module Yaks
       yield self
     end
 
-    def collection?
-      false
-    end
-
     def self_link
       links.find do |link|
         link.rel.equal? :self
       end
     end
 
+    def collection?
+      false
+    end
+
+    def null_resource?
+      false
+    end
   end
 end

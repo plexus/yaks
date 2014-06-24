@@ -45,6 +45,7 @@ module Matchers
     end
 
     def compare(key)
+#require 'pry' ; binding.pry
       push key
       if target[key] != expectation[key]
         if [Hash, Array].any?{|klz| target[key].is_a? klz }
@@ -87,6 +88,11 @@ module Matchers
           end
         else
           failure_message("expected Array got #{@target.inspect}")
+        end
+
+      else
+        if target != expectation
+          failure_message("expected #{expectation.inspect}, got #{@target.inspect}")
         end
       end
 

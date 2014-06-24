@@ -5,7 +5,11 @@
   "latinized": "Confucius",
   "_links": {
     "self":    { "href": "http://literature.example.com/authors/kongzi"  },
-    "profile": { "href": "http://literature.example.com/profiles/scholar" }
+    "profile": { "href": "http://literature.example.com/profiles/scholar" },
+    "http://literature.example.com/rels/quotes": {
+        "href": "http://literature.example.com/quotes/?author=kongzi&q={query}",
+        "templated": true
+    }
   },
   "_embedded": {
     "http://literature.example.com/rel/works": [
