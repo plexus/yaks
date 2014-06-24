@@ -2,9 +2,11 @@
 [full changelog](http://github.com/plexus/yaks/compare/v0.4.1...master)
 
 * JSON-API: render self links as href attributes
-* Keep track of the mapper stack, useful for figuring out if mapping the top level response or not
-* Change Serializer.new(resource, options).serialize to Serializer.new(options).call(resource)
+* HAL: render has_one returning nil as null, not as {}
+* Keep track of the mapper stack, useful for figuring out if mapping the top level response or not, or for accessing parent
+* Change Serializer.new(resource, options).serialize to Serializer.new(options).call(resource) for cosistency of "pipeline" interface
 * Make Yaks::CollectionMapper#collection overridable for pagination
+* Don't render links from custom link methods (link :foo, :method_that_generates_url) that return nil
 
 # v0.4.1
 
