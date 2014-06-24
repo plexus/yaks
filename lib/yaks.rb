@@ -11,6 +11,8 @@ require 'rack/accept'
 
 require 'yaks/util'
 require 'yaks/fp'
+require 'yaks/fp/updatable'
+require 'yaks/fp/hash_updatable'
 require 'yaks/primitivize'
 
 require 'yaks/default_policy'

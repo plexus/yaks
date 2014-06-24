@@ -2,6 +2,7 @@ module Yaks
   class Mapper
     class Config
       include Equalizer.new(:type, :attributes, :links, :associations)
+      include FP::Updatable.new(:type, :attributes, :links, :associations)
 
       attr_reader :links, :associations
 
@@ -12,31 +13,18 @@ module Yaks
         @associations = associations
       end
 
-      def updated(updates)
-        self.class.new(
-          updates.fetch(:type)         { type         },
-          updates.fetch(:attributes)   { attributes   },
-          updates.fetch(:links)        { links        },
-          updates.fetch(:associations) { associations }
-        )
-      end
-
       def type(type = Undefined)
         return @type if type.equal?(Undefined)
-        updated(type: type)
+        update(type: type)
       end
 
       def attributes(*attrs)
         return @attributes if attrs.empty?
-        updated(
-          attributes: @attributes + attrs
-        )
+        update(attributes: @attributes + attrs)
       end
 
       def link(rel, template, options = {})
-        updated(
-          links: @links + [Link.new(rel, template, options)]
-        )
+        update(links: @links + [Link.new(rel, template, options)])
       end
 
       def has_one(name, options = {})
@@ -48,7 +36,7 @@ module Yaks
       end
 
       def add_association(type, name, options)
-        updated(
+        update(
           associations: @associations + [
             type.new(
               name,

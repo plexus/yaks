@@ -56,4 +56,34 @@ RSpec.describe Yaks::Resource do
   it 'should act as a collection of one' do
     expect(resource.each.to_a).to eql [resource]
   end
+
+  describe 'persistent updates' do
+    let(:resource) {
+      Yaks::Resource.new(
+        attributes: {x: :y},
+        links: [:one],
+        subresources: {foo_rel: :subres}
+      )
+    }
+
+    it 'should do updates without modifying the original' do
+      expect(
+        resource
+          .update_attributes(foo: :bar)
+          .add_link(:a_link)
+          .add_subresource(:rel, :a_subresource)
+          .update_attributes(foo: :baz)
+      ).to eq Yaks::Resource.new(
+        attributes: {x: :y, foo: :baz},
+        links: [:one, :a_link],
+        subresources: {foo_rel: :subres, rel: :a_subresource}
+      )
+
+      expect(resource).to eq Yaks::Resource.new(
+        attributes: {x: :y},
+        links: [:one],
+        subresources: {foo_rel: :subres}
+      )
+    end
+  end
 end

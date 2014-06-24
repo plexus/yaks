@@ -1,6 +1,7 @@
 module Yaks
   class Resource
     include Equalizer.new(:type, :links, :attributes, :subresources)
+    include FP::HashUpdatable.new(:type, :links, :attributes, :subresources)
     include Enumerable
 
     attr_reader :type, :attributes, :links, :subresources
@@ -36,6 +37,18 @@ module Yaks
 
     def null_resource?
       false
+    end
+
+    def update_attributes(new_attrs)
+      update(attributes: @attributes.merge(new_attrs))
+    end
+
+    def add_link(link)
+      update(links: @links + [link])
+    end
+
+    def add_subresource(rel, subresource)
+      update(subresources: @subresources.merge(rel => subresource))
     end
   end
 end
