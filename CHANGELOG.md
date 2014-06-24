@@ -10,13 +10,13 @@
 * Make Yaks::CollectionMapper#collection overridable for pagination
 * Don't render links from custom link methods (link :foo, :method_that_generates_url) that return nil
 
-# v0.4.1
+### v0.4.1
 
 * Change how env is passed to yaks.serialize to match docs
 * Fix JSON-API bug (#18 reported by Nicolas Blanco)
 * Don't pluralize has_one association names in JSON-API
 
-# v0.4.0
+## v0.4.0
 
 * Introduce after {} post-processing hook
 * Streamline interfaces and variable names, especially the use of `call`
@@ -25,7 +25,7 @@
 * Switch back to using `src` and `dest` as the rel-template keys, instead of `association_name`
 * deprecate `mapper_namespace` in favor of `namespace`
 
-# v0.4.0.rc1
+### v0.4.0.rc1
 
 * Introduce Yaks.new as the main public interface
 * Fix JsonApiSerializer and make it compliant with current spec
@@ -36,10 +36,10 @@
 * Honor the HTTP Accept header if it is present in the rack env
 * Add map_to_primitive configuration option
 
-# v0.3.0
+## v0.3.0
 
 * Allow partial expansion of templates, expand certain fields, leave others as URI template in the result.
 
-# v0.2.0
+## v0.2.0
 
 * links can now take a simple for a template to compute a link just like an attribute
