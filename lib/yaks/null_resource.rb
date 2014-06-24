@@ -1,5 +1,6 @@
 module Yaks
   class NullResource
+    include Equalizer.new(:collection?)
     include Enumerable
 
     def initialize(opts = {})

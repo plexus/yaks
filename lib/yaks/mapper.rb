@@ -26,6 +26,14 @@ module Yaks
       context.fetch(:mapper_stack)
     end
 
+    def self.mapper_name(policy)
+      config.type || policy.derive_type_from_mapper_class(self)
+    end
+
+    def mapper_name
+      self.class.mapper_name(policy)
+    end
+
     def call(object)
       @object = object
 
@@ -38,6 +46,8 @@ module Yaks
         send(method, resource)
       end
     end
+
+    private
 
     def map_attributes(resource)
       resource.update_attributes(
@@ -76,10 +86,6 @@ module Yaks
 
     def filter(attrs)
       attrs
-    end
-
-    def mapper_name
-      config.type || policy.derive_type_from_mapper_class(self.class)
     end
 
   end

@@ -1,27 +1,36 @@
 require 'spec_helper'
 
 RSpec.describe Yaks::Mapper::Association do
+  include_context 'yaks context'
+
   include Yaks::FP
 
   let(:name)              { :shoes       }
   let(:mapper)            { Yaks::Mapper }
   let(:rel)               { Yaks::Undefined }
-  let(:collection_mapper) { Yaks::Undefined }
   let(:parent_mapper)     { Yaks::Undefined }
   let(:map_resource)      { ->(obj, policy) {} }
   let(:lookup)            { ->(*) {} }
-  let(:policy)            { Yaks::DefaultPolicy.new }
-  let(:context)           { { policy: policy, env: {} } }
 
   its(:name) { should equal :shoes }
 
+  context 'with just a name' do
+    subject(:association) { described_class.new(name: :foo) }
+
+    its(:name)   { should be :foo }
+    its(:mapper) { should be Yaks::Undefined }
+    its(:rel)    { should be Yaks::Undefined }
+  end
+
   subject(:association) do
-    described_class.new(name: name, mapper: mapper, rel: rel, collection_mapper: collection_mapper)
+    described_class.new(name: name, mapper: mapper, rel: rel)
   end
 
   describe '#create_subresource' do
+    let(:parent_mapper) { Class.new(Yaks::Mapper) { type 'gueuze' }.new(yaks_context) }
+
     subject(:resource) do
-      association.add_to_resource(Yaks::Resource.new, parent_mapper, lookup, context)
+      association.add_to_resource(Yaks::Resource.new, parent_mapper, lookup, yaks_context)
     end
 
     context 'with a rel specified' do
@@ -48,7 +57,7 @@ RSpec.describe Yaks::Mapper::Association do
     it 'should delegate to the map_resource method, to be overridden in child classes' do
       expect(association)
         .to receive(:map_resource)
-        .with('unmapped resource', context)
+        .with('unmapped resource', yaks_context)
         .and_return('mapped resource')
 
       expect(resource.subresources.values).to eql ['mapped resource']

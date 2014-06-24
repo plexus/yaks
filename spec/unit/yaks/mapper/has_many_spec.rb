@@ -40,6 +40,36 @@ RSpec.describe Yaks::Mapper::HasMany do
     )
   end
 
+  it 'should map nil to a NullResource collection' do
+    expect(closet_mapper.call(double(shoes: nil)).subresources).to eql(
+      'http://foo/shoes' => Yaks::NullResource.new(collection: true)
+    )
+  end
+
+  context 'without an explicit mapper' do
+    let(:dress_mapper) {
+      Class.new(Yaks::Mapper) { type 'dress' ; attributes :color }
+    }
+
+    before do
+      closet_mapper_class.class_eval do
+        has_many :dresses
+      end
+    end
+
+    it 'should derive it from policy' do
+      expect(closet_mapper.policy).to equal policy
+
+      expect(closet_mapper.policy).to receive(:derive_mapper_from_association) {|assoc|
+        expect(assoc.singular_name).to eql 'dress'
+        dress_mapper
+      }
+
+      closet_mapper.call(double(shoes: [], dresses: [double(color: 'blue')]))
+    end
+  end
+
+
   describe '#collection_mapper' do
     let(:collection_mapper) { Yaks::Undefined }
     subject(:has_many)  { described_class.new(name: :name, mapper: :mapper, rel: :rel, collection_mapper: collection_mapper) }

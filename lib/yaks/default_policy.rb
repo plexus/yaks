@@ -42,7 +42,7 @@ module Yaks
     end
 
     def derive_rel_from_association(mapper, association)
-      expand_rel( derive_type_from_mapper_class(mapper.class), association.name )
+      expand_rel( mapper.class.mapper_name(self), association.name )
     end
 
     def expand_rel(src_name, dest_name)

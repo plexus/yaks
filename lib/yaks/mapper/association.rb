@@ -24,7 +24,7 @@ module Yaks
       end
 
       # @abstract
-      def map_resource(object, context)
+      def map_resource(_object, _context)
       end
 
       def association_mapper(policy)
