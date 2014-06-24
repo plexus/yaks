@@ -16,7 +16,7 @@ RSpec.describe Yaks::FP::HashUpdatable do
     end
   end
 
-  it 'should only updated the selected fields' do
+  it 'should only update the selected fields' do
     expect(klz.new(aa: 1, bb: 2, cc: 3).update(bb: 7, cc: 9)).to eq klz.new(aa: 1, bb: 7, cc: 9)
   end
 end
