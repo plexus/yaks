@@ -21,10 +21,6 @@ module Yaks
   Undefined = Object.new
   Root = Pathname(__FILE__).join('../..')
 
-  YAKS_DEFAULT_OPTIONS = {
-    singular_links: [:self, :profile]
-  }
-
   class << self
     def new(&blk)
       Yaks::Config.new(&blk)
@@ -39,6 +35,7 @@ require 'yaks/null_resource'
 require 'yaks/resource/link'
 require 'yaks/collection_resource'
 
+require 'yaks/mapper/attribute'
 require 'yaks/mapper/link'
 require 'yaks/mapper/association'
 require 'yaks/mapper/has_one'
@@ -52,4 +49,6 @@ require 'yaks/serializer'
 require 'yaks/serializer/hal'
 require 'yaks/serializer/json_api'
 require 'yaks/serializer/collection_json'
+
+require 'yaks/config/dsl'
 require 'yaks/config'

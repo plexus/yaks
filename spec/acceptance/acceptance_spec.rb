@@ -1,15 +1,7 @@
 require 'spec_helper'
 
-require_relative './models'
-
-RSpec.shared_examples_for 'JSON output format' do |yaks, format, name|
-  let(:input)  { load_yaml_fixture(name) }
-  let(:output) { load_json_fixture("#{name}.#{format}") }
-
-  subject { yaks.serialize(input) }
-
-  it { should deep_eql output }
-end
+require 'acceptance/models'
+require 'acceptance/json_shared_examples'
 
 RSpec.describe Yaks::Serializer::Hal do
   yaks_rel_template = Yaks.new do

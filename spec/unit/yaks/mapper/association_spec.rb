@@ -27,10 +27,20 @@ RSpec.describe Yaks::Mapper::Association do
   end
 
   describe '#create_subresource' do
-    let(:parent_mapper) { Class.new(Yaks::Mapper) { type 'gueuze' }.new(yaks_context) }
+    let(:mapper_class) do
+      Class.new(Yaks::Mapper) do
+        type 'shoestore'
+
+        def load_association(assoc)
+          [:blue_suede_shoes] if assoc == :shoes
+        end
+      end
+    end
+
+    let(:parent_mapper) { mapper_class.new(yaks_context) }
 
     subject(:resource) do
-      association.add_to_resource(Yaks::Resource.new, parent_mapper, lookup, yaks_context)
+      association.add_to_resource(Yaks::Resource.new, parent_mapper, yaks_context)
     end
 
     context 'with a rel specified' do
@@ -52,15 +62,28 @@ RSpec.describe Yaks::Mapper::Association do
       end
     end
 
-    let(:lookup) { { shoes: 'unmapped resource' } }
-
     it 'should delegate to the map_resource method, to be overridden in child classes' do
       expect(association)
         .to receive(:map_resource)
-        .with('unmapped resource', yaks_context)
+        .with([:blue_suede_shoes], yaks_context.merge(mapper_stack: [parent_mapper]))
         .and_return('mapped resource')
 
       expect(resource.subresources.values).to eql ['mapped resource']
+    end
+
+    context 'with a non-empty mapper-stack' do
+      let(:mapper_stack) { [:mapper_one] }
+
+      it 'should stack the parent mapper on top' do
+        expect(association)
+          .to receive(:map_resource)
+          .with(
+            [:blue_suede_shoes],
+            yaks_context.merge(mapper_stack: [:mapper_one, parent_mapper])
+          )
+
+        resource.subresources
+      end
     end
   end
 

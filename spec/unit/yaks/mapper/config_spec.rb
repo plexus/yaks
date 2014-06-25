@@ -22,8 +22,11 @@ RSpec.describe Yaks::Mapper::Config do
     end
 
     it 'should add attributes' do
-      expect(config.attributes(:foo, :bar, :baz).attributes)
-        .to eq [:foo, :bar, :baz]
+      expect(config.attributes(:foo, :bar, :baz).attributes).to eq [
+        Yaks::Mapper::Attribute.new(:foo),
+        Yaks::Mapper::Attribute.new(:bar),
+        Yaks::Mapper::Attribute.new(:baz)
+      ]
     end
 
     it 'should be chainable' do
@@ -32,7 +35,11 @@ RSpec.describe Yaks::Mapper::Config do
           .attributes(:foo, :bar)
           .attributes(:baz)
           .attributes
-      ).to eq [:foo, :bar, :baz]
+      ).to eq [
+        Yaks::Mapper::Attribute.new(:foo),
+        Yaks::Mapper::Attribute.new(:bar),
+        Yaks::Mapper::Attribute.new(:baz)
+      ]
     end
   end
 
@@ -134,6 +141,13 @@ RSpec.describe Yaks::Mapper::Config do
           Yaks::Mapper::HasMany.new(name: :shoes, collection_mapper: :a_collection_mapper)
         ]
       end
+    end
+  end
+
+  describe "#type" do
+    it "should update the type" do
+      config = config().type :shoe
+      expect(config.type).to be :shoe
     end
   end
 

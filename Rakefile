@@ -23,20 +23,28 @@ end
 
 task :mutant_chunked do
   [
-    #Yaks::Util,
-    #Yaks::Primitivize,
-    #Yaks::FP,
-    #Yaks::Resource,
-    #Yaks::NullResource,
-    #Yaks::CollectionResource,
+    # Yaks::Util,
+    # Yaks::Primitivize,
+    # Yaks::FP,
+    # Yaks::Resource,
+    # Yaks::NullResource,
+    # Yaks::CollectionResource,
+    # Yaks::Mapper::Association,
+    # Yaks::Mapper::HasMany,
+    # Yaks::Mapper::HasOne,
+    # Yaks::Mapper::Config,
+    # Yaks::Mapper::ClassMethods,
+    # Yaks::Mapper::Attribute,
+    Yaks::Mapper::Link,
     Yaks::Mapper,
     Yaks::CollectionMapper,
     Yaks::Serializer,
+    Yaks::DefaultPolicy,
+    Yaks::Config::DSL,
     Yaks::Config,
-    Yaks::DefaultPolicy
   ].each do |space|
     puts space
-    ENV['PATTERN'] = "#{space}*"
+    ENV['PATTERN'] = "#{space}"
     Rake::Task["mutant"].execute
   end
 end

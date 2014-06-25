@@ -10,6 +10,10 @@ module Yaks
 
     def member_mapper
       context.fetch(:member_mapper) do
+        # This is only relevant at the top level, when coming from a
+        # has_many assocation, the member_mapper will have been set
+        # or derived from the association. There is probably some
+        # redundancy here.
         if collection.first
           mapper_for_model(collection.first)
         end

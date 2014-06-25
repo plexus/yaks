@@ -20,7 +20,7 @@ module Yaks
 
       def attributes(*attrs)
         return @attributes if attrs.empty?
-        update(attributes: @attributes + attrs)
+        update(attributes: @attributes + attrs.map(&Attribute.method(:new)))
       end
 
       def link(rel, template, options = {})

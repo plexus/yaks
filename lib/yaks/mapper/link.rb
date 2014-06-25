@@ -30,8 +30,10 @@ module Yaks
 
       def_delegators :uri_template, :expand_partial
 
-      def initialize(rel, template, options)
-        @rel, @template, @options = rel, template, options
+      def add_to_resource(resource, mapper, context)
+        resource_link = map_to_resource_link(mapper)
+        return resource unless resource_link
+        resource.add_link(resource_link)
       end
 
       def rel?(rel)

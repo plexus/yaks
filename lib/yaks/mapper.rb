@@ -47,46 +47,29 @@ module Yaks
       end
     end
 
-    private
-
-    def map_attributes(resource)
-      resource.update_attributes(
-        filter(attributes).each_with_object({}) do |attr, memo|
-          memo[attr] = load_attribute(attr)
-        end
-      )
-    end
-
-    def map_links(resource)
-      links.inject(resource) do |resource, mapper_link|
-        resource_link = mapper_link.map_to_resource_link(self)
-        next resource unless resource_link
-        resource.add_link(resource_link)
-      end
-    end
-
-    def map_subresources(resource)
-      attributes   = filter(associations.map(&:name))
-      associations = associations().select{|assoc| attributes.include? assoc.name }
-
-      associations.inject(resource) do |resource, association|
-        association.add_to_resource(
-          resource,
-          self,
-          method(:load_association),
-          context.merge(mapper_stack: mapper_stack + [self])
-        )
-      end
-    end
-
     def load_attribute(name)
       respond_to?(name) ? public_send(name) : object.public_send(name)
     end
     alias load_association load_attribute
 
-    def filter(attrs)
-      attrs
+    private
+
+    def map_attributes(resource)
+      attributes.inject(resource) do |resource, attribute|
+        attribute.add_to_resource(resource, self, context)
+      end
     end
 
+    def map_links(resource)
+      links.inject(resource) do |resource, mapper_link|
+        mapper_link.add_to_resource(resource, self, context)
+      end
+    end
+
+    def map_subresources(resource)
+      associations.inject(resource) do |resource, association|
+        association.add_to_resource( resource, self, context)
+      end
+    end
   end
 end

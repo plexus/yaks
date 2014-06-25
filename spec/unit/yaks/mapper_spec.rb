@@ -17,7 +17,10 @@ RSpec.describe Yaks::Mapper do
     end
 
     it 'should make the configured attributes available on the instance' do
-      expect(mapper.attributes).to eq [:foo, :bar]
+      expect(mapper.attributes).to eq [
+        Yaks::Mapper::Attribute.new(:foo),
+        Yaks::Mapper::Attribute.new(:bar)
+      ]
     end
 
     it 'should load them from the model' do
@@ -27,8 +30,8 @@ RSpec.describe Yaks::Mapper do
     context 'with attribute filtering' do
       before do
         mapper_class.class_eval do
-          def filter(attrs)
-            attrs.to_a - [:foo]
+          def attributes
+            super.reject {|attr| attr.name == :foo}
           end
         end
       end
@@ -140,7 +143,9 @@ RSpec.describe Yaks::Mapper do
       context 'with the association filtered out' do
         before do
           mapper_class.class_eval do
-            def filter(attrs) [] end
+            def associations
+              []
+            end
           end
         end
 

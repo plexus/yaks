@@ -1,6 +1,37 @@
 ### Development
 [full changelog](http://github.com/plexus/yaks/compare/v0.4.2...master)
 
+* Reify `Yaks::Mapper::Attribute`
+* Remove `Yaks::Mapper#filter`, instead override `#attributes` or `#associations` to filter things out, for example:
+
+```ruby
+class SongMapper
+  attributes :title, :duration, :lyrics
+  has_one :artist
+  has_one :album
+
+  def minimal?
+    env['HTTP_PREFER'] =~ /minimal/
+  end
+
+  def attributes
+    if minimal?
+      super.reject {|attr| attr.name.equal? :lyrics } # These are instances of Yaks::Mapper::Attribute
+    else
+      super
+    end
+  end
+
+  def associations
+    return [] if minimal?
+    super
+  end
+end
+```
+
+* Give Attribute, Link, Association a common interface : `add_to_resource(resource, mapper, context)`
+* Add persistent update methods to `Yaks::Resource`
+
 ### v0.4.2
 
 * JSON-API: render self links as href attributes

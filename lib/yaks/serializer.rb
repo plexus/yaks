@@ -9,7 +9,7 @@ module Yaks
     protected :links, :attributes, :subresources, :options
 
     def initialize(options = {})
-      @options  = YAKS_DEFAULT_OPTIONS.merge(options)
+      @options = options
     end
 
     def call(resource)

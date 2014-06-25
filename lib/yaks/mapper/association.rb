@@ -6,21 +6,25 @@ module Yaks
       attr_reader :name, :mapper, :rel
 
       def initialize(options)
-        @name = options.fetch(:name)
+        @name   = options.fetch(:name)
         @mapper = options.fetch(:mapper, Undefined)
-        @rel = options.fetch(:rel, Undefined)
+        @rel    = options.fetch(:rel, Undefined)
       end
 
-      def add_to_resource(resource, parent_mapper, lookup, context)
-        resource.add_subresource(
-          map_rel(parent_mapper, context.fetch(:policy)),
-          map_resource(lookup[name], context)
-        )
+      def add_to_resource(resource, mapper, context)
+        mapper_stack = context[:mapper_stack] + [mapper]
+        context      = context.merge(mapper_stack: mapper_stack)
+        policy       = context.fetch(:policy)
+
+        rel         = map_rel(mapper, policy)
+        subresource = map_resource(mapper.load_association(name), context)
+
+        resource.add_subresource(rel, subresource)
       end
 
-      def map_rel(parent_mapper, policy)
+      def map_rel(mapper, policy)
         return @rel unless @rel.equal?(Undefined)
-        policy.derive_rel_from_association(parent_mapper, self)
+        policy.derive_rel_from_association(mapper, self)
       end
 
       # @abstract
