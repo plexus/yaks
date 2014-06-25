@@ -1,6 +1,14 @@
 ### Development
 [full changelog](http://github.com/plexus/yaks/compare/v0.4.2...master)
 
+* Conditionally turn associations into links
+
+```ruby
+class ShowMapper
+  has_many :events, href: '/show/{id}/events', link_if: ->{ events.count > 50 }
+end
+```
+
 * Reify `Yaks::Mapper::Attribute`
 * Remove `Yaks::Mapper#filter`, instead override `#attributes` or `#associations` to filter things out, for example:
 
