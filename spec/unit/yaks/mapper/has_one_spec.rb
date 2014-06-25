@@ -15,15 +15,12 @@ RSpec.describe Yaks::Mapper::HasOne do
 
   let(:association_mapper) { AuthorMapper }
   let(:name)               { 'William S. Burroughs' }
-  let(:author)             { double(:name => name) }
+  let(:author)             { fake(:name => name) }
 
-  let(:policy) {
-    double(
-      Yaks::DefaultPolicy,
-      derive_type_from_mapper_class: 'author',
-      derive_mapper_from_association: AuthorMapper
-    )
-  }
+  fake(:policy,
+    derive_type_from_mapper_class: 'author',
+    derive_mapper_from_association: AuthorMapper
+  ){ Yaks::DefaultPolicy }
 
   its(:singular_name) { should eq 'author' }
 
@@ -34,10 +31,10 @@ RSpec.describe Yaks::Mapper::HasOne do
   context 'with no mapper specified' do
     subject(:subresource)    { has_one.add_to_resource(Yaks::Resource.new, parent_mapper, yaks_context) }
     let(:association_mapper) { Yaks::Undefined }
-    let(:parent_mapper)      { double(Yaks::Mapper) }
+    fake(:parent_mapper) { Yaks::Mapper }
 
     before do
-      expect(parent_mapper).to receive(:load_association).with(:author).and_return(author)
+      stub(parent_mapper).load_association(:author) { author }
     end
 
     it 'should derive one based on policy' do

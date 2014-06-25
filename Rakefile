@@ -30,6 +30,7 @@ task :mutant_chunked do
     # Yaks::NullResource,
     # Yaks::CollectionResource,
     # Yaks::Mapper::Association,
+    # Yaks::Mapper::AssociationMapper,
     # Yaks::Mapper::HasMany,
     # Yaks::Mapper::HasOne,
     # Yaks::Mapper::Config,

@@ -19,10 +19,10 @@ RSpec.describe Yaks::Mapper::HasMany do
   its(:singular_name) { should eq 'shoe' }
 
   let(:closet) {
-    double(
+    fake(
       :shoes => [
-        double(size: 9,    color: :blue),
-        double(size: 11.5, color: :red),
+        fake(size: 9,    color: :blue),
+        fake(size: 11.5, color: :red),
       ]
     )
   }
@@ -41,7 +41,7 @@ RSpec.describe Yaks::Mapper::HasMany do
   end
 
   it 'should map nil to a NullResource collection' do
-    expect(closet_mapper.call(double(shoes: nil)).subresources).to eql(
+    expect(closet_mapper.call(fake(shoes: nil)).subresources).to eql(
       'http://foo/shoes' => Yaks::NullResource.new(collection: true)
     )
   end
@@ -55,17 +55,15 @@ RSpec.describe Yaks::Mapper::HasMany do
       closet_mapper_class.class_eval do
         has_many :dresses
       end
+
+      stub(closet_mapper.policy).derive_mapper_from_association(any_args) do
+        dress_mapper
+      end
     end
 
     it 'should derive it from policy' do
       expect(closet_mapper.policy).to equal policy
-
-      expect(closet_mapper.policy).to receive(:derive_mapper_from_association) {|assoc|
-        expect(assoc.singular_name).to eql 'dress'
-        dress_mapper
-      }
-
-      closet_mapper.call(double(shoes: [], dresses: [double(color: 'blue')]))
+      closet_mapper.call(fake(shoes: [], dresses: [fake(color: 'blue')]))
     end
   end
 

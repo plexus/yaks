@@ -7,7 +7,8 @@ RSpec.describe Yaks::Mapper do
   let(:resource)     { mapper.call(instance) }
 
   let(:mapper_class) { Class.new(Yaks::Mapper) { type 'foo' } }
-  let(:instance)     { double(foo: 'hello', bar: 'world') }
+
+  let(:instance) { fake(foo: 'hello', bar: 'world') }
 
   its(:env) { should equal rack_env }
 
@@ -78,10 +79,10 @@ RSpec.describe Yaks::Mapper do
   end
 
   context 'with subresources' do
-    let(:instance)      { double(widget: widget) }
-    let(:widget)        { double(type: 'super_widget') }
+    let(:widget)   { fake(type: 'super_widget') }
+    let(:instance) { fake(widget: widget) }
     let(:widget_mapper) { Class.new(Yaks::Mapper) { type 'widget' } }
-    let(:policy)        { double('Policy') }
+    fake(:policy) { Yaks::DefaultPolicy }
 
     describe 'has_one' do
       let(:has_one_opts) do
@@ -112,11 +113,13 @@ RSpec.describe Yaks::Mapper do
           { rel: 'http://foo.bar/rels/widgets' }
         end
 
-        it 'should derive the mapper based on policy' do
-          expect(policy).to receive(:derive_mapper_from_association) {|assoc|
-            expect(assoc).to be_a Yaks::Mapper::HasOne
+        before do
+          stub(policy).derive_mapper_from_association(mapper.associations.first) do
             widget_mapper
-          }
+          end
+        end
+
+        it 'should derive the mapper based on policy' do
           expect(resource.subresources).to eq(
             "http://foo.bar/rels/widgets" => Yaks::Resource.new(type: 'widget', attributes: {:type => "super_widget"})
           )
@@ -128,12 +131,13 @@ RSpec.describe Yaks::Mapper do
           { mapper: widget_mapper }
         end
 
-        it 'should derive the rel based on policy' do
-          expect(policy).to receive(:derive_rel_from_association) {|parent_mapper, assoc|
-            expect(parent_mapper).to equal mapper
-            expect(assoc).to be_a Yaks::Mapper::HasOne
+        before do
+          stub(policy).derive_rel_from_association(mapper, mapper.associations.first) do
             'http://rel/rel'
-          }
+          end
+        end
+
+        it 'should derive the rel based on policy' do
           expect(resource.subresources).to eq(
             "http://rel/rel" => Yaks::Resource.new(type: 'widget', attributes: {:type => "super_widget"})
           )
@@ -190,7 +194,7 @@ RSpec.describe Yaks::Mapper do
     end
 
     it 'should not render the link' do
-      expect(mapper.call(double(id: 123))).to eql Yaks::Resource.new(
+      expect(mapper.call(fake(id: 123))).to eql Yaks::Resource.new(
         type: 'foo',
         attributes: {id: 123}
       )

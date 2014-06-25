@@ -11,7 +11,7 @@ module Yaks
       def map_resource(collection, context)
         return NullResource.new(collection: true) if collection.nil?
         policy        = context.fetch(:policy)
-        member_mapper = association_mapper(policy)
+        member_mapper = resolve_association_mapper(policy)
         context       = context.merge(member_mapper: member_mapper)
         collection_mapper(collection, policy).new(context).call(collection)
       end

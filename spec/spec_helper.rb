@@ -1,4 +1,5 @@
 require 'rspec/its'
+require 'bogus/rspec'
 
 require 'yaks'
 require 'virtus'
@@ -20,4 +21,8 @@ RSpec.configure do |rspec|
   rspec.backtrace_exclusion_patterns = [] if ENV['FULLSTACK']
   #rspec.disable_monkey_patching!
   rspec.raise_errors_for_deprecations!
+end
+
+Bogus.configure do |bogus|
+  bogus.search_modules << Yaks
 end

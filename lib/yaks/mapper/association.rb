@@ -1,38 +1,40 @@
 module Yaks
   class Mapper
     class Association
-      include Equalizer.new(:name, :mapper, :rel)
+      include Equalizer.new(:name, :child_mapper, :rel, :href, :link_if)
+      include Util
 
-      attr_reader :name, :mapper, :rel
+      attr_reader :name, :child_mapper, :rel, :href, :link_if
 
       def initialize(options)
-        @name   = options.fetch(:name)
-        @mapper = options.fetch(:mapper, Undefined)
-        @rel    = options.fetch(:rel, Undefined)
+        @name          = options.fetch(:name)
+        @child_mapper  = options.fetch(:mapper, Undefined)
+        @rel           = options.fetch(:rel, Undefined)
+
+        @href          = options.fetch(:href, Undefined)
+        @link_if       = options.fetch(:link_if, Undefined)
       end
 
-      def add_to_resource(resource, mapper, context)
-        mapper_stack = context[:mapper_stack] + [mapper]
-        context      = context.merge(mapper_stack: mapper_stack)
-        policy       = context.fetch(:policy)
-
-        rel         = map_rel(mapper, policy)
-        subresource = map_resource(mapper.load_association(name), context)
-
-        resource.add_subresource(rel, subresource)
+      def add_to_resource(resource, parent_mapper, context)
+        AssociationMapper.new(parent_mapper, self, context).call(resource)
       end
 
-      def map_rel(mapper, policy)
-        return @rel unless @rel.equal?(Undefined)
-        policy.derive_rel_from_association(mapper, self)
+      def render_as_link?(parent_mapper)
+        href != Undefined && link_if != Undefined && Resolve(link_if, parent_mapper)
+      end
+
+      def map_rel(parent_mapper, policy)
+        return rel unless rel.equal?(Undefined)
+        policy.derive_rel_from_association(parent_mapper, self)
       end
 
       # @abstract
       def map_resource(_object, _context)
       end
 
-      def association_mapper(policy)
-        return @mapper unless @mapper.equal?(Undefined)
+      # support for HasOne and HasMany
+      def resolve_association_mapper(policy)
+        return child_mapper unless child_mapper.equal?(Undefined)
         policy.derive_mapper_from_association(self)
       end
 

@@ -83,8 +83,14 @@ RSpec.describe Yaks::Mapper::Link do
 
     let(:object) { Struct.new(:x, :y, :returns_nil).new(3, 4, nil) }
 
+    let(:mapper_class) do
+      Class.new(Yaks::Mapper) do
+        type 'foo'
+      end
+    end
+
     let(:mapper) do
-      Yaks::Mapper.new(yaks_context).tap do |mapper|
+      mapper_class.new(yaks_context).tap do |mapper|
         mapper.call(object) # set @object
       end
     end
@@ -146,8 +152,15 @@ RSpec.describe Yaks::Mapper::Link do
     context 'with a title lambda' do
       let(:options) { { title: -> { "say #{mapper_method}" } } }
 
+      before do
+        mapper_class.class_eval do
+          def mapper_method
+            'hello'
+          end
+        end
+      end
+
       it 'should evaluate the lambda in the context of the mapper' do
-        expect(mapper).to receive(:mapper_method).and_return('hello')
         expect(resource_link.title).to eq 'say hello'
       end
     end
