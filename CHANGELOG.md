@@ -1,15 +1,26 @@
 ### Development
 [full changelog](http://github.com/plexus/yaks/compare/v0.4.2...master)
 
+* Yaks::Mapper#{map_attributes,map_links,map_subresource} signature has changed, they now are responsible for adding themselves to a resource instance.
+
+```ruby
+class FooMapper < Yaks::Mapper
+  def map_attributes(resource)
+    resource.update_attributes(:example => 'attribute')
+  end
+end
+```
+
 * Conditionally turn associations into links
 
 ```ruby
-class ShowMapper
+class ShowMapper < Yaks::Mapper
   has_many :events, href: '/show/{id}/events', link_if: ->{ events.count > 50 }
 end
 ```
 
 * Reify `Yaks::Mapper::Attribute`
+
 * Remove `Yaks::Mapper#filter`, instead override `#attributes` or `#associations` to filter things out, for example:
 
 ```ruby
