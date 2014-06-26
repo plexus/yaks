@@ -15,20 +15,20 @@ module Yaks
   # In the second case a collection has a single "subresource", being its
   # members.
   class CollectionResource < Resource
-    include Equalizer.new(:type, :links, :attributes, :members, :members_rel)
-    include FP::HashUpdatable.new(:type, :links, :attributes, :members, :members_rel)
+    include Equalizer.new(:type, :links, :attributes, :members, :collection_rel)
+    include FP::HashUpdatable.new(:type, :links, :attributes, :members, :collection_rel)
     include Enumerable
 
     extend Forwardable
 
-    attr_reader :type, :links, :members, :members_rel
+    attr_reader :type, :links, :members, :collection_rel
 
     def_delegators :members, :each
 
     def initialize(options)
       super
       @members     = options.fetch(:members, [])
-      @members_rel = options.fetch(:members_rel, 'members')
+      @collection_rel = options.fetch(:collection_rel, 'members')
     end
 
     # Make a CollectionResource quack like a resource.
@@ -46,7 +46,7 @@ module Yaks
     # :(
     def subresources
       if any?
-        { members_rel => self }
+        { collection_rel => self }
       else
         {}
       end

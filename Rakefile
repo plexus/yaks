@@ -37,8 +37,8 @@ task :mutant_chunked do
     # Yaks::Mapper::ClassMethods,
     # Yaks::Mapper::Attribute,
     # Yaks::Format,
-    Yaks::Config::DSL,
-    Yaks::CollectionMapper,       # 34/153 (77.78%)
+    # Yaks::Config::DSL,
+    # Yaks::CollectionMapper,
     Yaks::DefaultPolicy,          # 45/249 (81.93%)
     Yaks::Mapper::Link,           # 37/284 (86.97%)
     Yaks::Format::CollectionJson, # 15/183 (91.80%)

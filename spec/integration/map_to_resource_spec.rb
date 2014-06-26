@@ -21,7 +21,7 @@ RSpec.describe 'Mapping domain models to Resource objects' do
           Yaks::Resource.new(type: 'pet', attributes: {:id => 2, :species => "dog", :name => "boingboing"}),
           Yaks::Resource.new(type: 'pet', attributes: {:id => 3, :species => "cat", :name => "wassup"})
         ],
-        members_rel: 'rel:src=collection&dest=pets'
+        collection_rel: 'rel:src=collection&dest=pets'
       )
     )
   }

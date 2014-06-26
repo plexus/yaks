@@ -3,7 +3,7 @@ RSpec.shared_context 'collection resource' do
     Yaks::CollectionResource.new(
       links: links,
       members: members,
-      members_rel: 'http://api.example.com/rels/plants'
+      collection_rel: 'http://api.example.com/rels/plants'
     )
   end
   let(:links)    { [] }

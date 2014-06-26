@@ -4,22 +4,6 @@ module Yaks
   class CollectionMapper < Mapper
     alias collection object
 
-    def initialize(context)
-      super(context)
-    end
-
-    def item_mapper
-      context.fetch(:item_mapper) do
-        # This is only relevant at the top level, when coming from a
-        # has_many assocation, the item_mapper will have been set
-        # or derived from the association. There is probably some
-        # redundancy here.
-        if collection.first
-          mapper_for_model(collection.first)
-        end
-      end
-    end
-
     def call(collection)
       @object = collection
 
@@ -30,7 +14,7 @@ module Yaks
         end
       }
 
-      attrs[ :members_rel ] = members_rel if members_rel
+      attrs[ :collection_rel ] = collection_rel
 
       map_attributes(
         map_links(
@@ -41,13 +25,18 @@ module Yaks
 
     private
 
-    def members_rel
-      policy.expand_rel( 'collection', pluralize( collection_type ) ) if collection_type
+    def collection_rel
+      if collection_type
+        policy.expand_rel( 'collection', pluralize( collection_type ) )
+      else
+        'collection'
+      end
     end
 
     def collection_type
-      return unless item_mapper
-      item_mapper.config.type || policy.derive_type_from_mapper_class(item_mapper)
+      if item_mapper = context[:item_mapper]
+        item_mapper.config.type || policy.derive_type_from_mapper_class(item_mapper)
+      end
     end
 
     def mapper_for_model(model)
