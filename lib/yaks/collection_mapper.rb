@@ -8,10 +8,10 @@ module Yaks
       super(context)
     end
 
-    def member_mapper
-      context.fetch(:member_mapper) do
+    def item_mapper
+      context.fetch(:item_mapper) do
         # This is only relevant at the top level, when coming from a
-        # has_many assocation, the member_mapper will have been set
+        # has_many assocation, the item_mapper will have been set
         # or derived from the association. There is probably some
         # redundancy here.
         if collection.first
@@ -46,12 +46,12 @@ module Yaks
     end
 
     def collection_type
-      return unless member_mapper
-      member_mapper.config.type || policy.derive_type_from_mapper_class(member_mapper)
+      return unless item_mapper
+      item_mapper.config.type || policy.derive_type_from_mapper_class(item_mapper)
     end
 
     def mapper_for_model(model)
-      context.fetch(:member_mapper) do
+      context.fetch(:item_mapper) do
         policy.derive_mapper_from_object(model)
       end
     end

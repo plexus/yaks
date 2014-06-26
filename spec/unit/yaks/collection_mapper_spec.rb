@@ -7,14 +7,14 @@ RSpec.describe Yaks::CollectionMapper do
   let(:mapper_class) { described_class }
 
   let(:context) {
-    { member_mapper: member_mapper,
+    { item_mapper: item_mapper,
       policy: policy,
       env: {},
       mapper_stack: []
     }
   }
   let(:collection) { [] }
-  let(:member_mapper) { Class.new(Yaks::Mapper) { type 'the_type' } }
+  let(:item_mapper) { Class.new(Yaks::Mapper) { type 'the_type' } }
   let(:policy) { Yaks::DefaultPolicy.new }
 
   it 'should map the collection' do
@@ -29,7 +29,7 @@ RSpec.describe Yaks::CollectionMapper do
 
   context 'with members' do
     let(:collection) { [boingboing, wassup]}
-    let(:member_mapper) { PetMapper }
+    let(:item_mapper) { PetMapper }
 
     it 'should map the members' do
       expect(mapper.call(collection)).to eql Yaks::CollectionResource.new(
@@ -100,7 +100,7 @@ RSpec.describe Yaks::CollectionMapper do
     end
 
     let(:collection) { [boingboing, wassup]}
-    let(:member_mapper) { PetMapper }
+    let(:item_mapper) { PetMapper }
 
     it 'should use the redefined collection method' do
       expect(mapper.call(collection)).to eql Yaks::CollectionResource.new(
