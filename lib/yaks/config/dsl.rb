@@ -1,10 +1,10 @@
 module Yaks
   class Config
-        class DSL
+    class DSL
       attr_reader :config
 
       def initialize(config, &blk)
-        @config = config
+        @config       = config
         @policy_class = Class.new(DefaultPolicy)
         @policies     = []
         instance_eval(&blk) if blk

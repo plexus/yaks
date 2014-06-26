@@ -36,13 +36,16 @@ task :mutant_chunked do
     # Yaks::Mapper::Config,
     # Yaks::Mapper::ClassMethods,
     # Yaks::Mapper::Attribute,
-    Yaks::Mapper::Link,
-    Yaks::Mapper,
-    Yaks::CollectionMapper,
-    Yaks::Serializer,
-    Yaks::DefaultPolicy,
+    # Yaks::Format,
     Yaks::Config::DSL,
-    Yaks::Config,
+    Yaks::CollectionMapper,       # 34/153 (77.78%)
+    Yaks::DefaultPolicy,          # 45/249 (81.93%)
+    Yaks::Mapper::Link,           # 37/284 (86.97%)
+    Yaks::Format::CollectionJson, # 15/183 (91.80%)
+    Yaks::Format::Hal,            # 17/209 (91.87%)
+    Yaks::Mapper,                 # 12/203 (94.09%)
+    Yaks::Config,                 # 12/263 (95.44%)
+    Yaks::Format::JsonApi,        # 7/291  (97.59%)
   ].each do |space|
     puts space
     ENV['PATTERN'] = "#{space}"
