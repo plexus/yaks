@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 module Yaks
-  class Serializer
+  class Format
     class Hal < self
-      Serializer.register self, :hal, 'application/hal+json'
+      Format.register self, :hal, 'application/hal+json'
 
       DEFAULT_OPTIONS = { singular_links: [:self, :profile] }
 

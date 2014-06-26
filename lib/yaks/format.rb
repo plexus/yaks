@@ -1,5 +1,5 @@
 module Yaks
-  class Serializer
+  class Format
     extend Forwardable
     include Util
 
@@ -19,15 +19,15 @@ module Yaks
 
     class << self
       def register(klass, name, mime_type)
-        @serializers ||= {}
-        @serializers[name] = klass
+        @formats ||= {}
+        @formats[name] = klass
 
         @mime_types  ||= {}
         @mime_types[mime_type] = [name, klass]
       end
 
       def by_name(name)
-        @serializers.fetch(name)
+        @formats.fetch(name)
       end
 
       def by_mime_type(mime_type)

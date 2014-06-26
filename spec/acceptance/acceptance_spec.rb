@@ -3,7 +3,7 @@ require 'spec_helper'
 require 'acceptance/models'
 require 'acceptance/json_shared_examples'
 
-RSpec.describe Yaks::Serializer::Hal do
+RSpec.describe Yaks::Format::Hal do
   yaks_rel_template = Yaks.new do
     rel_template "http://literature.example.com/rel/{association_name}"
   end
@@ -18,7 +18,7 @@ RSpec.describe Yaks::Serializer::Hal do
   include_examples 'JSON output format' , yaks_policy_dsl   , :hal , 'confucius'
 end
 
-RSpec.describe Yaks::Serializer::JsonApi do
+RSpec.describe Yaks::Format::JsonApi do
   config = Yaks.new do
     default_format :json_api
   end
@@ -26,7 +26,7 @@ RSpec.describe Yaks::Serializer::JsonApi do
   include_examples 'JSON output format' , config , :json_api , 'confucius'
 end
 
-RSpec.describe Yaks::Serializer::CollectionJson do
+RSpec.describe Yaks::Format::CollectionJson do
   config = Yaks.new do
     default_format :collection_json
     mapper_namespace Youtypeitwepostit

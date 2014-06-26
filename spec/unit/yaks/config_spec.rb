@@ -111,19 +111,19 @@ RSpec.describe Yaks::Config do
       { 'HTTP_ACCEPT' => 'application/hal+json;q=0.8, application/vnd.api+json' }
     }
 
-    it 'should detect serializer based on accept header' do
+    it 'should detect format based on accept header' do
       rack_env = { 'HTTP_ACCEPT' => 'application/hal+json;q=0.8, application/vnd.api+json' }
-      expect(config.serializer_class({}, rack_env)).to equal Yaks::Serializer::JsonApi
+      expect(config.format_class({}, rack_env)).to equal Yaks::Format::JsonApi
     end
 
     it 'should know to pick the best match' do
       rack_env = { 'HTTP_ACCEPT' => 'application/hal+json;q=0.8, application/vnd.api+json;q=0.7' }
-      expect(config.serializer_class({}, rack_env)).to equal Yaks::Serializer::Hal
+      expect(config.format_class({}, rack_env)).to equal Yaks::Format::Hal
     end
 
     it 'should fall back to the default when no mime type is recognized' do
       rack_env = { 'HTTP_ACCEPT' => 'text/html, application/json' }
-      expect(config.serializer_class({}, rack_env)).to equal Yaks::Serializer::CollectionJson
+      expect(config.format_class({}, rack_env)).to equal Yaks::Format::CollectionJson
     end
   end
 end

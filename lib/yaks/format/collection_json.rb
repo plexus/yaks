@@ -1,7 +1,7 @@
 module Yaks
-  class Serializer
+  class Format
     class CollectionJson < self
-      Serializer.register self, :collection_json, 'application/vnd.collection+json'
+      Format.register self, :collection_json, 'application/vnd.collection+json'
 
       include FP
 

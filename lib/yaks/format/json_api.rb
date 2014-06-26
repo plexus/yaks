@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 module Yaks
-  class Serializer
+  class Format
     class JsonApi < self
-      Serializer.register self, :json_api, 'application/vnd.api+json'
+      Format.register self, :json_api, 'application/vnd.api+json'
 
       include FP
 
