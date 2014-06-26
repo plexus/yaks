@@ -236,13 +236,13 @@ If `env` contains a `HTTP_ACCEPT` key (Rack's way of representing the `Accept` h
 
 ## Custom attribute/link/subresource handling
 
-When inheriting from `Yaks::Mapper`, you can override `map_attributes`, `map_links` and `map_resources` to skip (or augment) above methods, and instead implement your own custom mechanism. For example
+When inheriting from `Yaks::Mapper`, you can override `map_attributes`, `map_links` and `map_resources` to skip (or augment) above methods, and instead implement your own custom mechanism. These methods take a `Yaks::Resource` instance, and should return an updated resource. They should not alter the resource instance in-place. For example
 
 ```ruby
 class ErrorMapper < Yaks::Mapper
   link :profile, '/api/error'
 
-  def map_attributes
+  def map_attributes(resource)
     attrs = {
       http_code: 500,
       message: object.to_s,
@@ -257,7 +257,7 @@ class ErrorMapper < Yaks::Mapper
       attrs[:type] = "record_not_found"
     end
 
-    attrs
+    resource.update_attributes(attrs)
   end
 end
 ```
@@ -399,6 +399,10 @@ end
 Yaks is used in production by [Ticketsolve](http://www.ticketsolve.com/). You can find an example API endpoint [here](http://leicestersquaretheatre.ticketsolve.com/api).
 
 Get in touch if you like to see your name and API here.
+
+## Demo
+
+You can find an example app at [Yakports](https://github.com/plexus/yakports), or browse the HAL api directly using the [HAL browser](http://yaks-airports.herokuapp.com/browser.html).
 
 ## Acknowledgment
 
