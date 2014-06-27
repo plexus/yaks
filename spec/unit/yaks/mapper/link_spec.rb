@@ -11,8 +11,43 @@ RSpec.describe Yaks::Mapper::Link do
 
   its(:template_variables) { should eq [:x, :y] }
   its(:uri_template) { should eq URITemplate.new(template) }
-  its(:expand?) { should be true }
 
+  let(:object) { Struct.new(:x, :y, :returns_nil).new(3, 4, nil) }
+
+  let(:mapper_class) do
+    Class.new(Yaks::Mapper) do
+      type 'foo'
+    end
+  end
+
+  let(:mapper) do
+    mapper_class.new(yaks_context).tap do |mapper|
+      mapper.call(object) # set @object
+    end
+  end
+
+  describe '#add_to_resource' do
+    it 'should add itself to the resource' do
+      expect(link.add_to_resource(Yaks::Resource.new, mapper, yaks_context)).to eql(
+        Yaks::Resource.new(links: [Yaks::Resource::Link.new(:next, "/foo/bar/3/4", {})])
+      )
+    end
+
+    context 'with a link function returning nothing' do
+      let(:template) { :link_computer }
+      before do
+        mapper_class.class_eval do
+          def link_computer ; end
+        end
+      end
+
+      it 'should not render the link' do
+        expect(link.add_to_resource(Yaks::Resource.new, mapper, yaks_context)).to eql(
+          Yaks::Resource.new
+        )
+      end
+    end
+  end
 
   describe '#rel?' do
     it 'should return true if the relation matches' do
@@ -47,8 +82,6 @@ RSpec.describe Yaks::Mapper::Link do
       it 'should keep the template in the response' do
         expect(link.expand_with(->{ })).to eq '/foo/bar/{x}/{y}'
       end
-
-      its(:expand?) { should be false }
     end
 
     context 'with a URI without expansion variables' do
@@ -80,20 +113,6 @@ RSpec.describe Yaks::Mapper::Link do
     subject(:resource_link) { link.map_to_resource_link(mapper) }
 
     its(:rel) { should eq :next }
-
-    let(:object) { Struct.new(:x, :y, :returns_nil).new(3, 4, nil) }
-
-    let(:mapper_class) do
-      Class.new(Yaks::Mapper) do
-        type 'foo'
-      end
-    end
-
-    let(:mapper) do
-      mapper_class.new(yaks_context).tap do |mapper|
-        mapper.call(object) # set @object
-      end
-    end
 
     context 'with attributes' do
       it 'should not have a title' do

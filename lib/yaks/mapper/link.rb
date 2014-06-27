@@ -30,7 +30,7 @@ module Yaks
 
       def_delegators :uri_template, :expand_partial
 
-      def add_to_resource(resource, mapper, context)
+      def add_to_resource(resource, mapper, _context)
         resource_link = map_to_resource_link(mapper)
         return resource unless resource_link
         resource.add_link(resource_link)
@@ -45,16 +45,14 @@ module Yaks
         !options.fetch(:expand) { true }.equal? true
       end
 
-      # Does this link need expansion, full or partially
-      def expand?
-        options.fetch(:expand) { true }
-      end
-
       def template_variables
-        if options[:expand].respond_to? :to_ary
-          options[:expand]
-        else
+        case options.fetch(:expand) { true }
+        when true
           uri_template.variables
+        when false
+          []
+        else
+          options[:expand]
         end.map(&:to_sym)
       end
 
@@ -78,11 +76,7 @@ module Yaks
       def expand_with(lookup)
         return lookup[template] if template.is_a? Symbol
 
-        if expand?
-          expand_partial(expansion_mapping(lookup)).to_s
-        else
-          template
-        end
+        expand_partial(expansion_mapping(lookup)).to_s
       end
 
       def resource_link_options(mapper)
