@@ -5,13 +5,7 @@ module Yaks
     class Hal < self
       Format.register self, :hal, 'application/hal+json'
 
-      DEFAULT_OPTIONS = { singular_links: [:self, :profile] }
-
       protected
-
-      def options
-        DEFAULT_OPTIONS.merge super
-      end
 
       def serialize_resource(resource)
         # The HAL spec doesn't say explicitly how to deal missing values,
@@ -31,8 +25,7 @@ module Yaks
 
       def serialize_link(memo, link)
         hal_link = {href: link.uri}
-        hal_link.merge!(link.options.reject{|k,_| k.equal?(:templated)})
-        hal_link.merge!(templated: true) if link.templated?
+        hal_link.merge!(link.options)
 
         memo[link.rel] = if singular?(link.rel)
                            hal_link

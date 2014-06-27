@@ -17,7 +17,7 @@ class Era
 end
 
 class LiteratureBaseMapper < Yaks::Mapper
-  link :profile, 'http://literature.example.com/profiles/{mapper_name}'
+  link :profile, 'http://literature.example.com/profiles/{mapper_name}', expand: true
   link :self, 'http://literature.example.com/{mapper_name}/{id}'
 end
 
@@ -25,7 +25,7 @@ class ScholarMapper < LiteratureBaseMapper
   attributes :id, :name, :pinyin, :latinized
   has_many :works
 
-  link 'http://literature.example.com/rels/quotes', 'http://literature.example.com/quotes/?author={downcased_pinyin}&q={query}', expand: [:downcased_pinyin]
+  link 'http://literature.example.com/rels/quotes', 'http://literature.example.com/quotes/?author={downcased_pinyin}&q={query}', expand: [:downcased_pinyin], title: 'Search for quotes'
   link :self, 'http://literature.example.com/authors/{downcased_pinyin}'
 
   def downcased_pinyin

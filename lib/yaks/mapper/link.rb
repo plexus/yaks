@@ -51,7 +51,11 @@ module Yaks
       end
 
       def template_variables
-        options.fetch(:expand) { uri_template.variables }.map(&:to_sym)
+        if options[:expand].respond_to? :to_ary
+          options[:expand]
+        else
+          uri_template.variables
+        end.map(&:to_sym)
       end
 
       def expansion_mapping(lookup)
