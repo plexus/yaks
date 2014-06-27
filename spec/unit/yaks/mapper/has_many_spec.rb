@@ -35,7 +35,7 @@ RSpec.describe Yaks::Mapper::HasMany do
           Yaks::Resource.new(type: 'shoe', attributes: {:size => 9, :color => :blue}),
           Yaks::Resource.new(type: 'shoe', attributes: {:size => 11.5, :color => :red})
         ],
-        collection_rel: 'rel:src=collection&dest=shoes'
+        collection_rel: 'rel:shoes'
       )
     )
   end

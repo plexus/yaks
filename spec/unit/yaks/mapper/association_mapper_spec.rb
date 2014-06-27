@@ -18,7 +18,7 @@ RSpec.describe Yaks::Mapper::AssociationMapper do
     context 'when the association should be rendered as link' do
       before do
         stub(association).render_as_link?(parent_mapper) { true }
-        stub(association).map_rel(parent_mapper, policy) { 'rels:the_rel' }
+        stub(association).map_rel(policy) { 'rels:the_rel' }
         stub(association).href { 'http://this/is_where_the_associated_thing_can_be_found' }
       end
 
@@ -37,7 +37,7 @@ RSpec.describe Yaks::Mapper::AssociationMapper do
     context 'when the association should be rendered as a subresource' do
       before do
         stub(association).render_as_link?(parent_mapper) { false }
-        stub(association).map_rel(parent_mapper, policy) { 'rels:the_rel' }
+        stub(association).map_rel(policy) { 'rels:the_rel' }
         stub(association).name { :the_name }
         stub(association).map_resource(:the_object, association_mapper.context) { :the_resource }
 

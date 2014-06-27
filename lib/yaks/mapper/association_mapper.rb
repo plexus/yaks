@@ -9,7 +9,7 @@ module Yaks
         @context       = context.merge(
           mapper_stack: context[:mapper_stack] + [parent_mapper]
         )
-        @rel           = association.map_rel(parent_mapper, policy)
+        @rel           = association.map_rel(policy)
       end
 
       def policy

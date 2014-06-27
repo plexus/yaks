@@ -1,6 +1,14 @@
 ### Development
 [full changelog](http://github.com/plexus/yaks/compare/v0.4.2...master)
 
+* when specifying a rel_template, instead of allowing for {src} and {dest} fields, now a single {rel} field is expected, which corresponds more with typical usage.
+
+```ruby
+Yaks.new do
+  rel_template 'http://my-api/docs/relationships/{rel}'
+end
+```
+
 * Yaks::Serializer has been renamed to Yaks::Format
 
 * Yaks::Mapper#{map_attributes,map_links,map_subresource} signature has changed, they now are responsible for adding themselves to a resource instance.

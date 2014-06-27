@@ -23,9 +23,9 @@ module Yaks
         href != Undefined && link_if != Undefined && Resolve(link_if, parent_mapper)
       end
 
-      def map_rel(parent_mapper, policy)
+      def map_rel(policy)
         return rel unless rel.equal?(Undefined)
-        policy.derive_rel_from_association(parent_mapper, self)
+        policy.derive_rel_from_association(self)
       end
 
       # @abstract

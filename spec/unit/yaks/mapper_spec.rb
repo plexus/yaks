@@ -132,7 +132,7 @@ RSpec.describe Yaks::Mapper do
         end
 
         before do
-          stub(policy).derive_rel_from_association(mapper, mapper.associations.first) do
+          stub(policy).derive_rel_from_association(mapper.associations.first) do
             'http://rel/rel'
           end
         end

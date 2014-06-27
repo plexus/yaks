@@ -24,7 +24,7 @@ RSpec.describe Yaks::CollectionMapper do
       links: [],
       attributes: {},
       members: [],
-      collection_rel: 'rel:src=collection&dest=the_types'
+      collection_rel: 'rel:the_types'
     )
   end
 
@@ -41,7 +41,7 @@ RSpec.describe Yaks::CollectionMapper do
           Yaks::Resource.new(type: 'pet', attributes: {:id => 2, :species => "dog", :name => "boingboing"}),
           Yaks::Resource.new(type: 'pet', attributes: {:id => 3, :species => "cat", :name => "wassup"})
         ],
-        collection_rel: 'rel:src=collection&dest=pets'
+        collection_rel: 'rel:pets'
       )
     end
   end
@@ -90,7 +90,7 @@ RSpec.describe Yaks::CollectionMapper do
         links: [],
         attributes: { foo: 123, bar: 'pi la~~~' },
         members: [],
-        collection_rel: 'rel:src=collection&dest=the_types'
+        collection_rel: 'rel:the_types'
       )
     end
   end
@@ -108,7 +108,7 @@ RSpec.describe Yaks::CollectionMapper do
         links: [ Yaks::Resource::Link.new(:self, 'http://api.example.com/orders', {}) ],
         attributes: { },
         members: [],
-        collection_rel: 'rel:src=collection&dest=the_types'
+        collection_rel: 'rel:the_types'
       )
     end
   end
@@ -135,7 +135,7 @@ RSpec.describe Yaks::CollectionMapper do
         members: [
           Yaks::Resource.new(type: 'pet', attributes: {:id => 3, :species => "cat", :name => "wassup"})
         ],
-        collection_rel: 'rel:src=collection&dest=pets'
+        collection_rel: 'rel:pets'
       )
     end
   end

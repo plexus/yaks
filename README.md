@@ -62,7 +62,7 @@ or a bit more elaborate
 ```ruby
 yaks = Yaks.new do
   default_format :json_api
-  rel_template 'http://api.example.com/rels/{dest}'
+  rel_template 'http://api.example.com/rels/{rel}'
   format_options(:hal, plural_links: [:copyright])
 end
 

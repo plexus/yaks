@@ -27,7 +27,7 @@ module Yaks
 
     def collection_rel
       if collection_type
-        policy.expand_rel( 'collection', pluralize( collection_type ) )
+        policy.expand_rel( pluralize( collection_type ) )
       else
         'collection'
       end

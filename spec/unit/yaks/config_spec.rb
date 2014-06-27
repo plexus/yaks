@@ -56,7 +56,7 @@ RSpec.describe Yaks::Config do
 
   describe '#serialize' do
     configure do
-      rel_template 'http://api.mysuperfriends.com/{dest}'
+      rel_template 'http://api.mysuperfriends.com/{rel}'
       format_options :hal, plural_links: [:copyright]
     end
 

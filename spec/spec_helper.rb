@@ -14,6 +14,7 @@ require_relative 'support/fixtures'
 require_relative 'support/shared_contexts'
 require_relative 'support/youtypeit_models_mappers'
 require_relative 'support/deep_eql'
+require_relative 'support/classes_for_policy_testing'
 
 
 RSpec.configure do |rspec|

@@ -11,7 +11,7 @@ RSpec.describe Yaks::Format::Hal do
 
   yaks_policy_dsl = Yaks.new do
     format_options :hal, plural_links: ['http://literature.example.com/rels/quotes']
-    derive_rel_from_association do |mapper, association|
+    derive_rel_from_association do |association|
       "http://literature.example.com/rel/#{association.name}"
     end
   end

@@ -3,7 +3,7 @@ module Yaks
     include Util
 
     DEFAULTS = {
-      rel_template: "rel:src={src}&dest={dest}",
+      rel_template: "rel:{rel}",
       namespace: Kernel
     }
 
@@ -41,15 +41,12 @@ module Yaks
       @options[:namespace].const_get("#{camelize(association.singular_name)}Mapper")
     end
 
-    def derive_rel_from_association(mapper, association)
-      expand_rel( mapper.class.mapper_name(self), association.name )
+    def derive_rel_from_association(association)
+      expand_rel( association.name )
     end
 
-    def expand_rel(src_name, dest_name)
-      URITemplate.new(@options[:rel_template]).expand(
-        src: src_name,
-        dest: dest_name
-      )
+    def expand_rel(relname)
+      URITemplate.new(@options[:rel_template]).expand(rel: relname)
     end
   end
 end

@@ -86,7 +86,7 @@ RSpec.describe Yaks::Mapper::Association do
   end
 
   describe '#map_rel' do
-    let(:association_rel) { association.map_rel(parent_mapper, policy) }
+    let(:association_rel) { association.map_rel(policy) }
 
     context 'with a rel specified' do
       let(:rel) { 'http://api.com/rels/shoes' }
@@ -98,7 +98,7 @@ RSpec.describe Yaks::Mapper::Association do
 
     context 'without a rel specified' do
       before do
-        stub(policy).derive_rel_from_association(parent_mapper, association) {
+        stub(policy).derive_rel_from_association(association) {
           'http://api.com/rel/derived'
         }
       end

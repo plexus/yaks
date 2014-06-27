@@ -1,40 +1,6 @@
 require 'spec_helper'
 
-class SoyMapper ; end
-class Soy ; end
-class Wheat ; end
-
-module MyMappers
-  class SoyMapper ; end
-end
-
-class SoyCollectionMapper ; end
-
-module Namespace
-  module Nested
-    class Rye ; end
-  end
-
-  class RyeMapper ; end
-  class RyeCollectionMapper ; end
-
-  class CollectionMapper ; end
-end
-
-module DislikesCollectionMapper
-  def self.const_get(const)
-    raise "not a NameError" if const.to_s == 'CollectionMapper'
-  end
-end
-
-module DislikesOtherMappers
-  def self.const_get(const)
-    raise "not a NameError" if const.to_s != 'CollectionMapper'
-  end
-end
-
-
-describe Yaks::DefaultPolicy, '#derive_mapper_from_object' do
+RSpec.describe Yaks::DefaultPolicy, '#derive_mapper_from_object' do
   subject(:policy) { described_class.new(options) }
 
   let(:options) { {} }

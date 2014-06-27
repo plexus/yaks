@@ -14,14 +14,14 @@ RSpec.describe 'Mapping domain models to Resource objects' do
 
   its(:subresources) {
     should eq(
-      "rel:src=friend&dest=pet_peeve" => Yaks::Resource.new(type:'pet_peeve', attributes: {id: 4, type: 'parsing with regexps'}),
-      "rel:src=friend&dest=pets" => Yaks::CollectionResource.new(
+      "rel:pet_peeve" => Yaks::Resource.new(type:'pet_peeve', attributes: {id: 4, type: 'parsing with regexps'}),
+      "rel:pets" => Yaks::CollectionResource.new(
         type: 'pet',
         members: [
           Yaks::Resource.new(type: 'pet', attributes: {:id => 2, :species => "dog", :name => "boingboing"}),
           Yaks::Resource.new(type: 'pet', attributes: {:id => 3, :species => "cat", :name => "wassup"})
         ],
-        collection_rel: 'rel:src=collection&dest=pets'
+        collection_rel: 'rel:pets'
       )
     )
   }
