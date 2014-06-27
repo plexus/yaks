@@ -27,7 +27,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'bogus'
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'mutant-rspec'
-  gem.add_development_dependency 'mutant', '0.5.12'
+  gem.add_development_dependency 'mutant'
   gem.add_development_dependency 'rspec-its'
   gem.add_development_dependency 'benchmark-ips'
 end
