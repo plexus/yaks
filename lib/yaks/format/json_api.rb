@@ -33,7 +33,7 @@ module Yaks
       end
 
       def serialize_links(subresources)
-        subresources.each_with_object({}) do |(name, resource), hsh|
+        subresources.each_with_object({}) do |(_name, resource), hsh|
           next if resource.is_a? NullResource
           key = resource.collection? ? pluralize(resource.type) : resource.type
           hsh[key] = serialize_link(resource)
@@ -45,7 +45,7 @@ module Yaks
       end
 
       def serialize_linked_subresources(subresources, hsh)
-        subresources.each_with_object(hsh) do |(name, resources), hsh|
+        subresources.values.each do |resources|
           serialize_linked_resources(resources, hsh)
         end
       end
