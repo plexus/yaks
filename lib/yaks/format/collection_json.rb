@@ -26,7 +26,7 @@ module Yaks
           result[:href] = item.self_link.uri if item.self_link
           item.links.each do |link|
             next if link.rel == :self
-            result[:links] ||= []
+            result[:links] = [] unless result.key?(:links)
             result[:links] << {rel: link.rel, href: link.uri}
             result[:links].last[:name] = link.name if link.name
           end
