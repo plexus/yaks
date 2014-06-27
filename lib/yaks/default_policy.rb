@@ -26,7 +26,7 @@ module Yaks
           return @options[:namespace].const_get(:CollectionMapper)
         rescue NameError
         end
-        Yaks::CollectionMapper
+        CollectionMapper
       else
         name = model.class.name.split('::').last
         @options[:namespace].const_get(name + 'Mapper')
