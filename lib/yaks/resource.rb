@@ -23,7 +23,7 @@ module Yaks
     end
 
     def self_link
-      links.find do |link|
+      links.reverse.find do |link|
         link.rel.equal? :self
       end
     end

@@ -29,10 +29,15 @@ RSpec.describe Yaks::Format::JsonApi do
 end
 
 RSpec.describe Yaks::Format::CollectionJson do
-  config = Yaks.new do
+  youtypeit_yaks = Yaks.new do
     default_format :collection_json
-    mapper_namespace Youtypeitwepostit
+    namespace Youtypeitwepostit
   end
 
-  include_examples 'JSON output format' , config , :collection , 'youtypeitwepostit'
+  confucius_yaks = Yaks.new do
+    default_format :collection_json
+  end
+
+  include_examples 'JSON output format', youtypeit_yaks, :collection, 'youtypeitwepostit'
+  include_examples 'JSON output format', confucius_yaks, :collection, 'confucius'
 end

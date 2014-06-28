@@ -1,0 +1,39 @@
+{
+  "collection": {
+    "version": "1.0",
+    "href": "http://literature.example.com/authors/kongzi",
+    "items": [
+      {
+        "href": "http://literature.example.com/authors/kongzi",
+        "data": [
+          {
+            "name": "id",
+            "value": 9
+          },
+          {
+            "name": "name",
+            "value": "孔子"
+          },
+          {
+            "name": "pinyin",
+            "value": "Kongzi"
+          },
+          {
+            "name": "latinized",
+            "value": "Confucius"
+          }
+        ],
+        "links": [
+          {
+            "rel": "profile",
+            "href": "http://literature.example.com/profiles/scholar"
+          },
+          {
+            "rel": "http://literature.example.com/rels/quotes",
+            "href": "http://literature.example.com/quotes/?author=kongzi&q={query}"
+          }
+        ]
+      }
+    ]
+  }
+}
