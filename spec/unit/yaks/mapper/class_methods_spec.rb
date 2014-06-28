@@ -26,12 +26,20 @@ RSpec.describe Yaks::Mapper::ClassMethods do
         end
       end
 
+      let(:grandchild_class) do
+        Class.new(child_class)
+      end
+
       it 'should inherit attributes from the parent' do
         expect(child_class.attributes).to eq [
           Yaks::Mapper::Attribute.new(:foo),
           Yaks::Mapper::Attribute.new(:bar),
           Yaks::Mapper::Attribute.new(:baz)
         ]
+      end
+
+      it 'should create a valid config' do
+        expect(grandchild_class.config).to be_a Yaks::Mapper::Config
       end
 
       it 'should not alter the parent' do
@@ -55,4 +63,5 @@ RSpec.describe Yaks::Mapper::ClassMethods do
       Yaks::Mapper::HasMany.new(name: :thingies)
     ]
   end
+
 end
