@@ -18,11 +18,9 @@ module Yaks
     end
 
     def format_class(opts, env)
-      if env.key? 'HTTP_ACCEPT'
-        accept = Rack::Accept::Charset.new(env['HTTP_ACCEPT'])
-        mime_type = accept.best_of(Format.mime_types.values)
-        return Format.by_mime_type(mime_type) if mime_type
-      end
+      accept = Rack::Accept::Charset.new(env['HTTP_ACCEPT'])
+      mime_type = accept.best_of(Format.mime_types.values)
+      return Format.by_mime_type(mime_type) if mime_type
       Format.by_name(opts.fetch(:format) { @default_format })
     end
 
@@ -46,7 +44,7 @@ module Yaks
         mapper_stack: []
       }
 
-      mapper     = opts.fetch(:mapper) { policy.derive_mapper_from_object(object) }.new(context)
+      mapper = opts.fetch(:mapper) { policy.derive_mapper_from_object(object) }.new(context)
       format = format_class(opts, env).new(format_options[format_name(opts)])
 
       [ mapper, format, *steps ].inject(object) {|memo, step| step.call(memo) }

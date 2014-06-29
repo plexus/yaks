@@ -102,7 +102,7 @@ RSpec.describe Yaks::Config do
     end
   end
 
-  context 'passing in a rack env' do
+  describe '#format_class' do
     configure do
       default_format :collection_json
     end
@@ -110,6 +110,10 @@ RSpec.describe Yaks::Config do
     let(:rack_env) {
       { 'HTTP_ACCEPT' => 'application/hal+json;q=0.8, application/vnd.api+json' }
     }
+
+    it 'should fall back to the default when no HTTP_ACCEPT key is present' do
+      expect(config.format_class({}, {})).to equal Yaks::Format::CollectionJson
+    end
 
     it 'should detect format based on accept header' do
       rack_env = { 'HTTP_ACCEPT' => 'application/hal+json;q=0.8, application/vnd.api+json' }
