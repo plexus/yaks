@@ -33,49 +33,11 @@ module Yaks
       @policy_class.new(@policy_options)
     end
 
-    # @param [Hash] opts
-    # @param [Hash] env
-    # @return [Class]
-    def format_class(opts, env)
-      accept = Rack::Accept::MediaType.new(env['HTTP_ACCEPT'])
-      mime_type = accept.best_of([nil] + Format.mime_types.values)
-      return Format.by_mime_type(mime_type) if mime_type
-      Format.by_name(opts.fetch(:format) { @default_format })
-    end
-
-    # @param [Hash] opts
-    # @return [String]
-    def format_name(opts)
-      opts.fetch(:format) { @default_format }
-    end
-
-    # @param [Symbol] format
-    # @return [Object]
-    def options_for_format(format)
-      format_options[format]
-    end
-
     # model                => Yaks::Resource
     # Yaks::Resource       => serialized structure
     # serialized structure => serialized flat
-    #
-    # @param [Object] object
-    # @param [Hash] opts
-    # @return [Object]
-    def call(object, opts = {})
-      env = opts.fetch(:env, {})
-      context = {
-        policy: policy,
-        env: env,
-        mapper_stack: []
-      }
-
-      context[:item_mapper] = opts[:item_mapper] if opts.key?(:item_mapper)
-
-      mapper = opts.fetch(:mapper) { policy.derive_mapper_from_object(object) }.new(context)
-      format = format_class(opts, env).new(format_options[format_name(opts)])
-
-      [ mapper, format, *steps ].inject(object) {|memo, step| step.call(memo) }
+    def call(object, options = {})
+      Runner.new(config: self, object: object, options: options).call
     end
     alias serialize call
   end

@@ -4,6 +4,7 @@ require 'forwardable'
 require 'set'
 require 'pathname'
 
+require 'anima'
 require 'concord'
 require 'inflection'
 require 'uri_template'
@@ -57,3 +58,4 @@ require 'yaks/format/collection_json'
 
 require 'yaks/config/dsl'
 require 'yaks/config'
+require 'yaks/runner'

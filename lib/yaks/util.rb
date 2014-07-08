@@ -18,6 +18,10 @@ module Yaks
         .gsub!(/(?:^|_)(.)/) { $1.upcase          }
     end
 
+    def slice_hash(hash, *keys)
+      keys.each_with_object({}) {|k,dest| dest[k] = hash[k] if hash.key?(k) }
+    end
+
     # Turn what is maybe a Proc into its result (or itself)
     #
     # When input can be either a value or a proc that returns a value,
