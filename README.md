@@ -420,7 +420,7 @@ If this approach sounds appealing, have a look at [microrb.com](http://microrb.c
 
 ## How to contribute
 
-Run the tests, the examples, try it with your own stuff and leave your impressions in the issues. Or discuss on API-craft.
+Run the tests, the examples, try it with your own stuff and leave your impressions in the issues. Or discuss on [API-craft](https://groups.google.com/d/forum/api-craft).
 
 To fix a bug
 
