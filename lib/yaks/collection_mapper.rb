@@ -4,6 +4,8 @@ module Yaks
   class CollectionMapper < Mapper
     alias collection object
 
+    # @param [Array] collection
+    # @return [Array]
     def call(collection)
       @object = collection
 

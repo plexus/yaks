@@ -21,10 +21,20 @@ module Yaks
 
     extend Forwardable
 
+    # @!attribute [r] type
+    #   @return [String]
+    # @!attribute [r] links
+    #   @return [Array]
+    # @!attribute [r] members
+    #   @return [Array]
+    # @!attribute [r] collection_rel
+    #   @return [String]
     attr_reader :type, :links, :members, :collection_rel
 
     def_delegators :members, :each
 
+    # @param [Hash] options
+    # @return [CollectionResource]
     def initialize(options)
       super
       @members     = options.fetch(:members, [])
@@ -44,6 +54,8 @@ module Yaks
     # this doesn't cause infinite recursion. Not very pretty, needs looking at.
     #
     # :(
+    #
+    # @return [Hash]
     def subresources
       if any?
         { collection_rel => self }
@@ -52,6 +64,7 @@ module Yaks
       end
     end
 
+    # @return [Boolean]
     def collection?
       true
     end

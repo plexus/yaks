@@ -7,6 +7,8 @@ module Yaks
 
       include FP
 
+      # @param [Yaks::Resource] resource
+      # @return [Hash]
       def call(resource)
         main_collection = resource.map(&method(:serialize_resource))
 
@@ -18,6 +20,8 @@ module Yaks
         end
       end
 
+      # @param [Yaks::Resource] resource
+      # @return [Hash]
       def serialize_resource(resource)
         result = resource.attributes
 
@@ -32,6 +36,8 @@ module Yaks
         result
       end
 
+      # @param [Yaks::Resource] subresource
+      # @return [Hash]
       def serialize_links(subresources)
         subresources.each_with_object({}) do |(_name, resource), hsh|
           next if resource.is_a? NullResource
@@ -40,16 +46,24 @@ module Yaks
         end
       end
 
+      # @param [Yaks::Resource] resource
+      # @return [Array, String]
       def serialize_link(resource)
         resource.collection? ? resource.map(&send_with_args(:[], :id)) : resource[:id]
       end
 
+      # @param [Hash] subresources
+      # @param [Hash] hsh
+      # @return [Hash]
       def serialize_linked_subresources(subresources, hsh)
         subresources.values.each do |resources|
           serialize_linked_resources(resources, hsh)
         end
       end
 
+      # @param [Array] resources
+      # @param [Hash] linked
+      # @return [Hash]
       def serialize_linked_resources(resources, linked)
         resources.each_with_object(linked) do |resource, memo|
           serialize_subresource(resource, memo)
@@ -57,6 +71,10 @@ module Yaks
       end
 
       # {shows => [{id: 3, name: 'foo'}]}
+      #
+      # @param [Yaks::Resource] resource
+      # @param [Hash] linked
+      # @return [Hash]
       def serialize_subresource(resource, linked)
         key = pluralize(resource.type)
         set = linked.fetch(key) { Set.new }
