@@ -7,6 +7,8 @@ module Yaks
 
       protected
 
+      # @param [Yaks::Resource] resource
+      # @return [Hash]
       def serialize_resource(resource)
         # The HAL spec doesn't say explicitly how to deal missing values,
         # looking at client behavior (Hyperagent) it seems safer to return an empty
@@ -19,10 +21,15 @@ module Yaks
         result
       end
 
+      # @param [Array] links
+      # @return [Hash]
       def serialize_links(links)
         links.reduce({}, &method(:serialize_link))
       end
 
+      # @param [Hash] memo
+      # @param [Yaks::Resource::Link]
+      # @return [Hash]
       def serialize_link(memo, link)
         hal_link = {href: link.uri}
         hal_link.merge!(link.options)
@@ -35,10 +42,14 @@ module Yaks
         memo
       end
 
+      # @param [String] rel
+      # @return [Boolean]
       def singular?(rel)
         !options.fetch(:plural_links) { [] }.include?(rel)
       end
 
+      # @param [Array] subresources
+      # @return [Hash]
       def serialize_embedded(subresources)
         subresources.each_with_object({}) do |(rel, resources), memo|
           memo[rel] = if resources.collection?

@@ -5,6 +5,8 @@ module Yaks
 
       include FP
 
+      # @param [Yaks:Resource] resource
+      # @return [Hash]
       def serialize_resource(resource)
         result = {
           version: "1.0",
@@ -14,6 +16,8 @@ module Yaks
         {collection: result}
       end
 
+      # @param [Yaks::Resource] resource
+      # @return [Array]
       def serialize_items(resource)
         resource.map do |item|
           attrs = item.attributes.map do |name, value|

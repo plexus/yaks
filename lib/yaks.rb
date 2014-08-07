@@ -18,10 +18,14 @@ require 'yaks/primitivize'
 require 'yaks/default_policy'
 
 module Yaks
+  # A PORO
   Undefined = Object.new
+  # Set the Root constant as the gems root path
   Root = Pathname(__FILE__).join('../..')
 
   class << self
+    # @param [Proc] blk
+    # @return [Yaks::Config]
     def new(&blk)
       Yaks::Config.new(&blk)
     end
