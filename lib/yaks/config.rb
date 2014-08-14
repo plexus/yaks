@@ -38,7 +38,7 @@ module Yaks
     # @return [Yaks::Format::CollectionJson, Yaks::Format::Hal, Yaks::Format::JsonApi]
     def format_class(opts, env)
       accept = Rack::Accept::MediaType.new(env['HTTP_ACCEPT'])
-      mime_type = accept.best_of(Format.mime_types.values)
+      mime_type = accept.best_of([nil] + Format.mime_types.values)
       return Format.by_mime_type(mime_type) if mime_type
       Format.by_name(opts.fetch(:format) { @default_format })
     end
