@@ -2,6 +2,8 @@ module Yaks
   module FP
 
     class Updatable < Module
+      # @param [Array] attributes
+      # @return [Symbol]
       def initialize(*attributes)
         define_method :update do |updates|
           self.class.new(
