@@ -100,11 +100,30 @@ end
 
 #### Filtering
 
-Implement `filter(attrs)` to filter out specific attributes, e.g. based on options.
+Implementing a `#filter` method in your mappers is no longer supported. Instead you can override `#attributes`, or `#associations`.
 
 ```ruby
-def filter(attrs)
-  attrs.reject{|attr| options[:exclude].include? attr }
+class SongMapper
+  attributes :title, :duration, :lyrics
+
+  has_one :artist
+  has_one :album
+
+  def minimal?
+    env['HTTP_PREFER'] =~ /minimal/
+  end
+
+  # @return Array<Yaks::Mapper::Attribute>
+  def attributes
+    return super.reject {|attr| attr.name.equal? :lyrics } if minimal?
+    super
+  end
+
+  # @return Array<Yaks::Mapper::Association>
+  def associations
+    return [] if minimal?
+    super
+  end
 end
 ```
 
@@ -159,6 +178,13 @@ Options
 * `:mapper` : Use a specific for each instance, will be derived from the class name if omitted (see Policy vs Configuration)
 * `:collection_mapper` : For mapping the collection as a whole, this defaults to Yaks::CollectionMapper, but you can subclass it for example to add links or attributes on the collection itself
 * `:rel` : Set the relation (symbol or URI) this association has with the object. Will be derived from the association name and the configured rel_template if ommitted
+* `:link_if`: Conditionally render the association as a link. A `:href` option is required
+
+```ruby
+class ShowMapper < Yaks::Mapper
+  has_many :events, href: '/show/{id}/events', link_if: ->{ events.count > 50 }
+end
+```
 
 ## Namespace
 

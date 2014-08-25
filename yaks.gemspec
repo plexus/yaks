@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 require File.expand_path('../lib/yaks/version', __FILE__)
+require File.expand_path('../lib/yaks/breaking_changes', __FILE__)
 
 Gem::Specification.new do |gem|
   gem.name        = 'yaks'
@@ -16,6 +17,10 @@ Gem::Specification.new do |gem|
   gem.files            = `git ls-files`.split($/)
   gem.test_files       = `git ls-files -- spec`.split($/)
   gem.extra_rdoc_files = %w[README.md]
+
+  if Yaks::BreakingChanges.key? Yaks::VERSION
+    gem.post_install_message = Yaks::BreakingChanges[Yaks::VERSION]
+  end
 
   gem.add_runtime_dependency 'inflection'   , '~> 1.0'
   gem.add_runtime_dependency 'concord'      , '~> 0.1.4'
