@@ -14,7 +14,7 @@ RSpec.describe Yaks::Config do
     its(:policy_class)   { should < Yaks::DefaultPolicy }
 
     it 'should have empty format options' do
-      expect(config.options_for_format(:hal)).to eql({})
+      expect(config.format_options[:hal]).to eql({})
     end
   end
 
@@ -50,7 +50,7 @@ RSpec.describe Yaks::Config do
     end
 
     specify do
-      expect(config.options_for_format(:hal)).to eql(plural_links: [:self, :profile])
+      expect(config.format_options[:hal]).to eql(plural_links: [:self, :profile])
     end
   end
 
@@ -102,32 +102,4 @@ RSpec.describe Yaks::Config do
     end
   end
 
-  describe '#format_class' do
-    configure do
-      default_format :collection_json
-    end
-
-    let(:rack_env) {
-      { 'HTTP_ACCEPT' => 'application/hal+json;q=0.8, application/vnd.api+json' }
-    }
-
-    it 'should fall back to the default when no HTTP_ACCEPT key is present' do
-      expect(config.format_class({}, {})).to equal Yaks::Format::CollectionJson
-    end
-
-    it 'should detect format based on accept header' do
-      rack_env = { 'HTTP_ACCEPT' => 'application/hal+json;q=0.8, application/vnd.api+json' }
-      expect(config.format_class({}, rack_env)).to equal Yaks::Format::JsonApi
-    end
-
-    it 'should know to pick the best match' do
-      rack_env = { 'HTTP_ACCEPT' => 'application/hal+json;q=0.8, application/vnd.api+json;q=0.7' }
-      expect(config.format_class({}, rack_env)).to equal Yaks::Format::Hal
-    end
-
-    it 'should fall back to the default when no mime type is recognized' do
-      rack_env = { 'HTTP_ACCEPT' => 'text/html, application/json' }
-      expect(config.format_class({}, rack_env)).to equal Yaks::Format::CollectionJson
-    end
-  end
 end

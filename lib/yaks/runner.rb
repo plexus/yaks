@@ -12,7 +12,7 @@ module Yaks
     end
 
     def context
-      {
+      ctx = {
         policy: policy,
         env: env,
         mapper_stack: []
@@ -27,10 +27,9 @@ module Yaks
 
     # @return [Class]
     def format_class
-      accept = Rack::Accept::Charset.new(env['HTTP_ACCEPT'])
-      mime_type = accept.best_of(Format.mime_types.values)
-      return Format.by_mime_type(mime_type) if mime_type
-      Format.by_name(options.fetch(:format) { @default_format })
+      Format.by_accept_header(env['HTTP_ACCEPT']) {
+        Format.by_name(options.fetch(:format) { default_format })
+      }
     end
 
     def steps
@@ -57,7 +56,7 @@ module Yaks
     # @param [Hash] opts
     # @return [String]
     def format_name
-      options.fetch(:format) { @default_format }
+      options.fetch(:format) { default_format }
     end
 
     def serializer

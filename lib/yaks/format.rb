@@ -51,9 +51,21 @@ module Yaks
         @mime_types.fetch(mime_type)[1]
       end
 
-      # @return [Hash]
+      def by_accept_header(accept_header)
+        mime_type = Rack::Accept::Charset.new(accept_header).best_of(mime_types.values)
+        if mime_type
+          by_mime_type(mime_type)
+        else
+          yield if block_given?
+        end
+      end
+
       def mime_types
-        @mime_types.inject({}) {|memo, (mime_type, (name, _))| memo[name] = mime_type ; memo }
+        @mime_types.each_with_object({}) {|(mime_type, (name, _)), memo| memo[name] = mime_type }
+      end
+
+      def names
+        mime_types.keys
       end
 
       def names
