@@ -1,5 +1,7 @@
 ### Development
-[full changelog](http://github.com/plexus/yaks/compare/v0.4.2...master)
+[full changelog](http://github.com/plexus/yaks/compare/v0.4.3...master)
+
+### 0.4.3
 
 * when specifying a rel_template, instead of allowing for {src} and {dest} fields, now a single {rel} field is expected, which corresponds more with typical usage.
 
