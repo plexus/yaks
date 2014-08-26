@@ -54,6 +54,14 @@ module Yaks
     # @param [Yaks::Mapper::Association] association
     # @return [Class] of subclass Yaks::Mapper
     # @raise [NameError]
+    def derive_type_from_collection(collection)
+      if collection.any?
+        derive_type_from_mapper_class(
+          derive_mapper_from_object(collection.first)
+        )
+      end
+    end
+
     def derive_mapper_from_association(association)
       @options[:namespace].const_get("#{camelize(association.singular_name)}Mapper")
     end

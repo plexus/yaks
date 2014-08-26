@@ -38,6 +38,8 @@ module Yaks
     def collection_type
       if item_mapper = context[:item_mapper]
         item_mapper.config.type || policy.derive_type_from_mapper_class(item_mapper)
+      else
+        policy.derive_type_from_collection(collection)
       end
     end
 
