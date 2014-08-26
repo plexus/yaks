@@ -58,14 +58,14 @@ RSpec.describe Yaks::CollectionMapper do
 
     it 'should infer the item mapper' do
       expect(mapper.call(collection)).to eql Yaks::CollectionResource.new(
-        type: nil,
+        type: 'pet',
         links: [],
         attributes: {},
         members: [
           Yaks::Resource.new(type: 'pet', attributes: {:id => 2, :species => "dog", :name => "boingboing"}),
           Yaks::Resource.new(type: 'pet', attributes: {:id => 3, :species => "cat", :name => "wassup"})
         ],
-        collection_rel: 'collection'
+        collection_rel: 'rel:pets'
       )
     end
   end
