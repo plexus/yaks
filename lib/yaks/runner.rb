@@ -2,7 +2,7 @@ module Yaks
   class Runner
     include Util
     include Anima.new(:object, :config, :options)
-    include Adamantium
+    include Adamantium::Flat
     extend Forwardable
 
     def_delegators :config, :policy, :default_format, :format_options, :primitivize
@@ -23,7 +23,7 @@ module Yaks
     def env
       options.fetch(:env, {})
     end
-    memoize :env, freezer: :flat
+    memoize :env, freezer: :noop
 
     # @return [Class]
     def format_class
