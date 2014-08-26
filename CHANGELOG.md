@@ -1,6 +1,8 @@
 ### Development
 [full changelog](http://github.com/plexus/yaks/compare/v0.4.3...master)
 
+Mapping a non-empty collection will try to infer the type, and hence rel of the nested items, based on the first object in the collection. This is only relevant for formats like HAL that don't have a top-level collection representation, and only matters when mapping a collection at the top level, not when mapping a collection from an association.
+
 ### 0.4.3
 
 * when specifying a rel_template, instead of allowing for {src} and {dest} fields, now a single {rel} field is expected, which corresponds more with typical usage.

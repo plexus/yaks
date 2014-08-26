@@ -1,5 +1,8 @@
 module Yaks
 
+# These are displayed in a post-install message when installing the
+# gem to aid upgraiding
+
 BreakingChanges = {
 '0.4.3' => %q~
 
@@ -18,5 +21,7 @@ documentation.
 
 ~
 }
+
+BreakingChanges['0.4.4'] = BreakingChanges['0.4.3']
 
 end
