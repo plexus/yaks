@@ -2,10 +2,11 @@
 
 require 'benchmark/ips'
 require 'yaks'
-
-# Flat: list of 1000 things
+require 'ruby-prof'
 
 SIZE=20
+$timestamp = Time.now.utc.iso8601.gsub('-', '').gsub(':', '')
+$yaks = Yaks.new
 
 FlatModel = Struct.new(:field1, :field2)
 DeepModel = Struct.new(:field, :next)
@@ -30,17 +31,30 @@ class DeepMapper < Yaks::Mapper
   has_one :next, mapper: DeepMapper
 end
 
+
+def profile!(name)
+  RubyProf.start
+  yield
+  results = RubyProf.stop
+  File.open "/tmp/#{name}-#{$timestamp}.out.#{$$}", 'w' do |file|
+    RubyProf::CallTreePrinter.new(results).print(file)
+  end
+end
+
+do_flat = ->(format) { -> { $yaks.serialize(flat, item_mapper: FlatMapper, format: format) } }
+do_deep = ->(format) { -> { $yaks.serialize(deep, mapper: DeepMapper, format: format) } }
+
+10.times { do_flat[:hal][] }
+10.times { do_deep[:hal][] }
+
+profile!('flat', &do_flat.(:hal))
+profile!('deep', &do_deep.(:hal))
+exit
+
 Benchmark.ips(10) do |job|
   Yaks::Format.names.each do |format|
 
-    $yaks = Yaks.new
-
-    job.report "#{format} ; #{SIZE} objects in a list ; no nesting" do
-      $yaks.serialize(flat, item_mapper: FlatMapper, format: format)
-    end
-
-    job.report "#{format} ; #{SIZE} objects nested" do
-      $yaks.serialize(deep, mapper: DeepMapper, format: format)
-    end
+    job.report "#{format} ; #{SIZE} objects in a list ; no nesting", &do_flat.(format)
+    job.report "#{format} ; #{SIZE} objects nested", &do_deep.(format)
   end
 end
