@@ -1,7 +1,7 @@
 module Yaks
   class Format
     class CollectionJson < self
-      Format.register self, :collection_json, 'application/vnd.collection+json'
+      register :collection_json, :json, 'application/vnd.collection+json'
 
       include FP
 

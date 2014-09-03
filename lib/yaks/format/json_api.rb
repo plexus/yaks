@@ -2,8 +2,8 @@
 
 module Yaks
   class Format
-    class JsonApi < self
-      Format.register self, :json_api, 'application/vnd.api+json'
+    class JsonAPI < self
+      register :json_api, :json, 'application/vnd.api+json'
 
       include FP
 

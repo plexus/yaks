@@ -3,7 +3,7 @@
 module Yaks
   class Format
     class Hal < self
-      Format.register self, :hal, 'application/hal+json'
+      register :hal, :json, 'application/hal+json'
 
       protected
 

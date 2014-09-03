@@ -25,30 +25,36 @@ module Yaks
     alias serialize call
 
     class << self
+      attr_reader :name, :serializer, :mime_type
+
+      def all
+        @formats ||= []
+      end
+
       # @param [Constant] klass
       # @param [Symbol] name
       # @param [String] mime_type
       # @return [Array]
-      def register(klass, name, mime_type)
-        @formats ||= {}
-        @formats[name] = klass
+      def register(name, serializer, mime_type)
+        @name = name
+        @serializer = serializer
+        @mime_type = mime_type
 
-        @mime_types  ||= {}
-        @mime_types[mime_type] = [name, klass]
+        Format.all << self
       end
 
       # @param [Symbol] name
       # @return [Constant]
       # @raise [KeyError]
       def by_name(name)
-        @formats.fetch(name)
+        find(:name, name)
       end
 
       # @param [Symbol] mime_type
       # @return [Constant]
       # @raise [KeyError]
       def by_mime_type(mime_type)
-        @mime_types.fetch(mime_type)[1]
+        find(:mime_type, mime_type)
       end
 
       def by_accept_header(accept_header)
@@ -61,15 +67,19 @@ module Yaks
       end
 
       def mime_types
-        @mime_types.each_with_object({}) {|(mime_type, (name, _)), memo| memo[name] = mime_type }
+        Format.all.each_with_object({}) do
+          |format, memo| memo[format.name] = format.mime_type
+        end
       end
 
       def names
         mime_types.keys
       end
 
-      def names
-        mime_types.keys
+      private
+
+      def find(key, cond)
+        Format.all.detect {|format| format.send(key) == cond }
       end
     end
   end

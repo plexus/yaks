@@ -22,9 +22,9 @@ module Yaks
       @default_format = :hal
       @policy_options = {}
       @primitivize    = Primitivize.create
-      @steps          = [
-        @primitivize
-      ]
+      @serializers    = {}
+      @steps          = [ @primitivize ]
+
       DSL.new(self, &blk)
     end
 

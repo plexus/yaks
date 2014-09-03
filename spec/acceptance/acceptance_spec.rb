@@ -20,7 +20,7 @@ RSpec.describe Yaks::Format::Hal do
   include_examples 'JSON output format' , yaks_policy_dsl   , :hal , 'confucius'
 end
 
-RSpec.describe Yaks::Format::JsonApi do
+RSpec.describe Yaks::Format::JsonAPI do
   config = Yaks.new do
     default_format :json_api
   end

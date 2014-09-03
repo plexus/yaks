@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 # Mainly tested through the acceptance tests, here covering a few specific edge cases
-RSpec.describe Yaks::Format::JsonApi do
-  let(:format) { Yaks::Format::JsonApi.new }
+RSpec.describe Yaks::Format::JsonAPI do
+  let(:format) { Yaks::Format::JsonAPI.new }
 
   context 'with no subresources' do
     let(:resource) { Yaks::Resource.new(type: 'wizard', attributes: {foo: :bar}) }

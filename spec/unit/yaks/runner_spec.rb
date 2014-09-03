@@ -22,7 +22,7 @@ RSpec.describe Yaks::Runner do
     it 'should detect format based on accept header' do
       rack_env = { 'HTTP_ACCEPT' => 'application/hal+json;q=0.8, application/vnd.api+json' }
       runner = described_class.new(object: nil, config: config, options: { env: rack_env })
-      expect(runner.format_class).to equal Yaks::Format::JsonApi
+      expect(runner.format_class).to equal Yaks::Format::JsonAPI
     end
 
     it 'should know to pick the best match' do
