@@ -37,6 +37,10 @@ module Yaks
       def mime_types
         @mime_types.inject({}) {|memo, (mime_type, (name, _))| memo[name] = mime_type ; memo }
       end
+
+      def names
+        mime_types.keys
+      end
     end
   end
 end

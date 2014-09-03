@@ -70,6 +70,8 @@ module Yaks
         mapper_stack: []
       }
 
+      context[:item_mapper] = opts[:item_mapper] if opts.key?(:item_mapper)
+
       mapper = opts.fetch(:mapper) { policy.derive_mapper_from_object(object) }.new(context)
       format = format_class(opts, env).new(format_options[format_name(opts)])
 
