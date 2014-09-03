@@ -60,7 +60,9 @@ module Yaks
     end
 
     def serializer
-      ->(x) {x}
+      config.serializers.fetch(format_class.serializer) do
+        policy.serializer_for_format(format_class)
+      end
     end
 
     def insert_hooks(steps)

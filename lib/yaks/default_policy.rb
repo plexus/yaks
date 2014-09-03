@@ -73,5 +73,13 @@ module Yaks
     def expand_rel(relname)
       URITemplate.new(@options[:rel_template]).expand(rel: relname)
     end
+
+    # @param format_class [Class]
+    # @return [#call] format_class
+    def serializer_for_format(format_class)
+      {
+        json: JSON.method(:pretty_generate)
+      }.fetch(format_class.serializer)
+    end
   end
 end
