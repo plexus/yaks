@@ -5,7 +5,7 @@ module Yaks
 
       include FP
 
-      # @param [Yaks:Resource] resource
+      # @param [Yaks::Resource] resource
       # @return [Hash]
       def serialize_resource(resource)
         result = {

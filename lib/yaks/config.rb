@@ -16,7 +16,7 @@ module Yaks
     attr_accessor :format_options, :default_format, :policy_class, :policy_options, :primitivize, :steps
 
     # @param [Proc] blk
-    # @return [Yaks::Config]
+    # @return [Yaks::Config::DSL]
     def initialize(&blk)
       @format_options = Hash.new({})
       @default_format = :hal
