@@ -36,7 +36,7 @@ module Yaks
         memo[link.rel] = if singular?(link.rel)
                            hal_link
                          else
-                           Array(memo[link.rel]) + [hal_link]
+                           (memo[link.rel] || []) + [hal_link]
                          end
         memo
       end

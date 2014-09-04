@@ -43,7 +43,7 @@ RSpec.describe Yaks::Config::DSL do
 
   describe '#format_options' do
     configure { format_options :hal, singular_link: [:self] }
-    specify   { expect(yaks_config.format_options[:hal].should eq(singular_link: [:self])) }
+    specify   { expect(yaks_config.format_options[:hal]).to eq(singular_link: [:self]) }
   end
 
   describe '#default_format' do
@@ -59,6 +59,11 @@ RSpec.describe Yaks::Config::DSL do
   describe '#rel_template' do
     configure { rel_template 'rels:{rel}' }
     specify   { expect(yaks_config.policy_options[:rel_template]).to eql 'rels:{rel}' }
+  end
+
+  describe '#json_serializer' do
+    configure { json_serializer { |i| "foo #{i}" } }
+    specify   { expect(yaks_config.serializers[:json].call(7)).to eql 'foo 7' }
   end
 
   describe '#mapper_namespace' do

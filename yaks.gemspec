@@ -30,8 +30,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'adamantium'   , '~> 0.2.0'
 
   gem.add_development_dependency 'virtus'
-  gem.add_development_dependency 'rspec', '~> 2.99'
-  gem.add_development_dependency 'ruby-prof'
+  gem.add_development_dependency 'rspec', '~> 3.0'
   gem.add_development_dependency 'bogus'
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'yard'

@@ -57,7 +57,7 @@ module Yaks
       end
 
       def expansion_mapping(lookup)
-        template_variables.map.with_object({}) do |name, hsh|
+        template_variables.each_with_object({}) do |name, hsh|
           hsh[name] = lookup[name]
         end
       end
@@ -74,7 +74,7 @@ module Yaks
       end
 
       def expand_with(lookup)
-        return lookup[template] if template.is_a? Symbol
+        return lookup[template] if template.instance_of? Symbol
 
         expand_partial(expansion_mapping(lookup)).to_s
       end

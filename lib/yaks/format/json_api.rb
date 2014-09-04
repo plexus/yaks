@@ -40,7 +40,7 @@ module Yaks
       # @return [Hash]
       def serialize_links(subresources)
         subresources.each_with_object({}) do |(_name, resource), hsh|
-          next if resource.is_a? NullResource
+          next if resource.instance_of? NullResource
           key = resource.collection? ? pluralize(resource.type) : resource.type
           hsh[key] = serialize_link(resource)
         end

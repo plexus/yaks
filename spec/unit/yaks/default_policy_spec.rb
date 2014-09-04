@@ -26,6 +26,20 @@ RSpec.describe Yaks::DefaultPolicy do
     end
   end
 
+  describe '#derive_type_from_collection' do
+    specify do
+      expect(
+        policy.derive_type_from_collection([Soy.new])
+      ).to eql 'soy'
+    end
+
+    specify do
+      expect(
+        policy.derive_type_from_collection([])
+      ).to be_nil
+    end
+  end
+
   describe '#derive_mapper_from_association' do
     let(:options) { { namespace: Namespace } }
 
@@ -45,6 +59,12 @@ RSpec.describe Yaks::DefaultPolicy do
     it 'should expand the given template' do
       expect(policy.expand_rel('rockets')).to eql 'http://foo/?rel=rockets'
     end
+  end
+
+  describe '#serializer_for_format' do
+    specify {
+      expect(policy.serializer_for_format(Yaks::Format::JsonAPI).call('foo' => [1,2])).to eql "{\n  \"foo\": [\n    1,\n    2\n  ]\n}"
+    }
   end
 
 end

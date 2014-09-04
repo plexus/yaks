@@ -9,10 +9,6 @@ module Yaks
         @rel, @uri, @options = rel, uri, options
       end
 
-      def name
-        options[:name]
-      end
-
       def title
         options[:title]
       end

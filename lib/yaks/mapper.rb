@@ -55,20 +55,20 @@ module Yaks
     private
 
     def map_attributes(resource)
-      attributes.inject(resource) do |resource, attribute|
-        attribute.add_to_resource(resource, self, context)
+      attributes.inject(resource) do |res, attribute|
+        attribute.add_to_resource(res, self, context)
       end
     end
 
     def map_links(resource)
-      links.inject(resource) do |resource, mapper_link|
-        mapper_link.add_to_resource(resource, self, context)
+      links.inject(resource) do |res, mapper_link|
+        mapper_link.add_to_resource(res, self, context)
       end
     end
 
     def map_subresources(resource)
-      associations.inject(resource) do |resource, association|
-        association.add_to_resource( resource, self, context)
+      associations.inject(resource) do |res, association|
+        association.add_to_resource(res, self, context)
       end
     end
   end

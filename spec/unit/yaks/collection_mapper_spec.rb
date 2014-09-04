@@ -10,8 +10,7 @@ RSpec.describe Yaks::CollectionMapper do
     { item_mapper: item_mapper,
       policy: policy,
       env: {},
-      mapper_stack: []
-    }
+      mapper_stack: [] }
   }
 
   let(:collection) { [] }
@@ -33,6 +32,10 @@ RSpec.describe Yaks::CollectionMapper do
     let(:item_mapper) { PetMapper }
 
     it 'should map the members' do
+      stub(policy).derive_mapper_from_object(any_args) do
+        raise ":item_mapper was specified explicitly, should not be derived from object"
+      end
+
       expect(mapper.call(collection)).to eql Yaks::CollectionResource.new(
         type: 'pet',
         links: [],
@@ -140,4 +143,23 @@ RSpec.describe Yaks::CollectionMapper do
     end
   end
 
+  context 'with an empty collection' do
+
+    context 'without an item_mapper specified' do
+      let(:context) { Yaks::Util.slice_hash(super(), :policy, :env) }
+
+      it 'should use a rel of "collection"' do
+        expect(mapper.([]).collection_rel).to eq 'collection'
+      end
+    end
+
+    context 'with an item_mapper specified' do
+      let(:context) { Yaks::Util.slice_hash(super(), :policy, :env, :item_mapper) }
+
+      it 'should derive the collection rel from the item mapper' do
+        expect(mapper.([]).collection_rel).to eq 'rel:the_types'
+      end
+    end
+
+  end
 end

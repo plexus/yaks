@@ -7,54 +7,59 @@ RSpec.describe Yaks::Config do
     subject(:config) { described_class.new(&blk) }
   end
 
-  context 'defaults' do
-    configure {}
+  describe '#initialize' do
+    context 'defaults' do
+      configure {}
 
-    its(:default_format) { should equal :hal }
-    its(:policy_class)   { should < Yaks::DefaultPolicy }
+      its(:default_format) { should equal :hal }
+      its(:policy_class)   { should < Yaks::DefaultPolicy }
+      its(:primitivize)    { should be_a Yaks::Primitivize }
+      its(:serializers)    { should eql({})  }
+      its(:hooks)          { should eql([])  }
 
-    it 'should have empty format options' do
-      expect(config.format_options[:hal]).to eql({})
+      it 'should have empty format options' do
+        expect(config.format_options[:hal]).to eql({})
+      end
+    end
+
+    context 'with a default format' do
+      configure do
+        default_format :json_api
+      end
+
+      its(:default_format) { should equal :json_api }
+    end
+
+    context 'with a custom policy class' do
+      MyPolicy = Struct.new(:options)
+      configure do
+        policy MyPolicy
+      end
+
+      its(:policy_class) { should equal MyPolicy }
+      its(:policy)       { should be_a  MyPolicy }
+    end
+
+    context 'with a rel template' do
+      configure do
+        rel_template 'http://rel/foo'
+      end
+
+      its(:policy_options) { should eql(rel_template: 'http://rel/foo') }
+    end
+
+    context 'with format options' do
+      configure do
+        format_options :hal, plural_links: [:self, :profile]
+      end
+
+      specify do
+        expect(config.format_options[:hal]).to eql(plural_links: [:self, :profile])
+      end
     end
   end
 
-  context 'with a default format' do
-    configure do
-      default_format :json_api
-    end
-
-    its(:default_format) { should equal :json_api }
-  end
-
-  context 'with a custom policy class' do
-    MyPolicy = Struct.new(:options)
-    configure do
-      policy MyPolicy
-    end
-
-    its(:policy_class) { should equal MyPolicy }
-    its(:policy)       { should be_a  MyPolicy }
-  end
-
-  context 'with a rel template' do
-    configure do
-      rel_template 'http://rel/foo'
-    end
-
-    its(:policy_options) { should eql(rel_template: 'http://rel/foo') }
-  end
-
-  context 'with format options' do
-    configure do
-      format_options :hal, plural_links: [:self, :profile]
-    end
-
-    specify do
-      expect(config.format_options[:hal]).to eql(plural_links: [:self, :profile])
-    end
-  end
-
-  describe '#serialize' do
+  describe '#call' do
     configure do
       rel_template 'http://api.mysuperfriends.com/{rel}'
       format_options :hal, plural_links: [:copyright]
@@ -63,44 +68,6 @@ RSpec.describe Yaks::Config do
 
     specify do
       expect(config.call(john)).to eql(load_json_fixture 'john.hal')
-    end
-  end
-
-  describe '#mapper_namespace' do
-    module MyMappers
-      class PetMapper < Yaks::Mapper
-      end
-    end
-
-    configure do
-      mapper_namespace MyMappers
-    end
-
-    specify do
-      expect(config.policy.derive_mapper_from_object(boingboing)).to eql(MyMappers::PetMapper)
-    end
-  end
-
-  describe '#map_to_primitive' do
-    class TheMapper < Yaks::Mapper
-      attributes :a_date
-    end
-
-    TheModel = Struct.new(:a_date)
-
-    configure do
-      map_to_primitive Date do |object|
-        object.iso8601
-      end
-      skip :serialize
-    end
-
-    let(:model) {
-      TheModel.new(Date.new(2014, 5, 6))
-    }
-
-    specify do
-      expect(config.serialize(model, mapper: TheMapper)).to eq({"a_date"=>"2014-05-06"})
     end
   end
 
