@@ -1,30 +1,42 @@
 module Yaks
   class Config
 
-    # @!attribute [rw] format_options
+    # @!attribute [r] format_options
     #   @return [Hash<Symbol,Hash>]
+    attr_reader :format_options
+
     # @!attribute [rw] default_format
     #   @return [Symbol]
+    attr_accessor :default_format
+
     # @!attribute [rw] policy_class
     #   @return [Class]
-    # @!attribute [rw] policy_options
+    attr_accessor :policy_class
+
+    # @!attribute [r] policy_options
     #   @return [Hash]
+    attr_reader :policy_options
+
     # @!attribute [rw] primitivize
     #   @return [Primitivize]
-    # @!attribute [rw] serializers
-    #   @return [Hash<Symbol,#call>]
-    # @!attribute [rw] steps
-    #   @return [Array<#call>]
-    attr_accessor :format_options, :default_format, :policy_class, :policy_options, :primitivize, :steps, :serializers
+    attr_accessor :primitivize
 
-    # @param [Proc] blk
+    # @!attribute [r] serializers
+    #   @return [Hash<Symbol,#call>]
+    attr_reader :serializers
+
+    # @!attribute [r] hooks
+    #   @return [Array]
+    attr_reader :hooks
+
+    # @param blk [Proc] Configuration block
     def initialize(&blk)
       @format_options = Hash.new({})
       @default_format = :hal
       @policy_options = {}
       @primitivize    = Primitivize.create
       @serializers    = {}
-      @steps          = [ @primitivize ]
+      @hooks          = []
 
       DSL.new(self, &blk)
     end

@@ -79,13 +79,4 @@ RSpec.describe Yaks::Config::DSL do
     specify   { expect(yaks_config.primitivize.call({:abc => Foo.new('hello')})).to eql 'abc' => 'hello' }
   end
 
-  describe '#after' do
-    configure do
-      after {|x| x + 1}
-      after {|x| x + 10}
-    end
-    it 'should register the block' do
-      expect(yaks_config.steps.inject(0) {|memo, step| step.call(memo)}).to be 11
-    end
-  end
 end

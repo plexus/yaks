@@ -58,6 +58,7 @@ RSpec.describe Yaks::Config do
     configure do
       rel_template 'http://api.mysuperfriends.com/{rel}'
       format_options :hal, plural_links: [:copyright]
+      skip :serialize
     end
 
     specify do
@@ -91,6 +92,7 @@ RSpec.describe Yaks::Config do
       map_to_primitive Date do |object|
         object.iso8601
       end
+      skip :serialize
     end
 
     let(:model) {

@@ -5,30 +5,42 @@ module Yaks
       #   @return [Yaks::Config]
       attr_reader :config
 
-      # @param [Yaks::Config] config
-      # @param [Proc] blk
+      # @param config [Yaks::Config]
+      # @param block [Proc]
       # @return [Yaks::Config::DSL]
-      def initialize(config, &blk)
+      def initialize(config, &block)
         @config       = config
         @policy_class = Class.new(DefaultPolicy)
         @policies     = []
-        instance_eval(&blk) if blk
-        @policies.each do |policy_blk|
-          @policy_class.class_eval &policy_blk
+        instance_eval(&block) if block
+        @policies.each do |policy_block|
+          @policy_class.class_eval &policy_block
         end
         config.policy_class = @policy_class
       end
 
-      # @param [Symbol] format
+      # @param format [Symbol]
+      # @param options [Hash]
       # @return [Symbol]
       def format_options(format, options)
         config.format_options[format] = options
       end
 
-      # @param [Symbol] format
+      # @param format [Symbol]
       # @return [Symbol]
       def default_format(format)
         config.default_format = format
+      end
+
+      # @param block
+      def json_serializer(&block)
+        config.serializers[:json] = block
+      end
+
+      %w[before after around skip].map(&:intern).each do |hook_type|
+        define_method hook_type do |step, name = :"#{hook_type}_#{step}", &block|
+          config.hooks << [hook_type, step, name, block]
+        end
       end
 
       # @param [Object] klass
@@ -37,10 +49,10 @@ module Yaks
         @policy_class = klass
       end
 
-      # @param [String] templ
+      # @param [String] template
       # @return [String]
-      def rel_template(templ)
-        config.policy_options[:rel_template] = templ
+      def rel_template(template)
+        config.policy_options[:rel_template] = template
       end
 
       # @param [Object] namespace
@@ -51,10 +63,10 @@ module Yaks
       alias namespace mapper_namespace
 
       # @param [Array] args
-      # @param [Proc] blk
+      # @param [Proc] block
       # @return [Array]
-      def map_to_primitive(*args, &blk)
-        config.primitivize.map(*args, &blk)
+      def map_to_primitive(*args, &block)
+        config.primitivize.map(*args, &block)
       end
 
       # @param [Proc] block
@@ -67,9 +79,9 @@ module Yaks
       # and then make it available to apply to any Class taking on the
       # `@policies` Array.
       DefaultPolicy.public_instance_methods(false).each do |method|
-        define_method method do |&blk|
+        define_method method do |&block|
           @policies << proc {
-            define_method method, &blk
+            define_method method, &block
           }
         end
       end
