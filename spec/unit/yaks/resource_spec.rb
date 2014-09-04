@@ -90,4 +90,19 @@ RSpec.describe Yaks::Resource do
       )
     end
   end
+
+  describe '#self_link' do
+    let(:init_opts) {
+      { links:
+        [
+          Yaks::Resource::Link.new(:self, 'foo', {}),
+          Yaks::Resource::Link.new(:self, 'bar', {}),
+          Yaks::Resource::Link.new(:profile, 'baz', {})
+        ]
+      }
+    }
+    it 'should return the last self link' do
+      expect(resource.self_link).to eql Yaks::Resource::Link.new(:self, 'bar', {})
+    end
+  end
 end

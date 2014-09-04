@@ -43,7 +43,7 @@ module Yaks
 
     # @return [Yaks::DefaultPolicy]
     def policy
-      @policy_class.new(@policy_options)
+      @policy ||= @policy_class.new(@policy_options)
     end
 
     # @param object [Object] The object to serialize

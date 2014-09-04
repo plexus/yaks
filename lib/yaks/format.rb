@@ -2,6 +2,7 @@ module Yaks
   class Format
     extend Forwardable
     include Util
+    include FP::Callable
 
     # @!attribute [r] options
     #   @return [Hash]

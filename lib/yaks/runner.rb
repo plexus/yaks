@@ -12,7 +12,7 @@ module Yaks
     end
 
     def context
-      ctx = {
+      {
         policy: policy,
         env: env,
         mapper_stack: []
@@ -31,6 +31,7 @@ module Yaks
         Format.by_name(options.fetch(:format) { default_format })
       }
     end
+    memoize :format_class
 
     def steps
       insert_hooks(
@@ -39,28 +40,33 @@ module Yaks
          [ :primitivize, primitivize], # really a JSON-preprocessor, should be pulled out
          [ :serialize, serializer ]])
     end
+    memoize :steps
 
     def mapper
       options.fetch(:mapper) do
         policy.derive_mapper_from_object(object)
       end.new(context)
     end
+    memoize :mapper, freezer: :noop
 
     def formatter
       format_class.new(format_options[format_name])
     end
+    memoize :formatter
 
     # @param [Hash] opts
     # @return [String]
     def format_name
       options.fetch(:format) { default_format }
     end
+    memoize :format_name
 
     def serializer
       serializers.fetch(format_class.serializer) do
         policy.serializer_for_format(format_class)
       end
     end
+    memoize :serializer
 
     def insert_hooks(steps)
       hooks.inject(steps) do |steps, (type, target_step, name, hook)|

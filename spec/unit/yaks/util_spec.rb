@@ -31,13 +31,19 @@ RSpec.describe Yaks::Util do
 
   describe '#camelize' do
     it 'should camelize' do
-      expect(camelize('foo_bar/baz')).to eql 'FooBar::Baz'
+      expect(camelize('foo_bar_moo/baz/booz')).to eql 'FooBarMoo::Baz::Booz'
     end
   end
 
   describe '#underscore' do
     it 'should underscorize' do
       expect(underscore('FooBar::Baz-Quz::Quux')).to eql 'foo_bar/baz__quz/quux'
+    end
+  end
+
+  describe '#slice_hash' do
+    it '#should retain the given keys from a hash' do
+      expect(slice_hash({a: 1, b:2, c:3}, :a, :c, :d)).to eql(a: 1, c:3)
     end
   end
 end
