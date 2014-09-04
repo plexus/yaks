@@ -32,7 +32,7 @@ module Yaks
       end
 
       # @param [Constant] klass
-      # @param [Symbol] name
+      # @param [Symbol] format_name
       # @param [String] mime_type
       # @return [Array]
       def register(name, serializer, mime_type)
@@ -43,7 +43,7 @@ module Yaks
         Format.all << self
       end
 
-      # @param [Symbol] name
+      # @param [Symbol] format_name
       # @return [Constant]
       # @raise [KeyError]
       def by_name(name)

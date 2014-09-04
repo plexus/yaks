@@ -14,7 +14,6 @@ module Yaks
         # looking at client behavior (Hyperagent) it seems safer to return an empty
         # resource.
         #
-        # return nil if resource.is_a? NullResource
         result = resource.attributes
         result = result.merge(:_links => serialize_links(resource.links)) unless resource.links.empty?
         result = result.merge(:_embedded => serialize_embedded(resource.subresources)) unless resource.subresources.empty?

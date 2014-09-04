@@ -5,9 +5,8 @@ module Yaks
       #   @return [Yaks::Config]
       attr_reader :config
 
-      # @param config [Yaks::Config]
-      # @param block [Proc]
-      # @return [Yaks::Config::DSL]
+      # @param [Yaks::Config] config
+      # @param [Proc] block
       def initialize(config, &block)
         @config       = config
         @policy_class = Class.new(DefaultPolicy)
@@ -19,20 +18,49 @@ module Yaks
         config.policy_class = @policy_class
       end
 
-      # @param format [Symbol]
-      # @param options [Hash]
-      # @return [Symbol]
+      # Set the options for a format
+      #
+      # @param [Symbol] format
+      # @param [Hash] options
+      #
+      # @example
+      #
+      #   yaks = Yaks.new do
+      #     format_options :hal, {plural_links: [:related_content]}
+      #   end
       def format_options(format, options)
         config.format_options[format] = options
       end
 
-      # @param format [Symbol]
-      # @return [Symbol]
+      # Set the default format
+      #
+      # Defaults to +:hal+
+      #
+      # @param [Symbol] format
+      #   Format identifier, one of +Yaks::Format.names+
+      #
+      # @example
+      #
+      #    yaks = Yaks.new do
+      #      default_fomat :json_api
+      #    end
+      #
       def default_format(format)
         config.default_format = format
       end
 
-      # @param block
+      # Configure JSON serializer
+      #
+      # Defaults to JSON.pretty_generate
+      #
+      # @example
+      #
+      #   yaks = Yaks.new do
+      #     json_serializer &Oj.method(:dump)
+      #   end
+      #
+      # @param [Proc] block
+      #   Serialization procedure
       def json_serializer(&block)
         config.serializers[:json] = block
       end
@@ -44,7 +72,6 @@ module Yaks
       end
 
       # @param [Object] klass
-      # @return [Object]
       def policy(klass)
         @policy_class = klass
       end

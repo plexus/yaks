@@ -41,14 +41,28 @@ module Yaks
       end
     end
 
-    # @param mapper_class [Class]
+    # Derive the a mapper type name
+    #
+    # This returns the 'system name' for a mapper,
+    # e.g. ShowEventMapper => show_event.
+    #
+    # @param [Class]  mapper_class
+    #
     # @return [String]
     def derive_type_from_mapper_class(mapper_class)
       underscore(mapper_class.name.split('::').last.sub(/Mapper$/, ''))
     end
 
-    # @param collection [#first]
-    # @return [Class] Typically a subclass of Yaks::Mapper
+    # Derive the mapper type name from a collection
+    #
+    # This inspects the first element of the collection, so it
+    # requires a non-empty collection. Will return nil if the
+    # collection is empty.
+    #
+    # @param [#first] collection
+    #
+    # @return [String|nil]
+    #
     # @raise [NameError]
     def derive_type_from_collection(collection)
       if collection.any?
