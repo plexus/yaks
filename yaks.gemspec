@@ -34,6 +34,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'ruby-prof'
   gem.add_development_dependency 'bogus'
   gem.add_development_dependency 'rake'
+  gem.add_development_dependency 'yard'
   gem.add_development_dependency 'mutant-rspec'
   gem.add_development_dependency 'mutant'
   gem.add_development_dependency 'rspec-its'
