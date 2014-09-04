@@ -26,4 +26,5 @@ end
 
 Bogus.configure do |bogus|
   bogus.search_modules << Yaks
+  bogus.search_modules << Yaks::Mapper
 end

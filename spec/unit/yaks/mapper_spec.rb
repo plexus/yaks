@@ -255,7 +255,7 @@ RSpec.describe Yaks::Mapper do
   end
 
   describe '#map_attributes' do
-    let(:attribute) { fake('Mapper::Attribute') }
+    let(:attribute) { fake('Attribute') }
 
     it 'should receive a context' do
       stub(attribute).add_to_resource(any_args) {|r,_,_| Yaks::Resource.new}
@@ -268,7 +268,7 @@ RSpec.describe Yaks::Mapper do
   end
 
   describe '#map_links' do
-    let(:link) { fake('Mapper::Link') }
+    let(:link) { fake('Link') }
 
     it 'should receive a context' do
       stub(link).add_to_resource(any_args) {|r,_,_| Yaks::Resource.new}
@@ -281,7 +281,7 @@ RSpec.describe Yaks::Mapper do
   end
 
   describe '#map_subresources' do
-    let(:association) { fake('Mapper::Association') }
+    let(:association) { fake('Association') }
 
     it 'should receive a context' do
       stub(association).add_to_resource(any_args) {|r,_,_| Yaks::Resource.new}
