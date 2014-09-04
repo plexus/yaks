@@ -96,12 +96,6 @@ module Yaks
         config.primitivize.map(*args, &block)
       end
 
-      # @param [Proc] block
-      # @return [Array]
-      def after(&block)
-        config.steps << block
-      end
-
       # Will define each method available in the DefaultPolicy upon the DSL
       # and then make it available to apply to any Class taking on the
       # `@policies` Array.
