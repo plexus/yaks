@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #!/usr/bin/env ruby
 
 require 'benchmark/ips'
