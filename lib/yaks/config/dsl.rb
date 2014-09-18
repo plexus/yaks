@@ -28,6 +28,7 @@ module Yaks
       #   yaks = Yaks.new do
       #     format_options :hal, {plural_links: [:related_content]}
       #   end
+      #
       def format_options(format, options)
         config.format_options[format] = options
       end
@@ -61,6 +62,7 @@ module Yaks
       #
       # @param [Proc] block
       #   Serialization procedure
+      #
       def json_serializer(&block)
         config.serializers[:json] = block
       end
@@ -71,19 +73,72 @@ module Yaks
         end
       end
 
-      # @param [Object] klass
+      # Set a different policy implementation
+      #
+      # By default Yaks uses +Yaks::DefaultPolicy+ to derive missing
+      # information. You can swap in a class with a compatible
+      # interface to change the default behavior
+      #
+      # To override a single policy method, simply call a method with
+      # the same name as part of your Yaks configuration, passing a
+      # block to define the new behavior.
+      #
+      # @example
+      #
+      #    yaks = Yaks.new do
+      #      derive_type_from_mapper_class do |mapper_class|
+      #        mapper_class.name.sub(/Mapper^/,'')
+      #      end
+      #    end
+      #
+      # @param [Class] klass
+      #   Policy class
+      #
       def policy(klass)
         @policy_class = klass
       end
 
+      # Set the template for deriving rels
+      #
+      # Used to derive rels for links and subresources.
+      #
+      # @example
+      #
+      #   yaks = Yaks.new do
+      #     rel_template 'http://api.example.com/rels/{rel}'
+      #   end
+      #
       # @param [String] template
-      # @return [String]
+      #   A valid URI template containing +{rel}+
+      #
       def rel_template(template)
         config.policy_options[:rel_template] = template
       end
 
-      # @param [Object] namespace
-      # @return [Object]
+      # Set the namespace (Ruby module) that contains your mappers
+      #
+      # When your mappers don't live at the top-level, then set this
+      # so Yaks can correctly infer the mapper class from the model
+      # class.
+      #
+      # @example
+      #
+      #   yaks = Yaks.new do
+      #     mapper_namespace API::Mappers
+      #   end
+      #
+      #   module API::Mappers
+      #     class FruitMapper < Yaks::Mapper
+      #        ...
+      #     end
+      #   end
+      #
+      #   class Fruit < BaseModel
+      #     ...
+      #   end
+      #
+      # @param [Module] namespace
+      #
       def mapper_namespace(namespace)
         config.policy_options[:namespace] = namespace
       end
@@ -91,7 +146,6 @@ module Yaks
 
       # @param [Array] args
       # @param [Proc] block
-      # @return [Array]
       def map_to_primitive(*args, &block)
         config.primitivize.map(*args, &block)
       end

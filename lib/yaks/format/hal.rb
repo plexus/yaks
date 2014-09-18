@@ -2,6 +2,24 @@
 
 module Yaks
   class Format
+    # Hypertext Application Language (http://stateless.co/hal_specification.html)
+    #
+    # A lightweight JSON Hypermedia message format.
+    #
+    # Options: +:plural_links+ In HAL, a single rel can correspond to
+    # a single link, or to a list of links. Which rels are singular
+    # and which are plural is application-dependant. Yaks assumes all
+    # links are singular. If your resource might contain multiple
+    # links for the same rel, then configure that rel to be plural. In
+    # that case it will always be rendered as a collection, even when
+    # the resource only contains a single link.
+    #
+    # @example
+    #
+    #   yaks = Yaks.new do
+    #     format_options :hal, {plural_links: [:related_content]}
+    #   end
+    #
     class Hal < self
       register :hal, :json, 'application/hal+json'
 

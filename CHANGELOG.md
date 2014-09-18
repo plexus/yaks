@@ -1,7 +1,44 @@
 ### Development
-[full changelog](http://github.com/plexus/yaks/compare/v0.4.3...master)
+[full changelog](http://github.com/plexus/yaks/compare/v0.5.0...master)
 
-Mapping a non-empty collection will try to infer the type, and hence rel of the nested items, based on the first object in the collection. This is only relevant for formats like HAL that don't have a top-level collection representation, and only matters when mapping a collection at the top level, not when mapping a collection from an association.
+### 0.5.0
+
+* Yaks now serializes (returns a string), instead of returning a data structure. This is a preparatory step for supporting non-JSON formats. To get the old behavior back, do this
+
+``` ruby
+yaks = Yaks.new do
+  skip :serialize
+end
+```
+
+* The old `after` hook has been removed, instead there are now generic hooks for all steps: `before`, `after`, `around`, `skip`; `:map`, `:format`, `:primitivize`, `:serialize`.
+
+* By default Yaks uses `JSON.pretty_generate` as a JSON unparser. To use something else, for example `Oj.dump`, do this
+
+``` ruby
+yaks = Yaks.new do
+  json_serializer &Oj.method(:dump)
+end
+```
+
+* Mapping a non-empty collection will try to infer the type, and hence rel of the nested items, based on the first object in the collection. This is only relevant for formats like HAL that don't have a top-level collection representation, and only matters when mapping a collection at the top level, not when mapping a collection from an association.
+
+* When registering a custom format (Yaks::Format subclass), the signature has changed
+
+``` ruby
+
+* Collection+JSON uses a link's "title" attribute to output a link's "name", to better correspond with other formats
+
+# 0.4.3
+Format.register self, :collection_json, 'application/vnd.collection+json'
+
+# 0.5.0
+register :collection_json, :json, 'application/vnd.collection+json'
+```
+
+* `yaks.call` is now the preferred interface, rather than `yaks.serialize`, although there are no plans yet to remove the alias.
+
+* The result of a call to `Yaks.new` now responds to `to_proc`, so you can treat it as a Proc/Symbol, e.g. `some_method &yaks`
 
 ### 0.4.3
 

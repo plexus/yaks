@@ -1,5 +1,6 @@
 module Yaks
   class Config
+    include Yaks::FP::Callable
 
     # @!attribute [r] format_options
     #   @return [Hash<Symbol,Hash>]
@@ -46,11 +47,16 @@ module Yaks
       @policy ||= @policy_class.new(@policy_options)
     end
 
+    # Main entry point into yaks
+    #
     # @param object [Object] The object to serialize
     # @param options [Hash<Symbol,Object>] Serialization options
+    #
+    # @option env [Hash] The rack environment
     # @option format [Symbol] The target format, default :hal
     # @option mapper [Class] Mapper class to use
     # @option item_mapper [Class] Mapper class to use for items in a top-level collection
+    #
     def call(object, options = {})
       Runner.new(config: self, object: object, options: options).call
     end

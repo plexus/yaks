@@ -27,17 +27,43 @@ They might also contain extra control data to specify possible future interactio
 
 These different media types for Hypermedia clients and servers base themselves on the same set of internet standards, such as [RFC4288 Media types](http://tools.ietf.org/html/rfc4288), [RFC5988 Web Linking](http://tools.ietf.org/html/rfc5988), [RFC6906 The "profile" link relation](http://tools.ietf.org/search/rfc6906) and [RFC6570 URI Templates](http://tools.ietf.org/html/rfc6570).
 
-## Yaks Resources
+## Concepts
 
-At the core of Yaks is the concept of a Resource, consisting of key-value attributes, RFC5988 style links, and embedded sub-resources.
+Yaks is a processing pipeline, you create and configure the pipeline, then feed data through it.
 
-To build an API you create 'mappers' that turn your domain models into resources. Then you pick a media type 'serializer', which can turn the resource into a hypermedia message.
+``` ruby
+yaks = Yaks.new do
+  default_format :hal
+  rel_template 'http://api.example.com/rels/{rel}'
+  format_options(:hal, plural_links: [:copyright])
+  namespace ::MyAPI
+  json_serializer do |data|
+    MultiJson.dump(data)
+  end
+end
 
-The web linking standard which defines link relations like 'self', 'next' or 'alternate' is embraced as far as practically possible, for instance to find the URI that uniquely defines a resource, we look at the 'self' link. To distinguish different types of resources we use the 'profile' link.
+yaks.call(data) # => JSON
+```
+
+Yaks performs this serialization in three steps
+
+* It *maps* your data to a `Yaks::Resource`
+* It *formats* the resource to a syntax tree representation
+* It *serializes* to get the final output
+
+For JSON types, the "syntax tree" is just a combination of Ruby primitives, nested arrays and hashes with strings, numbers, booleans, nils.
+
+A Resource is an abstraction shared by all output formats. It can contain key-value attributes, RFC5988 style links, and embedded sub-resources.
+
+To build an API you create a "mapper" for each type of object you want to represent. Yaks takes care of the rest.
+
+For all configuration options see [Yaks::Config::DSL](http://rdoc.info/gems/yaks/frames/Yaks/Config/DSL).
+
+See also the [API Docs on rdoc.info](http://rdoc.info/gems/yaks/frames/file/README.md)
 
 ## Mappers
 
-To turn your domain models into resources, you define mappers, for example :
+Say your app has a `Post` object for blog posts. To serve posts over your API, define a `PostMapper`
 
 ```ruby
 class PostMapper < Yaks::Mapper
@@ -54,7 +80,7 @@ Configure a Yaks instance and start serializing!
 
 ```ruby
 yaks = Yaks.new
-yaks.serialize(post)
+yaks.call(post)
 ```
 
 or a bit more elaborate
@@ -66,7 +92,7 @@ yaks = Yaks.new do
   format_options(:hal, plural_links: [:copyright])
 end
 
-yaks.serialize(post, mapper: PostMapper, format: :hal)
+yaks.call(post, mapper: PostMapper, format: :hal)
 ```
 
 ### Attributes
@@ -100,7 +126,7 @@ end
 
 #### Filtering
 
-Implementing a `#filter` method in your mappers is no longer supported. Instead you can override `#attributes`, or `#associations`.
+You can override `#attributes`, or `#associations`.
 
 ```ruby
 class SongMapper
@@ -186,6 +212,40 @@ class ShowMapper < Yaks::Mapper
 end
 ```
 
+## Calling Yaks
+
+Once you have a Yaks instance, you can call it with `call`
+(`serialize` also works but might be deprecated in the future.) Pass
+it the data to be serialized, plus options.
+
+* `:env` a Rack environment, see next section
+* `:format` the format to be used, e.g. `:json_api`. Note that if the Rack env contains an `Accept` header which resolves to a recognized format, then the header takes precedence
+* `:mapper` the mapper to be used. Will be inferred if omitted
+* `:item_mapper` When rendering a collection, the mapper to be used for each item in the collection. Will be inferred from the class of the first item in the collection if omitted.
+
+### Rack env
+
+When serializing, Yaks lets you pass in an `env` hash, which will be made available to all mappers.
+
+```ruby
+yaks = Yaks.new
+yaks.call(foo, env: my_env)
+
+class FooMapper
+  attributes :bar
+
+  def bar
+    if env['something']
+      #...
+    end
+  end
+end
+```
+
+The env hash will be available to all mappers, so you can use this to pass around context. In particular context related to the current HTTP request, e.g. the current logged in user, which is why the recommended use is to pass in the Rack environment.
+
+If `env` contains a `HTTP_ACCEPT` key (Rack's way of representing the `Accept` header), Yaks will return the format that most closely matches what was requested.
+
 ## Namespace
 
 Yaks by default will find your mappers for you if they follow the naming convention of appending 'Mapper' to the model class name. This (and all other "conventions") can be easily redefined though, see below. If you have your mappers inside a module, use `namespace`.
@@ -237,28 +297,6 @@ end
 
 Yaks will automatically detect and use this collection when serializing an array of `LineItem` objects.
 
-## Rack env
-
-When serializing, Yaks lets you pass in an `env` hash, which will be made available to all mappers.
-
-```ruby
-yaks = Yaks.new
-yaks.serialize(foo, env: my_env)
-
-class FooMapper
-  attributes :bar
-
-  def bar
-    if env['something']
-      #...
-    end
-  end
-end
-```
-
-You can use this to pass around context, in particular context related to the current HTTP request, e.g. the current logged in user, which is why the recommended use is to pass in the Rack environment.
-
-If `env` contains a `HTTP_ACCEPT` key (Rack's way of representing the `Accept` header), Yaks will return the format that most closely matches what was requested.
 
 ## Custom attribute/link/subresource handling
 
@@ -296,7 +334,7 @@ Since version 0.4 the recommended API is through `Yaks.new {...}.serialize`. Thi
 
 ```ruby
 my_yaks = Yaks.new
-hal = my_yaks.serialize(model)
+hal = my_yaks.call(model)
 puts JSON.dump(hal)
 ```
 
@@ -352,6 +390,23 @@ Subresources aren't mapped because Collection+JSON doesn't really have that conc
 
 Are planned... at the moment HAL is the only format I actually use, so it's the one that's best supported. Adding formats that follow the resource=(attributes, links, subresources) structure or a subset thereof is straightforward. More features, e.g. forms/actions such as used in Mason might be added in the future.
 
+## Hooks
+
+It is possible to hook into the Yaks pipeline to perform extra processing steps before, after, or around each step. It also possible to skip a step.
+
+``` ruby
+yaks = Yaks.new do
+  # Automatically give every resource a self link
+  after :map, :add_self_link do |resource|
+    resource.add_link(Yaks::Resource::Link.new(:self, "/#{resource.type}/#{resource.attributes[:id]}"))
+  end
+
+  # Skip serialization, so Ruby primitives come back instead of JSON
+  # This was the default before versions < 0.5.0
+  skip :serialize
+end
+```
+
 ## Policy over Configuration
 
 It's an old adage in the Ruby/Rails world to have "Convention over Configuration", mostly to derive values that were not given explicitly. Typically based on things having similar names and a 1-1 derivable relationship.
@@ -398,7 +453,7 @@ end
 
 ## Primitives
 
-For JSON based formats, a final step in serializing is to turn the nested data into primitives that have a JSON equivalent. For example, JSON has no notion of symbols or dates. If your mappers return these types as attributes, then Yaks needs to know how to turn these into primitives. To add extra types, use `map_to_primitive`
+For JSON based formats, the "syntax tree" is merely a structure of Ruby primitives that have a JSON equivalent. If your mappers return non-primitive attribute values, you can define how they should be converted. For example, JSON has no notion of dates. If your mappers return these types as attributes, then Yaks needs to know how to turn these into primitives. To add extra types, use `map_to_primitive`
 
 ```ruby
 Yaks.new do
@@ -420,7 +475,9 @@ Yaks.new do
 end
 ```
 
-## Usage
+Yaks by default "primitivizes" symbols (as strings), and classes that include Enumerable (as arrays).
+
+## Real World Usage
 
 Yaks is used in production by [Ticketsolve](http://www.ticketsolve.com/). You can find an example API endpoint [here](http://leicestersquaretheatre.ticketsolve.com/api).
 
