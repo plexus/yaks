@@ -23,12 +23,11 @@ end
 
 * Mapping a non-empty collection will try to infer the type, and hence rel of the nested items, based on the first object in the collection. This is only relevant for formats like HAL that don't have a top-level collection representation, and only matters when mapping a collection at the top level, not when mapping a collection from an association.
 
+* Collection+JSON uses a link's "title" attribute to output a link's "name", to better correspond with other formats
+
 * When registering a custom format (Yaks::Format subclass), the signature has changed
 
 ``` ruby
-
-* Collection+JSON uses a link's "title" attribute to output a link's "name", to better correspond with other formats
-
 # 0.4.3
 Format.register self, :collection_json, 'application/vnd.collection+json'
 
