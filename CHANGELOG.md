@@ -40,6 +40,10 @@ register :collection_json, :json, 'application/vnd.collection+json'
 
 * The result of a call to `Yaks.new` now responds to `to_proc`, so you can treat it as a Proc/Symbol, e.g. `some_method &yaks`
 
+* Improved YARD documentation
+
+* 100% mutation coverage :trumpet: :tada:
+
 ### 0.4.3
 
 * when specifying a rel_template, instead of allowing for {src} and {dest} fields, now a single {rel} field is expected, which corresponds more with typical usage.
