@@ -1,7 +1,7 @@
 module Yaks
   class Format
     class CollectionJson < self
-      Format.register self, :collection_json, 'application/vnd.collection+json'
+      register :collection_json, :json, 'application/vnd.collection+json'
 
       include FP
 
@@ -29,10 +29,10 @@ module Yaks
           result = { data: attrs }
           result[:href] = item.self_link.uri if item.self_link
           item.links.each do |link|
-            next if link.rel == :self
+            next if link.rel.equal? :self
             result[:links] = [] unless result.key?(:links)
             result[:links] << {rel: link.rel, href: link.uri}
-            result[:links].last[:name] = link.name if link.name
+            result[:links].last[:name] = link.title if link.title
           end
           result
         end

@@ -13,5 +13,4 @@ Benchmark.ips do |x|
   x.report "Simple HAL mapping" do
     $yaks.serialize(input)
   end
-
 end

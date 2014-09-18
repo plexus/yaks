@@ -1,81 +1,64 @@
 module Yaks
   class Config
+    include Yaks::FP::Callable
 
-    # @!attribute [rw] format_options
-    #   @return [Hash]
+    # @!attribute [r] format_options
+    #   @return [Hash<Symbol,Hash>]
+    attr_reader :format_options
+
     # @!attribute [rw] default_format
     #   @return [Symbol]
-    # @!attribute [rw] policy_class
-    #   @return [Constant]
-    # @!attribute [rw] policy_options
-    #   @return [Hash]
-    # @!attribute [rw] primitivize
-    #   @return [Boolean]
-    # @!attribute [rw] steps
-    #   @return [Array]
-    attr_accessor :format_options, :default_format, :policy_class, :policy_options, :primitivize, :steps
+    attr_accessor :default_format
 
-    # @param [Proc] blk
-    # @return [Yaks::Config::DSL]
+    # @!attribute [rw] policy_class
+    #   @return [Class]
+    attr_accessor :policy_class
+
+    # @!attribute [r] policy_options
+    #   @return [Hash]
+    attr_reader :policy_options
+
+    # @!attribute [rw] primitivize
+    #   @return [Primitivize]
+    attr_accessor :primitivize
+
+    # @!attribute [r] serializers
+    #   @return [Hash<Symbol,#call>]
+    attr_reader :serializers
+
+    # @!attribute [r] hooks
+    #   @return [Array]
+    attr_reader :hooks
+
+    # @param blk [Proc] Configuration block
     def initialize(&blk)
       @format_options = Hash.new({})
       @default_format = :hal
       @policy_options = {}
       @primitivize    = Primitivize.create
-      @steps          = [
-        @primitivize
-      ]
+      @serializers    = {}
+      @hooks          = []
+
       DSL.new(self, &blk)
     end
 
-    # @return [Yaks::DefaultPolicy, Object]
+    # @return [Yaks::DefaultPolicy]
     def policy
-      @policy_class.new(@policy_options)
+      @policy ||= @policy_class.new(@policy_options)
     end
 
-    # @param [Hash] opts
-    # @param [Hash] env
-    # @return [Class]
-    def format_class(opts, env)
-      accept = Rack::Accept::MediaType.new(env['HTTP_ACCEPT'])
-      mime_type = accept.best_of([nil] + Format.mime_types.values)
-      return Format.by_mime_type(mime_type) if mime_type
-      Format.by_name(opts.fetch(:format) { @default_format })
-    end
-
-    # @param [Hash] opts
-    # @return [String]
-    def format_name(opts)
-      opts.fetch(:format) { @default_format }
-    end
-
-    # @param [Symbol] format
-    # @return [Object]
-    def options_for_format(format)
-      format_options[format]
-    end
-
-    # model                => Yaks::Resource
-    # Yaks::Resource       => serialized structure
-    # serialized structure => serialized flat
+    # Main entry point into yaks
     #
-    # @param [Object] object
-    # @param [Hash] opts
-    # @return [Object]
-    def call(object, opts = {})
-      env = opts.fetch(:env, {})
-      context = {
-        policy: policy,
-        env: env,
-        mapper_stack: []
-      }
-
-      context[:item_mapper] = opts[:item_mapper] if opts.key?(:item_mapper)
-
-      mapper = opts.fetch(:mapper) { policy.derive_mapper_from_object(object) }.new(context)
-      format = format_class(opts, env).new(format_options[format_name(opts)])
-
-      [ mapper, format, *steps ].inject(object) {|memo, step| step.call(memo) }
+    # @param object [Object] The object to serialize
+    # @param options [Hash<Symbol,Object>] Serialization options
+    #
+    # @option env [Hash] The rack environment
+    # @option format [Symbol] The target format, default :hal
+    # @option mapper [Class] Mapper class to use
+    # @option item_mapper [Class] Mapper class to use for items in a top-level collection
+    #
+    def call(object, options = {})
+      Runner.new(config: self, object: object, options: options).call
     end
     alias serialize call
   end

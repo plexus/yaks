@@ -2,6 +2,7 @@ module Yaks
   class Format
     extend Forwardable
     include Util
+    include FP::Callable
 
     # @!attribute [r] options
     #   @return [Hash]
@@ -25,39 +26,61 @@ module Yaks
     alias serialize call
 
     class << self
-      # @param [Constant] klass
-      # @param [Symbol] name
-      # @param [String] mime_type
-      # @return [Array]
-      def register(klass, name, mime_type)
-        @formats ||= {}
-        @formats[name] = klass
+      attr_reader :format_name, :serializer, :mime_type
 
-        @mime_types  ||= {}
-        @mime_types[mime_type] = [name, klass]
+      def all
+        @formats ||= []
       end
 
-      # @param [Symbol] name
+      # @param [Constant] klass
+      # @param [Symbol] format_name
+      # @param [String] mime_type
+      # @return [Array]
+      def register(format_name, serializer, mime_type)
+        @format_name = format_name
+        @serializer = serializer
+        @mime_type = mime_type
+
+        Format.all << self
+      end
+
+      # @param [Symbol] format_name
       # @return [Constant]
       # @raise [KeyError]
-      def by_name(name)
-        @formats.fetch(name)
+      def by_name(format_name)
+        find(:format_name, format_name)
       end
 
       # @param [Symbol] mime_type
       # @return [Constant]
       # @raise [KeyError]
       def by_mime_type(mime_type)
-        @mime_types.fetch(mime_type)[1]
+        find(:mime_type, mime_type)
       end
 
-      # @return [Hash]
+      def by_accept_header(accept_header)
+        mime_type = Rack::Accept::Charset.new(accept_header).best_of(mime_types.values)
+        if mime_type
+          by_mime_type(mime_type)
+        else
+          yield if block_given?
+        end
+      end
+
       def mime_types
-        @mime_types.inject({}) {|memo, (mime_type, (name, _))| memo[name] = mime_type ; memo }
+        Format.all.each_with_object({}) do
+          |format, memo| memo[format.format_name] = format.mime_type
+        end
       end
 
       def names
         mime_types.keys
+      end
+
+      private
+
+      def find(key, cond)
+        Format.all.detect {|format| format.send(key) == cond }
       end
     end
   end

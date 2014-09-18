@@ -1,0 +1,32 @@
+{
+  "collection": {
+    "version": "1.0",
+    "href": "http://api.example.com/plants",
+    "items": [
+      {
+        "href": "http://api.example.com/plants/7/plain_grass",
+        "data": [ { "name": "name", "value": "Plain grass" },
+                  { "name": "type", "value": "grass" } ],
+        "links": [
+          { "rel": "profile", "href": "http://api.example.com/doc/plant" }
+        ]
+      },
+      {
+        "href": "http://api.example.com/plants/15/oak",
+        "data": [ { "name": "name", "value": "Oak" },
+                  { "name": "type", "value": "tree" } ],
+        "links": [
+          { "rel": "profile", "href": "http://api.example.com/doc/plant" }
+        ]
+      },
+      {
+        "href": "http://api.example.com/plants/33/passiflora",
+        "data": [ { "name": "name", "value": "Passiflora" },
+                  { "name": "type", "value": "flower" } ],
+        "links": [
+          { "rel": "profile", "href": "http://api.example.com/doc/plant" }
+        ]
+      }
+    ]
+  }
+}

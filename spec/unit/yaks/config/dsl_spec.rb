@@ -43,7 +43,7 @@ RSpec.describe Yaks::Config::DSL do
 
   describe '#format_options' do
     configure { format_options :hal, singular_link: [:self] }
-    specify   { expect(yaks_config.format_options[:hal].should eq(singular_link: [:self])) }
+    specify   { expect(yaks_config.format_options[:hal]).to eq(singular_link: [:self]) }
   end
 
   describe '#default_format' do
@@ -59,6 +59,11 @@ RSpec.describe Yaks::Config::DSL do
   describe '#rel_template' do
     configure { rel_template 'rels:{rel}' }
     specify   { expect(yaks_config.policy_options[:rel_template]).to eql 'rels:{rel}' }
+  end
+
+  describe '#json_serializer' do
+    configure { json_serializer { |i| "foo #{i}" } }
+    specify   { expect(yaks_config.serializers[:json].call(7)).to eql 'foo 7' }
   end
 
   describe '#mapper_namespace' do
@@ -79,13 +84,4 @@ RSpec.describe Yaks::Config::DSL do
     specify   { expect(yaks_config.primitivize.call({:abc => Foo.new('hello')})).to eql 'abc' => 'hello' }
   end
 
-  describe '#after' do
-    configure do
-      after {|x| x + 1}
-      after {|x| x + 10}
-    end
-    it 'should register the block' do
-      expect(yaks_config.steps.inject(0) {|memo, step| step.call(memo)}).to be 11
-    end
-  end
 end

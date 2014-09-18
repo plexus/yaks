@@ -52,3 +52,13 @@ task :mutant_chunked do
     Rake::Task["mutant"].execute
   end
 end
+
+begin
+  require 'yard'
+
+  YARD::Rake::YardocTask.new
+rescue LoadError
+  task :yard do
+    $stderr.puts 'In order to run yard, you must: gem install yard'
+  end
+end

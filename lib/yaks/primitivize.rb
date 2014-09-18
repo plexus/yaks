@@ -22,7 +22,7 @@ module Yaks
 
     def self.create
       new.tap do |p|
-        p.map String, TrueClass, FalseClass, NilClass, Numeric do |object|
+        p.map String, Numeric, true, false, nil do |object|
           object
         end
 
@@ -31,7 +31,7 @@ module Yaks
         end
 
         p.map Hash do |object|
-          object.to_enum(:each).with_object({}) do |(key, value), output|
+          object.to_enum.with_object({}) do |(key, value), output|
             output[call(key)] = call(value)
           end
         end

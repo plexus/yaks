@@ -39,19 +39,18 @@ module Matchers
       end.join
     end
 
-    def failure_message(message)
+    def add_failure_message(message)
       diffs << "at %s, %s" % [stack_as_jsonpath, message]
       @result = false
     end
 
     def compare(key)
-#require 'pry' ; binding.pry
       push key
       if target[key] != expectation[key]
         if [Hash, Array].any?{|klz| target[key].is_a? klz }
           recurse(target[key], expectation[key])
         else
-          failure_message begin
+          add_failure_message begin
                             if expectation[key].class == target[key].class
                               "expected #{expectation[key].inspect}, got #{target[key].inspect}"
                             else
@@ -72,13 +71,19 @@ module Matchers
       when Hash
         if target.is_a?(Hash)
           if target.class != expectation.class # e.g. HashWithIndifferentAccess
-            failure_message("expected #{expectation.class}, got #{target.class}")
+            add_failure_message("expected #{expectation.class}, got #{target.class}")
+          end
+          (expectation.keys - target.keys).each do |key|
+            add_failure_message "Expected key #{key}"
+          end
+          (target.keys - expectation.keys).each do |key|
+            add_failure_message "Unexpected key #{key}"
           end
           (target.keys | expectation.keys).each do |key|
             compare key
           end
         else
-          failure_message("expected Hash got #{@target.inspect}")
+          add_failure_message("expected Hash got #{@target.inspect}")
         end
 
       when Array
@@ -87,12 +92,12 @@ module Matchers
             compare idx
           end
         else
-          failure_message("expected Array got #{@target.inspect}")
+          add_failure_message("expected Array got #{@target.inspect}")
         end
 
       else
         if target != expectation
-          failure_message("expected #{expectation.inspect}, got #{@target.inspect}")
+          add_failure_message("expected #{expectation.inspect}, got #{@target.inspect}")
         end
       end
 
@@ -102,10 +107,12 @@ module Matchers
     def failure_message_for_should
       diffs.join("\n")
     end
+    alias failure_message failure_message_for_should
 
     def failure_message_for_should_not
       "expected #{@target.inspect} not to be in deep_eql with #{@expectation.inspect}"
     end
+    alias failure_message_when_negated failure_message_for_should_not
   end
 end
 
