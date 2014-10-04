@@ -9,6 +9,7 @@
 [codeclimate]: https://codeclimate.com/github/plexus/yaks
 
 # Yak Serializers
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/plexus/yaks?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ### One Stop Hypermedia Shopping ###
 
