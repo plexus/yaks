@@ -235,7 +235,7 @@ RSpec.describe Yaks::Runner do
       expect(runner.steps).to eql [
         [ :map, runner.mapper ],
         [ :format, runner.formatter ],
-        [ :primitivize, runner.primitivize],
+        [ :primitivize, runner.primitivizer],
         [ :serialize, runner.serializer ]
       ]
     end

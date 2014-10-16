@@ -37,7 +37,7 @@ module Yaks
       insert_hooks(
         [[ :map, mapper ],
          [ :format, formatter ],
-         [ :primitivize, primitivize], # really a JSON-preprocessor, should be pulled out
+         [ :primitivize, primitivizer],
          [ :serialize, serializer ]])
     end
     memoize :steps
@@ -53,6 +53,17 @@ module Yaks
       format_class.new(format_options[format_name])
     end
     memoize :formatter
+
+    def primitivizer
+      ->(input) do
+        if format_class.serializer == :json
+          primitivize.call(input)
+        else
+          input
+        end
+      end
+    end
+    memoize :primitivizer
 
     # @param [Hash] opts
     # @return [String]

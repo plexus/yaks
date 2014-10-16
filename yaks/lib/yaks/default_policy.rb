@@ -92,7 +92,8 @@ module Yaks
     # @return [#call] format_class
     def serializer_for_format(format_class)
       {
-        json: JSON.method(:pretty_generate)
+        json: JSON.method(:pretty_generate),
+        html: :to_html.to_proc
       }.fetch(format_class.serializer)
     end
   end
