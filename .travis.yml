@@ -1,25 +1,36 @@
 language: ruby
-script: bundle exec $RUN
+script: bundle exec rake $TASK
 rvm:
   - 1.9.3
-  - 2.0.0
-  - 2.1.2
+  - 2.0
+  - 2.1
   - ruby-head
   - rbx-2
   - jruby
   - jruby-head
 env:
-  - RUN=rspec
-  - RUN=rake
+  - TASK=yaks:rspec
+  - TASK=yaks:mutant
+  - TASK=yaks-html:rspec
+  - TASK=yaks-html:mutant
 matrix:
   allow_failures:
     - rvm: ruby-head
     - rvm: jruby-head
-    - env: RUN=rake
+    - env: TASK=yaks:mutant
+    - env: TASK=yaks-html:mutant
   exclude:
     - rvm: jruby
-      env: RUN=rake
+      env: TASK=yaks:mutant
+    - rvm: jruby
+      env: TASK=yaks-html:mutant
+
     - rvm: jruby-head
-      env: RUN=rake
+      env: TASK=yaks:mutant
+    - rvm: jruby-head
+      env: TASK=yaks-html:mutant
+
     - rvm: rbx-2
-      env: RUN=rake
+      env: TASK=yaks:mutant
+    - rvm: rbx-2
+      env: TASK=yaks-html:mutant

@@ -18,4 +18,5 @@ Gem::Specification.new do |gem|
   gem.extra_rdoc_files = %w[README.md]
 
   gem.add_runtime_dependency 'yaks', Yaks::VERSION
+  gem.add_runtime_dependency 'hexp', '>= 0.3'
 end
