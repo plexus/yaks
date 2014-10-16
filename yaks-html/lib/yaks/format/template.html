@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <style type="text/css">
+      .resource {
+        border: 1px solid black;
+        padding: 0.3em;
+      }
+
+      h1,h2,h3,h4,h5 {
+        background-color: #090
+      }
+
+      table {
+        width:99%;
+        margin: 0.5em;
+      }
+
+      th{ background-color: #fee; }
+
+    </style>
+  </head>
+  <body>
+    <div class="resource">
+      <h1 class="type">Resource Type</h1>
+
+      <table border="1" class="attributes">
+        <tr><th>Attribute</th><th>Value</th></tr>
+        <tr class="attribute"><td class="name">name</td><td class="value">value</td></tr>
+      </table>
+
+      <table border="1" class="links">
+        <tr>
+          <th>Rel</th>
+          <th>URI</th>
+          <th>Title</th>
+          <th>Templated</th>
+        </tr>
+
+        <tr class="link">
+          <td class="rel"><a href="">rel</a></td>
+          <td class="uri"><a href="">uri</a></td>
+          <td class="title">title</td>
+          <td class="templated">false</td>
+        </tr>
+      </table>
+
+      <table border="1" class="subresources">
+        <tr><th>Rel</th><th>Subresource</th></tr>
+        <tr class="subresource"><td class="rel"><a>rel</a></td><td class="value">value</td></tr>
+      </table>
+    </div>
+  </body>
+</html>
