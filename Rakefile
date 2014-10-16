@@ -28,7 +28,8 @@ def gem_tasks(gem)
     end
 
     RSpec::Core::RakeTask.new(:rspec) do |t, task_args|
-      t.rspec_opts = "-I#{gem}/spec #{gem}/spec"
+      t.rspec_opts = "-I#{gem}/spec"
+      t.pattern = "#{gem}/spec"
     end
 
 
