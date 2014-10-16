@@ -1,3 +1,4 @@
 source 'https://rubygems.org'
 
-gemspec
+gemspec path: 'yaks'
+gemspec path: 'yaks-html'
