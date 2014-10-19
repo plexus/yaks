@@ -10,9 +10,8 @@ rvm:
   - jruby-head
 env:
   - TASK=yaks:rspec
-  - TASK=yaks:mutant
   - TASK=yaks-html:rspec
-  - TASK=yaks-html:mutant
+  - TASK=mutant
 matrix:
   allow_failures:
     - rvm: ruby-head

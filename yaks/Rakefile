@@ -1,0 +1,3 @@
+load '../rakelib/shared.rake'
+
+gem_tasks(:yaks)

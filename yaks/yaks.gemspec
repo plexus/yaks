@@ -15,7 +15,7 @@ Gem::Specification.new do |gem|
 
   gem.require_paths    = %w[lib]
   gem.files            = `git ls-files`.split($/)
-  gem.test_files       = `git ls-files -- spec`.split($/)
+  gem.test_files       = gem.files.grep(/^spec/)
   gem.extra_rdoc_files = %w[README.md]
 
   if Yaks::BreakingChanges.key? Yaks::VERSION

@@ -4,37 +4,26 @@ require 'rubygems/package_task'
 require 'rspec/core/rake_task'
 require 'yard'
 
-def mutant_task(gem)
-  require 'mutant'
-  task :mutant do
-    pattern = ENV.fetch('PATTERN', gem == :yaks ? 'Yaks*' : 'Yaks::Format::HTML*')
-    opts    = ENV.fetch('MUTANT_OPTS', '').split(' ')
-    Dir.chdir gem.to_s do
-      result  = Mutant::CLI.run(%W[-Ilib -ryaks --use rspec --score 100] + opts + [pattern])
-      fail unless result == Mutant::CLI::EXIT_SUCCESS
+def delegate_task(gem, task_name)
+  task task_name do
+    chdir gem.to_s do
+      sh "rake", task_name.to_s
     end
   end
 end
 
-def gem_tasks(gem)
+[:yaks, :"yaks-html"].each do |gem|
   namespace gem do
-    Gem::PackageTask.new(Gem::Specification.load("#{gem}/#{gem}.gemspec")).define
+    desc 'Run rspec'
+    delegate_task gem, :rspec
 
-    mutant_task(gem) if RUBY_ENGINE == 'ruby'
+    desc 'Build gem'
+    delegate_task gem, :gem
 
-    RSpec::Core::RakeTask.new(:rspec) do |t, task_args|
-      t.rspec_opts = "-I#{gem}/spec"
-      t.pattern = "#{gem}/spec"
-    end
-
-    YARD::Rake::YardocTask.new do |t|
-      t.files   = ["#{gem}/lib/**/*.rb" "#{gem}/**/*.md"]
-    end
+    desc 'Generate YARD docs'
+    delegate_task gem, :yard
   end
 end
-
-gem_tasks(:yaks)
-gem_tasks(:"yaks-html")
 
 desc "Push gem to rubygems.org"
 task :push => ["yaks:gem", "yaks-html:gem"] do
@@ -43,3 +32,9 @@ task :push => ["yaks:gem", "yaks-html:gem"] do
   sh "gem push pkg/yaks-#{Yaks::VERSION}.gem"
   sh "gem push pkg/yaks-html-#{Yaks::VERSION}.gem"
 end
+
+desc "Run all the tests"
+task :rspec => ["yaks:rspec", "yaks-html:rspec"]
+
+desc 'Run mutation tests'
+delegate_task :yaks, :mutant
