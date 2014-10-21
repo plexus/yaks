@@ -16,20 +16,9 @@ matrix:
   allow_failures:
     - rvm: ruby-head
     - rvm: jruby-head
-    - env: TASK=yaks:mutant
-    - env: TASK=yaks-html:mutant
+    - env: TASK=mutant
   exclude:
     - rvm: jruby
-      env: TASK=yaks:mutant
-    - rvm: jruby
-      env: TASK=yaks-html:mutant
-
+      env: TASK=mutant
     - rvm: jruby-head
-      env: TASK=yaks:mutant
-    - rvm: jruby-head
-      env: TASK=yaks-html:mutant
-
-    - rvm: rbx-2
-      env: TASK=yaks:mutant
-    - rvm: rbx-2
-      env: TASK=yaks-html:mutant
+      env: TASK=mutant
