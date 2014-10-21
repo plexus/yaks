@@ -50,21 +50,30 @@ module Yaks
         config.default_format = format
       end
 
-      # Configure JSON serializer
+      # Configure serializer for specific output format, e.g. JSON
       #
-      # Defaults to JSON.pretty_generate
+      # This will override the default registered serializer. Note
+      # that extension gems can register their own serializers, see
+      # Yaks::Serializer.register
       #
       # @example
       #
       #   yaks = Yaks.new do
-      #     json_serializer &Oj.method(:dump)
+      #     serializer :json, &Oj.method(:dump)
       #   end
       #
-      # @param [Proc] block
+      # @type [Symbol] type
+      #   Output format
+      # @param [Proc] serializer
       #   Serialization procedure
       #
-      def json_serializer(&block)
-        config.serializers[:json] = block
+      def serializer(type, &serializer)
+        config.serializers[type] = serializer
+      end
+
+      # @deprecated
+      def json_serializer(&serializer)
+        serializer(:json, &serializer)
       end
 
       %w[before after around skip].map(&:intern).each do |hook_type|

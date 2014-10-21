@@ -88,13 +88,5 @@ module Yaks
       URITemplate.new(@options[:rel_template]).expand(rel: relname)
     end
 
-    # @param format_class [Class]
-    # @return [#call] format_class
-    def serializer_for_format(format_class)
-      {
-        json: JSON.method(:pretty_generate),
-        html: :to_html.to_proc
-      }.fetch(format_class.serializer)
-    end
   end
 end

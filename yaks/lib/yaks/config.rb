@@ -36,7 +36,7 @@ module Yaks
       @default_format = :hal
       @policy_options = {}
       @primitivize    = Primitivize.create
-      @serializers    = {}
+      @serializers    = Serializer.all.dup
       @hooks          = []
 
       DSL.new(self, &blk)

@@ -14,7 +14,8 @@ RSpec.describe Yaks::Config do
       its(:default_format) { should equal :hal }
       its(:policy_class)   { should < Yaks::DefaultPolicy }
       its(:primitivize)    { should be_a Yaks::Primitivize }
-      its(:serializers)    { should eql({})  }
+      its(:serializers)    { should eql(Yaks::Serializer.all)  }
+      its(:serializers)    { should_not equal(Yaks::Serializer.all)  }
       its(:hooks)          { should eql([])  }
 
       it 'should have empty format options' do

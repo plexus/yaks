@@ -61,10 +61,4 @@ RSpec.describe Yaks::DefaultPolicy do
     end
   end
 
-  describe '#serializer_for_format' do
-    specify {
-      expect(policy.serializer_for_format(Yaks::Format::JsonAPI).call('foo' => [1,2])).to eql "{\n  \"foo\": [\n    1,\n    2\n  ]\n}"
-    }
-  end
-
 end

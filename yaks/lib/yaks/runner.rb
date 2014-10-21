@@ -73,9 +73,7 @@ module Yaks
     memoize :format_name
 
     def serializer
-      serializers.fetch(format_class.serializer) do
-        policy.serializer_for_format(format_class)
-      end
+      serializers.fetch(format_class.serializer)
     end
     memoize :serializer
 

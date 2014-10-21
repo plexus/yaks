@@ -15,9 +15,9 @@ module Yaks
   # In the second case a collection has a single "subresource", being its
   # members.
   class CollectionResource < Resource
-    include Equalizer.new(:type, :links, :attributes, :members, :collection_rel)
-    include FP::HashUpdatable.new(:type, :links, :attributes, :members, :collection_rel)
-    include Enumerable
+    include Anima.new(:type, :links, :attributes, :members, :collection_rel),
+            Anima::Update,
+            Enumerable
 
     extend Forwardable
 

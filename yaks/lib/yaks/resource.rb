@@ -1,8 +1,8 @@
 module Yaks
   class Resource
-    include Equalizer.new(:type, :links, :attributes, :subresources)
-    include FP::HashUpdatable.new(:type, :links, :attributes, :subresources)
-    include Enumerable
+    include Anima.new(:type, :links, :attributes, :subresources),
+            Anima::Update,
+            Enumerable
 
     attr_reader :type, :attributes, :links, :subresources
 

@@ -3,6 +3,7 @@
 require 'forwardable'
 require 'set'
 require 'pathname'
+require 'json'
 
 require 'anima'
 require 'concord'
@@ -13,7 +14,6 @@ require 'rack/accept'
 require 'yaks/util'
 require 'yaks/fp'
 require 'yaks/fp/updatable'
-require 'yaks/fp/hash_updatable'
 require 'yaks/fp/callable'
 require 'yaks/primitivize'
 
@@ -51,6 +51,8 @@ require 'yaks/mapper/has_one'
 require 'yaks/mapper/has_many'
 require 'yaks/mapper/config'
 require 'yaks/collection_mapper'
+
+require 'yaks/serializer'
 
 require 'yaks/format'
 require 'yaks/format/hal'

@@ -61,6 +61,11 @@ RSpec.describe Yaks::Config::DSL do
     specify   { expect(yaks_config.policy_options[:rel_template]).to eql 'rels:{rel}' }
   end
 
+  describe '#serializer' do
+    configure { serializer(:json) { |i| "foo #{i}" } }
+    specify   { expect(yaks_config.serializers[:json].call(7)).to eql 'foo 7' }
+  end
+
   describe '#json_serializer' do
     configure { json_serializer { |i| "foo #{i}" } }
     specify   { expect(yaks_config.serializers[:json].call(7)).to eql 'foo 7' }
