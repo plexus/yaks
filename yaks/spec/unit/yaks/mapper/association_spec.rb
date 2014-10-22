@@ -6,7 +6,7 @@ RSpec.describe Yaks::Mapper::Association do
   subject(:association) do
     described_class.new(
       name: name,
-      child_mapper: mapper,
+      item_mapper: mapper,
       rel: rel,
       href: href,
       link_if: link_if
@@ -20,13 +20,13 @@ RSpec.describe Yaks::Mapper::Association do
   let(:link_if)           { Yaks::Undefined }
 
   its(:name)         { should equal :shoes }
-  its(:child_mapper) { should equal Yaks::Mapper }
+  its(:item_mapper) { should equal Yaks::Mapper }
 
   context 'with a minimal constructor' do
     subject(:association) { described_class.new(name: :foo) }
 
     its(:name)         { should be :foo }
-    its(:child_mapper) { should be Yaks::Undefined }
+    its(:item_mapper) { should be Yaks::Undefined }
     its(:rel)          { should be Yaks::Undefined }
     its(:href)         { should be Yaks::Undefined }
     its(:link_if)      { should be Yaks::Undefined }

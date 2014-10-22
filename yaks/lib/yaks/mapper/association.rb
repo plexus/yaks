@@ -1,12 +1,12 @@
 module Yaks
   class Mapper
     class Association
-      include Anima.new(:name, :child_mapper, :rel, :href, :link_if),
+      include Anima.new(:name, :item_mapper, :rel, :href, :link_if),
               AttributeDefaults.new(
-                child_mapper: Undefined,
-                rel:          Undefined,
-                href:         Undefined,
-                link_if:      Undefined
+                item_mapper: Undefined,
+                rel:         Undefined,
+                href:        Undefined,
+                link_if:     Undefined
               ),
               Util
 
@@ -14,7 +14,7 @@ module Yaks
         if options.key?(:mapper)
           options = options.dup
           mapper  = options.delete(:mapper)
-          options[:child_mapper] = mapper
+          options[:item_mapper] = mapper
         end
         options[:name] = name
         new(options)
@@ -39,7 +39,7 @@ module Yaks
 
       # support for HasOne and HasMany
       def resolve_association_mapper(policy)
-        return child_mapper unless child_mapper.equal?(Undefined)
+        return item_mapper unless item_mapper.equal?(Undefined)
         policy.derive_mapper_from_association(self)
       end
 

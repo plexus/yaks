@@ -8,7 +8,7 @@ RSpec.describe Yaks::Mapper::HasOne do
   subject(:has_one)  do
     described_class.new(
       name: :author,
-      child_mapper: association_mapper,
+      item_mapper: association_mapper,
       rel: 'http://rel'
     )
   end
