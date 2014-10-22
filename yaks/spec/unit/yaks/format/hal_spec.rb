@@ -18,8 +18,8 @@ RSpec.describe Yaks::Format::Hal do
       Yaks::Resource.new(
         attributes: {foo: 'fooval', bar: 'barval'},
         links: [
-          Yaks::Resource::Link.new('my_plural_rel', 'the_uri1', {}),
-          Yaks::Resource::Link.new('my_plural_rel', 'the_uri2', {})
+          Yaks::Resource::Link.new(rel: 'my_plural_rel', uri: 'the_uri1'),
+          Yaks::Resource::Link.new(rel: 'my_plural_rel', uri: 'the_uri2')
         ]
       )
     }

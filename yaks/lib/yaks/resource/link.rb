@@ -1,13 +1,8 @@
 module Yaks
   class Resource
     class Link
-      include Equalizer.new(:rel, :uri, :options)
-
-      attr_reader :rel, :uri, :options
-
-      def initialize(rel, uri, options)
-        @rel, @uri, @options = rel, uri, options
-      end
+      include Anima.new(:rel, :uri, :options),
+              AttributeDefaults.new(options: {})
 
       def title
         options[:title]

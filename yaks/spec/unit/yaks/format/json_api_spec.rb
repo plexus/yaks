@@ -22,7 +22,7 @@ RSpec.describe Yaks::Format::JsonAPI do
           href: '/the/href'
         },
         links: [
-          Yaks::Resource::Link.new(:self, '/the/self/link', {})
+          Yaks::Resource::Link.new(rel: :self, uri: '/the/self/link')
         ]
       )
     }

@@ -108,7 +108,7 @@ RSpec.describe Yaks::CollectionMapper do
     it 'should map the links' do
       expect(mapper.call(collection)).to eql Yaks::CollectionResource.new(
         type: 'the_type',
-        links: [ Yaks::Resource::Link.new(:self, 'http://api.example.com/orders', {}) ],
+        links: [ Yaks::Resource::Link.new(rel: :self, uri: 'http://api.example.com/orders') ],
         attributes: { },
         members: [],
         collection_rel: 'rel:the_types'

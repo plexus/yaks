@@ -10,7 +10,7 @@ RSpec.describe 'Mapping domain models to Resource objects' do
   it { should be_a Yaks::Resource }
   its(:type)         { should eql 'friend' }
   its(:attributes)   { should eql(id: 1, name: 'john') }
-  its(:links)        { should eql [ Yaks::Resource::Link.new(:copyright, '/api/copyright/2024', {}) ] }
+  its(:links)        { should eql [ Yaks::Resource::Link.new(rel: :copyright, uri: '/api/copyright/2024') ] }
 
   its(:subresources) {
     should eq(

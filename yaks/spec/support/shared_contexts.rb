@@ -31,7 +31,7 @@ RSpec.shared_context 'plant collection resource' do
     [ :oak         , :self    , 'http://api.example.com/plants/15/oak'        ],
     [ :passiflora  , :self    , 'http://api.example.com/plants/33/passiflora' ],
   ].each do |name, type, uri|
-    let(:"#{name}_#{type}_link") { Yaks::Resource::Link.new(type, uri, {}) }
+    let(:"#{name}_#{type}_link") { Yaks::Resource::Link.new(rel: type, uri: uri) }
   end
 
   let(:plain_grass) do

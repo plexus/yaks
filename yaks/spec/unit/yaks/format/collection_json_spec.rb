@@ -13,7 +13,7 @@ RSpec.describe Yaks::Format::CollectionJson do
     let(:resource) {
       Yaks::Resource.new(
         attributes: {foo: 'fooval', bar: 'barval'},
-        links: [Yaks::Resource::Link.new('the_rel', 'the_uri', {})]
+        links: [Yaks::Resource::Link.new(rel: 'the_rel', uri: 'the_uri')]
       )
     }
 

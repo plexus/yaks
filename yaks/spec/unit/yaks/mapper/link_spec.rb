@@ -29,7 +29,7 @@ RSpec.describe Yaks::Mapper::Link do
   describe '#add_to_resource' do
     it 'should add itself to the resource' do
       expect(link.add_to_resource(Yaks::Resource.new, mapper, yaks_context)).to eql(
-        Yaks::Resource.new(links: [Yaks::Resource::Link.new(:next, "/foo/bar/3/4", {})])
+        Yaks::Resource.new(links: [Yaks::Resource::Link.new(rel: :next, uri: "/foo/bar/3/4")])
       )
     end
 

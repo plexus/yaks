@@ -51,12 +51,12 @@ RSpec.describe Yaks::Mapper do
 
       it 'should map the link' do
         expect(resource.links).to eq [
-          Yaks::Resource::Link.new(:profile, 'http://foo/bar', {})
+          Yaks::Resource::Link.new(rel: :profile, uri: 'http://foo/bar')
         ]
       end
 
       it 'should use the link in the resource' do
-        expect(resource.links).to include Yaks::Resource::Link.new(:profile, 'http://foo/bar', {})
+        expect(resource.links).to include Yaks::Resource::Link.new(rel: :profile, uri: 'http://foo/bar')
       end
 
       context 'with the same link rel defined multiple times' do
@@ -70,10 +70,10 @@ RSpec.describe Yaks::Mapper do
 
         it 'should map all the links' do
           expect(resource.links).to eq [
-            Yaks::Resource::Link.new(:profile, 'http://foo/bar', {}),
-            Yaks::Resource::Link.new(:self, 'http://foo/bam', {}),
-            Yaks::Resource::Link.new(:self, 'http://foo/baz', {}),
-            Yaks::Resource::Link.new(:self, 'http://foo/baq', {})
+            Yaks::Resource::Link.new(rel: :profile, uri: 'http://foo/bar'),
+            Yaks::Resource::Link.new(rel: :self, uri: 'http://foo/bam'),
+            Yaks::Resource::Link.new(rel: :self, uri: 'http://foo/baz'),
+            Yaks::Resource::Link.new(rel: :self, uri: 'http://foo/baq')
           ]
         end
       end

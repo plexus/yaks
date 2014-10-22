@@ -33,18 +33,18 @@ RSpec.describe Yaks::Resource do
     let(:init_opts) {
       {
         links: [
-          Yaks::Resource::Link.new(:profile, '/foo/bar/profile', {}),
-          Yaks::Resource::Link.new(:self, '/foo/bar', {})
+          Yaks::Resource::Link.new(rel: :profile, uri: '/foo/bar/profile'),
+          Yaks::Resource::Link.new(rel: :self, uri: '/foo/bar')
         ]
       }
     }
     its(:links) { should eql [
-        Yaks::Resource::Link.new(:profile, '/foo/bar/profile', {}),
-        Yaks::Resource::Link.new(:self, '/foo/bar', {})
+        Yaks::Resource::Link.new(rel: :profile, uri: '/foo/bar/profile'),
+        Yaks::Resource::Link.new(rel: :self, uri: '/foo/bar')
       ]
     }
 
-    its(:self_link) { should eql Yaks::Resource::Link.new(:self, '/foo/bar', {}) }
+    its(:self_link) { should eql Yaks::Resource::Link.new(rel: :self, uri: '/foo/bar') }
   end
 
   context 'with subresources' do
@@ -95,14 +95,14 @@ RSpec.describe Yaks::Resource do
     let(:init_opts) {
       { links:
         [
-          Yaks::Resource::Link.new(:self, 'foo', {}),
-          Yaks::Resource::Link.new(:self, 'bar', {}),
-          Yaks::Resource::Link.new(:profile, 'baz', {})
+          Yaks::Resource::Link.new(rel: :self, uri: 'foo'),
+          Yaks::Resource::Link.new(rel: :self, uri: 'bar'),
+          Yaks::Resource::Link.new(rel: :profile, uri: 'baz')
         ]
       }
     }
     it 'should return the last self link' do
-      expect(resource.self_link).to eql Yaks::Resource::Link.new(:self, 'bar', {})
+      expect(resource.self_link).to eql Yaks::Resource::Link.new(rel: :self, uri: 'bar')
     end
   end
 end

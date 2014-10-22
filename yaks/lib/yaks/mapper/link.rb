@@ -70,7 +70,11 @@ module Yaks
         uri = expand_with(mapper.method(:load_attribute))
         return if uri.nil?
 
-        Resource::Link.new(rel, uri, resource_link_options(mapper))
+        Resource::Link.new(
+          rel: rel,
+          uri: uri,
+          options: resource_link_options(mapper)
+        )
       end
 
       def expand_with(lookup)

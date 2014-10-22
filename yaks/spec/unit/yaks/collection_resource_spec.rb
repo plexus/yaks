@@ -21,14 +21,14 @@ RSpec.describe Yaks::CollectionResource do
       {
         type: 'order',
         links: [
-          Yaks::Resource::Link.new('http://rels/summary', 'http://order/10/summary', {}),
-          Yaks::Resource::Link.new(:profile, 'http://rels/collection', {})
+          Yaks::Resource::Link.new(rel: 'http://rels/summary', uri: 'http://order/10/summary'),
+          Yaks::Resource::Link.new(rel: :profile, uri: 'http://rels/collection')
         ],
         attributes: { total: 10.00 },
         members: [
           Yaks::Resource.new(
             type: 'order',
-            links: [Yaks::Resource::Link.new(:self, 'http://order/10', {})],
+            links: [Yaks::Resource::Link.new(rel: :self, uri: 'http://order/10')],
             attributes: { customer: 'John Doe', price: 10.00 }
           )
         ],
@@ -38,15 +38,15 @@ RSpec.describe Yaks::CollectionResource do
 
     its(:type)       { should eql 'order' }
     its(:links)      { should eql [
-        Yaks::Resource::Link.new('http://rels/summary', 'http://order/10/summary', {}),
-        Yaks::Resource::Link.new(:profile, 'http://rels/collection', {})
+        Yaks::Resource::Link.new(rel: 'http://rels/summary', uri: 'http://order/10/summary'),
+        Yaks::Resource::Link.new(rel: :profile, uri: 'http://rels/collection')
       ]
     }
     its(:attributes) { should eql( total: 10.00 ) }
     its(:members)    { should eql [
         Yaks::Resource.new(
           type: 'order',
-          links: [Yaks::Resource::Link.new(:self, 'http://order/10', {})],
+          links: [Yaks::Resource::Link.new(rel: :self, uri: 'http://order/10')],
           attributes: { customer: 'John Doe', price: 10.00 }
         )
       ]
@@ -58,13 +58,13 @@ RSpec.describe Yaks::CollectionResource do
           type: 'order',
           attributes: { total: 10.00 },
           links: [
-            Yaks::Resource::Link.new('http://rels/summary', 'http://order/10/summary', {}),
-            Yaks::Resource::Link.new(:profile, 'http://rels/collection', {})
+            Yaks::Resource::Link.new(rel: 'http://rels/summary', uri: 'http://order/10/summary'),
+            Yaks::Resource::Link.new(rel: :profile, uri: 'http://rels/collection')
           ],
           members: [
             Yaks::Resource.new(
               type: 'order',
-              links: [Yaks::Resource::Link.new(:self, 'http://order/10', {})],
+              links: [Yaks::Resource::Link.new(rel: :self, uri: 'http://order/10')],
               attributes: { customer: 'John Doe', price: 10.00 }
             )
           ],

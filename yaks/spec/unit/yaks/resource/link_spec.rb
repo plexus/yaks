@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 RSpec.describe Yaks::Resource::Link do
-  subject(:link) { described_class.new(rel, uri, options) }
+  subject(:link) { described_class.new(rel: rel, uri: uri, options: options) }
+
   let(:rel)      { :foo_rel }
   let(:uri)      { 'http://api.example.org/rel/foo' }
   let(:options)  { { title: 'mr. spectacular' } }

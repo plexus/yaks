@@ -26,8 +26,8 @@ RSpec.describe Yaks::Mapper::AssociationMapper do
         expect(association_mapper.call(Yaks::Resource.new)).to eql Yaks::Resource.new(
           links: [
             Yaks::Resource::Link.new(
-              'rels:the_rel',
-              'http://this/is_where_the_associated_thing_can_be_found', {}
+              rel: 'rels:the_rel',
+              uri: 'http://this/is_where_the_associated_thing_can_be_found'
             )
           ]
         )

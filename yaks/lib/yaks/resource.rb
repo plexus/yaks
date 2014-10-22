@@ -1,6 +1,6 @@
 module Yaks
   class Resource
-    include Anima.new(:type, :links, :attributes, :subresources),
+    include Anima.new(:type, :links, :attributes, :subresources, :controls),
             Anima::Update,
             Enumerable
 
