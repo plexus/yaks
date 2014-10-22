@@ -17,6 +17,8 @@ require 'yaks/fp'
 require 'yaks/fp/callable'
 require 'yaks/primitivize'
 require 'yaks/attribute_defaults'
+require 'yaks/attributes'
+require 'yaks/dsl_builder'
 
 require 'yaks/default_policy'
 
@@ -50,6 +52,7 @@ require 'yaks/mapper/association'
 require 'yaks/mapper/association_mapper'
 require 'yaks/mapper/has_one'
 require 'yaks/mapper/has_many'
+require 'yaks/mapper/control'
 require 'yaks/mapper/config'
 require 'yaks/collection_mapper'
 

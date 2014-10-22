@@ -13,7 +13,8 @@ module Yaks
         :link,
         :profile,
         :has_one,
-        :has_many
+        :has_many,
+        :control
       ]
 
       def config
@@ -27,8 +28,8 @@ module Yaks
       end
 
       CONFIG_METHODS.each do |method_name|
-        define_method method_name do |*args|
-          config &send_with_args(method_name, *args)
+        define_method method_name do |*args, &block|
+          config &send_with_args(method_name, *args, &block)
         end
       end
 
