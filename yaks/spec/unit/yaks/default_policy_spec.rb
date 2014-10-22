@@ -4,7 +4,7 @@ RSpec.describe Yaks::DefaultPolicy do
   subject(:policy) { described_class.new( options ) }
 
   let(:options) { {} }
-  let(:association) { Yaks::Mapper::HasMany.new(name: 'shoes', collectionMapper: nil) }
+  let(:association) { Yaks::Mapper::HasMany.create('shoes') }
 
   describe '#initialize' do
     it 'should work without arguments' do

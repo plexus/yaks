@@ -1,18 +1,23 @@
 module Yaks
   class Mapper
     class Association
-      include Equalizer.new(:name, :child_mapper, :rel, :href, :link_if)
-      include Util
+      include Anima.new(:name, :child_mapper, :rel, :href, :link_if),
+              AttributeDefaults.new(
+                child_mapper: Undefined,
+                rel:          Undefined,
+                href:         Undefined,
+                link_if:      Undefined
+              ),
+              Util
 
-      attr_reader :name, :child_mapper, :rel, :href, :link_if
-
-      def initialize(options)
-        @name          = options.fetch(:name)
-        @child_mapper  = options.fetch(:mapper, Undefined)
-        @rel           = options.fetch(:rel, Undefined)
-
-        @href          = options.fetch(:href, Undefined)
-        @link_if       = options.fetch(:link_if, Undefined)
+      def self.create(name, options = {})
+        if options.key?(:mapper)
+          options = options.dup
+          mapper  = options.delete(:mapper)
+          options[:child_mapper] = mapper
+        end
+        options[:name] = name
+        new(options)
       end
 
       def add_to_resource(resource, parent_mapper, context)

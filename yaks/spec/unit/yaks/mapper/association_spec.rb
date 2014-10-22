@@ -6,7 +6,7 @@ RSpec.describe Yaks::Mapper::Association do
   subject(:association) do
     described_class.new(
       name: name,
-      mapper: mapper,
+      child_mapper: mapper,
       rel: rel,
       href: href,
       link_if: link_if

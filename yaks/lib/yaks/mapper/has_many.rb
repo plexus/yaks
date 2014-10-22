@@ -1,12 +1,9 @@
 module Yaks
   class Mapper
     class HasMany < Association
-      include Util
-
-      def initialize(options)
-        super
-        @collection_mapper = options.fetch(:collection_mapper, Undefined)
-      end
+      include Util,
+              anima.add(:collection_mapper),
+              attribute_defaults.add(collection_mapper: Undefined)
 
       def map_resource(collection, context)
         return NullResource.new(collection: true) if collection.nil?
@@ -16,9 +13,9 @@ module Yaks
         collection_mapper(collection, policy).new(context).call(collection)
       end
 
-      def collection_mapper(collection, policy)
+      def collection_mapper(collection = nil, policy = nil)
         return @collection_mapper unless @collection_mapper.equal? Undefined
-        policy.derive_mapper_from_object(collection)
+        policy.derive_mapper_from_object(collection) if policy && collection
       end
 
       def singular_name

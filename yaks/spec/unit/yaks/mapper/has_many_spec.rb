@@ -10,7 +10,7 @@ RSpec.describe Yaks::Mapper::HasMany do
       type 'closet'
       has_many :shoes,
         rel: 'http://foo/shoes',
-        mapper: Class.new(Yaks::Mapper) { type 'shoe' ; attributes :size, :color }
+        child_mapper: Class.new(Yaks::Mapper) { type 'shoe' ; attributes :size, :color }
     end
   end
 
@@ -70,7 +70,7 @@ RSpec.describe Yaks::Mapper::HasMany do
 
   describe '#collection_mapper' do
     let(:collection_mapper) { Yaks::Undefined }
-    subject(:has_many)  { described_class.new(name: :name, mapper: :mapper, rel: :rel, collection_mapper: collection_mapper) }
+    subject(:has_many)  { described_class.new(name: :name, child_mapper: :mapper, rel: :rel, collection_mapper: collection_mapper) }
 
     context 'when the collection mapper is undefined' do
       it 'should derive one from collection and policy' do

@@ -1,9 +1,7 @@
 module Yaks
   class Mapper
     class Attribute
-      include Equalizer.new(:name)
-
-      attr_reader :name
+      include Concord::Public.new(:name)
 
       def initialize(name)
         @name = name

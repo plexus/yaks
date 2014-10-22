@@ -93,7 +93,7 @@ RSpec.describe Yaks::Mapper::Config do
 
       it 'should have the association configured' do
         expect(config.associations).to eq [
-          Yaks::Mapper::HasOne.new(name: :mother, mapper: Yaks::Mapper)
+          Yaks::Mapper::HasOne.new(name: :mother, child_mapper: Yaks::Mapper)
         ]
       end
     end
@@ -126,7 +126,7 @@ RSpec.describe Yaks::Mapper::Config do
 
       it 'should have the association configured' do
         expect(config.associations).to eq [
-          Yaks::Mapper::HasMany.new(name: :shoes, mapper: Yaks::Mapper)
+          Yaks::Mapper::HasMany.new(name: :shoes, child_mapper: Yaks::Mapper)
         ]
       end
     end

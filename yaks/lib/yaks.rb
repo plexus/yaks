@@ -12,6 +12,7 @@ require 'uri_template'
 require 'rack/accept'
 
 require 'yaks/util'
+require 'yaks/configurable'
 require 'yaks/fp'
 require 'yaks/fp/callable'
 require 'yaks/primitivize'
