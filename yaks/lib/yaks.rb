@@ -13,7 +13,6 @@ require 'rack/accept'
 
 require 'yaks/util'
 require 'yaks/fp'
-require 'yaks/fp/updatable'
 require 'yaks/fp/callable'
 require 'yaks/primitivize'
 require 'yaks/attribute_defaults'
