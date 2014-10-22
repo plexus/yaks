@@ -1,17 +1,9 @@
 module Yaks
   class Mapper
     class Config
-      include Equalizer.new(:type, :attributes, :links, :associations)
-      include FP::Updatable.new(:type, :attributes, :links, :associations)
-
-      attr_reader :links, :associations
-
-      def initialize(type, attributes, links, associations)
-        @type         = type
-        @attributes   = attributes
-        @links        = links
-        @associations = associations
-      end
+      include Anima.new(:type, :attributes, :links, :associations),
+              Anima::Update,
+              AttributeDefaults.new(type: nil, attributes: [], links: [], associations: [])
 
       def type(type = Undefined)
         return @type if type.equal?(Undefined)

@@ -16,6 +16,7 @@ require 'yaks/fp'
 require 'yaks/fp/updatable'
 require 'yaks/fp/callable'
 require 'yaks/primitivize'
+require 'yaks/attribute_defaults'
 
 require 'yaks/default_policy'
 

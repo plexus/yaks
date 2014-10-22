@@ -3,10 +3,18 @@ require 'spec_helper'
 RSpec.describe Yaks::Mapper::Config do
   Undefined = Yaks::Undefined
 
-  subject(:config) { described_class.new(nil, [], [], []) }
+  subject(:config) { described_class.new }
 
   describe '#initialize' do
-    subject(:config) { described_class.new('foo', [:a], [:b], [:c]) }
+    subject(:config) do
+      described_class.new(
+        type:         'foo',
+        attributes:   [:a],
+        links:        [:b],
+        associations: [:c]
+      )
+    end
+
 
     its(:type)         { should eql 'foo' }
     its(:attributes)   { should eql [:a] }

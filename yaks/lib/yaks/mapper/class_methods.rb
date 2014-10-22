@@ -17,7 +17,7 @@ module Yaks
       ]
 
       def config
-        @config ||= Config.new nil, [], [], []
+        @config ||= Config.new
         @config = yield(@config) if block_given?
         @config
       end
