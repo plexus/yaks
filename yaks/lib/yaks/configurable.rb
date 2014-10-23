@@ -16,9 +16,5 @@ module Yaks
         end
       end
     end
-
-    def append_to(type, *objects)
-      update(type => instance_variable_get("@#{type}") + objects)
-    end
   end
 end

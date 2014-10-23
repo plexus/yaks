@@ -33,8 +33,19 @@ module Yaks
         # resource.
         #
         result = resource.attributes
-        result = result.merge(:_links => serialize_links(resource.links)) unless resource.links.empty?
-        result = result.merge(:_embedded => serialize_embedded(resource.subresources)) unless resource.subresources.empty?
+
+        if resource.links.any?
+          result = result.merge(_links: serialize_links(resource.links))
+        end
+
+        if resource.collection?
+          result = result.merge(_embedded:
+                                  serialize_embedded(resource.collection_rel => resource))
+        elsif resource.subresources.any?
+          result = result.merge(_embedded:
+                                  serialize_embedded(resource.subresources))
+        end
+
         result
       end
 

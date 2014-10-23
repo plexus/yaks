@@ -4,7 +4,6 @@ module Yaks
       include Attributes.new(
                 type: nil, attributes: [], links: [], associations: [], controls: []
               ),
-              Anima::Update,
               Configurable
 
       def type(type = Undefined)

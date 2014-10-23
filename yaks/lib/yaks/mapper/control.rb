@@ -10,6 +10,10 @@ module Yaks
         new({name: name}.merge(options))
       end
 
+      def add_to_resource(resource, _parent_mapper, _context)
+        Resource::Control.new(to_h)
+      end
+
       class Field
         include Attributes.new(:name)
 

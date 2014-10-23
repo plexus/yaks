@@ -4,6 +4,7 @@ RSpec.describe Yaks::Mapper::ClassMethods do
   subject(:mapper_class) do
     Class.new do
       extend Yaks::Mapper::ClassMethods
+      config Yaks::Mapper::Config.new
       attributes :foo, :bar
       link :some_rel, 'http://some_link'
       has_one :thing

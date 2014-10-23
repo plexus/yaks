@@ -15,54 +15,10 @@ module Yaks
   # In the second case a collection has a single "subresource", being its
   # members.
   class CollectionResource < Resource
-    include Anima.new(:type, :links, :attributes, :members, :collection_rel),
-            Anima::Update,
-            Enumerable
+    include attributes.add(members: [], collection_rel: 'members')
 
     extend Forwardable
-
-    # @!attribute [r] type
-    #   @return [String]
-    # @!attribute [r] links
-    #   @return [Array]
-    # @!attribute [r] members
-    #   @return [Array]
-    # @!attribute [r] collection_rel
-    #   @return [String]
-    attr_reader :type, :links, :members, :collection_rel
-
     def_delegators :members, :each
-
-    # @param [Hash] options
-    # @return [CollectionResource]
-    def initialize(options)
-      super
-      @members     = options.fetch(:members, [])
-      @collection_rel = options.fetch(:collection_rel, 'members')
-    end
-
-    # Make a CollectionResource quack like a resource.
-    #
-    # At the moment this is only for HAL, which always assumes
-    # a singular resource at the top level, this way it can treat
-    # whatever it gets as a single resource with links and subresources,
-    # we just push the collection down one level.
-    #
-    # Once inside subresources the HAL format does check if a resource
-    # is a collection, since there it does make a distinction, and because
-    # in that case it will iterate with each/map rather than calling subresources,
-    # this doesn't cause infinite recursion. Not very pretty, needs looking at.
-    #
-    # :(
-    #
-    # @return [Hash]
-    def subresources
-      if any?
-        { collection_rel => self }
-      else
-        {}
-      end
-    end
 
     # @return [Boolean]
     def collection?

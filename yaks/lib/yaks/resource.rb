@@ -1,17 +1,9 @@
 module Yaks
   class Resource
-    include Anima.new(:type, :links, :attributes, :subresources, :controls),
-            Anima::Update,
+    include Attributes.new(
+              type: nil, links: [], attributes: {}, subresources: {}, controls: []
+            ),
             Enumerable
-
-    attr_reader :type, :attributes, :links, :subresources
-
-    def initialize(options = {})
-      @type         = options.fetch(:type, nil)
-      @attributes   = options.fetch(:attributes, {})
-      @links        = options.fetch(:links, [])
-      @subresources = options.fetch(:subresources, {})
-    end
 
     def [](attr)
       attributes[attr]
@@ -41,7 +33,11 @@ module Yaks
     end
 
     def add_link(link)
-      update(links: @links + [link])
+      append_to(:links, link)
+    end
+
+    def add_control(control)
+      append_to(:controls, control)
     end
 
     def add_subresource(rel, subresource)
