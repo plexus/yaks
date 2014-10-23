@@ -23,7 +23,8 @@ module Yaks
     def included(descendant)
       descendant.instance_exec(self) do |attribute_defaults|
         define_singleton_method(:attribute_defaults) { attribute_defaults }
-        prepend InstanceMethods
+
+        include InstanceMethods
       end
     end
 

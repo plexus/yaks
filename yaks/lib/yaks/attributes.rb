@@ -10,7 +10,7 @@ module Yaks
         Anima::Update
       ]
       if attrs_with_defaults
-        @modules << AttributeDefaults.new(attrs_with_defaults)
+        @modules.unshift(AttributeDefaults.new(attrs_with_defaults))
       end
     end
 
