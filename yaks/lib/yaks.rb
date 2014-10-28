@@ -55,6 +55,8 @@ require 'yaks/mapper'
 require 'yaks/mapper/association_mapper'
 require 'yaks/collection_mapper'
 
+require 'yaks/resource/control'
+
 require 'yaks/serializer'
 
 require 'yaks/format'

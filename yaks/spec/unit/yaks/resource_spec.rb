@@ -105,4 +105,11 @@ RSpec.describe Yaks::Resource do
       expect(resource.self_link).to eql Yaks::Resource::Link.new(rel: :self, uri: 'bar')
     end
   end
+
+  describe '#add_control' do
+    it 'should append to the controls' do
+      expect(resource.add_control(:a_control))
+        .to eq Yaks::Resource.new(controls: [:a_control])
+    end
+  end
 end

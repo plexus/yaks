@@ -56,7 +56,7 @@ module Yaks
 
     def primitivizer
       ->(input) do
-        if format_class.serializer == :json
+        if format_class.serializer.equal? :json
           primitivize.call(input)
         else
           input

@@ -3,7 +3,7 @@ require 'spec_helper'
 RSpec.describe Yaks::Mapper::Link do
   include_context 'yaks context'
 
-  subject(:link) { described_class.new(rel, template, options) }
+  subject(:link) { described_class.create(rel, template, options) }
 
   let(:rel)      { :next }
   let(:template) { '/foo/bar/{x}/{y}' }
@@ -193,4 +193,14 @@ RSpec.describe Yaks::Mapper::Link do
     end
   end
 
+  describe '.create' do
+    it 'should take positional arguments' do
+      expect(Yaks::Mapper::Link.create(:foo, :bar, {baz: 3}))
+        .to eql Yaks::Mapper::Link.new(rel: :foo, template: :bar, options: {baz: 3})
+    end
+
+    it 'should default options' do
+      expect(Yaks::Mapper::Link.create(:foo, :bar).options).to eql({})
+    end
+  end
 end

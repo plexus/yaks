@@ -27,11 +27,7 @@ RSpec.describe Yaks::Format do
 
   describe '.mime_types' do
     specify do
-      expect(Yaks::Format.mime_types).to eql(
-        collection_json: "application/vnd.collection+json",
-        hal: "application/hal+json",
-        json_api: "application/vnd.api+json"
-      )
+      expect(Yaks::Format.mime_types.values_at(:collection_json, :hal, :json_api)).to eql(["application/vnd.collection+json", "application/hal+json", "application/vnd.api+json"])
     end
   end
 end

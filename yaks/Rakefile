@@ -1,3 +1,48 @@
 load '../rakelib/shared.rake'
 
 gem_tasks(:yaks)
+
+
+task :mutant_chunked do
+  [
+   Yaks::Attributes,
+   Yaks::Attributes::InstanceMethods,
+   Yaks::CollectionMapper,
+   Yaks::CollectionResource,
+   Yaks::Config,
+   Yaks::Config::DSL,
+   Yaks::Configurable,
+   Yaks::Configurable::ClassMethods,
+   Yaks::DSLBuilder,
+   Yaks::DefaultPolicy,
+   Yaks::FP,
+   Yaks::FP::Callable,
+   Yaks::Format,
+   Yaks::Format::CollectionJson,
+   Yaks::Format::Hal,
+   Yaks::Format::JsonAPI,
+   Yaks::Mapper::AssociationMapper,
+   Yaks::Mapper::Attribute,
+   Yaks::Mapper::Config,
+   Yaks::Mapper::Control,
+   Yaks::Mapper::Control::Field,
+   Yaks::Mapper::HasOne,
+   Yaks::NullResource,
+   Yaks::Primitivize,
+   Yaks::Resource::Link,
+   Yaks::Util,
+   Yaks::Serializer,
+   Yaks::Runner,
+   Yaks::Resource,
+   Yaks::Mapper::Link,
+   Yaks::Mapper::HasMany,
+   Yaks::Mapper::ClassMethods,
+   Yaks::Mapper::Association,
+    Yaks::Mapper,
+#    Yaks::Format::HTML,
+  ].each do |space|
+    puts space
+    ENV['PATTERN'] = "#{space}"
+    Rake::Task["mutant"].execute
+  end
+end

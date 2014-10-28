@@ -1,7 +1,11 @@
 module Yaks
   class Resource
     class Control
-      include Attributes.new(:name, :href, :title, :media_type, :fields, method: 'GET')
+      include Yaks::Mapper::Control.attributes
+
+      class Field
+        include Yaks::Mapper::Control::Field.attributes
+      end
     end
   end
 end

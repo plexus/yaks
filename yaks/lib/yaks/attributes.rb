@@ -1,42 +1,40 @@
 module Yaks
   class Attributes < Module
+    attr_reader :defaults, :attributes
+
     def initialize(*attrs)
-      @defaults   = attrs.last.is_a?(Hash) ? attrs.pop : {}
-      @attributes = (attrs + @defaults.keys).uniq
-      define_attr_methods
+      @defaults   = attrs.last.instance_of?(Hash) ? attrs.pop : {}
+      @attributes = attrs + @defaults.keys
     end
 
     def add(*attrs)
-      defaults = attrs.last.is_a?(Hash) ? attrs.pop : {}
-      self.class.new(*[*attrs, @defaults.merge(defaults)])
-    end
-
-    def define_attr_methods
-      @attributes.each do |attr|
-        define_method attr do |value = Undefined|
-          if value.equal? Undefined
-            instance_variable_get("@#{attr}")
-          else
-            update(attr => value)
-          end
-        end
-      end
+      defaults = attrs.last.instance_of?(Hash) ? attrs.pop : {}
+      self.class.new(*[*(attributes+attrs), @defaults.merge(defaults)])
     end
 
     def included(descendant)
-      descendant.module_exec(self, @attributes, @defaults) do |this, attributes, defaults|
+      descendant.module_exec(self) do |this|
         include InstanceMethods,
-                Anima.new(*attributes),
+                Anima.new(*this.attributes),
                 Anima::Update
 
-        define_singleton_method(:attributes)         { this }
-        define_singleton_method(:attribute_defaults) { defaults }
+        this.attributes.each do |attr|
+          define_method attr do |value = Undefined|
+            if value.equal? Undefined
+              instance_variable_get("@#{attr}")
+            else
+              update(attr => value)
+            end
+          end
+        end
+
+        define_singleton_method(:attributes) { this }
       end
     end
 
     module InstanceMethods
       def initialize(attributes = {})
-        super(self.class.attribute_defaults.merge(attributes))
+        super(self.class.attributes.defaults.merge(attributes))
       end
 
       def append_to(type, *objects)

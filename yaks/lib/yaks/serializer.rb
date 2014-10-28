@@ -6,9 +6,7 @@ module Yaks
     end
 
     def self.all
-      @serializers ||= {}
+      @serializers ||= {json: JSON.method(:pretty_generate)}
     end
-
-    register :json, JSON.method(:pretty_generate)
   end
 end
