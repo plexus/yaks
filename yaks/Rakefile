@@ -20,6 +20,7 @@ task :mutant_chunked do
    Yaks::Format,
    Yaks::Format::CollectionJson,
    Yaks::Format::Hal,
+   Yaks::Format::Halo,
    Yaks::Format::JsonAPI,
    Yaks::Mapper::AssociationMapper,
    Yaks::Mapper::Attribute,

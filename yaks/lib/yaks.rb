@@ -62,6 +62,7 @@ require 'yaks/serializer'
 
 require 'yaks/format'
 require 'yaks/format/hal'
+require 'yaks/format/halo'
 require 'yaks/format/json_api'
 require 'yaks/format/collection_json'
 

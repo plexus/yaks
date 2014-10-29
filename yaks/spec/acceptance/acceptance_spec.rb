@@ -6,7 +6,7 @@ require 'acceptance/json_shared_examples'
 RSpec.describe Yaks::Format::Hal do
   yaks_rel_template = Yaks.new do
     format_options :hal, plural_links: ['http://literature.example.com/rels/quotes']
-    rel_template "http://literature.example.com/rel/{association_name}"
+    rel_template "http://literature.example.com/rel/{rel}"
     skip :serialize
   end
 
@@ -18,8 +18,18 @@ RSpec.describe Yaks::Format::Hal do
     skip :serialize
   end
 
-  include_examples 'JSON output format' , yaks_rel_template , :hal , 'confucius'
-  include_examples 'JSON output format' , yaks_policy_dsl   , :hal , 'confucius'
+  include_examples 'JSON output format', yaks_rel_template, :hal, 'confucius'
+  include_examples 'JSON output format', yaks_policy_dsl,   :hal, 'confucius'
+end
+
+RSpec.describe Yaks::Format::Halo do
+  yaks = Yaks.new do
+    default_format :halo
+    rel_template "http://literature.example.com/rel/{rel}"
+    skip :serialize
+  end
+
+  include_examples 'JSON output format', yaks, :halo, 'confucius'
 end
 
 RSpec.describe Yaks::Format::JsonAPI do
@@ -28,7 +38,7 @@ RSpec.describe Yaks::Format::JsonAPI do
     skip :serialize
   end
 
-  include_examples 'JSON output format' , config , :json_api , 'confucius'
+  include_examples 'JSON output format', config, :json_api, 'confucius'
 end
 
 RSpec.describe Yaks::Format::CollectionJson do
