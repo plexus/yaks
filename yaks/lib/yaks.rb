@@ -18,6 +18,7 @@ require 'yaks/fp/callable'
 require 'yaks/primitivize'
 require 'yaks/attributes'
 require 'yaks/dsl_builder'
+require 'yaks/errors'
 
 require 'yaks/default_policy'
 

@@ -9,7 +9,7 @@ RSpec.describe Yaks::DSLBuilder do
     end
 
     def finalize
-      yield
+      update(foo: 7, bar: 8)
     end
   end
 
@@ -25,6 +25,6 @@ RSpec.describe Yaks::DSLBuilder do
   end
 
   it 'should unwrap again' do
-    expect( subject.create(3, 4) { finalize {7} } ).to equal 7
+    expect( subject.create(3, 4) { finalize } ).to eql Buildable.new(foo: 7, bar: 8)
   end
 end
