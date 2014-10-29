@@ -6,7 +6,9 @@ module Yaks
     include Util, FP
 
     def_delegators 'self.class', :config
-    def_delegators :config, :attributes, :links, :associations
+    def_delegators :config, :attributes, :links, :associations, :controls
+
+    config Config.new
 
     attr_reader :object, :context
 
@@ -41,7 +43,8 @@ module Yaks
 
       [ :map_attributes,
         :map_links,
-        :map_subresources
+        :map_subresources,
+        :map_controls
       ].inject(Resource.new(type: mapper_name)) do |resource, method|
         send(method, resource)
       end
@@ -69,6 +72,12 @@ module Yaks
     def map_subresources(resource)
       associations.inject(resource) do |res, association|
         association.add_to_resource(res, self, context)
+      end
+    end
+
+    def map_controls(resource)
+      controls.inject(resource) do |res, control|
+        control.add_to_resource(res, self, context)
       end
     end
   end

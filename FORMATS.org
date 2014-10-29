@@ -1,0 +1,182 @@
+#+TITLE:Comparison of Hypermedia Message Formats
+#+AUTHOR: Arne Brasseur
+#+email: arne@arnebrasseur.net
+#+INFOJS_OPT: view:info toc:nil
+#+BABEL: :session *ruby* :cache yes :results output graphics :exports both :tangle yes
+
+* Form Controls / Actions
+
+| Format          | href                            | name/id  | title/caption | method    | media-type      | fields                           | schema      | string template | structured template |
+|-----------------+---------------------------------+----------+---------------+-----------+-----------------+----------------------------------+-------------+-----------------+---------------------|
+| HTML5           | action=""                       |          |               | method="" | enctype=""      | yes                              |             |                 |                     |
+| halo            | "href"                          | json key |               | "method"  | "content-type"  |                                  | "schema"    | "template"      |                     |
+| siren           | "href"                          | "name"   | "title"       | "method"  | "type"          | "fields"                         |             |                 |                     |
+| mason           | "href"                          | json key | "title"       | "method"  | depends on type |                                  | "schemaUrl" |                 | "template"          |
+| Collection+JSON | "href" (query)/current resource |          | "prompt"      |           |                 |                                  |             |                 |                     |
+| Hydra           | current resource                | "@type"  |               | "method"  |                 | "expects": {"supportedProperty"} |             |                 |                     |
+
+| Format          | Name       | Title    | Type    | Value   |
+|-----------------+------------+----------+---------+---------|
+| Siren           | "name"     |          | "type"  | "value" |
+| Collection+JSON | "name"     | "prompt" |         | "value" |
+| Hydra           | "property" |          | "range" |         |
+
+** HTML
+
+   [[http://www.w3.org/TR/html5/forms.html][W3C: HTML5 Forms]]
+
+** halo+json
+
+   [[https://gist.github.com/mikekelly/893552][Gist: A sketch of application/halo+json and application/halo+xml]]
+
+   #+BEGIN_SRC json
+     {
+       "_controls": {
+         "widgetate": {
+           "href": "/widget/{newID}",
+           "method": "PUT",
+           "content-type": "application/xml",
+           "schema": null,
+           "template": "<widget>\\n <name>{{name}}</name>\\n\\n <blobs>\\n {{#blobs}}\\n <blob>\\n {{#first}}\\n <first>true</first>\\n {{/first}}\\n <contents>{{contents}}</contents>\\n </blob>\\n {{/blobs}}\\n </blobs>\\n\\n {{#is_empty}}\\n <note>This is an empty widget</note>\\n {{/is_empty}}\\n</widget>\\n"
+         }
+       }
+     }
+   #+END_SRC
+
+** Siren
+
+   [[https://github.com/kevinswiber/siren][Siren Home page]]
+
+
+   #+BEGIN_SRC json
+     {
+       "actions": [
+         {
+           "name": "add-item",
+           "title": "Add Item",
+           "method": "POST",
+           "href": "http://api.x.io/orders/42/items",
+           "type": "application/x-www-form-urlencoded",
+           "fields": [
+             { "name": "orderNumber", "type": "hidden", "value": "42" },
+             { "name": "productCode", "type": "text" },
+             { "name": "quantity", "type": "number" }
+           ]
+         }
+       ]
+     }
+   #+END_SRC
+
+** Mason
+
+   #+BEGIN_SRC json
+     {
+       "@actions": {
+         "is:delete-issue": {
+           "type": "void",
+           "href": "...",
+           "method": "DELETE",
+           "title": "Delete issue"
+         }
+       }
+     }
+   #+END_SRC
+
+   #+BEGIN_SRC json
+     {
+       "@actions": {
+         // JSON action with schema reference
+         "is:project-create": {
+           "type": "json",
+           "href": "...",
+           "title": "Create new project",
+           "schemaUrl": "..."
+         },
+         // JSON action with default template
+         "is:update-project": {
+           "type": "json",
+           "href": "...",
+           "title": "Update project details",
+           "template": {
+             "Code": "SHOP",
+             "Title": "Webshop",
+             "Description": "All issues related to the webshop."
+           }
+         }
+       }
+     }
+   #+END_SRC
+
+
+https://github.com/JornWildt/Mason/blob/master/Documentation/Mason-draft-1.md#actions
+** Collection+JSON
+
+   CJ does not have a form-like representation. It does allow
+   resources to contain a "template", which is really a list of form
+   fields, and a client can use HTTP methods against the same endpoint
+   to perform CRUD operations. In addition CJ provides "queries" for
+   basic GET based operations.
+
+   #+BEGIN_SRC json
+     {
+       "template" :
+       {
+         "data" :
+         [
+           {"prompt" : STRING, "name" : STRING, "value" : VALUE},
+           {"prompt" : STRING, "name" : STRING, "value" : VALUE},
+           ...
+           {"prompt" : STRING, "name" : STRING, "value" : VALUE}
+         ]
+       }
+     }
+   #+END_SRC
+
+   #+BEGIN_SRC json
+     {
+       "queries" :
+       [
+         {
+           "href" : "http://example.org/search",
+           "rel" : "search",
+           "prompt" : "Enter search string",
+           "data" :
+           [
+             {"name" : "search", "value" : ""}
+           ]
+         }
+       ]
+     }
+   #+END_SRC
+** JSON-LD + Hydra
+
+   Example taken from [[http://sookocheff.com/posts/2014-03-11-on-choosing-a-hypermedia-format/][this blog post]]
+
+   JSON-LD itself does not have form like controls, only
+   linking. Hydra introduces an "operation" property for this purpose.
+
+   #+BEGIN_SRC json
+     {
+       "@context": [
+         "http://www.w3.org/ns/hydra/core",
+         {
+           "@vocab": "https://schema.org/",
+           "image": { "@type": "@id" },
+           "friends": { "@type": "@id" }
+         }
+       ],
+       "@id": "https://api.example.com/player/1234567890/friends",
+       "operation": {
+         "@type": "BefriendAction",
+         "method": "POST",
+         "expects": {
+           "@id": "http://schema.org/Person",
+           "supportedProperty": [
+             { "property": "name", "range": "Text" },
+             { "property": "alternateName", "range": "Text" },
+             { "property": "image", "range": "URL" }
+           ]
+         }
+       }
+     }
+   #+END_SRC

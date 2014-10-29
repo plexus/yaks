@@ -132,4 +132,28 @@ RSpec.describe Yaks::Mapper::Association do
       end
     end
   end
+
+  describe '.create' do
+    it 'should take a name' do
+      expect(described_class.create(:foo).name).to be :foo
+    end
+
+    it 'should optionally take a mapper' do
+      expect(described_class.create(:foo, mapper: :bar).item_mapper).to be :bar
+    end
+
+    it 'should take other options' do
+      expect(described_class.create(:foo, mapper: :bar, href: 'xxx').href).to eql 'xxx'
+    end
+
+    it 'should respect attribute defaults' do
+      expect(described_class.create(:foo, href: 'xxx').item_mapper).to be Yaks::Undefined
+    end
+
+    it 'should not munge the options hash' do
+      opts  = {mapper: :foo}
+      described_class.create(:foo, opts)
+      expect(opts).to eql(mapper: :foo)
+    end
+  end
 end

@@ -201,7 +201,34 @@ RSpec.describe Yaks::Mapper do
         )
       end
     end
-  end
+
+    context 'with a control' do
+      before do
+        mapper_class.module_eval do
+          control :foo_control do
+            field :bar_field, label: 'a label', type: 'number', value: 7
+          end
+        end
+      end
+
+      it 'should render the control' do
+        expect(mapper.call(fake))
+          .to eql Yaks::Resource.new(
+                    type: 'foo',
+                    controls: [
+                      Yaks::Resource::Control.new(
+                        name: :foo_control,
+                        fields: [
+                          Yaks::Resource::Control::Field.new(
+                            name: :bar_field,
+                            label: 'a label',
+                            type: 'number',
+                            value: 7
+                          )])])
+      end
+    end
+
+  end # describe '#call'
 
   describe '.mapper_name' do
     context 'with a type configured' do
@@ -267,30 +294,32 @@ RSpec.describe Yaks::Mapper do
     end
   end
 
-  describe '#map_links' do
-    let(:link) { fake('Link') }
-
+  shared_examples 'something that can be added to a resource' do
     it 'should receive a context' do
-      stub(link).add_to_resource(any_args) {|r,_,_| Yaks::Resource.new}
+      stub(object).add_to_resource(any_args) {|r,_,_| Yaks::Resource.new}
 
-      mapper.config.links[0..-1] = [link]
       mapper.call(instance)
 
-      expect(link).to have_received.add_to_resource(any(Yaks::Resource), mapper, yaks_context)
+      expect(object).to have_received.add_to_resource(any(Yaks::Resource), mapper, yaks_context)
     end
   end
 
+  describe '#map_links' do
+    let(:object) { fake('Link') }
+    before { mapper.config(mapper.config.append_to(:links, object)) }
+    it_should_behave_like 'something that can be added to a resource'
+  end
+
   describe '#map_subresources' do
-    let(:association) { fake('Association') }
+    let(:object) { fake('Association') }
+    before { mapper.config(mapper.config.append_to(:associations, object)) }
+    it_should_behave_like 'something that can be added to a resource'
+  end
 
-    it 'should receive a context' do
-      stub(association).add_to_resource(any_args) {|r,_,_| Yaks::Resource.new}
-
-      mapper.config.associations[0..-1] = [association]
-      mapper.call(instance)
-
-      expect(association).to have_received.add_to_resource(any(Yaks::Resource), mapper, yaks_context)
-    end
+  describe '#map_controls' do
+    let(:object) { fake('Control') }
+    before { mapper.config(mapper.config.append_to(:controls, object)) }
+    it_should_behave_like 'something that can be added to a resource'
   end
 
   describe '#mapper_stack' do

@@ -70,11 +70,24 @@ RSpec.describe Yaks::Mapper::HasMany do
 
   describe '#collection_mapper' do
     let(:collection_mapper) { Yaks::Undefined }
+
     subject(:has_many)  { described_class.new(name: :name, item_mapper: :mapper, rel: :rel, collection_mapper: collection_mapper) }
 
     context 'when the collection mapper is undefined' do
       it 'should derive one from collection and policy' do
         expect(has_many.collection_mapper([], Yaks::DefaultPolicy.new)).to equal Yaks::CollectionMapper
+      end
+
+      it 'should return nil if no policy is given' do
+        expect(has_many.collection_mapper([])).to be_nil
+      end
+
+      it 'should return nil if no collection is given' do
+        expect(has_many.collection_mapper(nil, Yaks::DefaultPolicy.new)).to be_nil
+      end
+
+      it 'should return nil if no params are given' do
+        expect(has_many.collection_mapper).to be_nil
       end
     end
 

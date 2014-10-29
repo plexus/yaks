@@ -1,8 +1,8 @@
 module Yaks
   class Mapper
     class Association
-      include Anima.new(:name, :item_mapper, :rel, :href, :link_if),
-              AttributeDefaults.new(
+      include Attributes.new(
+                name:        Undefined,
                 item_mapper: Undefined,
                 rel:         Undefined,
                 href:        Undefined,

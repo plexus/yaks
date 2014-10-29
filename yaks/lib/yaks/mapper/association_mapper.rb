@@ -25,7 +25,7 @@ module Yaks
       end
 
       def add_link(resource)
-        Link.new(rel, association.href, {})
+        Link.create(rel, association.href)
           .add_to_resource(resource, parent_mapper, nil)
         # Yaks::Mapper::Link doesn't do anything with the context, making it
         # hard to test that we pass it a context. Passing nil for now, until

@@ -66,8 +66,8 @@ RSpec.describe Yaks::Mapper::Config do
       }
 
       it 'should have the links in the link list' do
-        expect(config.links).to include Yaks::Mapper::Link.new(:profile, '/profile/foo', {})
-        expect(config.links).to include Yaks::Mapper::Link.new(:self, '/foo/bar/{id}', {})
+        expect(config.links).to include Yaks::Mapper::Link.new(rel: :profile, template: '/profile/foo')
+        expect(config.links).to include Yaks::Mapper::Link.new(rel: :self, template: '/foo/bar/{id}')
       end
     end
 
@@ -80,8 +80,8 @@ RSpec.describe Yaks::Mapper::Config do
 
       it 'should have the links in the defined order' do
         expect(config.links).to eql [
-          Yaks::Mapper::Link.new(:self, '/foo/self', {}),
-          Yaks::Mapper::Link.new(:self, '/foo/me', {})
+          Yaks::Mapper::Link.new(rel: :self, template: '/foo/self'),
+          Yaks::Mapper::Link.new(rel: :self, template: '/foo/me')
         ]
       end
     end

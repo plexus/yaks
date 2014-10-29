@@ -53,25 +53,7 @@ RSpec.describe Yaks::CollectionResource do
     }
     its(:collection_rel) { should eq 'http://api.example.org/rels/orders'}
 
-    its(:subresources) { should eql(
-        'http://api.example.org/rels/orders' => Yaks::CollectionResource.new(
-          type: 'order',
-          attributes: { total: 10.00 },
-          links: [
-            Yaks::Resource::Link.new(rel: 'http://rels/summary', uri: 'http://order/10/summary'),
-            Yaks::Resource::Link.new(rel: :profile, uri: 'http://rels/collection')
-          ],
-          members: [
-            Yaks::Resource.new(
-              type: 'order',
-              links: [Yaks::Resource::Link.new(rel: :self, uri: 'http://order/10')],
-              attributes: { customer: 'John Doe', price: 10.00 }
-            )
-          ],
-          collection_rel: 'http://api.example.org/rels/orders'
-        )
-      )
-    }
+    its(:subresources) { should eql({}) }
 
   end
 end

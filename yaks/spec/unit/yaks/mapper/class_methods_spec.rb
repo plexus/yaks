@@ -4,6 +4,7 @@ RSpec.describe Yaks::Mapper::ClassMethods do
   subject(:mapper_class) do
     Class.new do
       extend Yaks::Mapper::ClassMethods
+      config Yaks::Mapper::Config.new
       attributes :foo, :bar
       link :some_rel, 'http://some_link'
       has_one :thing
@@ -53,7 +54,7 @@ RSpec.describe Yaks::Mapper::ClassMethods do
 
   it 'should register links' do
     expect(mapper_class.config.links).to eq [
-      Yaks::Mapper::Link.new(:some_rel, 'http://some_link', {})
+      Yaks::Mapper::Link.new(rel: :some_rel, template: 'http://some_link')
     ]
   end
 
@@ -62,6 +63,21 @@ RSpec.describe Yaks::Mapper::ClassMethods do
       Yaks::Mapper::HasOne.new(name: :thing),
       Yaks::Mapper::HasMany.new(name: :thingies)
     ]
+  end
+
+  describe '#config' do
+    it 'should allow getting the config' do
+      expect(subject.config).to be_a Yaks::Mapper::Config
+    end
+
+    it 'should allow setting the config' do
+      subject.config(:foo)
+      expect(subject.config).to be :foo
+    end
+
+    it 'raise an exception when the config is nil' do
+      expect { subject.config(nil) }.to raise_exception
+    end
   end
 
 end

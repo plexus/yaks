@@ -38,4 +38,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'mutant'
   gem.add_development_dependency 'rspec-its'
   gem.add_development_dependency 'benchmark-ips'
+  gem.add_development_dependency 'yaks-html'
 end

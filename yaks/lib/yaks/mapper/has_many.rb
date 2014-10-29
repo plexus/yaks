@@ -2,8 +2,7 @@ module Yaks
   class Mapper
     class HasMany < Association
       include Util,
-              anima.add(:collection_mapper),
-              attribute_defaults.add(collection_mapper: Undefined)
+              attributes.add(collection_mapper: Undefined)
 
       def map_resource(collection, context)
         return NullResource.new(collection: true) if collection.nil?

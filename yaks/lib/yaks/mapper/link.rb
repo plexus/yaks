@@ -25,13 +25,13 @@ module Yaks
     #   it will receive the mapper instance as argument. Otherwise it is evaluated in the mapper context
     class Link
       extend Forwardable
-      include Concord.new(:rel, :template, :options)
+      include Attributes.new(:rel, :template, options: {})
       include Util
 
       def_delegators :uri_template, :expand_partial
 
       def self.create(rel, template, options = {})
-        new(rel, template, options)
+        new(rel: rel, template: template, options: options)
       end
 
       def add_to_resource(resource, mapper, _context)

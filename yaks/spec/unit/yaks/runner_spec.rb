@@ -69,13 +69,13 @@ RSpec.describe Yaks::Runner do
     end
 
     it 'should pick the one given in the options if no header matches' do
-      rack_env = { 'HTTP_ACCEPT' => 'text/html, application/json' }
+      rack_env = { 'HTTP_ACCEPT' => 'text/xml, application/json' }
       runner = described_class.new(object: nil, config: config, options: { format: :hal, env: rack_env })
       expect(runner.format_class).to equal Yaks::Format::Hal
     end
 
     it 'should fall back to the default when no mime type is recognized' do
-      rack_env = { 'HTTP_ACCEPT' => 'text/html, application/json' }
+      rack_env = { 'HTTP_ACCEPT' => 'text/xml, application/json' }
       runner = described_class.new(object: nil, config: config, options: { env: rack_env })
       expect(runner.format_class).to equal Yaks::Format::CollectionJson
     end
@@ -249,6 +249,26 @@ RSpec.describe Yaks::Runner do
 
       it 'should insert hooks' do
         expect(runner.steps.map(&:first)).to eql [:map, :format, :my_hook, :primitivize, :serialize]
+      end
+    end
+  end
+
+  describe '#primitivizer' do
+    describe 'with a non json based format' do
+      let(:config) do
+        Yaks::Config.new do
+          default_format :html
+        end
+      end
+
+      it 'should return the identity function' do
+        expect(runner.primitivizer.call(:foo)).to eql :foo
+      end
+    end
+
+    describe 'with a json based format' do
+      it 'should return the primitivizer' do
+        expect(runner.primitivizer.call(:foo)).to eql "foo"
       end
     end
   end

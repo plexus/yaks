@@ -3,9 +3,22 @@
 module Yaks
   class Mapper
     module ClassMethods
-      include Forwardable
-      include Util
-      include FP
+      include Forwardable,
+              Util,
+              FP
+
+      def config(value = Undefined)
+        if value.equal? Undefined
+          @config
+        else
+          raise if value.nil?
+          @config = value
+        end
+      end
+
+      def inherited(child)
+        child.config(config)
+      end
 
       CONFIG_METHODS = [
         :type,
@@ -13,22 +26,17 @@ module Yaks
         :link,
         :profile,
         :has_one,
-        :has_many
+        :has_many,
+        :control
       ]
 
-      def config
-        @config ||= Config.new
-        @config = yield(@config) if block_given?
-        @config
-      end
-
-      def inherited(child)
-        child.config { @config }
-      end
-
       CONFIG_METHODS.each do |method_name|
-        define_method method_name do |*args|
-          config &send_with_args(method_name, *args)
+        define_method method_name do |*args, &block|
+          if args.empty?
+            config.public_send(method_name, *args, &block)
+          else
+            config(config.public_send(method_name, *args, &block))
+          end
         end
       end
 
