@@ -11,7 +11,7 @@ module Yaks
       mappings.each do |pattern, block|
         return instance_exec(object, &block) if pattern === object
       end
-      raise "don't know how to turn #{object.class} (#{object.inspect}) into a primitive"
+      raise PrimitivizeError, "don't know how to turn #{object.class} (#{object.inspect}) into a primitive"
     end
 
     def map(*types, &blk)

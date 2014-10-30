@@ -28,6 +28,14 @@ module Yaks
       false
     end
 
+    def collection_rel
+      raise UnsupportedOperationError, "Only Yaks::CollectionResource has a collection_rel"
+    end
+
+    def members
+      raise UnsupportedOperationError, "Only Yaks::CollectionResource has members"
+    end
+
     def update_attributes(new_attrs)
       update(attributes: @attributes.merge(new_attrs))
     end

@@ -29,4 +29,28 @@ RSpec.describe Yaks::NullResource do
     subject(:null_resource) { described_class.new( collection: true ) }
     its(:collection?) { should be true }
   end
+
+  it 'should not allow updating attributes' do
+    expect { null_resource.update_attributes({}) }.to raise_error(
+      Yaks::UnsupportedOperationError, "Operation update_attributes not supported on Yaks::NullResource"
+    )
+  end
+
+  it 'should not allow adding links' do
+    expect { null_resource.add_link(nil) }.to raise_error(
+      Yaks::UnsupportedOperationError, "Operation add_link not supported on Yaks::NullResource"
+    )
+  end
+
+  it 'should not allow adding controls' do
+    expect { null_resource.add_control(nil) }.to raise_error(
+      Yaks::UnsupportedOperationError, "Operation add_control not supported on Yaks::NullResource"
+    )
+  end
+
+  it 'should not allow adding subresources' do
+    expect { null_resource.add_subresource(nil, nil) }.to raise_error(
+      Yaks::UnsupportedOperationError, "Operation add_subresource not supported on Yaks::NullResource"
+    )
+  end
 end

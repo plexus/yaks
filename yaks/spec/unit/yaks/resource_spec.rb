@@ -112,4 +112,21 @@ RSpec.describe Yaks::Resource do
         .to eq Yaks::Resource.new(controls: [:a_control])
     end
   end
+
+  describe '#collection_rel' do
+    it 'should raise unsupported operation error' do
+      expect { resource.collection_rel }.to raise_error(
+        Yaks::UnsupportedOperationError, "Only Yaks::CollectionResource has a collection_rel"
+      )
+    end
+  end
+
+  describe '#members' do
+    it 'should raise unsupported operation error' do
+      expect { resource.members }.to raise_error(
+        Yaks::UnsupportedOperationError, "Only Yaks::CollectionResource has members"
+      )
+    end
+  end
+
 end

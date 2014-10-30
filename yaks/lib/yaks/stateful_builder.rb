@@ -31,7 +31,7 @@ module Yaks
     def validate_state(method_name, args)
       unless @state.instance_of?(@klass)
         ::Kernel.raise(
-          IllegalState,
+          IllegalStateError,
           "#{@klass}##{method_name}(#{args.map(&:inspect).join(', ')}) "\
           "returned #{@state.inspect}. Expected instance of #{@klass}"
         )

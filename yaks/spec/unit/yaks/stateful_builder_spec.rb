@@ -35,7 +35,7 @@ RSpec.describe Yaks::StatefulBuilder do
 
   describe 'kind_of?' do
     it 'should test if the returned thing is of the right type' do
-      expect { subject.create(3, 4) { wrong_type(1,'2') }}.to raise_exception Yaks::IllegalState, 'Buildable#wrong_type(1, "2") returned "foo 1 2". Expected instance of Buildable'
+      expect { subject.create(3, 4) { wrong_type(1,'2') }}.to raise_exception Yaks::IllegalStateError, 'Buildable#wrong_type(1, "2") returned "foo 1 2". Expected instance of Buildable'
     end
   end
 end

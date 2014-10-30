@@ -12,7 +12,7 @@ module Yaks
 
       def add_to_resource(resource, _parent_mapper, _context)
         resource.add_control(
-          ::Yaks::Resource::Control.new(to_h.merge(fields: fields.map(&:to_resource_control_field)))
+          Resource::Control.new(to_h.merge(fields: fields.map(&:to_resource_control_field)))
         )
       end
 
@@ -20,7 +20,7 @@ module Yaks
         include Attributes.new(:name, label: nil, type: "text", value: nil)
 
         def self.create(*args)
-          attrs = args.last.is_a?(Hash) ? args.pop : {}
+          attrs = args.last.instance_of?(Hash) ? args.pop : {}
           if name = args.shift
             attrs = attrs.merge(name: name)
           end
@@ -28,7 +28,7 @@ module Yaks
         end
 
         def to_resource_control_field
-          Yaks::Resource::Control::Field.new(to_h)
+          Resource::Control::Field.new(to_h)
         end
       end
 
