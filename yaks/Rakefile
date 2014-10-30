@@ -13,7 +13,7 @@ task :mutant_chunked do
    Yaks::Config::DSL,
    Yaks::Configurable,
    Yaks::Configurable::ClassMethods,
-   Yaks::DSLBuilder,
+   Yaks::StatefulBuilder,
    Yaks::DefaultPolicy,
    Yaks::FP,
    Yaks::FP::Callable,
