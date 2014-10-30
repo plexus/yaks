@@ -1,5 +1,15 @@
 ### Development
-[full changelog](http://github.com/plexus/yaks/compare/v0.6.0...master)
+[full changelog](http://github.com/plexus/yaks/compare/v0.6.1...master)
+
+### 0.6.1
+
+Make sure Resource, NullResource, and CollectionResource have
+identical public APIs.
+
+Create a base Yaks::Error class, and derived classes for specific
+error categories. This should make it easier to handle errors
+originating in Yaks. Note that not all code makes use of these yet, so
+you might still get a StandardError in some cases.
 
 ### 0.6.0
 
