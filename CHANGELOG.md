@@ -1,5 +1,5 @@
 ### Development
-[full changelog](http://github.com/plexus/yaks/compare/v0.5.0...master)
+[full changelog](http://github.com/plexus/yaks/compare/v0.6.0...master)
 
 ### 0.6.0
 
