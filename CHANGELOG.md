@@ -1,9 +1,45 @@
 ### Development
 [full changelog](http://github.com/plexus/yaks/compare/v0.5.0...master)
 
+### 0.6.0
+
+v0.6.0 saw some big internal overhaul to make things cleaner and more consitent. It also introduced some new features.
+
+#### Form controls
+
+We already had templated links which form a limited way of generating
+parameterized requests. Form controls are more like full HTML forms,
+e.g.
+
+``` ruby
+class UserMapper < Yaks::Mapper
+  control :create do
+    href         "/foo"
+    method       "POST"
+    content_type "application/x-www-form-urlencoded"
+
+    field :first_name, label: "First name"
+    field :last_name,  label: "Last name"
+  end
+end
+```
+
+These are also called actions in some formats. At the moment only one
+format renders these, a new format called HALO which is en extension
+of HAL, loosely based on an example by Mike Kelly on how HAL could be
+extended for this purpose.
+
+#### Introduce a HTML output format
+
+Provided as a separate gem, `yaks-html` allows Yaks to generate a
+version of your API that can be browsed from any web browser. This is
+still very rough around the edges.
+
 ### 0.5.0
 
-* Yaks now serializes (returns a string), instead of returning a data structure. This is a preparatory step for supporting non-JSON formats. To get the old behavior back, do this
+* Yaks now serializes (returns a string), instead of returning a data
+  structure. This is a preparatory step for supporting non-JSON
+  formats. To get the old behavior back, do this
 
 ``` ruby
 yaks = Yaks.new do
