@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Yaks::DSLBuilder do
+RSpec.describe Yaks::StatefulBuilder do
   class Buildable
     include Yaks::Attributes.new(:foo, :bar)
 
@@ -11,9 +11,14 @@ RSpec.describe Yaks::DSLBuilder do
     def finalize
       update(foo: 7, bar: 8)
     end
+
+    def wrong_type(x, y)
+      "foo #{x} #{y}"
+    end
+
   end
 
-  subject { Yaks::DSLBuilder.new(Buildable) }
+  subject { Yaks::StatefulBuilder.new(Buildable, [:foo, :bar, :update, :finalize, :wrong_type]) }
 
   it 'should keep state' do
     expect(
@@ -26,5 +31,11 @@ RSpec.describe Yaks::DSLBuilder do
 
   it 'should unwrap again' do
     expect( subject.create(3, 4) { finalize } ).to eql Buildable.new(foo: 7, bar: 8)
+  end
+
+  describe 'kind_of?' do
+    it 'should test if the returned thing is of the right type' do
+      expect { subject.create(3, 4) { wrong_type(1,'2') }}.to raise_exception Yaks::IllegalState, 'Buildable#wrong_type(1, "2") returned "foo 1 2". Expected instance of Buildable'
+    end
   end
 end

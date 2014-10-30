@@ -21,7 +21,9 @@ module Yaks
       config_method :has_many,  create: HasMany,                 append_to: :associations
       config_method :attribute, create: Attribute,               append_to: :attributes
       config_method :attribute, create: Attribute,               append_to: :attributes
-      config_method :control,   create: DSLBuilder.new(Control), append_to: :controls
+      config_method :control,
+                    create: StatefulBuilder.new(Control, Control.anima.attribute_names + [:field]),
+                    append_to: :controls
     end
   end
 end
