@@ -13,7 +13,8 @@ you might still get a StandardError in some cases.
 
 ### 0.6.0
 
-v0.6.0 saw some big internal overhaul to make things cleaner and more consitent. It also introduced some new features.
+v0.6.0 saw some big internal overhaul to make things cleaner and more
+consistent. It also introduced some new features.
 
 #### Form controls
 

@@ -1,14 +1,28 @@
 # Identifiers
 
-In Yaks, and Hypermedia message formats in general, a number of different types of identifiers are used. Some are full URIs and correspond with well defined specs. Some are just short identifers that are easy to program with.
+In Yaks, and Hypermedia message formats in general, a number of
+different types of identifiers are used. Some are full URIs and
+correspond with well defined specs. Some are just short identifers
+that are easy to program with.
 
-Understanding these types of identifiers is key to creating a unifying model of a "Resource" that can be shared across output formats. We want to unify as much as possible across formats, without conflating things that are really not the same.
+Understanding these types of identifiers is key to creating a unifying
+model of a "Resource" that can be shared across output formats. We
+want to unify as much as possible across formats, without conflating
+things that are really not the same.
 
-This document reflects my current limited understanding of things, based on possibly incorrect assumptions. Feedback is more than welcome.
+This document reflects my current limited understanding of things,
+based on possibly incorrect assumptions. Feedback is more than
+welcome.
 
 ## rels
 
-As used in HTML and Atom, these identifiers say what the relationship is between a resource and another resource it links to. There is a [registry of names](http://www.iana.org/assignments/link-relations/link-relations.xhtml), e.g. self, next, profile, stylesheet. Custom rels need to be fully qualified URLs. Keep in mind that these are simply opaque identifiers, but by using a known protocol like http they can be used to point at documentation.
+As used in HTML and Atom, these identifiers say what the relationship
+is between a resource and another resource it links to. There is a
+[registry of names](http://www.iana.org/assignments/link-relations/link-relations.xhtml),
+e.g. self, next, profile, stylesheet. Custom rels need to be fully
+qualified URLs. Keep in mind that these are simply opaque identifiers,
+but by using a known protocol like http they can be used to point at
+documentation.
 
 Some examples
 
