@@ -27,7 +27,9 @@ module Yaks
           .replace('.type') { |header| header.content(resource.type.to_s + (resource.collection? ? ' collection' : '')) }
           .replace('.attribute', &render_attributes(resource.attributes))
           .replace('.link', &render_links(resource.links))
-          .replace('.subresources') {|table| resource.subresources.empty? ? [] : render_subresources(resource.subresources, templ).call(table) }
+          .replace('.links') {|links| resource.links.empty? ? [] : render_links(resource.links).call(links) }
+          .replace('.controls') {|div| render_controls(resource.controls).call(div) }
+          .replace('.subresource') {|table| resource.subresources.empty? ? [] : render_subresources(resource.subresources, templ).call(table) }
       end
 
       def render_attributes(attributes)
@@ -65,6 +67,35 @@ module Yaks
         end
       end
 
+
+      def render_controls(controls)
+        ->(div) do
+          div.content(
+            controls.map(&method(:render_control))
+          )
+        end
+      end
+
+      def render_control(control)
+        form = H[:form]
+        form = form.attr('name', control.name)          if control.name
+        form = form.attr('method', control.method)      if control.method
+        form = form.attr('action', control.href)        if control.href
+        form = form.attr('enctype', control.media_type) if control.media_type
+
+        rows = control.fields.map do |field|
+          H[:tr,
+            H[:td, H[:label, {for: field.name}, field.label || '']],
+            H[:td, case field.type
+                   when /\A(button|checkbox|file|hidden|image|password|radio|reset|submit|text)\z/
+                     H[:input, type: field.type, value: field.value, name: field.name]
+                   when /textarea/
+                     H[:textarea, { name: field.name },  field.value || '']
+                   end]
+           ]
+        end
+        form.content(H[:table, control.title || '', *rows, H[:tr, H[:td, H[:input, {type: 'submit'}]]]])
+      end
     end
   end
 end

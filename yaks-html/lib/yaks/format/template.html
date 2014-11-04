@@ -4,21 +4,40 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <style type="text/css">
+      body {
+        background-color: #F9CDAD;
+      }
+
       .resource {
-        border: 1px solid black;
-        padding: 0.3em;
+        border: 1px solid #83AF9B;
+      border-radius: 8px;
+      margin: 0.3em;
       }
 
       h1,h2,h3,h4,h5 {
-        background-color: #090
+        background-color: #FE4365;
+        margin-top: 0;
+        margin-bottom: 0.2em;
+        border-radius: 8px;
       }
 
-      table {
-        width:99%;
+      th { background-color: #FC9D9A; }
+      td { background-color: #C8C8A9; }
+
+      .subresource {
+        border: 1px solid #83AF9B;
+        border-radius: 8px;
         margin: 0.5em;
+        margin-left: 1em;
       }
 
-      th{ background-color: #fee; }
+      .subresource .rel {
+        background-color: #83AF9B;
+      border-radius: 8px;
+      padding: 0.5em;
+      margin-bottom: 0.5em;
+
+      }
 
     </style>
   </head>
@@ -26,12 +45,12 @@
     <div class="resource">
       <h1 class="type">Resource Type</h1>
 
-      <table border="1" class="attributes">
-        <tr><th>Attribute</th><th>Value</th></tr>
+      <table class="attributes">
         <tr class="attribute"><td class="name">name</td><td class="value">value</td></tr>
       </table>
 
-      <table border="1" class="links">
+      <table class="links">
+        Links:
         <tr>
           <th>Rel</th>
           <th>URI</th>
@@ -47,10 +66,14 @@
         </tr>
       </table>
 
-      <table border="1" class="subresources">
-        <tr><th>Rel</th><th>Subresource</th></tr>
-        <tr class="subresource"><td class="rel"><a>rel</a></td><td class="value">value</td></tr>
-      </table>
+      <div class="subresource">
+        <div class="rel"><a></a></div>
+        <div class="value"></div>
+      </div>
+
+      <div class="controls"></div>
     </div>
+
+
   </body>
 </html>
