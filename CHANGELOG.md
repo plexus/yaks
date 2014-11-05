@@ -1,6 +1,10 @@
 ### Development
 [full changelog](http://github.com/plexus/yaks/compare/v0.6.1...master)
 
+### 0.6.2
+
+Improvements to yaks-html: render form controls, make output prettier.
+
 ### 0.6.1
 
 Make sure Resource, NullResource, and CollectionResource have
