@@ -26,10 +26,9 @@ module Yaks
         templ
           .replace('.type') { |header| header.content(resource.type.to_s + (resource.collection? ? ' collection' : '')) }
           .replace('.attribute', &render_attributes(resource.attributes))
-          .replace('.link', &render_links(resource.links))
-          .replace('.links') {|links| resource.links.empty? ? [] : render_links(resource.links).call(links) }
+          .replace('.links') {|links| resource.links.empty? ? [] : links.replace('.link', &render_links(resource.links)) }
           .replace('.controls') {|div| render_controls(resource.controls).call(div) }
-          .replace('.subresource') {|table| resource.subresources.empty? ? [] : render_subresources(resource.subresources, templ).call(table) }
+          .replace('.subresource') {|sub_templ| render_subresources(resource, templ, sub_templ) }
       end
 
       def render_attributes(attributes)
@@ -54,16 +53,18 @@ module Yaks
         end
       end
 
-      def render_subresources(subresources, templ)
+      def render_subresources(resource, templ, sub_templ)
         templ = templ.replace('h1,h2,h3,h4') {|h| h.set_tag("h#{h.tag[/\d/].to_i.next}") }
-        ->(wrap) do
-          wrap.replace('.subresource') { |row|
-            subresources.map do |rel, resources|
-              row
-                .replace('.rel a') {|a| a.attr('href', rel.to_s).content(rel.to_s) }
-                .replace('.value') {|x| x.content(resources.map { |resource| render_resource(resource, templ) })}
-            end
-          }
+        if resource.collection?
+          resource.map do |r|
+            render_resource(r, templ)
+          end
+        else
+          resource.subresources.map do |rel, resources|
+            sub_templ
+              .replace('.rel a') {|a| a.attr('href', rel.to_s).content(rel.to_s) }
+              .replace('.value') {|x| x.content(resources.map { |resource| render_resource(resource, templ) })}
+          end
         end
       end
 
