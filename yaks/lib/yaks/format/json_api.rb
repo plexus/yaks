@@ -10,10 +10,10 @@ module Yaks
       # @param [Yaks::Resource] resource
       # @return [Hash]
       def call(resource)
-        main_collection = resource.map(&method(:serialize_resource))
+        main_collection = resource.seq.map(&method(:serialize_resource))
 
         { pluralize(resource.type) => main_collection }.tap do |serialized|
-          linked = resource.each_with_object({}) do |res, hsh|
+          linked = resource.seq.each_with_object({}) do |res, hsh|
             serialize_linked_subresources(res.subresources, hsh)
           end
           serialized.merge!(linked: linked) unless linked.empty?
@@ -39,8 +39,8 @@ module Yaks
       # @param [Yaks::Resource] subresource
       # @return [Hash]
       def serialize_links(subresources)
-        subresources.each_with_object({}) do |(_name, resource), hsh|
-          next if resource.instance_of? NullResource
+        subresources.each_with_object({}) do |resource, hsh|
+          next if resource.null_resource?
           key = resource.collection? ? pluralize(resource.type) : resource.type
           hsh[key] = serialize_link(resource)
         end
@@ -56,7 +56,7 @@ module Yaks
       # @param [Hash] hsh
       # @return [Hash]
       def serialize_linked_subresources(subresources, hsh)
-        subresources.values.each do |resources|
+        subresources.each do |resources|
           serialize_linked_resources(resources, hsh)
         end
       end
@@ -64,8 +64,8 @@ module Yaks
       # @param [Array] resources
       # @param [Hash] linked
       # @return [Hash]
-      def serialize_linked_resources(resources, linked)
-        resources.each_with_object(linked) do |resource, memo|
+      def serialize_linked_resources(subresource, linked)
+        subresource.seq.each_with_object(linked) do |resource, memo|
           serialize_subresource(resource, memo)
         end
       end

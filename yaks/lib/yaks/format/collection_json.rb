@@ -19,7 +19,7 @@ module Yaks
       # @param [Yaks::Resource] resource
       # @return [Array]
       def serialize_items(resource)
-        resource.map do |item|
+        resource.seq.map do |item|
           attrs = item.attributes.map do |name, value|
             {
               name: name,

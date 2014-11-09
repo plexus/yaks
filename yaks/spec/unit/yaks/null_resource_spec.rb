@@ -3,9 +3,9 @@ require 'spec_helper'
 RSpec.describe Yaks::NullResource do
   subject(:null_resource) { described_class.new }
 
-  its(:attributes)     { should eq Hash[] }
+  its(:attributes)     { should eq({}) }
   its(:links)          { should eq [] }
-  its(:subresources)   { should eq Hash[] }
+  its(:subresources)   { should eq [] }
   its(:collection?)    { should be false }
   its(:null_resource?) { should be true }
 
@@ -49,7 +49,7 @@ RSpec.describe Yaks::NullResource do
   end
 
   it 'should not allow adding subresources' do
-    expect { null_resource.add_subresource(nil, nil) }.to raise_error(
+    expect { null_resource.add_subresource(nil) }.to raise_error(
       Yaks::UnsupportedOperationError, "Operation add_subresource not supported on Yaks::NullResource"
     )
   end

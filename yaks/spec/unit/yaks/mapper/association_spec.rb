@@ -19,14 +19,14 @@ RSpec.describe Yaks::Mapper::Association do
   let(:href)              { Yaks::Undefined }
   let(:link_if)           { Yaks::Undefined }
 
-  its(:name)         { should equal :shoes }
+  its(:name)        { should equal :shoes }
   its(:item_mapper) { should equal Yaks::Mapper }
 
   context 'with a minimal constructor' do
     subject(:association) { described_class.new(name: :foo) }
 
     its(:name)         { should be :foo }
-    its(:item_mapper) { should be Yaks::Undefined }
+    its(:item_mapper)  { should be Yaks::Undefined }
     its(:rel)          { should be Yaks::Undefined }
     its(:href)         { should be Yaks::Undefined }
     its(:link_if)      { should be Yaks::Undefined }
@@ -38,12 +38,14 @@ RSpec.describe Yaks::Mapper::Association do
   describe '#add_to_resource' do
     let(:object) { fake(:shoes => []) }
     let(:rel)    { 'rel:shoes' }
+
     before do
       parent_mapper.call(object)
+      stub(association).map_resource(any_args) { Yaks::Resource.new }
     end
 
     it 'should delegate to AssociationMapper' do
-      expect(association.add_to_resource(Yaks::Resource.new, parent_mapper, yaks_context)).to eql Yaks::Resource.new(subresources: {'rel:shoes' => nil} )
+      expect(association.add_to_resource(Yaks::Resource.new, parent_mapper, yaks_context)).to eql Yaks::Resource.new(subresources: [Yaks::Resource.new(rels: ['rel:shoes'])])
     end
   end
 

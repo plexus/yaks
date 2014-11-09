@@ -34,8 +34,8 @@ module Yaks
 
       def add_subresource(resource)
         object      = parent_mapper.load_association(association.name)
-        subresource = association.map_resource(object, context)
-        resource.add_subresource(rel, subresource)
+        subresource = association.map_resource(object, context).add_rel(rel)
+        resource.add_subresource(subresource)
       end
     end
   end

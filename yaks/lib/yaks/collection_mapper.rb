@@ -16,7 +16,9 @@ module Yaks
         end
       }
 
-      attrs[ :collection_rel ] = collection_rel
+      if context[:mapper_stack].empty?
+        attrs[:rels] = [collection_rel]
+      end
 
       map_attributes(
         map_links(

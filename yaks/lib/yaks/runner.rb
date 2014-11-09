@@ -5,7 +5,7 @@ module Yaks
     include Adamantium::Flat
     extend Forwardable
 
-    def_delegators :config, :policy, :default_format, :format_options, :primitivize, :serializers, :hooks
+    def_delegators :config, :policy, :default_format, :format_options, :primitivize, :serializers
 
     def call
       steps.inject(object) {|memo, (_, step)| step.call(memo) }
@@ -76,6 +76,10 @@ module Yaks
       serializers.fetch(format_class.serializer)
     end
     memoize :serializer
+
+    def hooks
+      config.hooks + options.fetch(:hooks, [])
+    end
 
     def insert_hooks(steps)
       hooks.inject(steps) do |steps, (type, target_step, name, hook)|

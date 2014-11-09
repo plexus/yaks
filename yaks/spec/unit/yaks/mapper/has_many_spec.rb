@@ -28,22 +28,22 @@ RSpec.describe Yaks::Mapper::HasMany do
   }
 
   it 'should map the subresources' do
-    expect(closet_mapper.call(closet).subresources).to eql(
-      "http://foo/shoes" => Yaks::CollectionResource.new(
+    expect(closet_mapper.call(closet).subresources).to eql([
+      Yaks::CollectionResource.new(
         type: 'shoe',
         members: [
           Yaks::Resource.new(type: 'shoe', attributes: {:size => 9, :color => :blue}),
           Yaks::Resource.new(type: 'shoe', attributes: {:size => 11.5, :color => :red})
         ],
-        collection_rel: 'rel:shoes'
+        rels: ['http://foo/shoes']
       )
-    )
+    ])
   end
 
   it 'should map nil to a NullResource collection' do
-    expect(closet_mapper.call(fake(shoes: nil)).subresources).to eql(
-      'http://foo/shoes' => Yaks::NullResource.new(collection: true)
-    )
+    expect(closet_mapper.call(fake(shoes: nil)).subresources).to eql([
+      Yaks::NullResource.new(collection: true, rels: ['http://foo/shoes'])
+    ])
   end
 
   context 'without an explicit mapper' do

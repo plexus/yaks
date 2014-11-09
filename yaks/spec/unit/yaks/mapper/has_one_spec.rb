@@ -40,9 +40,9 @@ RSpec.describe Yaks::Mapper::HasOne do
     it 'should derive one based on policy' do
       expect(subresource).to eql(
         Yaks::Resource.new(
-          subresources: {
-            'http://rel' => Yaks::Resource.new(type: 'author', attributes: {name: name})
-          }
+          subresources: [
+            Yaks::Resource.new(type: 'author', attributes: {name: name}, rels: ['http://rel'])
+          ]
         )
       )
     end

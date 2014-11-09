@@ -39,16 +39,14 @@ RSpec.describe Yaks::Mapper::AssociationMapper do
         stub(association).render_as_link?(parent_mapper) { false }
         stub(association).map_rel(policy) { 'rels:the_rel' }
         stub(association).name { :the_name }
-        stub(association).map_resource(:the_object, association_mapper.context) { :the_resource }
+        stub(association).map_resource(:the_object, association_mapper.context) { Yaks::Resource.new }
 
         stub(parent_mapper).load_association(:the_name) { :the_object }
       end
 
-      it 'should render a link' do
+      it 'should render a subresource' do
         expect(association_mapper.call(Yaks::Resource.new)).to eql Yaks::Resource.new(
-          subresources: {
-            'rels:the_rel' => :the_resource
-          }
+          subresources: [ Yaks::Resource.new(rels: ['rels:the_rel']) ]
         )
       end
 

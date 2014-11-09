@@ -1,10 +1,13 @@
 module Yaks
   class NullResource < Resource
-    include Equalizer.new(:collection?)
+    include attributes.add(collection: false),
+            Equalizer.new(:rels, :collection)
 
     def initialize(opts = {})
-      super()
-      @collection = opts.fetch(:collection) { false }
+      _opts = {}
+      _opts[:rels]       = opts[:rels]       if opts.key?(:rels)
+      _opts[:collection] = opts[:collection] if opts.key?(:collection)
+      super(_opts)
     end
 
     def each
@@ -19,6 +22,15 @@ module Yaks
       true
     end
 
+    def seq
+      []
+    end
+
+    def map
+      return [] if collection?
+      raise UnsupportedOperationError, "Operation #{__method__} not supported on #{self.class}"
+    end
+
     def update_attributes(_new_attrs)
       raise UnsupportedOperationError, "Operation #{__method__} not supported on #{self.class}"
     end
@@ -31,7 +43,7 @@ module Yaks
       raise UnsupportedOperationError, "Operation #{__method__} not supported on #{self.class}"
     end
 
-    def add_subresource(_rel, _subresource)
+    def add_subresource(_subresource)
       raise UnsupportedOperationError, "Operation #{__method__} not supported on #{self.class}"
     end
   end

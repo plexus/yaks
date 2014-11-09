@@ -10,7 +10,7 @@ RSpec.describe Yaks::Resource do
     its(:type)           { should be_nil }
     its(:attributes)     { should eql({}) }
     its(:links)          { should eql [] }
-    its(:subresources)   { should eql({}) }
+    its(:subresources)   { should eql [] }
     its(:self_link)      { should be_nil }
     its(:null_resource?) { should be false }
     its(:collection?)    { should be false }
@@ -48,17 +48,16 @@ RSpec.describe Yaks::Resource do
   end
 
   context 'with subresources' do
-    let(:init_opts) { { subresources: { 'comments' => [Yaks::Resource.new(type: 'comment')] } } }
-    its(:subresources) { should eql 'comments' => [Yaks::Resource.new(type: 'comment')]  }
+    let(:init_opts) { { subresources: [ Yaks::Resource.new(type: 'comment', rels: ['comments']) ] } }
+    its(:subresources) { should eql [Yaks::Resource.new(type: 'comment', rels: ['comments'])]  }
 
-    it 'should return an enumerator for #each' do
-      expect(resource.each.with_index.to_a).to eq  [ [resource, 0] ]
+    it 'should return an enumerable for #seq' do
+      expect(resource.seq.each.with_index.to_a).to eq  [ [resource, 0] ]
     end
   end
 
-
   it 'should act as a collection of one' do
-    expect(resource.each.to_a).to eql [resource]
+    expect(resource.seq.each.to_a).to eql [resource]
   end
 
   describe 'persistent updates' do
@@ -66,7 +65,7 @@ RSpec.describe Yaks::Resource do
       Yaks::Resource.new(
         attributes: {x: :y},
         links: [:one],
-        subresources: {foo_rel: :subres}
+        subresources: [ :subres ]
       )
     }
 
@@ -75,18 +74,18 @@ RSpec.describe Yaks::Resource do
         resource
           .update_attributes(foo: :bar)
           .add_link(:a_link)
-          .add_subresource(:rel, :a_subresource)
+          .add_subresource(:a_subresource)
           .update_attributes(foo: :baz)
       ).to eq Yaks::Resource.new(
         attributes: {x: :y, foo: :baz},
         links: [:one, :a_link],
-        subresources: {foo_rel: :subres, rel: :a_subresource}
+        subresources: [:subres, :a_subresource]
       )
 
       expect(resource).to eq Yaks::Resource.new(
         attributes: {x: :y},
         links: [:one],
-        subresources: {foo_rel: :subres}
+        subresources: [:subres]
       )
     end
   end
@@ -110,14 +109,6 @@ RSpec.describe Yaks::Resource do
     it 'should append to the controls' do
       expect(resource.add_control(:a_control))
         .to eq Yaks::Resource.new(controls: [:a_control])
-    end
-  end
-
-  describe '#collection_rel' do
-    it 'should raise unsupported operation error' do
-      expect { resource.collection_rel }.to raise_error(
-        Yaks::UnsupportedOperationError, "Only Yaks::CollectionResource has a collection_rel"
-      )
     end
   end
 

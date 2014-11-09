@@ -40,7 +40,7 @@ module Yaks
 
         if resource.collection?
           result = result.merge(_embedded:
-                                  serialize_embedded(resource.collection_rel => resource))
+                                  serialize_embedded([resource]))
         elsif resource.subresources.any?
           result = result.merge(_embedded:
                                   serialize_embedded(resource.subresources))
@@ -79,12 +79,14 @@ module Yaks
       # @param [Array] subresources
       # @return [Hash]
       def serialize_embedded(subresources)
-        subresources.each_with_object({}) do |(rel, resources), memo|
-          memo[rel] = if resources.collection?
-                        resources.map( &method(:serialize_resource) )
-                      else
-                        serialize_resource(resources) unless resources.null_resource?
-                      end
+        subresources.each_with_object({}) do |sub, memo|
+          memo[sub.rels.first] = if sub.collection?
+                                   sub.map( &method(:serialize_resource) )
+                                 elsif sub.null_resource?
+                                   nil
+                                 else
+                                   serialize_resource(sub)
+                                 end
         end
       end
 

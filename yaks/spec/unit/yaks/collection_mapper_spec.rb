@@ -23,7 +23,7 @@ RSpec.describe Yaks::CollectionMapper do
       links: [],
       attributes: {},
       members: [],
-      collection_rel: 'rel:the_types'
+      rels: ['rel:the_types']
     )
   end
 
@@ -44,7 +44,7 @@ RSpec.describe Yaks::CollectionMapper do
           Yaks::Resource.new(type: 'pet', attributes: {:id => 2, :species => "dog", :name => "boingboing"}),
           Yaks::Resource.new(type: 'pet', attributes: {:id => 3, :species => "cat", :name => "wassup"})
         ],
-        collection_rel: 'rel:pets'
+        rels: ['rel:pets']
       )
     end
   end
@@ -68,7 +68,7 @@ RSpec.describe Yaks::CollectionMapper do
           Yaks::Resource.new(type: 'pet', attributes: {:id => 2, :species => "dog", :name => "boingboing"}),
           Yaks::Resource.new(type: 'pet', attributes: {:id => 3, :species => "cat", :name => "wassup"})
         ],
-        collection_rel: 'rel:pets'
+        rels: ['rel:pets']
       )
     end
   end
@@ -93,7 +93,7 @@ RSpec.describe Yaks::CollectionMapper do
         links: [],
         attributes: { foo: 123, bar: 'pi la~~~' },
         members: [],
-        collection_rel: 'rel:the_types'
+        rels: ['rel:the_types']
       )
     end
   end
@@ -111,7 +111,7 @@ RSpec.describe Yaks::CollectionMapper do
         links: [ Yaks::Resource::Link.new(rel: :self, uri: 'http://api.example.com/orders') ],
         attributes: { },
         members: [],
-        collection_rel: 'rel:the_types'
+        rels: ['rel:the_types']
       )
     end
   end
@@ -138,7 +138,7 @@ RSpec.describe Yaks::CollectionMapper do
         members: [
           Yaks::Resource.new(type: 'pet', attributes: {:id => 3, :species => "cat", :name => "wassup"})
         ],
-        collection_rel: 'rel:pets'
+        rels: ['rel:pets']
       )
     end
   end
@@ -146,18 +146,18 @@ RSpec.describe Yaks::CollectionMapper do
   context 'with an empty collection' do
 
     context 'without an item_mapper specified' do
-      let(:context) { Yaks::Util.slice_hash(super(), :policy, :env) }
+      let(:context) { Yaks::Util.slice_hash(super(), :policy, :env, :mapper_stack) }
 
       it 'should use a rel of "collection"' do
-        expect(mapper.([]).collection_rel).to eq 'collection'
+        expect(mapper.([]).rels).to eq ['collection']
       end
     end
 
     context 'with an item_mapper specified' do
-      let(:context) { Yaks::Util.slice_hash(super(), :policy, :env, :item_mapper) }
+      let(:context) { Yaks::Util.slice_hash(super(), :policy, :env, :mapper_stack, :item_mapper) }
 
       it 'should derive the collection rel from the item mapper' do
-        expect(mapper.([]).collection_rel).to eq 'rel:the_types'
+        expect(mapper.([]).rels).to eq ['rel:the_types']
       end
     end
 
