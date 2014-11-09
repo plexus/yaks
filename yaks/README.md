@@ -8,28 +8,25 @@
 [gemnasium]: https://gemnasium.com/plexus/yaks
 [codeclimate]: https://codeclimate.com/github/plexus/yaks
 
-# Yak Serializers
+# Yaks
 
-### One Stop Hypermedia Shopping ###
+The library that understands hypermedia.
 
-*We did the shaving for you*
+Yaks consists of a resource representation that is independent of any
+output type. A Yaks mapper transforms an object into a resource, which
+can then be serialized into whichever output format the client
+requested. These formats are presently supported:
 
-Yaks is a tool for turning your domain models into Hypermedia resources.
-
-There are at the moment a number of competing media types for building Hypermedia APIs. These all add a layer of semantics on top of a low level serialization format such as JSON or XML. Even though they each have their own design goals, the core features mostly overlap. They typically provide a way to represent resources (entities), and resource collections, consisting of
-
-* Data in key-value format, possibly with composite values
-* Embedded resources
-* Links to related resources
-* Outbound links that have a specific relation to the resource
-
-They might also contain extra control data to specify possible future interactions, not unlike HTML forms.
-
-These different media types for Hypermedia clients and servers base themselves on the same set of internet standards, such as [RFC4288 Media types](http://tools.ietf.org/html/rfc4288), [RFC5988 Web Linking](http://tools.ietf.org/html/rfc5988), [RFC6906 The "profile" link relation](http://tools.ietf.org/search/rfc6906) and [RFC6570 URI Templates](http://tools.ietf.org/html/rfc6570).
+* HAL
+* JSON API
+* Collection+JSON
+* HTML
+* HALO
 
 ## Concepts
 
-Yaks is a processing pipeline, you create and configure the pipeline, then feed data through it.
+Yaks is a processing pipeline, you create and configure the pipeline,
+then feed data through it.
 
 ``` ruby
 yaks = Yaks.new do
@@ -42,7 +39,7 @@ yaks = Yaks.new do
   end
 end
 
-yaks.call(data) # => JSON
+yaks.call(data) # => '{"foo": "bar", "_links": { ... }}'
 ```
 
 Yaks performs this serialization in three steps
@@ -386,10 +383,6 @@ default_format :collection_json
 
 Subresources aren't mapped because Collection+JSON doesn't really have that concept, and the other way around templates and queries don't exist (yet) in Yaks.
 
-### More formats
-
-Are planned... at the moment HAL is the only format I actually use, so it's the one that's best supported. Adding formats that follow the resource=(attributes, links, subresources) structure or a subset thereof is straightforward. More features, e.g. forms/actions such as used in Mason might be added in the future.
-
 ## Hooks
 
 It is possible to hook into the Yaks pipeline to perform extra processing steps before, after, or around each step. It also possible to skip a step.
@@ -481,25 +474,19 @@ Yaks by default "primitivizes" symbols (as strings), and classes that include En
 
 Yaks is used in production by [Ticketsolve](http://www.ticketsolve.com/). You can find an example API endpoint [here](http://leicestersquaretheatre.ticketsolve.com/api).
 
-Get in touch if you like to see your name and API here.
-
 ## Demo
 
-You can find an example app at [Yakports](https://github.com/plexus/yakports), or browse the HAL api directly using the [HAL browser](http://yaks-airports.herokuapp.com/browser.html).
+You can find an outdated example app at [Yakports](https://github.com/plexus/yakports), or browse the HAL api directly using the [HAL browser](http://yaks-airports.herokuapp.com/browser.html).
 
-## Acknowledgment
+## Standards Based
 
-The mapper syntax is largely borrowed from ActiveModel::Serializers, which in turn closely mimics the syntax of ActiveRecord models. It's a great concise syntax that still offers plenty of flexibility, so to not reinvent the wheel I've stuck to the existing syntax as far as practical, although there are several extensions and deviations.
+Yaks is based on internet standards, including
 
-## Lightweight
-
-Yaks is a lean library. It only depends on a few other tiny libraries (inflection, concord, uri_template). It has no core extensions (monkey patches). There is deliberately no built-in "integration" with existing frameworks, since the API is simply enough. You just call it.
-
-If this approach sounds appealing, have a look at [microrb.com](http://microrb.com/).
-
-## Is it any good
-
-[Yes](https://news.ycombinator.com/item?id=3067434)
+* [RFC4288 Media types](http://tools.ietf.org/html/rfc4288)
+* [RFC5988 Web Linking](http://tools.ietf.org/html/rfc5988)
+* [RFC6906 The "profile" link relation](http://tools.ietf.org/search/rfc6906)
+* [RFC6570 URI Templates](http://tools.ietf.org/html/rfc6570)
+* [RFC4229 HTTP Header Field Registrations](http://tools.ietf.org/html/rfc4229).
 
 ## How to contribute
 
