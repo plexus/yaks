@@ -1,5 +1,9 @@
 ### Development
-[full changelog](http://github.com/plexus/yaks/compare/v0.7.0...master)
+[full changelog](http://github.com/plexus/yaks/compare/v0.7.1...master)
+
+### 0.7.1
+
+Bugfix in CollectionMapper.
 
 ### 0.7.0
 
