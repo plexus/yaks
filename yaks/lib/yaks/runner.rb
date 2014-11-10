@@ -8,8 +8,9 @@ module Yaks
     def_delegators :config, :policy, :default_format, :format_options, :primitivize, :serializers
 
     def call
-      steps.inject(object) {|memo, (_, step)| step.call(memo) }
+      steps.inject(object) {|memo, (_, step)| step.call(memo, env) }
     end
+    alias result call
 
     def context
       {
@@ -55,7 +56,7 @@ module Yaks
     memoize :formatter
 
     def primitivizer
-      ->(input) do
+      proc do |input|
         if format_class.serializer.equal? :json
           primitivize.call(input)
         else

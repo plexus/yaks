@@ -9,7 +9,7 @@ module Yaks
 
       # @param [Yaks::Resource] resource
       # @return [Hash]
-      def call(resource)
+      def call(resource, env = {})
         main_collection = resource.seq.map(&method(:serialize_resource))
 
         { pluralize(resource.type) => main_collection }.tap do |serialized|

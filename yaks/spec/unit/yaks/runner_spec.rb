@@ -13,8 +13,8 @@ RSpec.describe Yaks::Runner do
     let(:runner) {
       Class.new(described_class) do
         def steps
-          [ [:step1, ->(x) { x + 35     }],
-            [:step2, ->(x) { "#{x} #{x}"}] ]
+          [ [:step1, proc { |x| x + 35      }],
+            [:step2, proc { |x| "#{x} #{x}" }] ]
         end
       end.new(object: object, config: config, options: options)
     }
@@ -219,12 +219,12 @@ RSpec.describe Yaks::Runner do
       }
 
       it 'should try to find an explicitly configured serializer' do
-        expect(runner.serializer.call('42')).to eql 'serialized 42'
+        expect(runner.serializer.call('42', {})).to eql 'serialized 42'
       end
     end
 
     it 'should fall back to the policy' do
-      expect(runner.serializer.call([1,2,3])).to eql "[\n  1,\n  2,\n  3\n]"
+      expect(runner.serializer.call([1,2,3], {})).to eql "[\n  1,\n  2,\n  3\n]"
     end
   end
 

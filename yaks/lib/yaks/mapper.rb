@@ -36,7 +36,7 @@ module Yaks
       self.class.mapper_name(policy)
     end
 
-    def call(object)
+    def call(object, env = {})
       @object = object
 
       return NullResource.new if object.nil?

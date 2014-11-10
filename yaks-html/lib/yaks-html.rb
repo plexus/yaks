@@ -2,4 +2,7 @@ require 'hexp'
 require 'yaks'
 require 'yaks/format/html'
 
-Yaks::Serializer.register(:html, Hexp::Unparser.new({}))
+-> do
+  unparser = Hexp::Unparser.new({})
+  Yaks::Serializer.register(:html, ->(data, env) { unparser.call(data) })
+end.call
