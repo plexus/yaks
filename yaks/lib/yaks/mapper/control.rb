@@ -10,10 +10,20 @@ module Yaks
         new({name: name}.merge(options))
       end
 
-      def add_to_resource(resource, _parent_mapper, _context)
-        resource.add_control(
-          Resource::Control.new(to_h.merge(fields: fields.map(&:to_resource_control_field)))
-        )
+      def add_to_resource(resource, parent_mapper, _context)
+        resource.add_control(map_to_resource_control(resource, parent_mapper))
+      end
+
+      def map_to_resource_control(resource, parent_mapper)
+        attrs = {
+          fields: resource_fields,
+          href: parent_mapper.expand_uri(href, true)
+        }
+        Resource::Control.new(to_h.merge(attrs))
+      end
+
+      def resource_fields
+        fields.map(&:to_resource_field)
       end
 
       class Field
@@ -27,7 +37,7 @@ module Yaks
           new(attrs)
         end
 
-        def to_resource_control_field
+        def to_resource_field
           Resource::Control::Field.new(to_h)
         end
       end

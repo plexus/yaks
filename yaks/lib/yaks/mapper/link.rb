@@ -28,8 +28,6 @@ module Yaks
       include Attributes.new(:rel, :template, options: {})
       include Util
 
-      def_delegators :uri_template, :expand_partial
-
       def self.create(rel, template, options = {})
         new(rel: rel, template: template, options: options)
       end
@@ -49,29 +47,8 @@ module Yaks
         !options.fetch(:expand) { true }.equal? true
       end
 
-      def template_variables
-        case options.fetch(:expand) { true }
-        when true
-          uri_template.variables
-        when false
-          []
-        else
-          options[:expand]
-        end.map(&:to_sym)
-      end
-
-      def expansion_mapping(lookup)
-        template_variables.each_with_object({}) do |name, hsh|
-          hsh[name] = lookup[name]
-        end
-      end
-
-      def uri_template
-        URITemplate.new(template)
-      end
-
       def map_to_resource_link(mapper)
-        uri = expand_with(mapper.method(:load_attribute))
+        uri = mapper.expand_uri(template, options.fetch(:expand, true))
         return if uri.nil?
 
         Resource::Link.new(
@@ -79,12 +56,6 @@ module Yaks
           uri: uri,
           options: resource_link_options(mapper)
         )
-      end
-
-      def expand_with(lookup)
-        return lookup[template] if template.instance_of? Symbol
-
-        expand_partial(expansion_mapping(lookup)).to_s
       end
 
       def resource_link_options(mapper)

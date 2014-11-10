@@ -1,5 +1,9 @@
-### Development
+### master
 [full changelog](http://github.com/plexus/yaks/compare/v0.7.1...master)
+
+Allow controls to use the same expansion mechanisms that are available
+in links, i.e. URI templates, symbol referring to a method. Added
+procs to that list as well.
 
 ### 0.7.1
 

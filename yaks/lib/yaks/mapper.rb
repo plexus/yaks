@@ -55,6 +55,33 @@ module Yaks
     end
     alias load_association load_attribute
 
+    def expand_uri(uri, expand)
+      case uri
+      when nil
+        return
+      when Symbol
+        return load_attribute(uri)
+      when Method, Proc
+        return Resolve(uri, self)
+      end
+
+      template = URITemplate.new(uri)
+      expand_vars = case expand
+                    when true
+                      template.variables
+                    when false
+                      []
+                    else
+                      expand
+                    end
+
+      mapping = expand_vars.each_with_object({}) do |name, hsh|
+        hsh[name] = load_attribute(name)
+      end
+
+      template.expand_partial(mapping).to_s
+    end
+
     private
 
     def map_attributes(resource)

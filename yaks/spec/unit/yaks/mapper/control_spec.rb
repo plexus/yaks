@@ -27,7 +27,7 @@ RSpec.describe Yaks::Mapper::Control do
   end
 
   describe '#add_to_resource' do
-    let(:resource) { control.add_to_resource(Yaks::Resource.new, nil, nil) }
+    let(:resource) { control.add_to_resource(Yaks::Resource.new, Yaks::Mapper.new(nil), nil) }
 
     it 'should add a control to the resource' do
       expect(resource.controls.length).to be 1

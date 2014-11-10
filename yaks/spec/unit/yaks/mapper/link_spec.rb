@@ -9,9 +9,6 @@ RSpec.describe Yaks::Mapper::Link do
   let(:template) { '/foo/bar/{x}/{y}' }
   let(:options)  { {} }
 
-  its(:template_variables) { should eq [:x, :y] }
-  its(:uri_template) { should eq URITemplate.new(template) }
-
   let(:object) { Struct.new(:x, :y, :returns_nil).new(3, 4, nil) }
 
   let(:mapper_class) do
@@ -67,44 +64,6 @@ RSpec.describe Yaks::Mapper::Link do
 
       it 'should return false if the relation does not match' do
         expect(link.rel?('http://foo/bar/other')).to be false
-      end
-    end
-  end
-
-  describe '#expand_with' do
-    it 'should look up expansion values through the provided callable' do
-      expect(link.expand_with(->(var){ var.upcase })).to eq '/foo/bar/X/Y'
-    end
-
-    context 'with expansion turned off' do
-      let(:options) { {expand: false} }
-
-      it 'should keep the template in the response' do
-        expect(link.expand_with(->{ })).to eq '/foo/bar/{x}/{y}'
-      end
-    end
-
-    context 'with a URI without expansion variables' do
-      let(:template) { '/orders' }
-
-      it 'should return the link as is' do
-        expect(link.expand_with(->{ })).to eq '/orders'
-      end
-    end
-
-    context 'with partial expansion' do
-      let(:options) { { expand: [:y] } }
-
-      it 'should only expand the given variables' do
-        expect(link.expand_with({:y => 7}.method(:[]))).to eql '/foo/bar/{x}/7'
-      end
-    end
-
-    context 'with a symbol for a template' do
-      let(:template) { :a_symbol }
-
-      it 'should use the lookup mechanism for finding the link' do
-        expect(link.expand_with({:a_symbol => '/foo/foo'}.method(:[]))).to eq '/foo/foo'
       end
     end
   end

@@ -329,4 +329,48 @@ RSpec.describe Yaks::Mapper do
       expect(mapper.mapper_stack).to eql [:foo]
     end
   end
+
+  describe '#expand_uri' do
+    let(:template) { '/foo/bar/{x}/{y}' }
+    let(:expand)   { true }
+
+    subject(:expanded) { mapper.expand_uri(template, expand) }
+
+    before do
+      mapper.call( Struct.new(:x, :y) { def foo ; '/foo/foo' ; end }.new(6, 7) )
+    end
+
+    context 'with expansion turned off' do
+      let(:expand) { false }
+
+      it 'should keep the template in the response' do
+        expect(expanded).to eq '/foo/bar/{x}/{y}'
+      end
+    end
+
+    context 'with a URI without expansion variables' do
+      let(:template) { '/orders' }
+
+      it 'should return the link as is' do
+        expect(expanded).to eq '/orders'
+      end
+    end
+
+    context 'with partial expansion' do
+      let(:expand) { [:y] }
+
+      it 'should only expand the given variables' do
+        expect(expanded).to eql '/foo/bar/{x}/7'
+      end
+    end
+
+    context 'with a symbol for a template' do
+      let(:template) { :foo }
+
+      it 'should use the lookup mechanism for finding the link' do
+        expect(expanded).to eq '/foo/foo'
+      end
+    end
+  end
+
 end

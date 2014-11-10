@@ -26,9 +26,9 @@ RSpec.describe Yaks::Mapper::Control::Field do
     end
   end
 
-  describe 'to_resource_field' do
+  describe '#to_resource_field' do
     it 'creates a Yaks::Resource::Control::Field with the same attributes' do
-      expect(field.to_resource_control_field).to eql Yaks::Resource::Control::Field.new(full_args)
+      expect(field.to_resource_field).to eql Yaks::Resource::Control::Field.new(full_args)
     end
   end
 end
