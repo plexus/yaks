@@ -6,7 +6,7 @@ module Yaks
 
     # @param [Array] collection
     # @return [Array]
-    def call(collection)
+    def call(collection, env = {})
       @object = collection
 
       attrs = {
