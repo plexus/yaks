@@ -34,6 +34,14 @@ module Yaks
     end
     memoize :format_class
 
+    def media_type
+      format_class.media_type
+    end
+
+    def format
+      format_class.format_name
+    end
+
     def steps
       insert_hooks(
         [[ :map, mapper ],

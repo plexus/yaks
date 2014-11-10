@@ -47,6 +47,10 @@ module Yaks
       @policy ||= @policy_class.new(@policy_options)
     end
 
+    def runner(object, options)
+      Runner.new(config: self, object: object, options: options)
+    end
+
     # Main entry point into yaks
     #
     # @param object [Object] The object to serialize
@@ -58,7 +62,7 @@ module Yaks
     # @option item_mapper [Class] Mapper class to use for items in a top-level collection
     #
     def call(object, options = {})
-      Runner.new(config: self, object: object, options: options).call
+      runner(object, options).call
     end
     alias serialize call
   end
