@@ -1,5 +1,7 @@
 ### master
-[full changelog](http://github.com/plexus/yaks/compare/v0.7.1...master)
+[full changelog](http://github.com/plexus/yaks/compare/v0.7.2...master)
+
+### 0.7.2
 
 Allow controls to use the same expansion mechanisms that are available
 in links, i.e. URI templates, symbol referring to a method. Added
