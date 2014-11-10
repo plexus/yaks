@@ -5,7 +5,20 @@ module Yaks
 
 BreakingChanges = {
 
-'0.5.0' => %q~
+    '0.7.0' => %q~
+Breaking Changes in Yaks 0.7.0
+==============================
+Yaks::Resource#subresources is now an array, not a hash. The rel is
+stored on the resource itself as Yaks::Resource#rels (an array). This
+should only be of concern if you implement custom output formats
+
+The general signature of all processing steps (mapper, formatter,
+hooks) has changed to incldue a second parameter, the rack env. If you
+have custom implementations of any of these, or hooks that are not
+specified as ruby blocks, you will need to take this into account
+~,
+
+    '0.5.0' => %q~
 
 Breaking Changes in Yaks 0.5.0
 ==============================
@@ -26,7 +39,7 @@ for full documentation.
 
 ~,
 
-'0.4.3' => %q~
+    '0.4.3' => %q~
 
 Breaking Changes in Yaks 0.4.3
 ==============================

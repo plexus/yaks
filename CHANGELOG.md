@@ -1,5 +1,42 @@
 ### Development
-[full changelog](http://github.com/plexus/yaks/compare/v0.6.1...master)
+[full changelog](http://github.com/plexus/yaks/compare/v0.7.0...master)
+
+### 0.7.0
+
+#### Introduces yaks-sinatra
+
+For easier Sinatra integration. See the respective README for more info.
+
+#### Move the rel of subresource into a resource itself
+
+Before the subresources in a Yaks::Resource were stored in a hash,
+keyed by rel. Now the rel is stored as a property of the resource, and
+the subresources are a simple array. This opens the door to formats
+that support multiple rels on a resource, and simplifies things as a
+preparatory step towards bi-directional mapping.
+
+This change is mostly transparent to the user, but when implementing
+custom output formats or doing testing on the resulting Resource
+instances, you might have to update your code.
+
+#### Pass the rack env to steps and hooks
+
+Yaks is a pipeline where each step implements the `call`
+method. Before `call` always received one argument, the previous
+transformation step's result. Now it receives the Rack env as a second
+argument.
+
+This also applies to before/after/around hooks, although if they are
+specified as ruby blocks then no change is needed, the second argument
+will be ignored.
+
+#### Handle URI instances
+
+After formatting for a JSON output format (e.g. HAL), but before
+actually serializing to JSON, all data needs to be of a type that has
+a JSON equivalent, or needs to be handled explicitly with a conversion
+(known as "primitivizing"). instances of `URI` have been added to this
+list, they will automatically be represented as JSON strings.
 
 ### 0.6.2
 
