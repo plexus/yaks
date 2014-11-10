@@ -11,7 +11,7 @@ configure_yaks do
 end
 
 class RootMapper < Yaks::Mapper
-  link :self, '/
+  link :self, '/'
   link :posts, '/posts'
 end
 

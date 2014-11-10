@@ -30,19 +30,20 @@ end
   end
 end
 
+desc "Tag current release and push to Github"
 task :tag do
   sh "git tag v#{Yaks::VERSION}"
   sh "git push --tags"
 end
 
-desc "Push gem to rubygems.org"
+desc "Tag, build, and push all gems to rubygems.org"
 task :push_all => [
        :tag,
        "yaks:gem",
-       "yaks-html:gem"
+       "yaks-html:gem",
        "yaks-sinatra:gem",
        "yaks:push",
-       "yaks-html:push"
+       "yaks-html:push",
        "yaks-sinatra:push"
      ]
 
