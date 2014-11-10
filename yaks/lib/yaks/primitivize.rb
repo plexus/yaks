@@ -26,7 +26,7 @@ module Yaks
           object
         end
 
-        p.map Symbol do |object|
+        p.map Symbol, URI do |object|
           object.to_s
         end
 
