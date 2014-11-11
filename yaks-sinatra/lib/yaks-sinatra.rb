@@ -19,8 +19,8 @@ module Sinatra
   end
 
   module YaksHelpers
-    def yaks(*args)
-      runner = Yaks.yaks_config.runner(*args, env: env)
+    def yaks(object, opts = {})
+      runner = Yaks.yaks_config.runner(object, {env: env}.merge(opts))
       content_type runner.format
       runner.result
     end

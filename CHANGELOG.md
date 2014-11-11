@@ -1,6 +1,10 @@
 ### master
 [full changelog](http://github.com/plexus/yaks/compare/v0.7.2...master)
 
+### 0.7.3
+
+yaks-sinatra: Allow passing extra Yaks options to the helper method
+
 ### 0.7.2
 
 Allow controls to use the same expansion mechanisms that are available
