@@ -3,7 +3,7 @@ module Yaks
     include Attributes.new(
               type: nil,
               rels: [],
-              links: [],
+              links: Set.new,
               attributes: {},
               subresources: [],
               forms: []
