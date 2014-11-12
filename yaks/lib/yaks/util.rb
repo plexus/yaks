@@ -22,6 +22,10 @@ module Yaks
       keys.each_with_object({}) {|k,dest| dest[k] = hash[k] if hash.key?(k) }
     end
 
+    def symbolize_keys(hash)
+      hash.each_with_object({}) {|(k,v), hsh| p [k,v]; hsh[k.to_sym] = v}
+    end
+
     # Turn what is maybe a Proc into its result (or itself)
     #
     # When input can be either a value or a proc that returns a value,

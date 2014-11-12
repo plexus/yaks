@@ -4,6 +4,7 @@ require 'forwardable'
 require 'set'
 require 'pathname'
 require 'json'
+require 'csv'
 
 require 'anima'
 require 'concord'
@@ -44,6 +45,8 @@ require 'yaks/null_resource'
 require 'yaks/resource/link'
 require 'yaks/collection_resource'
 
+require 'yaks/identifier/link_relation'
+
 require 'yaks/mapper/association'
 require 'yaks/mapper/has_one'
 require 'yaks/mapper/has_many'
@@ -65,6 +68,8 @@ require 'yaks/format/hal'
 require 'yaks/format/halo'
 require 'yaks/format/json_api'
 require 'yaks/format/collection_json'
+
+require 'yaks/reader/hal'
 
 require 'yaks/config/dsl'
 require 'yaks/config'

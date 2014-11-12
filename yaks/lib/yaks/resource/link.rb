@@ -10,6 +10,10 @@ module Yaks
       def templated?
         options.fetch(:templated) { false }
       end
+
+      def rel?(r)
+        rel.eql? r
+      end
     end
   end
 end
