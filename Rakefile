@@ -46,6 +46,7 @@ task :push_all => [
        "yaks-html:push",
        "yaks-sinatra:push"
      ]
+task :push => :push_all
 
 desc "Run all the tests"
 task :rspec => ["yaks:rspec", "yaks-html:rspec"]
