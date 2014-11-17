@@ -35,7 +35,11 @@ module Yaks
       def add_to_resource(resource, mapper, _context)
         resource_link = map_to_resource_link(mapper)
         return resource unless resource_link
-        resource.add_link(resource_link)
+        if options[:replace]
+          resource.links(resource.links.reject {|link| link.rel?(rel)} << resource_link)
+        else
+          resource.add_link(resource_link)
+        end
       end
 
       def rel?(rel)
@@ -62,7 +66,7 @@ module Yaks
         options = options()
         options = options.merge(title: Resolve(options[:title], mapper)) if options.key?(:title)
         options = options.merge(templated: true) if templated?
-        options.reject{|key| key.equal? :expand }
+        options.reject{|key| [:expand, :replace].include? key }
       end
 
     end
