@@ -1,5 +1,11 @@
 ### master
-[full changelog](http://github.com/plexus/yaks/compare/v0.7.2...master)
+[full changelog](http://github.com/plexus/yaks/compare/v0.7.4...master)
+
+### 0.7.4
+
+Fix a regression in around hooks introduced in 0.7.0.
+
+Improve pretty printing (Yaks::Resource#pp)
 
 ### 0.7.3
 
