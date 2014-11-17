@@ -23,8 +23,8 @@ require 'yaks/errors'
 require 'yaks/default_policy'
 
 module Yaks
-  # A PORO
-  Undefined = Object.new
+  Undefined = Module.new.freeze
+
   # Set the Root constant as the gems root path
   Root = Pathname(__FILE__).join('../..')
 
