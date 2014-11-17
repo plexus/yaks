@@ -4,7 +4,7 @@ module Yaks
 
     def initialize(*attrs)
       @defaults   = attrs.last.instance_of?(Hash) ? attrs.pop : {}
-      @attributes = attrs + @defaults.keys
+      @attributes = (attrs + @defaults.keys).uniq
     end
 
     def add(*attrs)
