@@ -155,7 +155,7 @@ RSpec.describe Yaks::Runner do
         expect(runner.steps.map(&:first)).to eql [
           :map, :format, :primitivize, :serialize
         ]
-        expect(runner.steps.assoc(:format).last.call(nil)).to be :around_format_impl
+        expect(runner.steps.assoc(:format).last.call(nil, nil)).to be :around_format_impl
       end
     end
 

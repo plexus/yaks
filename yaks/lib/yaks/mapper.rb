@@ -3,7 +3,7 @@
 module Yaks
   class Mapper
     extend ClassMethods, Forwardable
-    include Util, FP
+    include Util, FP, FP::Callable
 
     def_delegators 'self.class', :config
     def_delegators :config, :attributes, :links, :associations, :controls
