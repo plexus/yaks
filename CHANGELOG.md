@@ -1,5 +1,23 @@
 ### master
-[full changelog](http://github.com/plexus/yaks/compare/v0.7.4...master)
+[full changelog](http://github.com/plexus/yaks/compare/v0.7.5...master)
+
+### 0.7.5
+
+Add the :replace option to link specifications. When used on a link
+when another link of the same rel was specified previously, then the
+current link will replace the one (and any other) that was specified
+earlier.
+
+Use case:
+
+    class BaseMapper < Yaks::Mapper
+      link :self, '/api/{mapper_name}/{id}'
+    end
+
+    class CartMapper < BaseMapper
+      link :self, '/api/cart', :replace => true
+    end
+
 
 ### 0.7.4
 
