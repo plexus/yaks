@@ -31,7 +31,7 @@ RSpec.describe Yaks::Mapper::Link do
     end
 
     context 'with a link function returning nothing' do
-      let(:template) { :link_computer }
+      let(:template) { ->{ link_computer } }
       before do
         mapper_class.class_eval do
           def link_computer ; end
@@ -157,7 +157,7 @@ RSpec.describe Yaks::Mapper::Link do
     end
 
     context 'with a link generation method that returns nil' do
-      let(:template) { :returns_nil }
+      let(:template) { ->{ object.returns_nil } }
 
       it 'should return nil' do
         expect(resource_link).to be_nil

@@ -55,13 +55,20 @@ module Yaks
     end
     alias load_association load_attribute
 
+    def expand_value(value)
+      case value
+      when Method, Proc, FP::Callable
+        Resolve(value, self)
+      else
+        value
+      end
+    end
+
     def expand_uri(uri, expand)
       case uri
       when nil
         return
-      when Symbol
-        return load_attribute(uri)
-      when Method, Proc
+      when Method, Proc, FP::Callable
         return Resolve(uri, self)
       end
 

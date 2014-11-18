@@ -187,7 +187,7 @@ RSpec.describe Yaks::Mapper do
       before do
         mapper_class.class_eval do
           attributes :id
-          link :bar_link, :link_generating_method
+          link :bar_link, -> { link_generating_method }
 
           def link_generating_method
           end
@@ -365,7 +365,7 @@ RSpec.describe Yaks::Mapper do
     end
 
     context 'with a symbol for a template' do
-      let(:template) { :foo }
+      let(:template) { -> { object.foo } }
 
       it 'should use the lookup mechanism for finding the link' do
         expect(expanded).to eq '/foo/foo'
