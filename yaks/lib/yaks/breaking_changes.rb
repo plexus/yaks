@@ -5,6 +5,28 @@ module Yaks
 
 BreakingChanges = {
 
+    '0.7.6' => %q~
+Breaking Changes in Yaks 0.7.6
+==============================
+Breaking change: using a symbol instead of link template no longer
+works, use a lambda.
+
+    link :foo, :bar
+
+Becomes
+
+    link :foo, ->{ bar }
+
+Strictly speaking the equivalent version would be `link :foo, ->{
+load_attribute(:bar) }`. Depending on if `bar` is implemented on the
+mapper or is an attribute of the object, this would simplify to `link
+:foo, ->{ bar }` or `link :foo, ->{ object.bar }` respectively.
+
+The `href` attribute of a control has been renamed `action`, in line
+with the attribute name in HTML. An alias is available but will output
+a deprecation warning.
+~,
+
     '0.7.0' => %q~
 Breaking Changes in Yaks 0.7.0
 ==============================

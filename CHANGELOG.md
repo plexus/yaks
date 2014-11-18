@@ -1,6 +1,49 @@
 ### master
 [full changelog](http://github.com/plexus/yaks/compare/v0.7.5...master)
 
+### 0.7.6
+
+Much expanded form support, simplified link DSL, pretty-print objects
+to Ruby code.
+
+Breaking change: using a symbol instead of link template no longer
+works, use a lambda.
+
+    link :foo, :bar
+
+Becomes
+
+    link :foo, ->{ bar }
+
+Strictly speaking the equivalent version would be `link :foo, ->{
+load_attribute(:bar) }`. Depending on if `bar` is implemented on the
+mapper or is an attribute of the object, this would simplify to `link
+:foo, ->{ bar }` or `link :foo, ->{ object.bar }` respectively.
+
+The form control DSL has been expanded, instead of `field type:
+'text'` and similar there are now aliases, e.g. `text :name, value:
+'foo'`.
+
+All attributes on the form control itself, and on fields, now
+optionally take a lambda (any `#to_proc`-able) for dynamic
+content. e.g.
+
+    control :add_product do
+      method 'POST'
+      action ->{ '/cart/#{cart.id}/line_items' }
+      hidden :product_id, value: -> { product.id }
+      number :quantity, value: 0
+    end
+
+As with lambdas used for links, in case of a zero-arity lambda these
+evaluate with `self` being the mapper. If the lambda takes an argument
+the argument will be the mapper, and the lambda is evaluated as a
+closure.
+
+The `href` attribute of a control has been renamed `action`, in line
+with the attribute name in HTML. An alias is available but will output
+a deprecation warning.
+
 ### 0.7.5
 
 Add the :replace option to link specifications. When used on a link
