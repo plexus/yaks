@@ -22,8 +22,13 @@ module Yaks
       config_method :attribute, create: Attribute,               append_to: :attributes
       config_method :attribute, create: Attribute,               append_to: :attributes
       config_method :control,
-                    create: StatefulBuilder.new(Control, Control.anima.attribute_names + [:field]),
-                    append_to: :controls
+                    append_to: :controls,
+                    create: StatefulBuilder.new(
+                      Control,
+                      Control.anima.attribute_names +
+                        HTML5Forms::INPUT_TYPES +
+                        [:field]
+                    )
     end
   end
 end

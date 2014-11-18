@@ -19,12 +19,13 @@ module Yaks
   class StatefulBuilder < BasicObject
     def create(*args, &block)
       @state = @klass.create(*args)
-      instance_eval(&block)
+      instance_eval(&block) if block
       @state
     end
 
     def initialize(klass, methods)
       @klass = klass
+      @methods = methods
       StatefulMethods.new(methods).send(:extend_object, self)
     end
 
@@ -36,6 +37,10 @@ module Yaks
           "returned #{@state.inspect}. Expected instance of #{@klass}"
         )
       end
+    end
+
+    def inspect
+      "#<#{self.class} #{@klass} #{@methods.inspect}>"
     end
 
     class StatefulMethods < ::Module

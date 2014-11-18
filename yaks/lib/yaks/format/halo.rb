@@ -25,6 +25,13 @@ module Yaks
         raw = control.to_h
         raw[:href]  = raw.delete(:action)
         raw[:fields] = control.fields.map(&:to_h)
+        raw[:fields].each do |field|
+          if field[:options].empty?
+            field.delete(:options)
+          else
+            field[:options] || field[:options].map(&:to_h)
+          end
+        end
         raw
       end
     end

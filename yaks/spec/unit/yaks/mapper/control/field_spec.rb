@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 RSpec.describe Yaks::Mapper::Control::Field do
+  include_context 'yaks context'
+
   let(:field)   { described_class.new( full_args ) }
   let(:name)      { :the_field }
   let(:full_args) { {name: name}.merge(args) }
@@ -11,6 +13,8 @@ RSpec.describe Yaks::Mapper::Control::Field do
       value: 'hello'
     }
   }
+
+  let(:mapper) { Yaks::Mapper.new(yaks_context) }
 
   describe '.create' do
     it 'can take all args as a hash' do
@@ -28,7 +32,7 @@ RSpec.describe Yaks::Mapper::Control::Field do
 
   describe '#to_resource_field' do
     it 'creates a Yaks::Resource::Control::Field with the same attributes' do
-      expect(field.to_resource_field).to eql Yaks::Resource::Control::Field.new(full_args)
+      expect(field.to_resource(mapper)).to eql Yaks::Resource::Control::Field.new(full_args)
     end
   end
 end

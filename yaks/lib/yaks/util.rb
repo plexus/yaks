@@ -52,5 +52,14 @@ module Yaks
       end
     end
 
+    module Deprecated
+      def deprecated_alias(name, actual)
+        define_method name do |*args, &block|
+          $stderr.puts "WARNING: #{self.class}##{name} is deprecated, use `#{actual}'. at #{caller.first}"
+          send(actual, *args, &block)
+        end
+      end
+    end
+
   end
 end
