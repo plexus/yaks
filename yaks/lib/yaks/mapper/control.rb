@@ -47,6 +47,10 @@ module Yaks
       end
 
       config_method :field, create: Field, append_to: :fields
+
+      HTML5Forms::INPUT_TYPES.each do |type|
+        config_method :field, create: Field, append_to: :fields, defaults: { type: type }
+      end
     end
   end
 end

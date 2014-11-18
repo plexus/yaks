@@ -45,6 +45,8 @@ require 'yaks/null_resource'
 require 'yaks/resource/link'
 require 'yaks/collection_resource'
 
+require 'yaks/html5_forms'
+
 require 'yaks/mapper/association'
 require 'yaks/mapper/has_one'
 require 'yaks/mapper/has_many'
