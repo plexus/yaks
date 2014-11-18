@@ -15,8 +15,8 @@ RSpec.describe Yaks::Format::JsonAPI do
   end
 
   context 'with both a "href" attribute and a self link' do
-      let(:resource) {
-        Yaks::Resource.new(
+    let(:resource) {
+      Yaks::Resource.new(
         type: 'wizard',
         attributes: {
           href: '/the/href'
@@ -27,6 +27,7 @@ RSpec.describe Yaks::Format::JsonAPI do
       )
     }
 
+    # TODO should it really behave this way? better to give preference to self link.
     it 'should give preference to the href attribute' do
       expect(format.call(resource)).to eql(
         {'wizards' => [
