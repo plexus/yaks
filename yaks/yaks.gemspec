@@ -2,6 +2,7 @@
 
 require File.expand_path('../lib/yaks/version', __FILE__)
 require File.expand_path('../lib/yaks/breaking_changes', __FILE__)
+require File.expand_path('../lib/yaks/changelog', __FILE__)
 
 Gem::Specification.new do |gem|
   gem.name        = 'yaks'
@@ -17,6 +18,8 @@ Gem::Specification.new do |gem|
   gem.files            = `git ls-files`.split($/)
   gem.test_files       = gem.files.grep(/^spec/)
   gem.extra_rdoc_files = %w[README.md]
+
+  gem.metadata = {'changelog' => Yaks::Changelog.current[0...1000]}
 
   if Yaks::BreakingChanges.key? Yaks::VERSION
     gem.post_install_message = Yaks::BreakingChanges[Yaks::VERSION]

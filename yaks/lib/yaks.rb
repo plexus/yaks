@@ -11,6 +11,7 @@ require 'inflection'
 require 'uri_template'
 require 'rack/accept'
 
+require 'yaks/version'
 require 'yaks/util'
 require 'yaks/configurable'
 require 'yaks/fp'
