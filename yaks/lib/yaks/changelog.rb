@@ -15,7 +15,7 @@ module Yaks
     end
 
     def markdown
-      Yaks::Root.join('../CHANGELOG.md').read
+      Pathname(__FILE__).join('../../../../CHANGELOG.md').read
     end
   end
 end
