@@ -64,26 +64,5 @@ module Yaks
       append_to(:subresources, subresource)
     end
 
-    def pp
-      indent = ->(str) { str.lines.map {|l| "  #{l}"}.join }
-      format = ->(val) { val.respond_to?(:pp) ? val.pp : val.inspect }
-
-      fmt_attrs = self.class.attributes.attributes.map do |attr|
-        value   = public_send(attr)
-        fmt_val = case value
-                  when Array
-                    if value.inspect.length < 50
-                      value.inspect
-                    else
-                      "[\n#{indent[value.map(&format).join(",\n")]}\n]"
-                    end
-                  else
-                    format[value]
-                  end
-        "#{attr}=#{fmt_val}"
-      end.join("\n")
-
-      "#<#{self.class.name}\n#{indent[fmt_attrs]}\n>"
-    end
   end
 end
