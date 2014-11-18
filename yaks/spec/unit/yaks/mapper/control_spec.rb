@@ -6,7 +6,7 @@ RSpec.describe Yaks::Mapper::Control do
   let(:full_args) { {name: name}.merge(args) }
   let(:args) {
     {
-      href: '/foo',
+      action: '/foo',
       title: 'a title',
       method: 'PATCH',
       media_type: 'application/hal+json',

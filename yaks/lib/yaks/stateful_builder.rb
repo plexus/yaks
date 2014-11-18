@@ -8,12 +8,12 @@ module Yaks
   #   # This code
   #   Control.create(:search)
   #          .method("POST")
-  #          .href("/search")
+  #          .action("/search")
   #
   #   # Can be written as
-  #   StatefulBuilder.new(Control, [:method, :href]).create(:search) do
+  #   StatefulBuilder.new(Control, [:method, :action]).create(:search) do
   #     method "POST"
-  #     href "/search"
+  #     action "/search"
   #   end
   #
   class StatefulBuilder < BasicObject

@@ -22,7 +22,10 @@ module Yaks
       end
 
       def serialize_control(control)
-        control.to_h.merge(fields: control.fields.map(&:to_h))
+        raw = control.to_h
+        raw[:href]  = raw.delete(:action)
+        raw[:fields] = control.fields.map(&:to_h)
+        raw
       end
     end
   end

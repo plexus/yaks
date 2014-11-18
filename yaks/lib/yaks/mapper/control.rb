@@ -1,10 +1,14 @@
 module Yaks
   class Mapper
     class Control
+      extend Util::Deprecated
       include Attributes.new(
-                name: nil, href: nil, title: nil, method: nil, media_type: nil, fields: []
+                name: nil, action: nil, title: nil, method: nil, media_type: nil, fields: []
               ),
               Configurable
+
+      alias enctype media_type
+      deprecated_alias :href, :action
 
       def self.create(name = nil, options = {})
         new({name: name}.merge(options))
@@ -17,7 +21,7 @@ module Yaks
       def map_to_resource_control(resource, parent_mapper)
         attrs = {
           fields: resource_fields,
-          href: parent_mapper.expand_uri(href, true)
+          action: parent_mapper.expand_uri(action, true)
         }
         Resource::Control.new(to_h.merge(attrs))
       end

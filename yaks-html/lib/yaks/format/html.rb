@@ -82,7 +82,7 @@ module Yaks
         form = H[:form]
         form = form.attr('name', control.name)          if control.name
         form = form.attr('method', control.method)      if control.method
-        form = form.attr('action', control.href)        if control.href
+        form = form.attr('action', control.action)      if control.action
         form = form.attr('enctype', control.media_type) if control.media_type
 
         rows = control.fields.map do |field|
