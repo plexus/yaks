@@ -36,7 +36,7 @@ module Yaks
     # @param [Object] context
     #   (optional) A context used to instance_eval the proc
     def Resolve(maybe_proc, context = nil)
-      if maybe_proc.is_a? Proc or maybe_proc.is_a? Method
+      if maybe_proc.respond_to?(:to_proc) && !maybe_proc.instance_of?(Symbol)
         if context
           if maybe_proc.arity > 0
             context.instance_eval(&maybe_proc)
@@ -45,7 +45,7 @@ module Yaks
             context.instance_exec(&maybe_proc)
           end
         else
-          maybe_proc.()
+          maybe_proc.to_proc.()
         end
       else
         maybe_proc
