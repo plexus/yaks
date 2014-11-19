@@ -1,5 +1,5 @@
 ### master
-[full changelog](http://github.com/plexus/yaks/compare/v0.7.5...master)
+[full changelog](http://github.com/plexus/yaks/compare/v0.7.5...v0.7.6)
 
 ### 0.7.6
 
@@ -43,6 +43,10 @@ closure.
 The `href` attribute of a control has been renamed `action`, in line
 with the attribute name in HTML. An alias is available but will output
 a deprecation warning.
+
+The Yaks::Resource#pp method has been lifted into Attributes so it's
+available on most immutable Yaks objects. It has also been adapted to
+produce, in most cases, output that is valid Ruby code.
 
 ### 0.7.5
 
