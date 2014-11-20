@@ -65,14 +65,12 @@
         {
           "name": "name",
           "label": "Scholar Name",
-          "type": "text",
-          "value": null
+          "type": "text"
         },
         {
           "name": "pinyin",
           "label": "Hanyu Pinyin",
-          "type": "text",
-          "value": null
+          "type": "text"
         }
       ]
     }

@@ -24,12 +24,15 @@ module Yaks
       def serialize_control(control)
         raw = control.to_h
         raw[:href]  = raw.delete(:action)
-        raw[:fields] = control.fields.map(&:to_h)
-        raw[:fields].each do |field|
-          if field[:options].empty?
-            field.delete(:options)
-          else
-            field[:options] || field[:options].map(&:to_h)
+        raw[:fields] = control.fields.map do |field|
+          field.to_h.each_with_object({}) do |(attr,value), hsh|
+            if attr == :options
+              if !value.empty?
+                hsh[:options] = value.map(&:to_h)
+              end
+            elsif HTML5Forms::FIELD_OPTIONS[attr] != value
+              hsh[attr] = value
+            end
           end
         end
         raw
