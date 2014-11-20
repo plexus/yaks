@@ -7,11 +7,13 @@ module Yaks
               )
 
 
-      alias enctype media_type
       deprecated_alias :href, :action
 
-      def self.create(name = nil, options = {})
-        new({name: name}.merge(options))
+      Builder = StatefulBuilder
+          .new(self, self.attributes.names + HTML5Forms::INPUT_TYPES + [:field])
+
+      def self.create(name = nil, options = {}, &block)
+        Builder.build(new({name: name}.merge(options)), &block)
       end
 
       def add_to_resource(resource, mapper, _context)

@@ -28,8 +28,29 @@ module Yaks
       :url,
       :week,
 
-      :select
+      :select,
+      :textarea,
+      :datalist
     ]
+
+    FIELD_OPTIONS = {
+      required: false,
+      rows: nil,
+      type: nil,
+      value: nil,
+      pattern: nil,
+      maxlength: nil,
+      minlength: 0,
+      size: 20,
+      readonly: false,
+      multiple: false,
+      min: nil,
+      max: nil,
+      step: nil,
+      list: nil,
+      placeholder: nil,
+      checked: false
+    }
 
   end
 end

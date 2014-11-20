@@ -21,6 +21,6 @@ RSpec.describe Yaks::Configurable do
       subject.new.bar(1,2,3) { 4 }
                  .bar(:baz)  { :booz }
                  .foo
-    ).to eql [["->", 1, 2, 3, 4], ["->", :baz, :booz]]
+    ).to eql [["->", 1, 2, 3, {}, 4], ["->", :baz, {}, :booz]]
   end
 end

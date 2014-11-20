@@ -18,15 +18,19 @@ module Yaks
   #
   class StatefulBuilder < BasicObject
     def create(*args, &block)
-      @state = @klass.create(*args)
+      build(@klass.create(*args), &block)
+    end
+
+    def build(init_state, &block)
+      @state = init_state
       instance_eval(&block) if block
       @state
     end
 
-    def initialize(klass, methods)
+    def initialize(klass, methods = nil)
       @klass = klass
-      @methods = methods
-      StatefulMethods.new(methods).send(:extend_object, self)
+      @methods = methods || klass.attributes.names
+      StatefulMethods.new(@methods).send(:extend_object, self)
     end
 
     def validate_state(method_name, args)
