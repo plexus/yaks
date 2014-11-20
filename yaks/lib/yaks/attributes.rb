@@ -45,8 +45,12 @@ module Yaks
         indent = ->(str) { str.lines.map {|l| "  #{l}"}.join }
         format = ->(val) { val.respond_to?(:pp) ? val.pp : val.inspect }
 
-        fmt_attrs = self.class.attributes.attributes.map do |attr|
-          value   = public_send(attr)
+        defaults = self.class.attributes.defaults
+        values   = to_h.reject do |attr, value|
+          value.equal?(defaults[attr])
+        end
+
+        fmt_attrs = values.map do |attr, value|
           fmt_val = case value
                     when Array
                       if value.inspect.length < 50
@@ -60,7 +64,10 @@ module Yaks
           "#{attr}: #{fmt_val}"
         end.join(",\n")
 
-        "#{self.class.name}.new(\n#{indent[fmt_attrs]}\n)"
+        unless fmt_attrs.empty?
+          fmt_attrs = "\n#{indent[fmt_attrs]}\n"
+        end
+        "#{self.class.name}.new(#{fmt_attrs})"
       end
     end
   end
