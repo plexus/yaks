@@ -1,24 +1,24 @@
 module Yaks
   class Attributes < Module
-    attr_reader :defaults, :attributes
+    attr_reader :defaults, :names
 
     def initialize(*attrs)
       @defaults   = attrs.last.instance_of?(Hash) ? attrs.pop : {}
-      @attributes = (attrs + @defaults.keys).uniq
+      @names = (attrs + @defaults.keys).uniq
     end
 
     def add(*attrs)
       defaults = attrs.last.instance_of?(Hash) ? attrs.pop : {}
-      self.class.new(*[*(attributes+attrs), @defaults.merge(defaults)])
+      self.class.new(*[*(names+attrs), @defaults.merge(defaults)])
     end
 
     def included(descendant)
       descendant.module_exec(self) do |this|
         include InstanceMethods,
-                Anima.new(*this.attributes),
+                Anima.new(*this.names),
                 Anima::Update
 
-        this.attributes.each do |attr|
+        this.names.each do |attr|
           define_method attr do |value = Undefined|
             if value.equal? Undefined
               instance_variable_get("@#{attr}")
