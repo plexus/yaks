@@ -44,7 +44,7 @@ module Yaks
     end
 
     def inspect
-      "#<#{self.class} #{@klass} #{@methods.inspect}>"
+      "#<StatefulBuilder #{@klass} #{@methods.inspect}>"
     end
 
     class StatefulMethods < ::Module
