@@ -9,7 +9,8 @@ RSpec.describe Yaks::Configurable do
 
   subject do
     Class.new do
-      include Yaks::Attributes.new(foo: []), Yaks::Configurable
+      extend Yaks::Configurable
+      include Yaks::Attributes.new(foo: [])
 
       config_method :bar, append_to: :foo, create: Creatable
     end

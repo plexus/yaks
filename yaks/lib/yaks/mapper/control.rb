@@ -1,11 +1,11 @@
 module Yaks
   class Mapper
     class Control
-      extend Util::Deprecated
+      extend Util::Deprecated, Configurable
       include Attributes.new(
                 name: nil, action: nil, title: nil, method: nil, media_type: nil, fields: []
-              ),
-              Configurable
+              )
+
 
       alias enctype media_type
       deprecated_alias :href, :action

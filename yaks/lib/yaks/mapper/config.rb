@@ -1,10 +1,10 @@
 module Yaks
   class Mapper
     class Config
+      extend Configurable
       include Attributes.new(
                 type: nil, attributes: [], links: [], associations: [], controls: []
-              ),
-              Configurable
+              )
 
       def type(type = Undefined)
         return @type if type.equal?(Undefined)
