@@ -23,6 +23,23 @@ requested. These formats are presently supported:
 * HTML
 * HALO
 
+## State of Development
+
+This library came into existence because we at
+[Ticketsolve](https://www.ticketsolve.com) wanted to build a rich
+hypermedia API, and were dissatisfied with any of the existing Ruby
+solutions at the time (November 2013).
+
+We are still actively expanding our API, and with that Yaks continues
+to grow and improve. The aim is to create *the reference* for
+supporting hypermedia formats in Ruby.
+
+Yaks can be used in production today, as we do, but until 1.0 is
+released there will regularly be breaking changes, as we figure out
+the best way to do things. These are all documented clearly in the
+[changelog](CHANGLOG.md). At this point we recommend locking to an
+exact version number.
+
 ## Concepts
 
 Yaks is a processing pipeline, you create and configure the pipeline,
