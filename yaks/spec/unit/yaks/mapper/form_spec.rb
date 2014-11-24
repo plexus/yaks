@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-RSpec.describe Yaks::Mapper::Control do
-  let(:control)   { described_class.new( full_args ) }
+RSpec.describe Yaks::Mapper::Form do
+  let(:form)   { described_class.new( full_args ) }
   let(:name)      { :the_name }
   let(:full_args) { {name: name}.merge(args) }
   let(:args) {
@@ -18,7 +18,7 @@ RSpec.describe Yaks::Mapper::Control do
   describe '.create' do
     it 'should create an instance, first arg is the name' do
 
-      expect( described_class.create(name, args) ).to eql control
+      expect( described_class.create(name, args) ).to eql form
     end
 
     it 'should have a name of nil when ommitted' do
@@ -27,20 +27,20 @@ RSpec.describe Yaks::Mapper::Control do
   end
 
   describe '#add_to_resource' do
-    let(:resource) { control.add_to_resource(Yaks::Resource.new, Yaks::Mapper.new(nil), nil) }
+    let(:resource) { form.add_to_resource(Yaks::Resource.new, Yaks::Mapper.new(nil), nil) }
 
-    it 'should add a control to the resource' do
-      expect(resource.controls.length).to be 1
+    it 'should add a form to the resource' do
+      expect(resource.forms.length).to be 1
     end
 
-    it 'should create a Yaks::Resource::Control with corresponding fields' do
-      expect(resource.controls.first).to eql Yaks::Resource::Control.new( full_args )
+    it 'should create a Yaks::Resource::Form with corresponding fields' do
+      expect(resource.forms.first).to eql Yaks::Resource::Form.new( full_args )
     end
 
     context 'with fields' do
       let(:fields) {
         [
-          Yaks::Mapper::Control::Field.new(
+          Yaks::Mapper::Form::Field.new(
             name: 'field name',
             label: 'field label',
             type: 'text',
@@ -49,9 +49,9 @@ RSpec.describe Yaks::Mapper::Control do
         ]
       }
 
-      it 'should map to Yaks::Resource::Control::Field instances' do
-        expect(resource.controls.first.fields).to eql [
-          Yaks::Resource::Control::Field.new(
+      it 'should map to Yaks::Resource::Form::Field instances' do
+        expect(resource.forms.first.fields).to eql [
+          Yaks::Resource::Form::Field.new(
             name: 'field name',
             label: 'field label',
             type: 'text',

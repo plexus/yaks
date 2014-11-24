@@ -3,7 +3,7 @@ module Yaks
     class Config
       extend Configurable
       include Attributes.new(
-                type: nil, attributes: [], links: [], associations: [], controls: []
+                type: nil, attributes: [], links: [], associations: [], forms: []
               )
 
       def type(type = Undefined)
@@ -20,7 +20,7 @@ module Yaks
       config_method :has_one,   create: HasOne,    append_to: :associations
       config_method :has_many,  create: HasMany,   append_to: :associations
       config_method :attribute, create: Attribute, append_to: :attributes
-      config_method :control,   create: Control,   append_to: :controls
+      config_method :form,      create: Form,      append_to: :forms
     end
   end
 end

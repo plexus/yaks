@@ -202,24 +202,24 @@ RSpec.describe Yaks::Mapper do
       end
     end
 
-    context 'with a control' do
+    context 'with a form' do
       before do
         mapper_class.module_eval do
-          control :foo_control do
+          form :foo_form do
             field :bar_field, label: 'a label', type: 'number', value: 7
           end
         end
       end
 
-      it 'should render the control' do
+      it 'should render the form' do
         expect(mapper.call(fake))
           .to eql Yaks::Resource.new(
                     type: 'foo',
-                    controls: [
-                      Yaks::Resource::Control.new(
-                        name: :foo_control,
+                    forms: [
+                      Yaks::Resource::Form.new(
+                        name: :foo_form,
                         fields: [
-                          Yaks::Resource::Control::Field.new(
+                          Yaks::Resource::Form::Field.new(
                             name: :bar_field,
                             label: 'a label',
                             type: 'number',
@@ -316,9 +316,9 @@ RSpec.describe Yaks::Mapper do
     it_should_behave_like 'something that can be added to a resource'
   end
 
-  describe '#map_controls' do
-    let(:object) { fake('Control') }
-    before { mapper.config(mapper.config.append_to(:controls, object)) }
+  describe '#map_forms' do
+    let(:object) { fake('Form') }
+    before { mapper.config(mapper.config.append_to(:forms, object)) }
     it_should_behave_like 'something that can be added to a resource'
   end
 

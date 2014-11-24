@@ -28,7 +28,7 @@ class ScholarMapper < LiteratureBaseMapper
   link 'http://literature.example.com/rels/quotes', 'http://literature.example.com/quotes/?author={downcased_pinyin}&q={query}', expand: [:downcased_pinyin], title: 'Search for quotes'
   link :self, 'http://literature.example.com/authors/{downcased_pinyin}'
 
-  control :search do
+  form :search do
     title 'Find a Scholar'
     method 'POST'
     media_type 'application/x-www-form-urlencoded'

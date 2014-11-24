@@ -38,9 +38,9 @@ task :mutant_chunked do
     Yaks::Mapper::Association,
     Yaks::Mapper,
     Yaks::Format::HTML,
-    Yaks::Mapper::Control,
-    Yaks::Mapper::Control::Field,
-#   Yaks::Resource::Control, #no subjects to mutate
+    Yaks::Mapper::Form,
+    Yaks::Mapper::Form::Field,
+#   Yaks::Resource::Form, #no subjects to mutate
     Yaks::NullResource,
   ].each do |space|
     puts space

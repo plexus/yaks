@@ -6,12 +6,12 @@ module Yaks
   # @example
   #
   #   # This code
-  #   Control.create(:search)
+  #   Form.create(:search)
   #          .method("POST")
   #          .action("/search")
   #
   #   # Can be written as
-  #   StatefulBuilder.new(Control, [:method, :action]).create(:search) do
+  #   StatefulBuilder.new(Form, [:method, :action]).create(:search) do
   #     method "POST"
   #     action "/search"
   #   end

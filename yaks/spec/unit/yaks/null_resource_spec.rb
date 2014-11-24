@@ -42,9 +42,9 @@ RSpec.describe Yaks::NullResource do
     )
   end
 
-  it 'should not allow adding controls' do
-    expect { null_resource.add_control(nil) }.to raise_error(
-      Yaks::UnsupportedOperationError, "Operation add_control not supported on Yaks::NullResource"
+  it 'should not allow adding forms' do
+    expect { null_resource.add_form(nil) }.to raise_error(
+      Yaks::UnsupportedOperationError, "Operation add_form not supported on Yaks::NullResource"
     )
   end
 

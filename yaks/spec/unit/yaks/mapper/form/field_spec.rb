@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Yaks::Mapper::Control::Field do
+RSpec.describe Yaks::Mapper::Form::Field do
   include_context 'yaks context'
 
   let(:field)   { described_class.new( full_args ) }
@@ -31,8 +31,8 @@ RSpec.describe Yaks::Mapper::Control::Field do
   end
 
   describe '#to_resource_field' do
-    it 'creates a Yaks::Resource::Control::Field with the same attributes' do
-      expect(field.to_resource(mapper)).to eql Yaks::Resource::Control::Field.new(full_args)
+    it 'creates a Yaks::Resource::Form::Field with the same attributes' do
+      expect(field.to_resource(mapper)).to eql Yaks::Resource::Form::Field.new(full_args)
     end
   end
 end

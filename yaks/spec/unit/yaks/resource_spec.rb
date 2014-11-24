@@ -105,10 +105,10 @@ RSpec.describe Yaks::Resource do
     end
   end
 
-  describe '#add_control' do
-    it 'should append to the controls' do
-      expect(resource.add_control(:a_control))
-        .to eq Yaks::Resource.new(controls: [:a_control])
+  describe '#add_form' do
+    it 'should append to the forms' do
+      expect(resource.add_form(:a_form))
+        .to eq Yaks::Resource.new(forms: [:a_form])
     end
   end
 

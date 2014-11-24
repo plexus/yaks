@@ -1,6 +1,9 @@
 ### master
 [full changelog](http://github.com/plexus/yaks/compare/v0.7.6...master)
 
+The mapper DSL method "control" has been renamed to "form". There is a
+deprecated alias available.
+
 ### 0.7.6
 
 Much expanded form support, simplified link DSL, pretty-print objects

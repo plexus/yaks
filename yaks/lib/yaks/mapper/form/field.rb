@@ -1,6 +1,6 @@
 module Yaks
   class Mapper
-    class Control
+    class Form
       class Field
         extend Configurable
         include Attributes.new(
@@ -19,10 +19,10 @@ module Yaks
           new(attrs)
         end
 
-        # Convert to a Resource::Control::Field, expanding any dynamic
+        # Convert to a Resource::Form::Field, expanding any dynamic
         # values
         def to_resource(mapper)
-          Resource::Control::Field.new(
+          Resource::Form::Field.new(
             resource_attributes.each_with_object({}) do |attr, attrs|
               attrs[attr] = mapper.expand_value(public_send(attr))
             end.merge(options: options.map(&:to_resource))
@@ -30,7 +30,7 @@ module Yaks
         end
 
         # All attributes that can be converted 1-to-1 to
-        # Resource::Control::Field
+        # Resource::Form::Field
         def resource_attributes
           self.class.attributes.names - [:options]
         end
@@ -57,6 +57,6 @@ module Yaks
         config_method type, create: Field::Builder, append_to: :fields, defaults: { type: type }
       end
 
-    end # Control
+    end # Form
   end # Mapper
 end # Yaks

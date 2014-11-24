@@ -1,6 +1,6 @@
 module Yaks
   class Mapper
-    class Control
+    class Form
       extend Util::Deprecated, Configurable
       include Attributes.new(
                 name: nil, action: nil, title: nil, method: nil, media_type: nil, fields: []
@@ -17,7 +17,7 @@ module Yaks
       end
 
       def add_to_resource(resource, mapper, _context)
-        resource.add_control(to_resource(mapper))
+        resource.add_form(to_resource(mapper))
       end
 
       def to_resource(mapper)
@@ -28,7 +28,7 @@ module Yaks
         [:name, :title, :method, :media_type].each do |attr|
           attrs[attr] = mapper.expand_value(public_send(attr))
         end
-        Resource::Control.new(attrs)
+        Resource::Form.new(attrs)
       end
 
       def resource_fields(mapper)

@@ -27,7 +27,7 @@ module Yaks
           .replace('.type') { |header| header.content(resource.type.to_s + (resource.collection? ? ' collection' : '')) }
           .replace('.attribute', &render_attributes(resource.attributes))
           .replace('.links') {|links| resource.links.empty? ? [] : links.replace('.link', &render_links(resource.links)) }
-          .replace('.controls') {|div| render_controls(resource.controls).call(div) }
+          .replace('.forms') {|div| render_forms(resource.forms).call(div) }
           .replace('.subresource') {|sub_templ| render_subresources(resource, templ, sub_templ) }
       end
 
@@ -70,22 +70,22 @@ module Yaks
       end
 
 
-      def render_controls(controls)
+      def render_forms(forms)
         ->(div) do
           div.content(
-            controls.map(&method(:render_control))
+            forms.map(&method(:render_form))
           )
         end
       end
 
-      def render_control(control)
+      def render_form(form)
         form = H[:form]
-        form = form.attr('name', control.name)          if control.name
-        form = form.attr('method', control.method)      if control.method
-        form = form.attr('action', control.action)      if control.action
-        form = form.attr('enctype', control.media_type) if control.media_type
+        form = form.attr('name', form.name)          if form.name
+        form = form.attr('method', form.method)      if form.method
+        form = form.attr('action', form.action)      if form.action
+        form = form.attr('enctype', form.media_type) if form.media_type
 
-        rows = control.fields.map do |field|
+        rows = form.fields.map do |field|
           H[:tr,
             H[:td, H[:label, {for: field.name}, field.label || '']],
             H[:td, case field.type
@@ -96,7 +96,7 @@ module Yaks
                    end]
            ]
         end
-        form.content(H[:table, control.title || '', *rows, H[:tr, H[:td, H[:input, {type: 'submit'}]]]])
+        form.content(H[:table, form.title || '', *rows, H[:tr, H[:td, H[:input, {type: 'submit'}]]]])
       end
     end
   end

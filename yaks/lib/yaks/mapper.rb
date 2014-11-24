@@ -6,7 +6,7 @@ module Yaks
     include Util, FP, FP::Callable
 
     def_delegators 'self.class', :config
-    def_delegators :config, :attributes, :links, :associations, :controls
+    def_delegators :config, :attributes, :links, :associations, :forms
 
     config Config.new
 
@@ -44,7 +44,7 @@ module Yaks
       [ :map_attributes,
         :map_links,
         :map_subresources,
-        :map_controls
+        :map_forms
       ].inject(Resource.new(type: mapper_name)) do |resource, method|
         send(method, resource)
       end
@@ -100,9 +100,9 @@ module Yaks
       end
     end
 
-    def map_controls(resource)
-      controls.inject(resource) do |res, control|
-        control.add_to_resource(res, self, context)
+    def map_forms(resource)
+      forms.inject(resource) do |res, form|
+        form.add_to_resource(res, self, context)
       end
     end
   end

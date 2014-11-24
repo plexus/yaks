@@ -52,15 +52,15 @@ require 'yaks/mapper/has_one'
 require 'yaks/mapper/has_many'
 require 'yaks/mapper/attribute'
 require 'yaks/mapper/link'
-require 'yaks/mapper/control'
-require 'yaks/mapper/control/field'
+require 'yaks/mapper/form'
+require 'yaks/mapper/form/field'
 require 'yaks/mapper/config'
 require 'yaks/mapper/class_methods'
 require 'yaks/mapper'
 require 'yaks/mapper/association_mapper'
 require 'yaks/collection_mapper'
 
-require 'yaks/resource/control'
+require 'yaks/resource/form'
 
 require 'yaks/serializer'
 

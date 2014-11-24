@@ -3,6 +3,7 @@
 module Yaks
   class Mapper
     module ClassMethods
+      extend Util::Deprecated
       include Forwardable,
               Util,
               FP
@@ -27,7 +28,7 @@ module Yaks
         :profile,
         :has_one,
         :has_many,
-        :control
+        :form
       ]
 
       CONFIG_METHODS.each do |method_name|
@@ -40,6 +41,7 @@ module Yaks
         end
       end
 
+      deprecated_alias :control, :form
     end
   end
 end

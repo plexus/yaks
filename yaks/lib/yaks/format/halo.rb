@@ -8,23 +8,23 @@ module Yaks
       register :halo, :json, 'application/halo+json'
 
       def serialize_resource(resource)
-        if resource.controls.any?
-          super.merge(_controls: serialize_controls(resource.controls))
+        if resource.forms.any?
+          super.merge(_controls: serialize_forms(resource.forms))
         else
           super
         end
       end
 
-      def serialize_controls(controls)
-        controls.each_with_object({}) do |control, result|
-          result[control.name] = serialize_control(control)
+      def serialize_forms(forms)
+        forms.each_with_object({}) do |form, result|
+          result[form.name] = serialize_form(form)
         end
       end
 
-      def serialize_control(control)
-        raw = control.to_h
+      def serialize_form(form)
+        raw = form.to_h
         raw[:href]  = raw.delete(:action)
-        raw[:fields] = control.fields.map do |field|
+        raw[:fields] = form.fields.map do |field|
           field.to_h.each_with_object({}) do |(attr,value), hsh|
             if attr == :options
               if !value.empty?

@@ -6,7 +6,7 @@ module Yaks
               links: [],
               attributes: {},
               subresources: [],
-              controls: []
+              forms: []
             )
 
     def initialize(attrs = {})
@@ -56,8 +56,8 @@ module Yaks
       append_to(:links, link)
     end
 
-    def add_control(control)
-      append_to(:controls, control)
+    def add_form(form)
+      append_to(:forms, form)
     end
 
     def add_subresource(subresource)

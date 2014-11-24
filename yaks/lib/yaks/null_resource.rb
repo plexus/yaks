@@ -39,7 +39,7 @@ module Yaks
       raise UnsupportedOperationError, "Operation #{__method__} not supported on #{self.class}"
     end
 
-    def add_control(_control)
+    def add_form(_form)
       raise UnsupportedOperationError, "Operation #{__method__} not supported on #{self.class}"
     end
 
