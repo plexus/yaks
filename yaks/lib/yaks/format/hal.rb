@@ -21,6 +21,8 @@ module Yaks
     #   end
     #
     class Hal < self
+      include Transform
+
       register :hal, :json, 'application/hal+json'
 
       protected
@@ -80,13 +82,11 @@ module Yaks
       # @return [Hash]
       def serialize_embedded(subresources)
         subresources.each_with_object({}) do |sub, memo|
-          memo[sub.rels.first] = if sub.collection?
-                                   sub.map( &method(:serialize_resource) )
-                                 elsif sub.null_resource?
-                                   nil
-                                 else
-                                   serialize_resource(sub)
-                                 end
+          memo[sub.rels.first] = Cond.new(
+            :collection?,    Map.new(method(:serialize_resource)),
+            :null_resource?, Constant.new(nil),
+            method(:serialize_resource)
+          ).call(sub)
         end
       end
 

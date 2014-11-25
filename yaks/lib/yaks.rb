@@ -61,6 +61,7 @@ require 'yaks/mapper/association_mapper'
 require 'yaks/collection_mapper'
 
 require 'yaks/resource/form'
+require 'yaks/transform'
 
 require 'yaks/serializer'
 
