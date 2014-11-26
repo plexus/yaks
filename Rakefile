@@ -1,5 +1,8 @@
 require 'yaks'
 require 'yaks-html'
+require 'yaks-sinatra'
+require 'yaks-transit'
+
 require 'rubygems/package_task'
 require 'rspec/core/rake_task'
 require 'yard'
@@ -53,3 +56,11 @@ task :rspec => ["yaks:rspec", "yaks-html:rspec"]
 
 desc 'Run mutation tests'
 delegate_task :yaks, :mutant
+
+desc "Start a console"
+task :console do
+  require 'irb'
+  require 'irb/completion'
+  ARGV.clear
+  IRB.start
+end
