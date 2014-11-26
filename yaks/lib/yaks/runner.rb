@@ -8,9 +8,16 @@ module Yaks
     def_delegators :config, :policy, :default_format, :format_options, :primitivize, :serializers
 
     def call
-      steps.inject(object) {|memo, (_, step)| step.call(memo, env) }
+      process(steps, object)
     end
-    alias result call
+
+    def map(object)
+      process(insert_hooks([[:map, mapper]]), object)
+    end
+
+    def process(operations, input)
+      operations.inject(input) {|memo, (_, step)| step.call(memo, env) }
+    end
 
     def context
       {

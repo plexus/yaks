@@ -65,5 +65,9 @@ module Yaks
       runner(object, options).call
     end
     alias serialize call
+
+    def map(object, options = {})
+      runner(object, options).map(object)
+    end
   end
 end
