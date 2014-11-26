@@ -78,14 +78,14 @@ module Yaks
         end
       end
 
-      def render_form(form)
+      def render_form(form_control)
         form = H[:form]
-        form = form.attr('name', form.name)          if form.name
-        form = form.attr('method', form.method)      if form.method
-        form = form.attr('action', form.action)      if form.action
-        form = form.attr('enctype', form.media_type) if form.media_type
+        form = form.attr('name', form_control.name)          if form_control.name
+        form = form.attr('method', form_control.method)      if form_control.method
+        form = form.attr('action', form_control.action)      if form_control.action
+        form = form.attr('enctype', form_control.media_type) if form_control.media_type
 
-        rows = form.fields.map do |field|
+        rows = form_control.fields.map do |field|
           H[:tr,
             H[:td, H[:label, {for: field.name}, field.label || '']],
             H[:td, case field.type
@@ -96,7 +96,7 @@ module Yaks
                    end]
            ]
         end
-        form.content(H[:table, form.title || '', *rows, H[:tr, H[:td, H[:input, {type: 'submit'}]]]])
+        form.content(H[:table, form_control.title || '', *rows, H[:tr, H[:td, H[:input, {type: 'submit'}]]]])
       end
     end
   end
