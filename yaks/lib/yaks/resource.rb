@@ -18,6 +18,10 @@ module Yaks
       attributes[attr]
     end
 
+    def find_form(name)
+      forms.find {|form| form.name == name}
+    end
+
     def seq
       [self]
     end
