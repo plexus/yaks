@@ -1,7 +1,7 @@
 module Yaks
   class Mapper
     class Attribute
-      include Concord::Public.new(:name)
+      include Attributes.new(:name)
 
       def initialize(name)
         @name = name

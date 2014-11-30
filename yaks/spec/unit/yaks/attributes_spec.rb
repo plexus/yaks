@@ -63,3 +63,82 @@ RSpec.describe Yaks::Attributes do
     end
   end
 end
+
+RSpec.describe Yaks::Attributes::InstanceMethods do
+  let(:widget) do
+    Class.new do
+      include Yaks::Attributes.new(:color, :size, options: {})
+      def self.name ; 'Widget' ; end
+    end
+  end
+
+  let(:widget_container) do
+    Class.new do
+      include Yaks::Attributes.new(widgets: [])
+      def self.name ; 'WidgetContainer' ; end
+    end
+  end
+
+  let(:fixed_width) do
+    Class.new do
+      def initialize(width)
+        @width = width
+      end
+
+      def inspect
+        "#" * @width
+      end
+    end
+  end
+
+  describe '#pp' do
+    it 'should render correctly' do
+      expect(widget_container.new(widgets: [
+                                    widget.new(color: :green, size: 7),
+                                    widget.new(color: :blue, size: 9, options: {foo: :bar})
+                                  ]).pp).to eql "
+WidgetContainer.new(
+  widgets: [
+    Widget.new(color: :green, size: 7),
+    Widget.new(color: :blue, size: 9, options: {:foo=>:bar})
+  ]
+)
+".strip
+    end
+
+    it 'should inline short arrays' do
+      expect(widget_container.new(widgets: [
+                                    fixed_width.new(23),
+                                    fixed_width.new(22)
+                                  ]).pp).to eql "WidgetContainer.new(widgets: [#######################, ######################])"
+    end
+
+    it 'should put longer arrays on multiple lines' do
+      expect(widget_container.new(widgets: [
+                                    fixed_width.new(23),
+                                    fixed_width.new(23)
+                                  ]).pp).to eql "WidgetContainer.new(\n  widgets: [\n    #######################,\n    #######################\n  ]\n)"
+    end
+
+    it 'should puts attributes on multiple lines if total length exceeds 50 chars' do
+      expect(widget.new(color: fixed_width.new(18), size: fixed_width.new(18)).pp).to match /\n/
+      expect(widget.new(color: fixed_width.new(18), size: fixed_width.new(17)).pp).to_not match /\n/
+    end
+  end
+
+  describe '#append_to' do
+    it 'should append to a named collection' do
+      expect(widget_container.new(widgets: [:bar]).append_to(:widgets, :foo)).to eql widget_container.new(widgets: [:bar, :foo])
+    end
+  end
+
+  describe '#initialize' do
+    it 'should take hash-based args' do
+      expect(widget_container.new(widgets: [:bar])).to eql widget_container.new.widgets([:bar])
+    end
+
+    it 'should use defaults when available' do
+      expect(widget.new(color: :blue, size: 3).options).to eql({})
+    end
+  end
+end

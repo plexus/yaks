@@ -54,7 +54,7 @@ module Yaks
           fmt_val = case value
                     when Array
                       if value.inspect.length < 50
-                        value.inspect
+                        "[#{value.map(&format).join(", ")}]"
                       else
                         "[\n#{indent[value.map(&format).join(",\n")]}\n]"
                       end
@@ -62,12 +62,18 @@ module Yaks
                       format[value]
                     end
           "#{attr}: #{fmt_val}"
-        end.join(",\n")
-
-        unless fmt_attrs.empty?
-          fmt_attrs = "\n#{indent[fmt_attrs]}\n"
         end
-        "#{self.class.name}.new(#{fmt_attrs})"
+
+        fmt_attrs_str = fmt_attrs.join(", ")
+
+        if fmt_attrs_str.length > 50
+          fmt_attrs_str = fmt_attrs.join(",\n")
+        end
+
+        if fmt_attrs_str =~ /\n/
+          fmt_attrs_str = "\n#{indent[fmt_attrs_str]}\n"
+        end
+        "#{self.class.name}.new(#{fmt_attrs_str})"
       end
     end
   end
