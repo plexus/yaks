@@ -19,7 +19,7 @@ module Yaks
     end
 
     def find_form(name)
-      forms.find {|form| form.name == name}
+      forms.find { |form| form.name == name }
     end
 
     def seq

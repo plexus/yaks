@@ -45,7 +45,7 @@ module Yaks
             context.instance_exec(&maybe_proc)
           end
         else
-          maybe_proc.to_proc.()
+          maybe_proc.to_proc.call()
         end
       else
         maybe_proc
@@ -56,7 +56,7 @@ module Yaks
       def deprecated_alias(name, actual)
         define_method name do |*args, &block|
           $stderr.puts "WARNING: #{self.class}##{name} is deprecated, use `#{actual}'. at #{caller.first}"
-          send(actual, *args, &block)
+          public_send(actual, *args, &block)
         end
       end
     end

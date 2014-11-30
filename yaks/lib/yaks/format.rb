@@ -20,7 +20,7 @@ module Yaks
 
     # @param [Yaks::Resource] resource
     # @return [Hash]
-    def call(resource, env = {})
+    def call(resource, _env = {})
       serialize_resource(resource)
     end
     alias serialize call

@@ -3,14 +3,15 @@ module Yaks
     class Form
       extend Util::Deprecated, Configurable
       include Attributes.new(
-                name: nil, action: nil, title: nil, method: nil, media_type: nil, fields: []
-              )
-
+        name: nil, action: nil, title: nil, method: nil, media_type: nil, fields: []
+      )
 
       deprecated_alias :href, :action
 
-      Builder = StatefulBuilder
-          .new(self, self.attributes.names + HTML5Forms::INPUT_TYPES + [:field])
+      Builder = StatefulBuilder.new(
+        self,
+        self.attributes.names + HTML5Forms::INPUT_TYPES + [:field]
+      )
 
       def self.create(name = nil, options = {}, &block)
         Builder.build(new({name: name}.merge(options)), &block)
