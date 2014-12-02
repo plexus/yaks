@@ -15,6 +15,7 @@ module Yaks
         result[:href] = resource.self_link.uri if resource.self_link
         result[:links] = serialize_links(resource) if links? resource
         result[:queries] = serialize_queries(resource) if queries? resource
+        result[:template] = serialize_template(resource) if resource.find_form :template
         {collection: result}
       end
 
@@ -77,6 +78,16 @@ module Yaks
 
       def method_is_get?(method)
         method.downcase.to_sym === :get
+      end
+
+      def serialize_template(resource)
+        fields = resource.find_form(:template).fields
+        result = {data: []}
+        fields.each do |field|
+          result[:data] << {name: field.name, value: nil.to_s}
+          result[:data].last[:prompt] = field.label if field.label
+        end
+        result
       end
     end
   end

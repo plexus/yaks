@@ -262,4 +262,79 @@ RSpec.describe Yaks::Format::CollectionJson do
       end
     end
   end
+
+  context 'template' do
+    let(:resource) {
+      Yaks::Resource.new(
+        attributes: {foo: 'fooval', bar: 'barval'},
+        forms: [Yaks::Resource::Form.new(name: :template, fields: fields)]
+      )
+    }
+
+    subject {
+      Yaks::Primitivize.create.call(described_class.new.call(resource))
+    }
+
+    context "template uses prompts" do
+      let(:fields) {
+        [
+          Yaks::Resource::Form::Field.new(name: 'foo', label: 'My Foo Field'),
+          Yaks::Resource::Form::Field.new(name: 'bar', label: 'My Bar Field')
+        ]
+      }
+
+      it 'should render a template' do
+        should deep_eql(
+          "collection" => {
+            "version" => "1.0",
+            "items" => [
+              {
+                "data" => [
+                  { "name"=>"foo", "value"=>"fooval" },
+                  { "name"=>"bar", "value"=>"barval" }
+                ]
+              }
+            ],
+            "template" => {
+              "data" => [
+                { "name"=>"foo", "value"=>"", "prompt"=>"My Foo Field" },
+                { "name"=>"bar", "value"=>"", "prompt"=>"My Bar Field" }
+              ]
+            }
+          }
+        )
+      end
+    end
+
+    context "template does not use prompts" do
+      let(:fields) {
+        [
+          Yaks::Resource::Form::Field.new(name: 'foo'),
+          Yaks::Resource::Form::Field.new(name: 'bar')
+        ]
+      }
+
+      it 'should render a template without prompts' do
+        should deep_eql(
+          "collection" => {
+            "version" => "1.0",
+            "items" => [
+              {
+                "data" => [
+                  { "name"=>"foo", "value"=>"fooval" },
+                  { "name"=>"bar", "value"=>"barval" }
+                ]
+              }
+            ],
+            "template" => {
+              "data" => [
+                { "name"=>"foo", "value"=>"" },
+                { "name"=>"bar", "value"=>"" }
+              ]
+            }
+          }
+        )
+      end
+    end
+  end
 end
