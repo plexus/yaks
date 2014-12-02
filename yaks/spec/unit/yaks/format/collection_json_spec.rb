@@ -9,33 +9,65 @@ RSpec.describe Yaks::Format::CollectionJson do
     it { should deep_eql(load_json_fixture('plant_collection.collection')) }
   end
 
-  context 'with a link without title' do
-    let(:resource) {
-      Yaks::Resource.new(
-        attributes: {foo: 'fooval', bar: 'barval'},
-        links: [Yaks::Resource::Link.new(rel: 'the_rel', uri: 'the_uri')]
-      )
-    }
+  context 'link' do
+    context 'without title' do
+      let(:resource) {
+        Yaks::Resource.new(
+          attributes: {foo: 'fooval', bar: 'barval'},
+          links: [Yaks::Resource::Link.new(rel: 'the_rel', uri: 'the_uri')]
+        )
+      }
 
-    subject {
-      Yaks::Primitivize.create.call(described_class.new.call(resource))
-    }
+      subject {
+        Yaks::Primitivize.create.call(described_class.new.call(resource))
+      }
 
-    it 'should not render a name' do
-      should deep_eql(
-        "collection" => {
-          "version" => "1.0",
-          "items" => [
-            {
-              "data" => [
-                { "name"=>"foo", "value"=>"fooval" },
-                { "name"=>"bar", "value"=>"barval" }
-              ],
-              "links" => [{"rel"=>"the_rel", "href"=>"the_uri"}]
-            }
-          ]
-        }
-      )
+      it 'should not render a name' do
+        should deep_eql(
+          "collection" => {
+            "version" => "1.0",
+            "items" => [
+              {
+                "data" => [
+                  { "name"=>"foo", "value"=>"fooval" },
+                  { "name"=>"bar", "value"=>"barval" }
+                ],
+                "links" => [{"rel"=>"the_rel", "href"=>"the_uri"}]
+              }
+            ]
+          }
+        )
+      end
+    end
+
+    context 'with a title' do
+      let(:resource) {
+        Yaks::Resource.new(
+          attributes: {foo: 'fooval', bar: 'barval'},
+          links: [Yaks::Resource::Link.new(options: {title: 'the_name'}, rel: 'the_rel', uri: 'the_uri')]
+        )
+      }
+
+      subject {
+        Yaks::Primitivize.create.call(described_class.new.call(resource))
+      }
+
+      it 'should render a name' do
+        should deep_eql(
+          "collection" => {
+            "version" => "1.0",
+            "items" => [
+              {
+                "data" => [
+                  { "name"=>"foo", "value"=>"fooval" },
+                  { "name"=>"bar", "value"=>"barval" }
+                ],
+                "links" => [{"name"=>"the_name", "rel"=>"the_rel", "href"=>"the_uri"}]
+              }
+            ]
+          }
+        )
+      end
     end
   end
 end

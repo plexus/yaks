@@ -13,6 +13,7 @@ module Yaks
           items: serialize_items(resource)
         }
         result[:href] = resource.self_link.uri if resource.self_link
+        result[:links] = serialize_links(resource) if resource.collection? && resource.links.any?
         {collection: result}
       end
 
@@ -36,6 +37,14 @@ module Yaks
           end
           result
         end
+      end
+
+      def serialize_links(resource)
+        result = []
+        resource.links.each do |link|
+          result << {href: link.uri, rel: link.rel}
+        end
+        result
       end
     end
   end
