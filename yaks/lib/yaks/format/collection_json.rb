@@ -54,6 +54,11 @@ module Yaks
         fields.each do |field|
           result << {rel: field.options[:rel], href: field.options[:uri]}
           result.last[:name] = field.name if field.name
+          result.last[:prompt] = field.label if field.label
+          field.options[:data].each do |item|
+            result.last[:data] = [] unless result.last.key? :data
+            result.last[:data] << {name: item[:name], value: item[:value]}
+          end if field.options[:data]
         end
         result
       end

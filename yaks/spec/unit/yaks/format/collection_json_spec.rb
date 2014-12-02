@@ -115,5 +115,46 @@ RSpec.describe Yaks::Format::CollectionJson do
         )
       end
     end
+
+    context "template uses optional fields" do
+      let(:fields) {
+        [
+          Yaks::Resource::Form::Field.new(name: 'foo', label: 'My Foo Field', options: {
+            rel: 'foo_rel',
+            uri: 'my_foo_uri'
+            }),
+          Yaks::Resource::Form::Field.new(name: 'bar', label: 'My Bar Field', options: {
+            rel: 'bar_rel',
+            uri: 'my_bar_uri',
+            data: [{name: 'bar_data_name', value: 'bar_data_value'}]
+            })
+        ]
+      }
+
+      it 'should render the queries array with optional fields' do
+        should deep_eql(
+          "collection" => {
+            "version" => "1.0",
+            "items" => [
+              {
+                "data" => [
+                  { "name"=>"foo", "value"=>"fooval" },
+                  { "name"=>"bar", "value"=>"barval" }
+                ]
+              }
+            ],
+            "queries" => [
+              { "href"=>"my_foo_uri", "rel"=>"foo_rel", "name"=>"foo", "prompt"=>"My Foo Field" },
+              { "href"=>"my_bar_uri", "rel"=>"bar_rel", "name"=>"bar", "prompt"=>"My Bar Field", 
+                "data"=>
+                [
+                  { "name"=>"bar_data_name", "value"=>"bar_data_value" }
+                ]
+              },
+            ]
+          }
+        )
+      end
+    end
   end
 end
