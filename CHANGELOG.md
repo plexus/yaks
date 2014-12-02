@@ -1,5 +1,5 @@
 ### master
-[full changelog](http://github.com/plexus/yaks/compare/v0.7.6...master)
+[full changelog](http://github.com/plexus/yaks/compare/v0.7.7...master)
 
 ### 0.7.7
 
