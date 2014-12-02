@@ -45,7 +45,7 @@ module Yaks
       format_class.media_type
     end
 
-    def format
+    def format_name
       format_class.format_name
     end
 
@@ -81,13 +81,6 @@ module Yaks
     end
     memoize :primitivizer
 
-    # @param [Hash] opts
-    # @return [String]
-    def format_name
-      options.fetch(:format) { default_format }
-    end
-    memoize :format_name
-
     def serializer
       serializers.fetch(format_class.serializer)
     end
@@ -100,7 +93,7 @@ module Yaks
     def insert_hooks(steps)
       hooks.inject(steps) do |steps, (type, target_step, name, hook)|
         steps.flat_map do |step_name, callable|
-          if step_name.eql? target_step
+          if step_name.equal? target_step
             case type
             when :before
               [[name, hook], [step_name, callable]]

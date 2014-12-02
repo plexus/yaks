@@ -120,6 +120,26 @@ RSpec.describe Yaks::Runner do
       expect(formatter).to be_a Yaks::Format::JsonAPI
       expect(formatter.send(:options)).to eql(format_option: [:foo])
     end
+
+    it 'should memoize' do
+      expect(runner.formatter).to be runner.formatter
+    end
+  end
+
+  describe '#env' do
+    describe 'when env is set in the options' do
+      let(:options) { { env: 123 } }
+
+      it 'returns the env passed in' do
+        expect(runner.env).to be 123
+      end
+    end
+
+    describe 'when no env is given' do
+      it 'falls back to an empty hash' do
+        expect(runner.env).to eql({})
+      end
+    end
   end
 
   describe '#insert_hooks' do
@@ -273,8 +293,24 @@ RSpec.describe Yaks::Runner do
     end
   end
 
-  it 'should memoize' do
-    expect(runner.formatter).to be runner.formatter
+  describe '#hooks' do
+    before do
+      Yaks::Config::DSL.new(config) do
+        after(:map, :this_happens_after_map)
+      end
+    end
+
+    it 'should contain the hooks from the config' do
+      expect(runner.hooks).to eql [[:after, :map, :this_happens_after_map, nil]]
+    end
+
+    context 'with extra blocks in the options' do
+      let(:options) { { hooks: [[:foo]] } }
+
+      it 'should combine the hooks' do
+        expect(runner.hooks).to eql [[:after, :map, :this_happens_after_map, nil], [:foo]]
+      end
+    end
   end
 
 end

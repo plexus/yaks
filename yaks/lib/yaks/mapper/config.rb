@@ -2,6 +2,7 @@ module Yaks
   class Mapper
     class Config
       extend Configurable
+
       include Attributes.new(
                 type: nil, attributes: [], links: [], associations: [], forms: []
               )

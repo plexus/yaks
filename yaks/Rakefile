@@ -2,49 +2,69 @@ load '../rakelib/shared.rake'
 
 gem_tasks(:yaks)
 
-
 task :mutant_chunked do
+  # No subjects:
+  # Yaks,
+  # Yaks::Error,
+  # Yaks::IllegalStateError,
+  # Yaks::UnsupportedOperationError,
+  # Yaks::PrimitivizeError,
+  # Yaks::Undefined,
+  # Yaks::HTML5Forms,
+
+  # Hangs:
+  # Yaks::Changelog,
+
+  # 100% verified:
+  # Yaks::Util,
+  # Yaks::Util::Deprecated,
+  # Yaks::FP
+  # Yaks::FP::Callable,
+  # Yaks::DefaultPolicy,
+  # Yaks::Mapper::HasOne,
+  # Yaks::Mapper::HasMany,
+  # Yaks::Mapper::Attribute,
+  # Yaks::Mapper::Config,
+  # Yaks::Mapper::ClassMethods,
+  # Yaks::Mapper::AssociationMapper,
+  # Yaks::Format::CollectionJson,
+  # Yaks::Config,
+  # Yaks::Config::DSL,
+  # Yaks::Attributes::InstanceMethods,
+  # Yaks::Configurable,
+  # Yaks::NullResource,
+
   [
-    Yaks::Attributes,
-    Yaks::Attributes::InstanceMethods,
-    Yaks::CollectionMapper,
-    Yaks::CollectionResource,
-    Yaks::Config,
-    Yaks::Config::DSL,
-    Yaks::Configurable,
-    Yaks::Configurable::ClassMethods,
-    Yaks::StatefulBuilder,
-    Yaks::DefaultPolicy,
-    Yaks::FP,
-    Yaks::FP::Callable,
-    Yaks::Format,
-    Yaks::Format::CollectionJson,
-    Yaks::Format::Hal,
-    Yaks::Format::Halo,
-    Yaks::Format::JsonAPI,
-    Yaks::Mapper::AssociationMapper,
-    Yaks::Mapper::Attribute,
-    Yaks::Mapper::Config,
-    Yaks::Mapper::HasOne,
-    Yaks::Primitivize,
-    Yaks::Resource,
-    Yaks::Resource::Link,
-    Yaks::Util,
-    Yaks::Serializer,
-    Yaks::Runner,
-    Yaks::Mapper::Link,
-    Yaks::Mapper::HasMany,
-    Yaks::Mapper::ClassMethods,
-    Yaks::Mapper::Association,
-    Yaks::Mapper,
-    Yaks::Format::HTML,
-    Yaks::Mapper::Form,
-    Yaks::Mapper::Form::Field,
-#   Yaks::Resource::Form, #no subjects to mutate
-    Yaks::NullResource,
+    # Yaks::Resource::Form,                   # no explicit coverage
+    # Yaks::Resource::Form::Field,            # no explicit coverage
+    # Yaks::Mapper::Form::Field::Option,      # no explicit coverage
+    # Yaks::Format::HTML,                     # no explicit coverage
+    Yaks::Runner,                           # 56/509  # 89.55%
+    Yaks::Resource,                         # 35/206  # 83.01%
+    Yaks::StatefulBuilder,                  # 25/192  # 86.98%
+    Yaks::Format::Halo,                     # 24/232  # 89.66%
+    Yaks::Mapper,                           # 15/482  # 96.89%
+    Yaks::Resource::Link,                   # 13/43   # 69.77%
+    Yaks::Mapper::Form::Field,              # 11/155  # 92.90%
+    Yaks::Mapper::Link,                     # 10/357  # 97.20%
+    Yaks::CollectionMapper,                 # 7/217   # 96.77%
+    Yaks::Primitivize,                      # 3/239   # 98.74%
+    Yaks::Mapper::Form,                     # 3/179   # 98.32%
+    Yaks::CollectionResource,               # 3/9     # 66.67%
+    Yaks::Format::JsonAPI,                  # 3/435   # 99.31%
+    Yaks::Format,                           # 2/29    # 93.10%
+    Yaks::Attributes,                       # 1/239   # 99.57%
+    Yaks::StatefulBuilder::StatefulMethods, # 1/66    # 98.49%
+    Yaks::Mapper::Association,              # 1/222   # 99.55%
+    Yaks::Serializer,                       # 1/74    # 98.65%
+    Yaks::Format::Hal,                      # 1/328   # 99.70%
+    # Yaks::Format::Transit,                  # no explicit coverage
+    # Yaks::Format::Transit::WriteHandler,    # no explicit coverage
+    # Yaks::Format::Transit::ReadHandler,     # no explicit coverage
   ].each do |space|
     puts space
     ENV['PATTERN'] = "#{space}"
     Rake::Task["mutant"].execute
+    break
   end
 end

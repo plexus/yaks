@@ -36,9 +36,7 @@ module Yaks
       Yaks::Config.new(&blk)
     end
   end
-
 end
-
 
 require 'yaks/resource'
 require 'yaks/null_resource'
