@@ -1,8 +1,20 @@
 ### master
 [full changelog](http://github.com/plexus/yaks/compare/v0.7.6...master)
 
+### 0.7.7
+
+General extension and improvements to form handling.
+
+Add top level links in Collection+JSON (Carles Jove i Buxeda)
+
 The mapper DSL method "control" has been renamed to "form". There is a
 deprecated alias available.
+
+Add Yaks::Resource#find_form for querying a resource for an embedded
+form by name.
+
+Introduce yaks.map() so you can only call the mapping step without
+running the whole pipeline.
 
 ### 0.7.6
 
