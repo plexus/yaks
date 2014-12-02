@@ -70,4 +70,50 @@ RSpec.describe Yaks::Format::CollectionJson do
       end
     end
   end
+
+  context 'queries' do
+    let(:resource) {
+      Yaks::Resource.new(
+        attributes: {foo: 'fooval', bar: 'barval'},
+        forms: [Yaks::Resource::Form.new(name: :queries, fields: fields)]
+      )
+    }
+
+    subject {
+      Yaks::Primitivize.create.call(described_class.new.call(resource))
+    }
+
+    context "template uses only required fields" do
+      # NOTE: Yaks::Resource::Form::Field requires a name attr.
+      # However, in CJ 'queries', 'name' is optional.
+      # So here we're testing only required fields, but 'name'
+      # shouldn't really be one of them… Leaving it this way for now.
+      let(:fields) {
+        [
+          Yaks::Resource::Form::Field.new(name: 'foo', options: {rel: 'foo_rel', uri: 'my_foo_uri'}),
+          Yaks::Resource::Form::Field.new(name: 'bar', options: {rel: 'bar_rel', uri: 'my_bar_uri'})
+        ]
+      }
+
+      it 'should render the queries array' do
+        should deep_eql(
+          "collection" => {
+            "version" => "1.0",
+            "items" => [
+              {
+                "data" => [
+                  { "name"=>"foo", "value"=>"fooval" },
+                  { "name"=>"bar", "value"=>"barval" }
+                ]
+              }
+            ],
+            "queries" => [
+              { "href"=>"my_foo_uri", "rel"=>"foo_rel", "name"=>"foo" },
+              { "href"=>"my_bar_uri", "rel"=>"bar_rel", "name"=>"bar" }
+            ]
+          }
+        )
+      end
+    end
+  end
 end

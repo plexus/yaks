@@ -14,6 +14,7 @@ module Yaks
         }
         result[:href] = resource.self_link.uri if resource.self_link
         result[:links] = serialize_links(resource) if resource.collection? && resource.links.any?
+        result[:queries] = serialize_queries(resource) if resource.find_form :queries
         {collection: result}
       end
 
@@ -43,6 +44,16 @@ module Yaks
         result = []
         resource.links.each do |link|
           result << {href: link.uri, rel: link.rel}
+        end
+        result
+      end
+
+      def serialize_queries(resource)
+        fields = resource.find_form(:queries).fields
+        result = []
+        fields.each do |field|
+          result << {rel: field.options[:rel], href: field.options[:uri]}
+          result.last[:name] = field.name if field.name
         end
         result
       end
