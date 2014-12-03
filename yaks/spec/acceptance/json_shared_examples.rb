@@ -10,7 +10,10 @@ end
 RSpec.shared_examples_for 'JSON round trip' do |yaks, format, name|
   let(:json) { load_json_fixture("#{name}.#{format}") }
 
-  subject { yaks.call(yaks.read(input)) }
+  subject {
+    resource = yaks.read(json, hooks: [[:skip, :parse]])
+    yaks.call(resource, hooks: [[:skip, :map]], mapper: Struct.new(:context))
+  }
 
   it { should deep_eql json }
 end

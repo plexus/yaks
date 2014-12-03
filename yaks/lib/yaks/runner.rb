@@ -13,6 +13,10 @@ module Yaks
       Pipeline.new(steps).insert_hooks(hooks).call(object, env)
     end
 
+    def read
+      Pipeline.new([[:parse, serializer.inverse], [:format, formatter.inverse]]).insert_hooks(hooks).call(object, env)
+    end
+
     def map
       Pipeline.new([[:map, mapper]]).insert_hooks(hooks).call(object, env)
     end

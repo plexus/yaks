@@ -2,7 +2,7 @@ module Yaks
   module Reader
     class Hal
 
-      def call(parsed_json)
+      def call(parsed_json, env = {})
         attributes = parsed_json.dup
         links      = convert_links(attributes.delete('_links') || {})
         embedded   = convert_embedded(attributes.delete('_embedded') || {})

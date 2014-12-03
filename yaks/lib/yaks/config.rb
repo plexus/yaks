@@ -85,6 +85,7 @@ module Yaks
     end
 
     def read(data, options = {})
+      runner(data, options).read
     end
   end
 end

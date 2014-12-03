@@ -23,6 +23,14 @@ module Yaks
     class Hal < self
       register :hal, :json, 'application/hal+json'
 
+      def transitive?
+        true
+      end
+
+      def inverse
+        Reader::Hal.new
+      end
+
       protected
 
       # @param [Yaks::Resource] resource

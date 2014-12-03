@@ -24,7 +24,7 @@ module Yaks
     end
 
     def symbolize_keys(hash)
-      hash.each_with_object({}) {|(k,v), hsh| p [k,v]; hsh[k.to_sym] = v}
+      hash.each_with_object({}) {|(k,v), hsh| hsh[k.to_sym] = v}
     end
 
     # Turn what is maybe a Proc into its result (or itself)

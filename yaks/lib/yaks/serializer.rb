@@ -6,7 +6,36 @@ module Yaks
     end
 
     def self.all
-      @serializers ||= {json: ->(data, env) { JSON.pretty_generate(data) }}
+      @serializers ||= {json: JSONWriter}
     end
+
+    module JSONWriter
+      def self.call(data, env)
+        JSON.pretty_generate(data)
+      end
+
+      def self.transitive?
+        true
+      end
+
+      def self.inverse
+        JSONReader
+      end
+    end
+
+    module JSONReader
+      def self.call(data, env)
+        JSON.parse(data)
+      end
+
+      def self.transitive?
+        true
+      end
+
+      def self.inverse
+        JSONWriter
+      end
+    end
+
   end
 end
