@@ -33,13 +33,13 @@ task :mutant_chunked do
   # Yaks::Attributes::InstanceMethods,
   # Yaks::Configurable,
   # Yaks::NullResource,
+  # Yaks::Runner,
 
   [
     # Yaks::Resource::Form,                   # no explicit coverage
     # Yaks::Resource::Form::Field,            # no explicit coverage
     # Yaks::Mapper::Form::Field::Option,      # no explicit coverage
     # Yaks::Format::HTML,                     # no explicit coverage
-    Yaks::Runner,                           # 56/509  # 89.55%
     Yaks::Resource,                         # 35/206  # 83.01%
     Yaks::StatefulBuilder,                  # 25/192  # 86.98%
     Yaks::Format::Halo,                     # 24/232  # 89.66%
