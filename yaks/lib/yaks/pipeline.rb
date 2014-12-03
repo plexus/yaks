@@ -16,7 +16,7 @@ module Yaks
             when :after
               [[step_name, callable], [name, hook]]
             when :around
-              [[step_name, ->(x, env) { hook.call(x, env, &callable) }]]
+              [[name, ->(x, env) { hook.call(x, env, &callable) }]]
             when :skip
               []
             end
