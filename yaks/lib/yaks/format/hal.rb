@@ -28,7 +28,7 @@ module Yaks
       end
 
       def inverse
-        Reader::Hal.new
+        Yaks::Reader::Hal.new
       end
 
       protected
