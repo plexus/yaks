@@ -26,7 +26,7 @@ class ScholarMapper < LiteratureBaseMapper
   has_many :works
 
   link 'http://literature.example.com/rels/quotes', 'http://literature.example.com/quotes/?author={downcased_pinyin}&q={query}', expand: [:downcased_pinyin], title: 'Search for quotes'
-  link :self, 'http://literature.example.com/authors/{downcased_pinyin}'
+  link :self, 'http://literature.example.com/authors/{downcased_pinyin}', replace: true
 
   form :search do
     title 'Find a Scholar'

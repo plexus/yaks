@@ -81,7 +81,10 @@ module Yaks
     alias serialize call
 
     def map(object, options = {})
-      runner(object, options).map(object)
+      runner(object, options).map
+    end
+
+    def read(data, options = {})
     end
   end
 end

@@ -20,6 +20,8 @@ RSpec.describe Yaks::Format::Hal do
 
   include_examples 'JSON output format', yaks_rel_template, :hal, 'confucius'
   include_examples 'JSON output format', yaks_policy_dsl,   :hal, 'confucius'
+
+#  include_examples 'JSON round trip',    yaks_rel_template, :hal, 'confucius'
 end
 
 RSpec.describe Yaks::Format::Halo do

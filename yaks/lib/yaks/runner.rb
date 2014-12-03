@@ -10,15 +10,11 @@ module Yaks
     def_delegators :format_class,  :media_type, :format_name
 
     def call
-      process(steps, object)
+      Pipeline.new(steps).insert_hooks(hooks).call(object, env)
     end
 
-    def map(object)
-      process(insert_hooks([[:map, mapper]]), object)
-    end
-
-    def process(operations, input)
-      operations.inject(input) {|memo, (_, step)| step.call(memo, env) }
+    def map
+      Pipeline.new([[:map, mapper]]).insert_hooks(hooks).call(object, env)
     end
 
     def context
@@ -44,11 +40,10 @@ module Yaks
     memoize :format_class
 
     def steps
-      insert_hooks(
-        [[ :map, mapper ],
-         [ :format, formatter ],
-         [ :primitivize, primitivizer],
-         [ :serialize, serializer ]])
+      [[ :map, mapper ],
+       [ :format, formatter ],
+       [ :primitivize, primitivizer],
+       [ :serialize, serializer ]]
     end
     memoize :steps
 
@@ -84,23 +79,5 @@ module Yaks
       config.hooks + options.fetch(:hooks, [])
     end
 
-    def insert_hooks(steps)
-      hooks.inject(steps) do |steps, (type, target_step, name, hook)|
-        steps.flat_map do |step_name, callable|
-          if step_name.equal? target_step
-            case type
-            when :before
-              [[name, hook], [step_name, callable]]
-            when :after
-              [[step_name, callable], [name, hook]]
-            when :around
-              [[step_name, ->(x, env) { hook.call(x, env, &callable) }]]
-            when :skip
-              []
-            end
-          end || [[step_name, callable]]
-        end
-      end
-    end
   end
 end

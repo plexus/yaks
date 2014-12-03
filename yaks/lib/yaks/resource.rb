@@ -3,7 +3,7 @@ module Yaks
     include Attributes.new(
               type: nil,
               rels: [],
-              links: Set.new,
+              links: [],
               attributes: {},
               subresources: [],
               forms: []
@@ -27,6 +27,16 @@ module Yaks
     end
 
     def self_link
+      # This reverse is there so that the last :self link specified
+      # "wins". The use case is having a self link defined in a base
+      # mapper class, but having it overridden in specific
+      # subclasses. In combination with formats that expect resources
+      # to have up to one self link, this is the preferred behavior.
+      # However since 0.7.5 links take a "replace: true" option to
+      # specifiy they should replace previous defintions with the same
+      # rel, wich should be used instead. The behavior that the last
+      # link "wins" will be deprecated, the result of multiple links
+      # with the same rel will be unspecified.
       links.reverse.find do |link|
         link.rel.equal? :self
       end
