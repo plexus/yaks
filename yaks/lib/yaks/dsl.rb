@@ -1,6 +1,6 @@
 module Yaks
-  module Configurable
-    def config_method(name, options)
+  module DSL
+    def dsl_method(name, options)
       define_method name do |*args, &block|
         defaults = options.fetch(:defaults, {})
         klass    = options.fetch(:create)

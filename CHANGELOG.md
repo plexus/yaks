@@ -1,6 +1,14 @@
 ### master
 [full changelog](http://github.com/plexus/yaks/compare/v0.7.7...master)
 
+Yaks::Config is now immutable, much like Yaks::Mapper::Config. This
+makes it easy to create multiple related configurations by simple
+method chaining. The DSL should be unchanged. Two methods are
+considered deprecated, however.
+
+* json_serializer, use serializer(:json, &...)
+* namespace, use mapper_namespace
+
 ### 0.7.7
 
 General extension and improvements to form handling.

@@ -6,7 +6,7 @@ RSpec.describe Yaks::Runner do
   }
 
   let(:object) { Object.new }
-  let(:config) { Yaks::Config.new }
+  let(:config) { Yaks.new }
   let(:options) { {} }
 
   shared_examples 'high-level runner test' do
@@ -51,7 +51,7 @@ RSpec.describe Yaks::Runner do
 
   describe '#format_class' do
     let(:config) do
-      Yaks::Config.new do
+      Yaks.new do
         default_format :collection_json
       end
     end
@@ -98,7 +98,7 @@ RSpec.describe Yaks::Runner do
     end
 
     context 'with a default format specified' do
-      let(:config) { Yaks::Config.new { default_format :collection_json } }
+      let(:config) { Yaks.new { default_format :collection_json } }
 
       context 'with a format in the options' do
         let(:options) { { format: :json_api } }
@@ -117,7 +117,7 @@ RSpec.describe Yaks::Runner do
 
   describe '#formatter' do
     let(:config) {
-      Yaks::Config.new do
+      Yaks.new do
         default_format :json_api
         format_options :json_api, {format_option: [:foo]}
       end
@@ -153,7 +153,7 @@ RSpec.describe Yaks::Runner do
 
   describe '#insert_hooks' do
     let(:options) { { mapper: Yaks::Mapper } }
-    let(:config)  { Yaks::Config.new(&hooks) }
+    let(:config)  { Yaks.new(&hooks) }
     let(:hooks)   { proc {} }
 
     describe 'before' do
@@ -256,8 +256,8 @@ RSpec.describe Yaks::Runner do
   describe '#serializer' do
     context 'with a serializer configured' do
       let(:config) {
-        Yaks::Config.new do
-          json_serializer do |input|
+        Yaks.new do
+          serializer(:json) do |input|
             "serialized #{input}"
           end
         end
@@ -287,7 +287,7 @@ RSpec.describe Yaks::Runner do
 
     context 'with hooks' do
       let(:config) {
-        Yaks::Config.new do
+        Yaks.new do
           after(:format, :my_hook) { :foo }
         end
       }
@@ -301,7 +301,7 @@ RSpec.describe Yaks::Runner do
   describe '#primitivizer' do
     describe 'with a non json based format' do
       let(:config) do
-        Yaks::Config.new do
+        Yaks.new do
           default_format :html
         end
       end
@@ -319,11 +319,9 @@ RSpec.describe Yaks::Runner do
   end
 
   describe '#hooks' do
-    before do
-      Yaks::Config::DSL.new(config) do
-        after(:map, :this_happens_after_map)
-      end
-    end
+    let(:config) {
+      super().after(:map, :this_happens_after_map)
+    }
 
     it 'should contain the hooks from the config' do
       expect(runner.hooks).to eql [[:after, :map, :this_happens_after_map, nil]]
@@ -353,7 +351,7 @@ RSpec.describe Yaks::Runner do
 
     context 'with a hook on the :map step' do
       let(:config)  do
-        Yaks::Config.new do
+        Yaks.new do
           around(:map) do |res, env, &block|
             "around[#{block.call(res, env)}]"
           end

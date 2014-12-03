@@ -1,12 +1,19 @@
 module Yaks
   class Mapper
     class Form
-      extend Util::Deprecated, Configurable
+      extend Util::Deprecated, DSL
       include Attributes.new(
         name: nil, action: nil, title: nil, method: nil, media_type: nil, fields: []
       )
 
       deprecated_alias :href, :action
+
+      dsl_method :field, create: Field::Builder, append_to: :fields
+
+      HTML5Forms::INPUT_TYPES.each do |type|
+        dsl_method type, create: Field::Builder, append_to: :fields,
+                   defaults: { type: type }
+      end
 
       Builder = StatefulBuilder.new(
         self,

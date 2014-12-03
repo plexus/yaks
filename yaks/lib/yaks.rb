@@ -13,7 +13,7 @@ require 'rack/accept'
 
 require 'yaks/version'
 require 'yaks/util'
-require 'yaks/configurable'
+require 'yaks/dsl'
 require 'yaks/fp'
 require 'yaks/fp/callable'
 require 'yaks/primitivize'
@@ -29,11 +29,30 @@ module Yaks
   # Set the Root constant as the gems root path
   Root = Pathname(__FILE__).join('../..')
 
+  DSL_METHODS = [
+    :format_options,
+    :rel_template,
+    :before,
+    :after,
+    :around,
+    :skip,
+    :namespace,
+    :mapper_namespace,
+    :policy_class,
+    :serializer,
+    :json_serializer,
+  ]
+
   class << self
     # @param [Proc] blk
     # @return [Yaks::Config]
     def new(&blk)
-      Yaks::Config.new(&blk)
+      StatefulBuilder
+        .new(Yaks::Config,
+             Yaks::Config.attributes.names +
+             Yaks::DefaultPolicy.public_instance_methods(false) +
+             DSL_METHODS)
+        .create(&blk)
     end
   end
 end
@@ -50,8 +69,8 @@ require 'yaks/mapper/has_one'
 require 'yaks/mapper/has_many'
 require 'yaks/mapper/attribute'
 require 'yaks/mapper/link'
-require 'yaks/mapper/form'
 require 'yaks/mapper/form/field'
+require 'yaks/mapper/form'
 require 'yaks/mapper/config'
 require 'yaks/mapper/class_methods'
 require 'yaks/mapper'
@@ -68,6 +87,5 @@ require 'yaks/format/halo'
 require 'yaks/format/json_api'
 require 'yaks/format/collection_json'
 
-require 'yaks/config/dsl'
 require 'yaks/config'
 require 'yaks/runner'

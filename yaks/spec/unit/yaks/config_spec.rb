@@ -4,23 +4,19 @@ RSpec.describe Yaks::Config do
   include_context 'fixtures'
 
   def self.configure(&blk)
-    subject(:config) { described_class.new(&blk) }
+    subject(:config) { Yaks.new(&blk) }
   end
 
   describe '#initialize' do
     context 'defaults' do
       configure {}
 
-      its(:default_format) { should equal :hal }
-      its(:policy_class)   { should < Yaks::DefaultPolicy }
-      its(:primitivize)    { should be_a Yaks::Primitivize }
-      its(:serializers)    { should eql(Yaks::Serializer.all)  }
-      its(:serializers)    { should_not equal(Yaks::Serializer.all)  }
-      its(:hooks)          { should eql([])  }
-
-      it 'should have empty format options' do
-        expect(config.format_options[:hal]).to eql({})
-      end
+      its(:default_format)      { should equal :hal }
+      its(:policy_class)        { should <= Yaks::DefaultPolicy }
+      its(:primitivize)         { should be_a Yaks::Primitivize }
+      its(:serializers)         { should eql(Yaks::Serializer.all)  }
+      its(:hooks)               { should eql([])  }
+      its(:format_options_hash) { should eql({})}
     end
 
     context 'with a default format' do
@@ -34,7 +30,7 @@ RSpec.describe Yaks::Config do
     context 'with a custom policy class' do
       MyPolicy = Struct.new(:options)
       configure do
-        policy MyPolicy
+        policy_class MyPolicy
       end
 
       its(:policy_class) { should equal MyPolicy }
@@ -55,7 +51,7 @@ RSpec.describe Yaks::Config do
       end
 
       specify do
-        expect(config.format_options[:hal]).to eql(plural_links: [:self, :profile])
+        expect(config.format_options_hash[:hal]).to eql(plural_links: [:self, :profile])
       end
     end
   end
