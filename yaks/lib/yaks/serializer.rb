@@ -10,6 +10,8 @@ module Yaks
     end
 
     module JSONWriter
+      extend Yaks::FP::Callable
+
       def self.call(data, env)
         JSON.pretty_generate(data)
       end
@@ -24,6 +26,8 @@ module Yaks
     end
 
     module JSONReader
+      extend Yaks::FP::Callable
+
       def self.call(data, env)
         JSON.parse(data)
       end
