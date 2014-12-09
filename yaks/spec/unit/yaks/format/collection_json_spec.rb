@@ -75,7 +75,7 @@ RSpec.describe Yaks::Format::CollectionJson do
     let(:resource) {
       Yaks::Resource.new(
         attributes: {foo: 'fooval', bar: 'barval'},
-        forms: [Yaks::Resource::Form.new(name: :queries, fields: fields)]
+        forms: [Yaks::Resource::Form.new(full_args)]
       )
     }
 
@@ -84,15 +84,12 @@ RSpec.describe Yaks::Format::CollectionJson do
     }
 
     context "template uses only required fields" do
-      # NOTE: Yaks::Resource::Form::Field requires a name attr.
-      # However, in CJ 'queries', 'name' is optional.
-      # So here we're testing only required fields, but 'name'
-      # shouldn't really be one of them… Leaving it this way for now.
-      let(:fields) {
-        [
-          Yaks::Resource::Form::Field.new(name: 'foo', options: {rel: 'foo_rel', uri: 'my_foo_uri'}),
-          Yaks::Resource::Form::Field.new(name: 'bar', options: {rel: 'bar_rel', uri: 'my_bar_uri'})
-        ]
+      let(:full_args) {
+        {
+          name: :search,
+          action: '/foo',
+          method: 'GET'
+        }
       }
 
       it 'should render the queries array' do
@@ -108,8 +105,7 @@ RSpec.describe Yaks::Format::CollectionJson do
               }
             ],
             "queries" => [
-              { "href"=>"my_foo_uri", "rel"=>"foo_rel", "name"=>"foo" },
-              { "href"=>"my_bar_uri", "rel"=>"bar_rel", "name"=>"bar" }
+              { "href"=>"/foo", "rel"=>"search" }
             ]
           }
         )
@@ -119,16 +115,19 @@ RSpec.describe Yaks::Format::CollectionJson do
     context "template uses optional fields" do
       let(:fields) {
         [
-          Yaks::Resource::Form::Field.new(name: 'foo', label: 'My Foo Field', options: {
-            rel: 'foo_rel',
-            uri: 'my_foo_uri'
-            }),
-          Yaks::Resource::Form::Field.new(name: 'bar', label: 'My Bar Field', options: {
-            rel: 'bar_rel',
-            uri: 'my_bar_uri',
-            data: [{name: 'bar_data_name', value: 'bar_data_value'}]
-            })
+          Yaks::Resource::Form::Field.new(name: 'foo', label: 'My Foo Field'),
+          Yaks::Resource::Form::Field.new(name: 'bar', label: 'My Bar Field')
         ]
+      }
+
+      let(:full_args) {
+        {
+          name: :search,
+          action: '/foo',
+          method: 'GET',
+          title: 'My query prompt',
+          fields: fields
+        }
       }
 
       it 'should render the queries array with optional fields' do
@@ -144,11 +143,11 @@ RSpec.describe Yaks::Format::CollectionJson do
               }
             ],
             "queries" => [
-              { "href"=>"my_foo_uri", "rel"=>"foo_rel", "name"=>"foo", "prompt"=>"My Foo Field" },
-              { "href"=>"my_bar_uri", "rel"=>"bar_rel", "name"=>"bar", "prompt"=>"My Bar Field", 
+              { "href"=>"/foo", "rel"=>"search", "prompt"=>"My query prompt",
                 "data"=>
                 [
-                  { "name"=>"bar_data_name", "value"=>"bar_data_value" }
+                  { "name"=>"foo", "value"=>"", "prompt"=>"My Foo Field" },
+                  { "name"=>"bar", "value"=>"", "prompt"=>"My Bar Field" }
                 ]
               },
             ]

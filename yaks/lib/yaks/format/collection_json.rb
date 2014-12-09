@@ -14,7 +14,7 @@ module Yaks
         }
         result[:href] = resource.self_link.uri if resource.self_link
         result[:links] = serialize_links(resource) if resource.collection? && resource.links.any?
-        result[:queries] = serialize_queries(resource) if resource.find_form :queries
+        result[:queries] = serialize_queries(resource) unless serialize_queries(resource).nil?
         {collection: result}
       end
 
@@ -49,18 +49,26 @@ module Yaks
       end
 
       def serialize_queries(resource)
-        fields = resource.find_form(:queries).fields
         result = []
-        fields.each do |field|
-          result << {rel: field.options[:rel], href: field.options[:uri]}
-          result.last[:name] = field.name if field.name
-          result.last[:prompt] = field.label if field.label
-          field.options[:data].each do |item|
-            result.last[:data] = [] unless result.last.key? :data
-            result.last[:data] << {name: item[:name], value: item[:value]}
-          end if field.options[:data]
-        end
-        result
+
+        resource.forms.each do |f|
+          next unless f.method == "GET"
+
+          # `action` in Yaks is not required,
+          # but it is for Collection+JSON
+          unless f.action.nil?
+            result << { rel: f.name, href: f.action }
+            result.last[:prompt] = f.title if f.title
+
+            f.fields.each do |field|
+              result.last[:data] = [] unless result.last.key? :data
+              result.last[:data] << {name: field.name, value: nil.to_s}
+              result.last[:data].last[:prompt] = field.label if field.label
+            end if f.fields.any?
+          end
+        end if resource.forms.any?
+
+        result if result.any?
       end
     end
   end
