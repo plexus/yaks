@@ -81,6 +81,27 @@ module Yaks
         linked[key] = (set << serialize_resource(resource))
         serialize_linked_subresources(resource.subresources, linked)
       end
+
+      def inverse
+        JsonApi::Reader.new
+      end
+    end
+
+    class Reader
+      def call(data, env)
+        type = data.detect do |key, value|
+          key unless key == "links"
+        end
+
+        CollectionResource.new(
+          type: type,
+          members: map_to_resource(data[type], )
+        )
+      end
+
+      def inverse
+        JsonApi.new
+      end
     end
   end
 end
