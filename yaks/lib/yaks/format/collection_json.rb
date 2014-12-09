@@ -14,7 +14,7 @@ module Yaks
         }
         result[:href] = resource.self_link.uri if resource.self_link
         result[:links] = serialize_links(resource) if resource.collection? && resource.links.any?
-        result[:queries] = serialize_queries(resource) unless serialize_queries(resource).nil?
+        result[:queries] = serialize_queries(resource) if queries? resource
         {collection: result}
       end
 
@@ -69,6 +69,10 @@ module Yaks
         end if resource.forms.any?
 
         result if result.any?
+      end
+
+      def queries?(resource)
+        resource.forms.any? { |f| f.method == 'GET' }
       end
     end
   end

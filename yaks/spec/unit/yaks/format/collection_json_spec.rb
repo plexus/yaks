@@ -9,6 +9,48 @@ RSpec.describe Yaks::Format::CollectionJson do
     it { should deep_eql(load_json_fixture('plant_collection.collection')) }
   end
 
+  context '#queries?' do
+    let(:resource) {
+      Yaks::Resource.new(
+        attributes: {foo: 'fooval', bar: 'barval'},
+        forms: [Yaks::Resource::Form.new(full_args)]
+      )
+    }
+
+    subject {
+      Yaks::Primitivize.create.call(described_class.new.call(resource))
+    }
+
+    context 'when resource has GET forms' do
+      let(:full_args) {
+        {
+          name: :search,
+          method: 'GET'
+        }
+      }
+
+      it 'should return true' do
+        cj = Yaks::Format::CollectionJson.new(resource)
+
+        expect(cj.queries?(resource)).to eq true
+      end
+    end
+
+    context 'when resource has not GET forms' do
+      let(:full_args) {
+        {
+          name: :search,
+          method: 'POST'
+        }
+      }
+
+      it 'should return false' do
+        cj = Yaks::Format::CollectionJson.new(resource)
+        expect(cj.queries?(resource)).to eq false
+      end
+    end
+  end
+
   context 'link' do
     context 'without title' do
       let(:resource) {
