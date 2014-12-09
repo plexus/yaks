@@ -41,14 +41,18 @@ module Yaks
         update(type => instance_variable_get("@#{type}") + objects)
       end
 
+      def to_h_compact
+        defaults = self.class.attributes.defaults
+        to_h.reject do |attr, value|
+          value.equal?(defaults[attr])
+        end
+      end
+
       def pp
         indent = ->(str) { str.lines.map {|l| "  #{l}"}.join }
         format = ->(val) { val.respond_to?(:pp) ? val.pp : val.inspect }
 
-        defaults = self.class.attributes.defaults
-        values   = to_h.reject do |attr, value|
-          value.equal?(defaults[attr])
-        end
+        values   = to_h_compact
 
         fmt_attrs = values.map do |attr, value|
           fmt_val = case value
