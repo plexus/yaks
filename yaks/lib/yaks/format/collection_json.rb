@@ -13,7 +13,7 @@ module Yaks
           items: serialize_items(resource)
         }
         result[:href] = resource.self_link.uri if resource.self_link
-        result[:links] = serialize_links(resource) if resource.collection? && resource.links.any?
+        result[:links] = serialize_links(resource) if links? resource
         result[:queries] = serialize_queries(resource) if queries? resource
         {collection: result}
       end
@@ -41,17 +41,13 @@ module Yaks
       end
 
       def serialize_links(resource)
-        result = []
-        resource.links.each do |link|
-          result << {href: link.uri, rel: link.rel}
+        resource.links.each_with_object([]) do |link, result|
+          result << { href: link.uri, rel: link.rel }
         end
-        result
       end
 
       def serialize_queries(resource)
-        result = []
-
-        resource.forms.each do |f|
+        resource.forms.each_with_object([]) do |f, result|
           next unless f.method == "GET"
 
           # `action` in Yaks is not required,
@@ -62,17 +58,19 @@ module Yaks
 
             f.fields.each do |field|
               result.last[:data] = [] unless result.last.key? :data
-              result.last[:data] << {name: field.name, value: nil.to_s}
+              result.last[:data] << { name: field.name, value: nil.to_s }
               result.last[:data].last[:prompt] = field.label if field.label
-            end if f.fields.any?
+            end
           end
-        end if resource.forms.any?
-
-        result if result.any?
+        end
       end
 
       def queries?(resource)
         resource.forms.any? { |f| f.method == 'GET' }
+      end
+
+      def links?(resource)
+        resource.collection? && resource.links.any?
       end
     end
   end
