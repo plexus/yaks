@@ -42,6 +42,7 @@ module Yaks
     :policy_class,
     :serializer,
     :json_serializer,
+    :map_to_primitive,
   ]
 
   class << self
