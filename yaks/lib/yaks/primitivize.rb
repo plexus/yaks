@@ -1,6 +1,5 @@
 module Yaks
   class Primitivize
-
     attr_reader :mappings
 
     def initialize

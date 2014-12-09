@@ -2,7 +2,7 @@ module Yaks
   class Mapper
     class Form
       class Field
-        extend Configurable
+        extend DSL
         include Attributes.new(
                   :name,
                   label: nil,
@@ -48,15 +48,8 @@ module Yaks
           end
         end
 
-        config_method :option, create: Option, append_to: :options
+        dsl_method :option, create: Option, append_to: :options
       end #Field
-
-      config_method :field, create: Field::Builder, append_to: :fields
-
-      HTML5Forms::INPUT_TYPES.each do |type|
-        config_method type, create: Field::Builder, append_to: :fields, defaults: { type: type }
-      end
-
     end # Form
   end # Mapper
 end # Yaks

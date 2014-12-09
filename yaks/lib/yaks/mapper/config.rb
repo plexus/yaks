@@ -1,13 +1,13 @@
 module Yaks
   class Mapper
     class Config
-      extend Configurable
+      extend DSL
 
       include Attributes.new(
                 type: nil, attributes: [], links: [], associations: [], forms: []
               )
 
-      def type(type = Undefined)
+      def type(type = Undefined) # TODO s/type/tag/
         return @type if type.equal?(Undefined)
         update(type: type)
       end
@@ -17,11 +17,11 @@ module Yaks
         append_to(:attributes, *attrs.map(&Attribute.method(:new)))
       end
 
-      config_method :link,      create: Link,      append_to: :links
-      config_method :has_one,   create: HasOne,    append_to: :associations
-      config_method :has_many,  create: HasMany,   append_to: :associations
-      config_method :attribute, create: Attribute, append_to: :attributes
-      config_method :form,      create: Form,      append_to: :forms
+      dsl_method :link,      create: Link,      append_to: :links
+      dsl_method :has_one,   create: HasOne,    append_to: :associations
+      dsl_method :has_many,  create: HasMany,   append_to: :associations
+      dsl_method :attribute, create: Attribute, append_to: :attributes
+      dsl_method :form,      create: Form,      append_to: :forms
     end
   end
 end

@@ -1,45 +1,59 @@
 module Yaks
   class Config
-    include Yaks::FP::Callable
+    extend Yaks::Util::Deprecated
+    include Yaks::FP::Callable,
+            Attributes.new(
+              format_options_hash: Hash.new({}),
+              default_format: :hal,
+              policy_options: {},
+              policy_class: DefaultPolicy,
+              primitivize: Primitivize.create,
+              serializers: Serializer.all,
+              hooks: []
+            )
 
-    # @!attribute [r] format_options
-    #   @return [Hash<Symbol,Hash>]
-    attr_reader :format_options
+    class << self
+      alias create new
+    end
 
-    # @!attribute [rw] default_format
-    #   @return [Symbol]
-    attr_accessor :default_format
+    deprecated_alias :namespace, :mapper_namespace
 
-    # @!attribute [rw] policy_class
-    #   @return [Class]
-    attr_accessor :policy_class
+    def format_options(format = Undefined, options = Undefined)
+      format_options_hash(format_options_hash.merge(format => options))
+    end
 
-    # @!attribute [r] policy_options
-    #   @return [Hash]
-    attr_reader :policy_options
+    def serializer(type, &serializer)
+      serializers(serializers.merge(type => serializer))
+    end
 
-    # @!attribute [rw] primitivize
-    #   @return [Primitivize]
-    attr_accessor :primitivize
+    def json_serializer(&serializer)
+      serializer(:json, &serializer)
+    end
 
-    # @!attribute [r] serializers
-    #   @return [Hash<Symbol,#call>]
-    attr_reader :serializers
+    %w[before after around skip].map(&:intern).each do |hook_type|
+      define_method hook_type do |step, name = :"#{hook_type}_#{step}", &block|
+        append_to(:hooks, [hook_type, step, name, block])
+      end
+    end
 
-    # @!attribute [r] hooks
-    #   @return [Array]
-    attr_reader :hooks
+    def rel_template(template)
+      policy_options(policy_options.merge(:rel_template => template))
+    end
 
-    # @param blk [Proc] Configuration block
-    def initialize(&blk)
-      @format_options = Hash.new({})
-      @default_format = :hal
-      @policy_options = {}
-      @primitivize    = Primitivize.create
-      @serializers    = Serializer.all.dup
-      @hooks          = []
+    def mapper_namespace(namespace)
+      policy_options(:namespace => namespace)
+    end
 
-      DSL.new(self, &blk)
+    def map_to_primitive(*args, &block)
+      primitivize(primitivize.dup.tap { |prim| prim.map(*args, &block) })
+    end
+
+    DefaultPolicy.public_instance_methods(false).each do |method|
+      define_method method do |&block|
+        policy_class(Class.new(policy_class) do
+                       define_method method, &block
+                     end)
+      end
     end
 
     # @return [Yaks::DefaultPolicy]

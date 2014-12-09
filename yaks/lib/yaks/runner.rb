@@ -5,7 +5,9 @@ module Yaks
     include Adamantium::Flat
     extend Forwardable
 
-    def_delegators :config, :policy, :default_format, :format_options, :primitivize, :serializers
+    def_delegators :config,        :policy, :default_format, :format_options_hash,
+                                   :primitivize, :serializers
+    def_delegators :format_class,  :media_type, :format_name
 
     def call
       process(steps, object)
@@ -41,14 +43,6 @@ module Yaks
     end
     memoize :format_class
 
-    def media_type
-      format_class.media_type
-    end
-
-    def format_name
-      format_class.format_name
-    end
-
     def steps
       insert_hooks(
         [[ :map, mapper ],
@@ -66,7 +60,7 @@ module Yaks
     memoize :mapper, freezer: :noop
 
     def formatter
-      format_class.new(format_options[format_name])
+      format_class.new(format_options_hash[format_name])
     end
     memoize :formatter
 

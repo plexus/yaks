@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Yaks::Configurable do
+RSpec.describe Yaks::DSL do
   class Creatable
     def self.create(*args, &block)
       ["->", *args, block.call]
@@ -9,11 +9,11 @@ RSpec.describe Yaks::Configurable do
 
   subject do
     Class.new do
-      extend Yaks::Configurable
+      extend Yaks::DSL
       include Yaks::Attributes.new(foo: [])
 
-      config_method :bar, append_to: :foo, create: Creatable
-      config_method :baz, append_to: :foo, create: Creatable, defaults: {bar: 'baz'}
+      dsl_method :bar, append_to: :foo, create: Creatable
+      dsl_method :baz, append_to: :foo, create: Creatable, defaults: {bar: 'baz'}
     end
   end
 
