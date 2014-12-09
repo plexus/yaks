@@ -9,7 +9,7 @@ RSpec.describe Yaks::StatefulBuilder do
     end
 
     def finalize
-      update(foo: 7, bar: 8)
+      with(foo: 7, bar: 8)
     end
 
     def wrong_type(x, y)

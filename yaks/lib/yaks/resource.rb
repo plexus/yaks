@@ -8,6 +8,7 @@ module Yaks
               subresources: [],
               forms: []
             )
+    extend Util::Deprecated
 
     def initialize(attrs = {})
       raise attrs.inspect if attrs.key?(:subresources) && !attrs[:subresources].instance_of?(Array)
@@ -58,9 +59,10 @@ module Yaks
     alias map members
     alias each_with_object members
 
-    def update_attributes(new_attrs)
-      update(attributes: @attributes.merge(new_attrs))
+    def merge_attributes(new_attrs)
+      with(attributes: @attributes.merge(new_attrs))
     end
+    deprecated_alias :update_attributes, :merge_attributes
 
     def add_rel(rel)
       append_to(:rels, rel)

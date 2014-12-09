@@ -22,7 +22,7 @@ module Yaks
             selected = options.find { |option| option.selected }
             selected.value if selected
           else
-            update(value: arg)
+            with(value: arg)
           end
         end
       end

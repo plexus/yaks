@@ -72,10 +72,10 @@ RSpec.describe Yaks::Resource do
     it 'should do updates without modifying the original' do
       expect(
         resource
-          .update_attributes(foo: :bar)
+          .merge_attributes(foo: :bar)
           .add_link(:a_link)
           .add_subresource(:a_subresource)
-          .update_attributes(foo: :baz)
+          .merge_attributes(foo: :baz)
       ).to eq Yaks::Resource.new(
         attributes: {x: :y, foo: :baz},
         links: [:one, :a_link],

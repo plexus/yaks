@@ -31,7 +31,7 @@ module Yaks
       raise UnsupportedOperationError, "Operation #{__method__} not supported on #{self.class}"
     end
 
-    def update_attributes(_new_attrs)
+    def merge_attributes(_new_attrs)
       raise UnsupportedOperationError, "Operation #{__method__} not supported on #{self.class}"
     end
 

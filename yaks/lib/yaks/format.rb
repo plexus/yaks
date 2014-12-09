@@ -1,8 +1,8 @@
 module Yaks
   class Format
     extend Forwardable
-    include Util
-    include FP::Callable
+    include Util,
+            FP::Callable
 
     # @!attribute [r] options
     #   @return [Hash]
@@ -26,6 +26,8 @@ module Yaks
     alias serialize call
 
     class << self
+      extend Util::Deprecated
+
       attr_reader :format_name, :serializer, :media_type
 
       deprecated_alias :mime_type, :media_type

@@ -33,8 +33,8 @@ RSpec.describe Yaks::NullResource do
   end
 
   it 'should not allow updating attributes' do
-    expect { null_resource.update_attributes({}) }.to raise_error(
-      Yaks::UnsupportedOperationError, "Operation update_attributes not supported on Yaks::NullResource"
+    expect { null_resource.merge_attributes({}) }.to raise_error(
+      Yaks::UnsupportedOperationError, "Operation merge_attributes not supported on Yaks::NullResource"
     )
   end
 

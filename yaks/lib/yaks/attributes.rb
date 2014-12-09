@@ -18,13 +18,21 @@ module Yaks
                 Anima.new(*this.names),
                 Anima::Update
 
+        alias with update
+
         this.names.each do |attr|
           define_method attr do |value = Undefined|
             if value.equal? Undefined
               instance_variable_get("@#{attr}")
             else
-              update(attr => value)
+              with(attr => value)
             end
+          end
+        end
+
+        this.names.each do |attr|
+          define_method "with_attr" do |value|
+            with(attr => value)
           end
         end
 
@@ -38,7 +46,7 @@ module Yaks
       end
 
       def append_to(type, *objects)
-        update(type => instance_variable_get("@#{type}") + objects)
+        with(type => instance_variable_get("@#{type}") + objects)
       end
 
       def to_h_compact

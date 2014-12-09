@@ -9,7 +9,7 @@ module Yaks
 
       def type(type = Undefined) # TODO s/type/tag/
         return @type if type.equal?(Undefined)
-        update(type: type)
+        with(type: type)
       end
 
       def attributes(*attrs)
