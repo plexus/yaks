@@ -34,9 +34,9 @@ module Yaks
     ]
 
     FIELD_OPTIONS = {
+      type: nil,
       required: false,
       rows: nil,
-      type: nil,
       value: nil,
       pattern: nil,
       maxlength: nil,

@@ -6,7 +6,7 @@ module Yaks
         include Attributes.new(
                   :name,
                   label: nil,
-                  options: []
+                  options: [].freeze
                 ).add(HTML5Forms::FIELD_OPTIONS)
 
         Builder = StatefulBuilder.new(self, attributes.names)
@@ -25,8 +25,14 @@ module Yaks
           Resource::Form::Field.new(
             resource_attributes.each_with_object({}) do |attr, attrs|
               attrs[attr] = mapper.expand_value(public_send(attr))
-            end.merge(options: options.map(&:to_resource))
+            end.merge(options: resource_options)
           )
+        end
+
+        def resource_options
+          # make sure all empty options arrays are the same instance,
+          # makes for prettier #pp
+          options.empty? ? options : options.map(&:to_resource)
         end
 
         # All attributes that can be converted 1-to-1 to
