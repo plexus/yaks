@@ -26,7 +26,9 @@ module Yaks
     alias serialize call
 
     class << self
-      attr_reader :format_name, :serializer, :mime_type
+      attr_reader :format_name, :serializer, :media_type
+
+      deprecated_alias :mime_type, :media_type
 
       def all
         @formats ||= []
@@ -34,12 +36,12 @@ module Yaks
 
       # @param [Constant] klass
       # @param [Symbol] format_name
-      # @param [String] mime_type
+      # @param [String] media_type
       # @return [Array]
-      def register(format_name, serializer, mime_type)
+      def register(format_name, serializer, media_type)
         @format_name = format_name
         @serializer = serializer
-        @mime_type = mime_type
+        @media_type = media_type
 
         Format.all << self
       end
@@ -51,30 +53,32 @@ module Yaks
         find(:format_name, format_name)
       end
 
-      # @param [Symbol] mime_type
+      # @param [Symbol] media_type
       # @return [Constant]
       # @raise [KeyError]
-      def by_mime_type(mime_type)
-        find(:mime_type, mime_type)
+      def by_media_type(media_type)
+        find(:media_type, media_type)
       end
+      deprecated_alias :by_mime_type, :by_media_type
 
       def by_accept_header(accept_header)
-        mime_type = Rack::Accept::Charset.new(accept_header).best_of(mime_types.values)
-        if mime_type
-          by_mime_type(mime_type)
+        media_type = Rack::Accept::Charset.new(accept_header).best_of(media_types.values)
+        if media_type
+          by_media_type(media_type)
         else
           yield if block_given?
         end
       end
 
-      def mime_types
+      def media_types
         Format.all.each_with_object({}) do
-          |format, memo| memo[format.format_name] = format.mime_type
+          |format, memo| memo[format.format_name] = format.media_type
         end
       end
+      deprecated_alias :mime_types, :media_types
 
       def names
-        mime_types.keys
+        media_types.keys
       end
 
       private

@@ -10,9 +10,9 @@ RSpec.describe Yaks::Format do
     end
   end
 
-  describe '.by_mime_type' do
+  describe '.by_media_type' do
     specify do
-      expect(Yaks::Format.by_mime_type('application/hal+json')).to eql Yaks::Format::Hal
+      expect(Yaks::Format.by_media_type('application/hal+json')).to eql Yaks::Format::Hal
     end
   end
 
@@ -25,9 +25,9 @@ RSpec.describe Yaks::Format do
     end
   end
 
-  describe '.mime_types' do
+  describe '.media_types' do
     specify do
-      expect(Yaks::Format.mime_types.values_at(:collection_json, :hal, :json_api)).to eql(["application/vnd.collection+json", "application/hal+json", "application/vnd.api+json"])
+      expect(Yaks::Format.media_types.values_at(:collection_json, :hal, :json_api)).to eql(["application/vnd.collection+json", "application/hal+json", "application/vnd.api+json"])
     end
   end
 end
