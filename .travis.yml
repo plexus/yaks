@@ -1,5 +1,5 @@
 language: ruby
-script: bundle exec rake $TASK
+
 rvm:
   - 1.9.3
   - 2.0
@@ -10,10 +10,16 @@ rvm:
   - rbx
   - jruby
   - jruby-head
+
+sudo: false
+
+script: bundle exec rake $TASK
+
 env:
   - TASK=yaks:rspec
   - TASK=yaks-html:rspec
   - TASK=mutant
+
 matrix:
   allow_failures:
     - rvm: ruby-head
