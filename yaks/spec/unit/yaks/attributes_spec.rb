@@ -11,8 +11,8 @@ RSpec.describe Yaks::Attributes do
     expect(subject.new(foo: 3).bar).to equal 3
   end
 
-  it 'should allow updating through attribute methods' do
-    expect(subject.new(foo: 3).foo(4).to_h).to eql(foo: 4, bar: 3)
+  it 'should allow updating through with' do
+    expect(subject.new(foo: 3).with(foo: 4).to_h).to eql(foo: 4, bar: 3)
   end
 
   it 'should add an #append_to method' do
@@ -134,7 +134,7 @@ WidgetContainer.new(
 
   describe '#initialize' do
     it 'should take hash-based args' do
-      expect(widget_container.new(widgets: [:bar])).to eql widget_container.new.widgets([:bar])
+      expect(widget_container.new(widgets: [:bar])).to eql widget_container.new.with_widgets([:bar])
     end
 
     it 'should use defaults when available' do

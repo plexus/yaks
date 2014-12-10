@@ -19,15 +19,15 @@ module Yaks
     deprecated_alias :namespace, :mapper_namespace
 
     def format_options(format = Undefined, options = Undefined)
-      format_options_hash(format_options_hash.merge(format => options))
+      with(format_options_hash: format_options_hash.merge(format => options))
     end
 
     def serializer(type, &serializer)
-      serializers(serializers.merge(type => serializer))
+      with(serializers: serializers.merge(type => serializer))
     end
 
     def json_serializer(&serializer)
-      serializer(:json, &serializer)
+      with(serializer: :json, &serializer)
     end
 
     %w[before after around skip].map(&:intern).each do |hook_type|
@@ -37,22 +37,24 @@ module Yaks
     end
 
     def rel_template(template)
-      policy_options(policy_options.merge(:rel_template => template))
+      with(policy_options: policy_options.merge(:rel_template => template))
     end
 
     def mapper_namespace(namespace)
-      policy_options(:namespace => namespace)
+      with(policy_options: policy_options.merge(:namespace => namespace))
     end
 
     def map_to_primitive(*args, &block)
-      primitivize(primitivize.dup.tap { |prim| prim.map(*args, &block) })
+      with(primitivize: primitivize.dup.tap { |prim| prim.map(*args, &block) })
     end
 
     DefaultPolicy.public_instance_methods(false).each do |method|
       define_method method do |&block|
-        policy_class(Class.new(policy_class) do
-                       define_method method, &block
-                     end)
+        with(
+          policy_class: Class.new(policy_class) do
+            define_method method, &block
+          end
+        )
       end
     end
 

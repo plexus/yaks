@@ -18,7 +18,12 @@ RSpec.describe Yaks::StatefulBuilder do
 
   end
 
-  subject { Yaks::StatefulBuilder.new(Buildable, [:foo, :bar, :update, :finalize, :wrong_type]) }
+  subject do
+    Yaks::StatefulBuilder.new(Buildable) do
+      def_set :foo, :bar
+      def_forward :finalize, :wrong_type, :update
+    end
+  end
 
   it 'should keep state' do
     expect(
@@ -33,9 +38,4 @@ RSpec.describe Yaks::StatefulBuilder do
     expect( subject.create(3, 4) { finalize } ).to eql Buildable.new(foo: 7, bar: 8)
   end
 
-  describe 'kind_of?' do
-    it 'should test if the returned thing is of the right type' do
-      expect { subject.create(3, 4) { wrong_type(1,'2') }}.to raise_exception Yaks::IllegalStateError, 'Buildable#wrong_type(1, "2") returned "foo 1 2". Expected instance of Buildable'
-    end
-  end
 end

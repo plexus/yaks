@@ -4,7 +4,7 @@ module Yaks
       include Attributes.new(:name)
 
       def initialize(name)
-        @name = name
+        super(name: name)
       end
 
       def add_to_resource(resource, mapper, _context)

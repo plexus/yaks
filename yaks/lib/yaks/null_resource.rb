@@ -18,6 +18,7 @@ module Yaks
       @collection
     end
 
+
     def null_resource?
       true
     end

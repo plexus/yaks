@@ -2,14 +2,17 @@ module Yaks
   class Mapper
     class Form
       class Field
-        extend DSL
         include Attributes.new(
                   :name,
                   label: nil,
                   options: [].freeze
                 ).add(HTML5Forms::FIELD_OPTIONS)
 
-        Builder = StatefulBuilder.new(self, attributes.names)
+        Builder = StatefulBuilder.new(self) do
+          def_set :name
+          def_set :label
+          def_add :option, create: Option, append_to: :options
+        end
 
         def self.create(*args)
           attrs = args.last.instance_of?(Hash) ? args.pop : {}
@@ -41,20 +44,6 @@ module Yaks
           self.class.attributes.names - [:options]
         end
 
-        # <option>, as used in a <select>
-        class Option
-          include Attributes.new(:value, :label, selected: false)
-
-          def self.create(value, opts = {})
-            new(opts.merge(value: value))
-          end
-
-          def to_resource
-            to_h #placeholder
-          end
-        end
-
-        dsl_method :option, create: Option, append_to: :options
       end #Field
     end # Form
   end # Mapper

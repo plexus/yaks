@@ -4,7 +4,7 @@ RSpec.describe Yaks::Config do
   include_context 'fixtures'
 
   def self.configure(&blk)
-    subject(:config) { Yaks.new(&blk) }
+    subject(:config) { Yaks::ConfigBuilder.create(&blk) }
   end
 
   describe '#initialize' do

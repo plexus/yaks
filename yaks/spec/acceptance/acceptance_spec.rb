@@ -47,7 +47,7 @@ end
 RSpec.describe Yaks::Format::CollectionJson do
   youtypeit_yaks = Yaks.new do
     default_format :collection_json
-    namespace Youtypeitwepostit
+    mapper_namespace Youtypeitwepostit
     skip :serialize
   end
 

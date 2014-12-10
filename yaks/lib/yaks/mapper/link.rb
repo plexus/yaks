@@ -36,7 +36,7 @@ module Yaks
         resource_link = map_to_resource_link(mapper)
         return resource unless resource_link
         if options[:replace]
-          resource.links(resource.links.reject {|link| link.rel?(rel)} << resource_link)
+          resource.with(links: resource.links.reject {|link| link.rel?(rel)} << resource_link)
         else
           resource.add_link(resource_link)
         end

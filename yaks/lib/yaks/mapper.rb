@@ -2,15 +2,24 @@
 
 module Yaks
   class Mapper
-    extend ClassMethods, Forwardable
+    extend Configurable
+
+    def_forward :type       => :with_type
+    def_forward :attributes => :add_attributes
+
+    def_add :link,      create: Link,      append_to: :links
+    def_add :has_one,   create: HasOne,    append_to: :associations
+    def_add :has_many,  create: HasMany,   append_to: :associations
+    def_add :attribute, create: Attribute, append_to: :attributes
+    def_add :form,      create: Form,      append_to: :forms
+
+    extend Forwardable
     include Util, FP, FP::Callable
+
+    attr_reader :object, :context
 
     def_delegators 'self.class', :config
     def_delegators :config, :attributes, :links, :associations, :forms
-
-    config Config.new
-
-    attr_reader :object, :context
 
     def initialize(context)
       @context = context

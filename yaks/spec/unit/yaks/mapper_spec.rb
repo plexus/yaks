@@ -306,19 +306,19 @@ RSpec.describe Yaks::Mapper do
 
   describe '#map_links' do
     let(:object) { fake('Link') }
-    before { mapper.config(mapper.config.append_to(:links, object)) }
+    before { mapper_class.config = mapper.config.append_to(:links, object) }
     it_should_behave_like 'something that can be added to a resource'
   end
 
   describe '#map_subresources' do
     let(:object) { fake('Association') }
-    before { mapper.config(mapper.config.append_to(:associations, object)) }
+    before { mapper_class.config = mapper.config.append_to(:associations, object) }
     it_should_behave_like 'something that can be added to a resource'
   end
 
   describe '#map_forms' do
     let(:object) { fake('Form') }
-    before { mapper.config(mapper.config.append_to(:forms, object)) }
+    before { mapper_class.config = mapper.config.append_to(:forms, object) }
     it_should_behave_like 'something that can be added to a resource'
   end
 

@@ -48,6 +48,10 @@ module Yaks
     end
     alias collection collection?
 
+    def with_collection(*)
+      self
+    end
+
     def null_resource?
       false
     end
@@ -58,6 +62,7 @@ module Yaks
     alias each members
     alias map members
     alias each_with_object members
+    alias with_members members
 
     def merge_attributes(new_attrs)
       with(attributes: @attributes.merge(new_attrs))

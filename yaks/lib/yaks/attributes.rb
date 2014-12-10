@@ -21,17 +21,7 @@ module Yaks
         alias with update
 
         this.names.each do |attr|
-          define_method attr do |value = Undefined|
-            if value.equal? Undefined
-              instance_variable_get("@#{attr}")
-            else
-              with(attr => value)
-            end
-          end
-        end
-
-        this.names.each do |attr|
-          define_method "with_attr" do |value|
+          define_method "with_#{attr}" do |value|
             with(attr => value)
           end
         end
