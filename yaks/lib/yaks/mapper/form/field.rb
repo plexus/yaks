@@ -8,7 +8,7 @@ module Yaks
                   options: [].freeze
                 ).add(HTML5Forms::FIELD_OPTIONS)
 
-        Builder = StatefulBuilder.new(self) do
+        Builder = Builder.new(self) do
           def_set :name
           def_set :label
           def_add :option, create: Option, append_to: :options

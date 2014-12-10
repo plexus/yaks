@@ -111,7 +111,7 @@ module Yaks
 
     def map_forms(resource)
       forms.inject(resource) do |res, form|
-        form.add_to_resource(res, self, context)
+        form.new.add_to_resource(res, self, context)
       end
     end
   end

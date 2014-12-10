@@ -19,7 +19,7 @@ require 'yaks/fp'
 require 'yaks/fp/callable'
 require 'yaks/primitivize'
 require 'yaks/attributes'
-require 'yaks/stateful_builder'
+require 'yaks/builder'
 require 'yaks/errors'
 
 require 'yaks/default_policy'
@@ -47,7 +47,7 @@ module Yaks
     :map_to_primitive,
   ]
 
-  ConfigBuilder = StatefulBuilder.new(Yaks::Config) do
+  ConfigBuilder = Builder.new(Yaks::Config) do
     def_set *Yaks::Config.attributes.names
     def_forward *DSL_METHODS
     def_forward *Yaks::DefaultPolicy.public_instance_methods(false)
@@ -77,6 +77,7 @@ require 'yaks/mapper/has_one'
 require 'yaks/mapper/has_many'
 require 'yaks/mapper/attribute'
 require 'yaks/mapper/link'
+require 'yaks/mapper/form/config'
 require 'yaks/mapper/form/field/option'
 require 'yaks/mapper/form/field'
 require 'yaks/mapper/form'

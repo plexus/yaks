@@ -1,7 +1,7 @@
 module Yaks
   class Resource
     class Form
-      include Yaks::Mapper::Form.attributes
+      include Yaks::Mapper::Form::Config.attributes
 
       def [](name)
         fields.find {|field| field.name == name}.value

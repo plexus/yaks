@@ -316,12 +316,6 @@ RSpec.describe Yaks::Mapper do
     it_should_behave_like 'something that can be added to a resource'
   end
 
-  describe '#map_forms' do
-    let(:object) { fake('Form') }
-    before { mapper_class.config = mapper.config.append_to(:forms, object) }
-    it_should_behave_like 'something that can be added to a resource'
-  end
-
   describe '#mapper_stack' do
     let(:yaks_context) { super().merge(mapper_stack: [:foo]) }
 

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe Yaks::Mapper::Form do
-  let(:form)   { described_class.new( full_args ) }
+  let(:form)   { described_class.create( full_args ) }
   let(:name)      { :the_name }
   let(:full_args) { {name: name}.merge(args) }
   let(:args) {
@@ -16,9 +16,8 @@ RSpec.describe Yaks::Mapper::Form do
   let(:fields) { [] }
 
   describe '.create' do
-    it 'should create an instance, first arg is the name' do
-
-      expect( described_class.create(name, args) ).to eql form
+    it 'should derive a new class, first arg is the name' do
+      expect( described_class.create(name, args) < Yaks::Mapper::Form ).to be true
     end
 
     it 'should have a name of nil when ommitted' do
@@ -27,7 +26,7 @@ RSpec.describe Yaks::Mapper::Form do
   end
 
   describe '#add_to_resource' do
-    let(:resource) { form.add_to_resource(Yaks::Resource.new, Yaks::Mapper.new(nil), nil) }
+    let(:resource) { form.new.add_to_resource(Yaks::Resource.new, Yaks::Mapper.new(nil), nil) }
 
     it 'should add a form to the resource' do
       expect(resource.forms.length).to be 1

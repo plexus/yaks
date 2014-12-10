@@ -11,12 +11,12 @@ module Yaks
   #          .action("/search")
   #
   #   # Can be written as
-  #   StatefulBuilder.new(Form, [:method, :action]).create(:search) do
+  #   Builder.new(Form, [:method, :action]).create(:search) do
   #     method "POST"
   #     action "/search"
   #   end
   #
-  class StatefulBuilder
+  class Builder
     include Configurable
 
     def create(*args, &block)
@@ -37,7 +37,7 @@ module Yaks
     end
 
     def inspect
-      "#<StatefulBuilder #{@klass} #{@methods.inspect}>"
+      "#<Builder #{@klass} #{@methods.inspect}>"
     end
 
   end

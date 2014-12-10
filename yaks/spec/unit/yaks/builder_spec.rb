@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Yaks::StatefulBuilder do
+RSpec.describe Yaks::Builder do
   class Buildable
     include Yaks::Attributes.new(:foo, :bar)
 
@@ -19,7 +19,7 @@ RSpec.describe Yaks::StatefulBuilder do
   end
 
   subject do
-    Yaks::StatefulBuilder.new(Buildable) do
+    Yaks::Builder.new(Buildable) do
       def_set :foo, :bar
       def_forward :finalize, :wrong_type, :update
     end

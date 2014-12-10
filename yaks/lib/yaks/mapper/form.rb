@@ -1,21 +1,41 @@
 module Yaks
   class Mapper
     class Form
-      extend Util::Deprecated
-      include Attributes.new(name: nil, action: nil, title: nil, method: nil, media_type: nil, fields: [])
-
-      deprecated_alias :href, :action
-
-      Builder = StatefulBuilder.new(self) do
-        def_set :name, :action, :title, :method, :media_type
-        def_add :field, create: Field::Builder, append_to: :fields
-        HTML5Forms::INPUT_TYPES.each do |type|
-          def_add type, create: Field::Builder, append_to: :fields, defaults: { type: type }
-        end
+      extend Configurable
+      def_set :action, :title, :method, :media_type
+      def_add :field, create: Field::Builder, append_to: :fields
+      HTML5Forms::INPUT_TYPES.each do |type|
+        def_add type, create: Field::Builder, append_to: :fields, defaults: { type: type }
       end
 
-      def self.create(name = nil, options = {}, &block)
-        Builder.build(new({name: name}.merge(options)), &block)
+      extend Forwardable
+      def_delegators 'self.class', :config
+      def_delegators :config, :name, :action, :title, :method, :media_type, :fields
+
+      include Equalizer.new(:config)
+
+      def self.create(*args, &block)
+        options = args.last
+        options = {} unless options.is_a? Hash
+        if args.first.is_a? Symbol
+          name = options[:name] = args.first
+        end
+
+        Class.new(Form).tap do |form_class|
+          form_class.config = form_class.config.with(options)
+
+          if name
+            form_class.define_singleton_method :name do
+              "#{name}:Class(Yaks::Mapper:Form)"
+            end
+          end
+
+          form_class.define_singleton_method :inspect do
+            "#<Class(Yaks::Mapper:Form) #{config.to_h_compact.inspect}>"
+          end
+
+          form_class.instance_eval(&block) if block_given?
+        end
       end
 
       def add_to_resource(resource, mapper, _context)
