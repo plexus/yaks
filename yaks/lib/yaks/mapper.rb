@@ -6,6 +6,7 @@ module Yaks
 
     def_forward :type       => :with_type
     def_forward :attributes => :add_attributes
+    def_forward :append_to
 
     def_add :link,      create: Link,      append_to: :links
     def_add :has_one,   create: HasOne,    append_to: :associations
