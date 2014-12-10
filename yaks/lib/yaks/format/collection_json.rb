@@ -47,30 +47,36 @@ module Yaks
       end
 
       def serialize_queries(resource)
-        resource.forms.each_with_object([]) do |f, result|
-          next unless f.method == "GET"
+        resource.forms.each_with_object([]) do |form, result|
+          next unless form_is_query? form
 
-          # `action` in Yaks is not required,
-          # but it is for Collection+JSON
-          unless f.action.nil?
-            result << { rel: f.name, href: f.action }
-            result.last[:prompt] = f.title if f.title
+          result << { rel: form.name, href: form.action }
+          result.last[:prompt] = form.title if form.title
 
-            f.fields.each do |field|
-              result.last[:data] = [] unless result.last.key? :data
-              result.last[:data] << { name: field.name, value: nil.to_s }
-              result.last[:data].last[:prompt] = field.label if field.label
-            end
+          form.fields.each do |field|
+            result.last[:data] = [] unless result.last.key? :data
+            result.last[:data] << { name: field.name, value: nil.to_s }
+            result.last[:data].last[:prompt] = field.label if field.label
           end
         end
       end
 
       def queries?(resource)
-        resource.forms.any? { |f| f.method == 'GET' }
+        resource.forms.any? { |f| form_is_query? f }
       end
 
       def links?(resource)
         resource.collection? && resource.links.any?
+      end
+
+      protected
+
+      def form_is_query?(form)
+        method_is_get?(form.method) && !form.action.nil?
+      end
+
+      def method_is_get?(method)
+        method.downcase.to_sym === :get
       end
     end
   end
