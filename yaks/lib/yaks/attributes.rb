@@ -12,6 +12,10 @@ module Yaks
       self.class.new(*[*(names+attrs), @defaults.merge(defaults)])
     end
 
+    def remove(*attrs)
+      self.class.new(*[*(names-attrs), @defaults.reject {|k,v| attrs.include?(k) }])
+    end
+
     def included(descendant)
       descendant.module_exec(self) do |this|
         include InstanceMethods,
