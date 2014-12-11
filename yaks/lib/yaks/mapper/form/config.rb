@@ -8,8 +8,13 @@ module Yaks
                   title: nil,
                   method: nil,
                   media_type: nil,
-                  fields: []
+                  fields: [],
+                  dynamic_blocks: []
                 )
+
+        def dynamic(&blk)
+          append_to(:dynamic_blocks, blk)
+        end
       end
     end
   end
