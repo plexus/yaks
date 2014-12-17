@@ -13,7 +13,8 @@ module Yaks
           items: serialize_items(resource)
         }
         result[:href] = resource.self_link.uri if resource.self_link
-        result[:links] = serialize_links(resource) if resource.collection? && resource.links.any?
+        result[:links] = serialize_links(resource) if links? resource
+        result[:queries] = serialize_queries(resource) if queries? resource
         {collection: result}
       end
 
@@ -40,11 +41,42 @@ module Yaks
       end
 
       def serialize_links(resource)
-        result = []
-        resource.links.each do |link|
-          result << {href: link.uri, rel: link.rel}
+        resource.links.each_with_object([]) do |link, result|
+          result << { href: link.uri, rel: link.rel }
         end
-        result
+      end
+
+      def serialize_queries(resource)
+        resource.forms.each_with_object([]) do |form, result|
+          next unless form_is_query? form
+
+          result << { rel: form.name, href: form.action }
+          result.last[:prompt] = form.title if form.title
+
+          form.fields.each do |field|
+            result.last[:data] = [] unless result.last.key? :data
+            result.last[:data] << { name: field.name, value: nil.to_s }
+            result.last[:data].last[:prompt] = field.label if field.label
+          end
+        end
+      end
+
+      def queries?(resource)
+        resource.forms.any? { |f| form_is_query? f }
+      end
+
+      def links?(resource)
+        resource.collection? && resource.links.any?
+      end
+
+      protected
+
+      def form_is_query?(form)
+        method_is_get?(form.method) && !form.action.nil?
+      end
+
+      def method_is_get?(method)
+        method.downcase.to_sym === :get
       end
     end
   end

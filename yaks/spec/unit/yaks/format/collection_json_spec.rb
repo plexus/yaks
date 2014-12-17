@@ -9,7 +9,110 @@ RSpec.describe Yaks::Format::CollectionJson do
     it { should deep_eql(load_json_fixture('plant_collection.collection')) }
   end
 
-  context 'link' do
+  context '#links?' do
+    context 'when resource is not a collection' do
+      let(:resource) {
+        Yaks::Resource.new(
+          attributes: {foo: 'fooval', bar: 'barval'},
+          links: [Yaks::Resource::Link.new(rel: 'the_rel', uri: 'the_uri')]
+        )
+      }
+
+      let(:cj) { Yaks::Format::CollectionJson.new(resource) }
+
+      it 'should return false' do
+        expect(cj.links?(resource)).to eq false
+      end
+    end
+
+    context 'when resource is a collection' do
+      let(:cj) { Yaks::Format::CollectionJson.new(resource) }
+
+      context 'and has links' do
+        let(:resource) {
+          Yaks::CollectionResource.new(
+            links: [Yaks::Resource::Link.new(rel: 'the_rel', uri: 'the_uri')]
+          )
+        }
+
+        it 'should return true' do
+          expect(cj.links?(resource)).to eq true
+        end
+      end
+
+      context 'and has no links' do
+        let(:resource) {
+          Yaks::CollectionResource.new(
+            links: []
+          )
+        }
+
+        it 'should return false' do
+          expect(cj.links?(resource)).to eq false
+        end
+      end
+    end
+  end
+
+  context '#queries?' do
+    let(:resource) {
+      Yaks::Resource.new(
+        attributes: {foo: 'fooval', bar: 'barval'},
+        forms: [Yaks::Resource::Form.new(full_args)]
+      )
+    }
+
+    subject {
+      Yaks::Primitivize.create.call(described_class.new.call(resource))
+    }
+
+    context 'when resource has GET forms' do
+      context 'and form has an action' do
+        let(:full_args) {
+          {
+            name: :search,
+            method: 'GET',
+            action: '/foo'
+          }
+        }
+
+        it 'should return true' do
+          cj = Yaks::Format::CollectionJson.new(resource)
+          expect(cj.queries?(resource)).to eq true
+        end
+      end
+
+      context 'and form has no action' do
+        let(:full_args) {
+          {
+            name: :search,
+            method: 'GET'
+          }
+        }
+
+        it 'should return false' do
+          cj = Yaks::Format::CollectionJson.new(resource)
+          expect(cj.queries?(resource)).to eq false
+        end
+      end
+    end
+
+    context 'when resource has not GET forms' do
+      let(:full_args) {
+        {
+          name: :search,
+          method: 'POST'
+        }
+      }
+
+      it 'should return false' do
+        cj = Yaks::Format::CollectionJson.new(resource)
+        expect(cj.queries?(resource)).to eq false
+      end
+    end
+  end
+
+  context 'serialize_links' do
     context 'without title' do
       let(:resource) {
         Yaks::Resource.new(
@@ -67,6 +170,97 @@ RSpec.describe Yaks::Format::CollectionJson do
             ]
           }
         )
+      end
+    end
+  end
+
+  context 'serialize_queries' do
+    let(:resource) {
+      Yaks::Resource.new(
+        attributes: {foo: 'fooval', bar: 'barval'},
+        forms: [
+          Yaks::Resource::Form.new(full_args),
+          Yaks::Resource::Form.new(name: :no_render, action: '/foo', method: 'POST')
+        ]
+      )
+    }
+
+    subject {
+      Yaks::Primitivize.create.call(described_class.new.call(resource))
+    }
+
+    context 'when form method is GET' do
+      context "form uses only required fields" do
+        let(:full_args) {
+          {
+            name: :search,
+            action: '/foo',
+            method: 'GET'
+          }
+        }
+
+        it 'should render the queries array' do
+          should deep_eql(
+            "collection" => {
+              "version" => "1.0",
+              "items" => [
+                {
+                  "data" => [
+                    { "name"=>"foo", "value"=>"fooval" },
+                    { "name"=>"bar", "value"=>"barval" }
+                  ]
+                }
+              ],
+              "queries" => [
+                { "href"=>"/foo", "rel"=>"search" }
+              ]
+            }
+          )
+        end
+      end
+
+      context "form uses optional fields" do
+        let(:fields) {
+          [
+            Yaks::Resource::Form::Field.new(name: 'foo'),
+            Yaks::Resource::Form::Field.new(name: 'bar', label: 'My Bar Field')
+          ]
+        }
+
+        let(:full_args) {
+          {
+            name: :search,
+            action: '/foo',
+            method: 'GET',
+            title: 'My query prompt',
+            fields: fields
+          }
+        }
+
+        it 'should render the queries array with optional fields' do
+          should deep_eql(
+            "collection" => {
+              "version" => "1.0",
+              "items" => [
+                {
+                  "data" => [
+                    { "name"=>"foo", "value"=>"fooval" },
+                    { "name"=>"bar", "value"=>"barval" }
+                  ]
+                }
+              ],
+              "queries" => [
+                { "href"=>"/foo", "rel"=>"search", "prompt"=>"My query prompt",
+                  "data"=>
+                  [
+                    { "name"=>"foo", "value"=>"" },
+                    { "name"=>"bar", "value"=>"", "prompt"=>"My Bar Field" }
+                  ]
+                }
+              ]
+            }
+          )
+        end
       end
     end
   end
