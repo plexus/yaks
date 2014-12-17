@@ -1,7 +1,7 @@
 module Yaks
   class Mapper
     class Form
-      extend Configurable
+      extend Configurable, Forwardable, Util
 
       ConfigBuilder = Builder.new(Config) do
         def_set :action, :title, :method, :media_type
@@ -17,16 +17,14 @@ module Yaks
         def_forward :dynamic
       end
 
-      extend Forwardable
-
       def_delegators :config, :name, :action, :title, :method,
                               :media_type, :fields, :dynamic_blocks
 
       def self.create(*args, &block)
-        options = args.last
-        options = {} unless options.is_a? Hash
+        args, options = extract_options(args)
+
         if args.first.is_a? Symbol
-          name = options[:name] = args.first
+          options[:name] = args.first
         end
 
         new(ConfigBuilder.build(Config.new(options), &block))

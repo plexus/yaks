@@ -44,6 +44,19 @@ RSpec.describe Yaks::Mapper::Link do
     end
 
     context 'with :replace => true' do
+      let(:options) { { remove: true } }
+      let(:resource) {
+        Yaks::Resource.new.add_link(Yaks::Resource::Link.new(rel: :next, uri: '/api/next'))
+      }
+
+      it 'should remove earlier links of the same rel' do
+        expect(link.add_to_resource(resource, mapper, yaks_context)).to eql(
+          Yaks::Resource.new
+        )
+      end
+    end
+
+    context 'with :replace => true' do
       let(:options) { { replace: true } }
       let(:resource) {
         Yaks::Resource.new.add_link(Yaks::Resource::Link.new(rel: :next, uri: '/api/next'))

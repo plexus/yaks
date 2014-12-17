@@ -7,8 +7,8 @@ module Yaks
     end
 
     def versions
-      markdown.split(/(?=###\s*[\d\.]+\n)/).each_with_object({}) do |section, hsh|
-        version = section.each_line.first[/[\d\.]+/]
+      markdown.split(/(?=###\s*[\d\w\.]+\n)/).each_with_object({}) do |section, hsh|
+        version = section.each_line.first[/[\d\w\.]+/]
         log     = section.each_line.drop(1).join.strip
         hsh[version] = log
       end

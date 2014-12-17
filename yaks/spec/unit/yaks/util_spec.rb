@@ -53,6 +53,18 @@ RSpec.describe Yaks::Util do
     end
   end
 
+  describe '#extract_options' do
+    it 'should extract a final hash' do
+      args, opts = extract_options([:a, :b, {hello: :world}])
+      expect([args, opts]).to eql [[:a, :b], {hello: :world}]
+    end
+
+    it 'should provide an empty hash if none was given' do
+      args, opts = extract_options([:a, :b])
+      expect([args, opts]).to eql [[:a, :b], {}]
+    end
+  end
+
 end
 
 RSpec.describe Yaks::Util::Deprecated do

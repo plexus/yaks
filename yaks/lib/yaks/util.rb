@@ -25,6 +25,10 @@ module Yaks
       hash.each_with_object({}) {|(k,v), hsh| hsh[k.to_sym] = v}
     end
 
+    def extract_options(args)
+      args.last.is_a?(Hash) ? [args[0..-2], args.last] : [args, {}]
+    end
+
     # Turn what is maybe a Proc into its result (or itself)
     #
     # When input can be either a value or a proc that returns a value,

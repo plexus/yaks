@@ -1,9 +1,15 @@
 ### master
 [full changelog](http://github.com/plexus/yaks/compare/v0.7.7...master)
 
+### 0.8.0.alpha
+
 Improved Collection+JSON support, dynamically generated form fields.
 
+#### Collection+JSON
+
 Carles Jove i Buxeda has done some great work to improve support for Collection+JSON, GET forms are now rendered as CJ queries.
+
+#### Dynamic Form Fields
 
 A new introduction are "dynamic" form fields. Up to now it was hard to generate forms based on the object being serialized. Now it's possible to add dynamic sections to a Form definition. These will be evaluated at map-time, they receive the object being mapped, and inside the syntax for defining form fields can be used.
 
@@ -20,6 +26,8 @@ form :checkout do
 end
 ```
 
+#### Fieldset and Legend
+
 Support for the fieldset element type has been added, which works as you would expect
 
 ```
@@ -31,12 +39,30 @@ form :foo do
 end
 ```
 
+#### Remove links
+
+A link defined in a mapper can be removed in a derived mapper. This is useful when you have a base mapper defining for example 'self' or 'profile' links, but for some derived mappers you don't want these in the output.
+
+```
+class BaseMapper
+  link :self, "/api/{mapper_name}/{id}"
+end
+
+class FooMapper < BaseMapper
+  link :self, remove: true
+end
+```
+
+#### Deprecations
+
 Internally there the DSL/Config mechanisms have been made more consistent. Yaks::Config is now immutable, much like Yaks::Mapper::Config. Attributes-based classes no long have arity-based hybrid getter/setters. Instead use `with(attr: val)` to set a value.
 
-Two methods on Yaks::Config are considered deprecated:
+Because of this work, two methods on Yaks::Config are considered deprecated. You will get a warning when using the old name.
 
 * json_serializer, use serializer(:json, &...)
 * namespace, use mapper_namespace
+
+#### Experimental read/write support
 
 Some work has happened on read/write support, but this is not considered stable yet.
 

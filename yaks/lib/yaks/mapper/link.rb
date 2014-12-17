@@ -24,18 +24,20 @@ module Yaks
     # @option title [#to_proc] Block that returns the title. If it takes an argument,
     #   it will receive the mapper instance as argument. Otherwise it is evaluated in the mapper context
     class Link
-      extend Forwardable
-      include Attributes.new(:rel, :template, options: {})
-      include Util
+      extend Forwardable, Util
+      include Attributes.new(:rel, :template, options: {}), Util
 
-      def self.create(rel, template, options = {})
-        new(rel: rel, template: template, options: options)
+      def self.create(*args)
+        args, options = extract_options(args)
+        new(rel: args[0], template: args[1], options: options)
       end
 
       def add_to_resource(resource, mapper, _context)
         resource_link = map_to_resource_link(mapper)
         return resource unless resource_link
-        if options[:replace]
+        if options[:remove]
+          resource.with(links: resource.links.reject {|link| link.rel?(rel)})
+        elsif options[:replace]
           resource.with(links: resource.links.reject {|link| link.rel?(rel)} << resource_link)
         else
           resource.add_link(resource_link)
