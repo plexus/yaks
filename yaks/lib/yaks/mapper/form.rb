@@ -69,13 +69,14 @@ module Yaks
 
       def to_resource(mapper)
         config = dynamic_blocks.inject(self.config) do |config, block|
-          ConfigBuilder.build(config, &block)
+          ConfigBuilder.build(config, mapper.object, &block)
         end
 
         attrs = {
           fields: resource_fields(config.fields, mapper),
           action: mapper.expand_uri(config.action, true)
         }
+
         [:name, :title, :method, :media_type].each do |attr|
           attrs[attr] = mapper.expand_value(config.public_send(attr))
         end

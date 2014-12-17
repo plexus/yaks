@@ -23,9 +23,9 @@ module Yaks
       build(@klass.create(*args), &block)
     end
 
-    def build(init_state, &block)
+    def build(init_state, *extra_args, &block)
       @config = init_state
-      instance_eval(&block) if block
+      instance_exec(*extra_args, &block) if block
       @config
     end
 
