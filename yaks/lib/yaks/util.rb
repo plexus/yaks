@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 module Yaks
   module Util
     extend self

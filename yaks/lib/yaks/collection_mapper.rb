@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 module Yaks
   class CollectionMapper < Mapper
     alias collection object

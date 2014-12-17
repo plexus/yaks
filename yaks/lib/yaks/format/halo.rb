@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 module Yaks
   class Format
     # Extension of Hal loosely based on the example by Mike Kelly given at

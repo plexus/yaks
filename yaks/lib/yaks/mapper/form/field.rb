@@ -43,7 +43,6 @@ module Yaks
         def resource_attributes
           self.class.attributes.names - [:options]
         end
-
       end #Field
     end # Form
   end # Mapper

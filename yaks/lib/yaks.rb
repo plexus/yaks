@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 require 'forwardable'
 require 'set'
 require 'pathname'

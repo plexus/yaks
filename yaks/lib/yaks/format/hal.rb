@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 module Yaks
   class Format
     # Hypertext Application Language (http://stateless.co/hal_specification.html)

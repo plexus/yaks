@@ -39,6 +39,5 @@ module Yaks
     def inspect
       "#<Builder #{@klass} #{@methods.inspect}>"
     end
-
   end
 end

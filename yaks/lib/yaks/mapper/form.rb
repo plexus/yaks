@@ -56,13 +56,13 @@ module Yaks
         [:name, :title, :method, :media_type].each do |attr|
           attrs[attr] = mapper.expand_value(config.public_send(attr))
         end
+
         Resource::Form.new(attrs)
       end
 
       def resource_fields(fields, mapper)
         fields.map { |field| field.to_resource(mapper) }
       end
-
     end
   end
 end
