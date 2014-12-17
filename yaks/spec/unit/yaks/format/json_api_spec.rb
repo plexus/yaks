@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 # Mainly tested through the acceptance tests, here covering a few specific edge cases
 RSpec.describe Yaks::Format::JsonAPI do
   let(:format) { Yaks::Format::JsonAPI.new }

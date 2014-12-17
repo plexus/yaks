@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe Yaks::Builder do
   class Buildable
     include Yaks::Attributes.new(:foo, :bar)

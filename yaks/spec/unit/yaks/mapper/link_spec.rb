@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe Yaks::Mapper::Link do
   include_context 'yaks context'
 

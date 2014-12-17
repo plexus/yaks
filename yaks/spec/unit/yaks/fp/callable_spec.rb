@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe Yaks::FP::Callable do
   it 'should delegate to_proc to method(:call)' do
     obj = Class.new do

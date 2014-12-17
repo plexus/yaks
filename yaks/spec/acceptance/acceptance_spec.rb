@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 require 'acceptance/models'
 require 'acceptance/json_shared_examples'
 

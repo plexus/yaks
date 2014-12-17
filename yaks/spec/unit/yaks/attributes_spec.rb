@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe Yaks::Attributes do
   subject { Class.new { include Yaks::Attributes.new(:foo, bar: 3) } }
 

@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe Yaks::Mapper::Form do
   let(:form)   { described_class.create( full_args ) }
   let(:name)      { :the_name }

@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe 'assorted sanity checks' do
   let(:resource_methods)            { Yaks::Resource.public_instance_methods.sort }
   let(:collection_resource_methods) { Yaks::CollectionResource.public_instance_methods.sort }

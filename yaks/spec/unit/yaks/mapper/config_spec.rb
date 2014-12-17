@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe Yaks::Mapper::Config do
 
   describe '#add_attributes' do

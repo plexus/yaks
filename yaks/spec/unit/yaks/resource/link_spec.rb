@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe Yaks::Resource::Link do
   subject(:link) { described_class.new(rel: rel, uri: uri, options: options) }
 

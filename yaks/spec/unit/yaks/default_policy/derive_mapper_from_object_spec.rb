@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe Yaks::DefaultPolicy, '#derive_mapper_from_object' do
   subject(:policy) { described_class.new(options) }
 

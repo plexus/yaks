@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe Yaks::Format::CollectionJson do
   context 'with the plant collection resource' do
     include_context 'plant collection resource'

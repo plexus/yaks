@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe Yaks::FP do
   include described_class
 

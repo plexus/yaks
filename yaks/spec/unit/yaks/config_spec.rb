@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe Yaks::Config do
   include_context 'fixtures'
 

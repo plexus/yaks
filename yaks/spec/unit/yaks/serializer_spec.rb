@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe Yaks::Serializer do
   after do
     Yaks::Serializer.instance_variable_set("@serializers", nil)

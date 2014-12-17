@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe Yaks::Mapper::Form::Field do
   include_context 'yaks context'
 

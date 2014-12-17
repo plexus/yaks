@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe 'Mapping domain models to Resource objects' do
   include_context 'fixtures'
   include_context 'yaks context'

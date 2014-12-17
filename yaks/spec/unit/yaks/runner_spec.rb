@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe Yaks::Runner do
   subject(:runner) {
     described_class.new(object: object, config: config, options: options)

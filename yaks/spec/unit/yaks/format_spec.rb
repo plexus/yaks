@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe Yaks::Format do
   describe '.by_name' do
     specify do

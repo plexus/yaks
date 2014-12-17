@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe Yaks::Primitivize do
   subject(:primitivizer) { described_class.create }
 

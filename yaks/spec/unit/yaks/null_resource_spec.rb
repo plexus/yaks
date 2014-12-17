@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe Yaks::NullResource do
   subject(:null_resource) { described_class.new }
 

@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe Yaks::Resource do
   subject(:resource) { described_class.new(init_opts) }
   let(:init_opts) { {} }
