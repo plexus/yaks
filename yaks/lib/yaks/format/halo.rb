@@ -22,20 +22,29 @@ module Yaks
       end
 
       def serialize_form(form)
-        raw = form.to_h
-        raw[:href]  = raw.delete(:action)
-        raw[:fields] = form.fields.map do |field|
-          field.to_h.each_with_object({}) do |(attr,value), hsh|
-            if attr == :options
+        raw = form.to_h_compact
+        raw[:href]  = raw.delete(:action) if raw[:action]
+        raw[:fields] = form.fields.map(&method(:serialize_form_field))
+        raw
+      end
+
+      def serialize_form_field(field)
+        if field.type == :fieldset
+          {
+            type: :fieldset,
+            fields: field.fields.map(&method(:serialize_form_field))
+          }
+        else
+          field.to_h_compact.each_with_object({}) do |(attr,value), hsh|
+            if attr == :options # <option>s of a <select>
               if !value.empty?
                 hsh[:options] = value.map(&:to_h)
               end
-            elsif HTML5Forms::FIELD_OPTIONS[attr] != value
+            else
               hsh[attr] = value
             end
           end
         end
-        raw
       end
     end
   end

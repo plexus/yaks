@@ -53,7 +53,7 @@ module Yaks
           result << { rel: form.name, href: form.action }
           result.last[:prompt] = form.title if form.title
 
-          form.fields.each do |field|
+          form.fields_flat.each do |field|
             result.last[:data] = [] unless result.last.key? :data
             result.last[:data] << { name: field.name, value: nil.to_s }
             result.last[:data].last[:prompt] = field.label if field.label

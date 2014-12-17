@@ -1,13 +1,44 @@
 ### master
 [full changelog](http://github.com/plexus/yaks/compare/v0.7.7...master)
 
-Yaks::Config is now immutable, much like Yaks::Mapper::Config. This
-makes it easy to create multiple related configurations by simple
-method chaining. The DSL should be unchanged. Two methods are
-considered deprecated, however.
+Improved Collection+JSON support, dynamically generated form fields.
+
+Carles Jove i Buxeda has done some great work to improve support for Collection+JSON, GET forms are now rendered as CJ queries.
+
+A new introduction are "dynamic" form fields. Up to now it was hard to generate forms based on the object being serialized. Now it's possible to add dynamic sections to a Form definition. These will be evaluated at map-time, they receive the object being mapped, and inside the syntax for defining form fields can be used.
+
+```
+form :checkout do
+  text :name
+  text :lastname
+
+  dynamic do |object|
+    object.shipping_options.each do |shipping|
+      radio shipping.type_name, title: shipping.description
+    end
+  end
+end
+```
+
+Support for the fieldset element type has been added, which works as you would expect
+
+```
+form :foo do
+  fieldset do
+    legend "Hello"
+    text :field_1
+  end
+end
+```
+
+Internally there the DSL/Config mechanisms have been made more consistent. Yaks::Config is now immutable, much like Yaks::Mapper::Config. Attributes-based classes no long have arity-based hybrid getter/setters. Instead use `with(attr: val)` to set a value.
+
+Two methods on Yaks::Config are considered deprecated:
 
 * json_serializer, use serializer(:json, &...)
 * namespace, use mapper_namespace
+
+Some work has happened on read/write support, but this is not considered stable yet.
 
 ### 0.7.7
 

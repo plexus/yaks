@@ -13,16 +13,12 @@ module Yaks
         end
       end
 
-      class Field
-        include Yaks::Mapper::Form::Field.attributes.add(:error => nil)
-
-        def value(arg = Undefined)
-          return @value if arg.eql?(Undefined)
-          if type == :select
-            selected = options.find { |option| option.selected }
-            selected.value if selected
+      def fields_flat(fields = fields)
+        fields.each_with_object([]) do |field, acc|
+          if field.type == :fieldset
+            acc.concat(fields_flat field.fields)
           else
-            with(value: arg)
+            acc << field
           end
         end
       end

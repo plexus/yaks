@@ -30,7 +30,8 @@ module Yaks
 
       :select,
       :textarea,
-      :datalist
+      :datalist,
+      :legend
     ]
 
     FIELD_OPTIONS = {

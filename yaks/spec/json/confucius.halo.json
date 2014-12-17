@@ -57,7 +57,6 @@
   "_controls": {
     "search": {
       "name": "search",
-      "href": null,
       "title": "Find a Scholar",
       "method": "POST",
       "media_type": "application/x-www-form-urlencoded",
