@@ -50,7 +50,8 @@ module Yaks
       step: nil,
       list: nil,
       placeholder: nil,
-      checked: false
+      checked: false,
+      disabled: false
     }
 
   end
