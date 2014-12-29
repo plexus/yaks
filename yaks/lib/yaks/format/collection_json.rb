@@ -77,6 +77,7 @@ module Yaks
       end
 
       def method_is_get?(method)
+        return false unless method
         method.downcase.to_sym === :get
       end
 
