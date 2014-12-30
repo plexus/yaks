@@ -110,6 +110,66 @@ RSpec.describe Yaks::Format::CollectionJson do
     end
   end
 
+  context '#template?' do
+    context 'when no template form has been specified' do
+      let(:format) {
+        described_class.new
+      }
+
+      let(:resource) {
+        Yaks::Resource.new(
+          attributes: {foo: 'fooval', bar: 'barval'},
+          forms: [Yaks::Resource::Form.new(name: :just_a_form)]
+        )
+      }
+
+      it 'should return false' do
+        expect(format.template?(resource)).to eq false
+      end
+    end
+
+    context 'when a template form has been specified' do
+      let(:format) {
+        described_class.new(:template => :template_form_name)
+      }
+
+      context 'and the form is not present' do
+        let(:resource) {
+          Yaks::Resource.new(
+          attributes: {foo: 'fooval', bar: 'barval'},
+          forms: [Yaks::Resource::Form.new(name: :not_the_form_name)]
+          )
+        }
+
+        subject {
+          Yaks::Primitivize.create.call(format.call(resource))
+        }
+
+        it 'should return false' do
+          expect(format.template?(resource)).to eq false
+        end
+      end
+
+      context 'and the form is present' do
+        let(:resource) {
+          Yaks::Resource.new(
+          attributes: {foo: 'fooval', bar: 'barval'},
+          forms: [Yaks::Resource::Form.new(name: :template_form_name)]
+          )
+        }
+
+        subject {
+          Yaks::Primitivize.create.call(format.call(resource))
+        }
+
+        it 'should return true' do
+          expect(format.template?(resource)).to eq true
+        end
+      end
+    end
+  end
+
+
   context 'serialize_links' do
     context 'without title' do
       let(:resource) {
@@ -263,16 +323,20 @@ RSpec.describe Yaks::Format::CollectionJson do
     end
   end
 
-  context 'template' do
+  context 'serialize_template' do
+    let(:format) {
+      described_class.new(:template => :form_for_new)
+    }
+
     let(:resource) {
       Yaks::Resource.new(
         attributes: {foo: 'fooval', bar: 'barval'},
-        forms: [Yaks::Resource::Form.new(name: :template, fields: fields)]
+        forms: [Yaks::Resource::Form.new(name: :form_for_new, fields: fields)]
       )
     }
 
     subject {
-      Yaks::Primitivize.create.call(described_class.new.call(resource))
+      Yaks::Primitivize.create.call(format.call(resource))
     }
 
     context "template uses prompts" do

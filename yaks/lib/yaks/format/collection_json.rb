@@ -13,9 +13,9 @@ module Yaks
           items: serialize_items(resource)
         }
         result[:href] = resource.self_link.uri if resource.self_link
-        result[:links] = serialize_links(resource) if links? resource
-        result[:queries] = serialize_queries(resource) if queries? resource
-        result[:template] = serialize_template(resource) if resource.find_form :template
+        result[:links] = serialize_links(resource) if links?(resource)
+        result[:queries] = serialize_queries(resource) if queries?(resource)
+        result[:template] = serialize_template(resource) if template?(resource)
         {collection: result}
       end
 
@@ -70,6 +70,10 @@ module Yaks
         resource.collection? && resource.links.any?
       end
 
+      def template?(resource)
+        options.key?(:template) && template_form_exists?(resource)
+      end
+
       protected
 
       def form_is_query?(form)
@@ -81,8 +85,12 @@ module Yaks
         method.downcase.to_sym === :get
       end
 
+      def template_form_exists?(resource)
+        !resource.find_form(options.fetch(:template)).nil?
+      end
+
       def serialize_template(resource)
-        fields = resource.find_form(:template).fields
+        fields = resource.find_form(options.fetch(:template)).fields
         result = {data: []}
         fields.each do |field|
           result[:data] << {name: field.name, value: nil.to_s}
