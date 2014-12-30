@@ -81,8 +81,7 @@ module Yaks
       end
 
       def method_is_get?(method)
-        return false unless method
-        method.downcase.to_sym === :get
+        !method.nil? && method.downcase.to_sym === :get
       end
 
       def template_form_exists?(resource)

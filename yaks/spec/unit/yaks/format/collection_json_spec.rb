@@ -93,6 +93,20 @@ RSpec.describe Yaks::Format::CollectionJson do
           expect(cj.queries?(resource)).to eq false
         end
       end
+
+      context 'and form has no method' do
+        let(:full_args) {
+          {
+            name: :search,
+            action: '/foo'
+          }
+        }
+
+        it 'should return false' do
+          cj = Yaks::Format::CollectionJson.new(resource)
+          expect(cj.queries?(resource)).to eq false
+        end
+      end
     end
 
     context 'when resource has not GET forms' do
