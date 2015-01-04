@@ -394,11 +394,29 @@ end
 
 ### Collection+JSON
 
+Collection+JSON has support for write templates. To use them, the `:template`
+option can be used. It will map the specified form to a CJ template. Please
+notice that CJ only allows one template per representation.
+
 ```ruby
 default_format :collection_json
+
+collection_json = Yaks.new do
+  format_options :collection_json, template: :my_template_form
+end
+
+class PostMapper < Yaks::Mapper
+  form :my_template_form do
+    # This will be used for template
+  end
+
+  form :not_my_template do
+    # This won't be used for template
+  end
+end
 ```
 
-Subresources aren't mapped because Collection+JSON doesn't really have that concept, and the other way around templates and queries don't exist (yet) in Yaks.
+Subresources aren't mapped because Collection+JSON doesn't really have that concept.
 
 ## Hooks
 

@@ -93,6 +93,20 @@ RSpec.describe Yaks::Format::CollectionJson do
           expect(cj.queries?(resource)).to eq false
         end
       end
+
+      context 'and form has no method' do
+        let(:full_args) {
+          {
+            name: :search,
+            action: '/foo'
+          }
+        }
+
+        it 'should return false' do
+          cj = Yaks::Format::CollectionJson.new(resource)
+          expect(cj.queries?(resource)).to eq false
+        end
+      end
     end
 
     context 'when resource has not GET forms' do
@@ -106,6 +120,65 @@ RSpec.describe Yaks::Format::CollectionJson do
       it 'should return false' do
         cj = Yaks::Format::CollectionJson.new(resource)
         expect(cj.queries?(resource)).to eq false
+      end
+    end
+  end
+
+  context '#template?' do
+    context 'when no template form has been specified' do
+      let(:format) {
+        described_class.new
+      }
+
+      let(:resource) {
+        Yaks::Resource.new(
+          attributes: {foo: 'fooval', bar: 'barval'},
+          forms: [Yaks::Resource::Form.new(name: :just_a_form)]
+        )
+      }
+
+      it 'should return false' do
+        expect(format.template?(resource)).to eq false
+      end
+    end
+
+    context 'when a template form has been specified' do
+      let(:format) {
+        described_class.new(:template => :template_form_name)
+      }
+
+      context 'and the form is not present' do
+        let(:resource) {
+          Yaks::Resource.new(
+          attributes: {foo: 'fooval', bar: 'barval'},
+          forms: [Yaks::Resource::Form.new(name: :not_the_form_name)]
+          )
+        }
+
+        subject {
+          Yaks::Primitivize.create.call(format.call(resource))
+        }
+
+        it 'should return false' do
+          expect(format.template?(resource)).to eq false
+        end
+      end
+
+      context 'and the form is present' do
+        let(:resource) {
+          Yaks::Resource.new(
+          attributes: {foo: 'fooval', bar: 'barval'},
+          forms: [Yaks::Resource::Form.new(name: :template_form_name)]
+          )
+        }
+
+        subject {
+          Yaks::Primitivize.create.call(format.call(resource))
+        }
+
+        it 'should return true' do
+          expect(format.template?(resource)).to eq true
+        end
       end
     end
   end
@@ -259,6 +332,85 @@ RSpec.describe Yaks::Format::CollectionJson do
             }
           )
         end
+      end
+    end
+  end
+
+  context 'serialize_template' do
+    let(:format) {
+      described_class.new(:template => :form_for_new)
+    }
+
+    let(:resource) {
+      Yaks::Resource.new(
+        attributes: {foo: 'fooval', bar: 'barval'},
+        forms: [Yaks::Resource::Form.new(name: :form_for_new, fields: fields)]
+      )
+    }
+
+    subject {
+      Yaks::Primitivize.create.call(format.call(resource))
+    }
+
+    context "template uses prompts" do
+      let(:fields) {
+        [
+          Yaks::Resource::Form::Field.new(name: 'foo', label: 'My Foo Field'),
+          Yaks::Resource::Form::Field.new(name: 'bar', label: 'My Bar Field')
+        ]
+      }
+
+      it 'should render a template' do
+        should deep_eql(
+          "collection" => {
+            "version" => "1.0",
+            "items" => [
+              {
+                "data" => [
+                  { "name"=>"foo", "value"=>"fooval" },
+                  { "name"=>"bar", "value"=>"barval" }
+                ]
+              }
+            ],
+            "template" => {
+              "data" => [
+                { "name"=>"foo", "value"=>"", "prompt"=>"My Foo Field" },
+                { "name"=>"bar", "value"=>"", "prompt"=>"My Bar Field" }
+              ]
+            }
+          }
+        )
+      end
+    end
+
+    context "template does not use prompts" do
+      let(:fields) {
+        [
+          Yaks::Resource::Form::Field.new(name: 'foo'),
+          Yaks::Resource::Form::Field.new(name: 'bar')
+        ]
+      }
+
+      it 'should render a template without prompts' do
+        should deep_eql(
+          "collection" => {
+            "version" => "1.0",
+            "items" => [
+              {
+                "data" => [
+                  { "name"=>"foo", "value"=>"fooval" },
+                  { "name"=>"bar", "value"=>"barval" }
+                ]
+              }
+            ],
+            "template" => {
+              "data" => [
+                { "name"=>"foo", "value"=>"" },
+                { "name"=>"bar", "value"=>"" }
+              ]
+            }
+          }
+        )
       end
     end
   end
