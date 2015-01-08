@@ -36,7 +36,7 @@ module Yaks
           field.to_h_compact.each_with_object({}) do |(attr,value), hsh|
             if attr == :options # <option>s of a <select>
               if !value.empty?
-                hsh[:options] = value.map(&:to_h)
+                hsh[:options] = value.map(&:to_h_compact)
               end
             else
               hsh[attr] = value

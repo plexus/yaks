@@ -8,7 +8,7 @@ module Yaks
       end
 
       def values
-        fields.each_with_object({}) do |field, values|
+        fields_flat.each_with_object({}) do |field, values|
           values[field.name] = field.value
         end
       end

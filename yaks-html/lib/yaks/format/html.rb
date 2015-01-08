@@ -3,7 +3,7 @@
 module Yaks
   class Format
     class HTML < self
-      include Adamantium
+      include Adamantium, Util
 
       register :html, :html, 'text/html'
 
@@ -92,27 +92,33 @@ module Yaks
 
       def render_field(field)
         return render_fieldset(field) if field.type == :fieldset
+        extra_info = reject_keys(field.to_h_compact, :type, :name, :value, :label, :options)
         H[:tr,
           H[:td,
             H[:label, {for: field.name}, [field.label, field.required ? '*' : ''].join]],
           H[:td,
             case field.type
             when /\A(button|checkbox|file|hidden|image|password|radio|reset|submit|text)\z/
-              H[:input,
-                type: field.type,
-                value: field.value,
-                name: field.name]
+              H[:input, field.to_h_compact]
+            when /select/
+              H[:select, reject_keys(field.to_h_compact, :options), render_select_options(field.options)]
             when /textarea/
-              H[:textarea,
-                { name: field.name },
-                field.value || '']
+              H[:textarea, reject_keys(field.to_h_compact, :value), field.value || '']
             when /legend/
-              H[:legend, field.name]
-            end]]
+              H[:legend, field.to_h_compact]
+            end],
+          H[:td, extra_info.empty? ? '' : extra_info.inspect]
+         ]
       end
 
       def render_fieldset(fieldset)
         H[:fieldset, fieldset.fields.map(&method(:render_field))]
+      end
+
+      def render_select_options(options)
+        options.map do |o|
+          H[:option, reject_keys(o.to_h_compact, :label), o.label]
+        end
       end
     end
   end

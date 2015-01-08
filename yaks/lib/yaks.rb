@@ -87,6 +87,7 @@ require 'yaks/collection_mapper'
 
 require 'yaks/resource/form'
 require 'yaks/resource/form/field'
+require 'yaks/resource/form/field/option'
 require 'yaks/resource/form/fieldset'
 
 require 'yaks/format'

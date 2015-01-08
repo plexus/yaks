@@ -21,6 +21,10 @@ module Yaks
       keys.each_with_object({}) {|k,dest| dest[k] = hash[k] if hash.key?(k) }
     end
 
+    def reject_keys(hash, *keys)
+      hash.keys.each_with_object({}) {|k,dest| dest[k] = hash[k] unless keys.include?(k) }
+    end
+
     def symbolize_keys(hash)
       hash.each_with_object({}) {|(k,v), hsh| hsh[k.to_sym] = v}
     end

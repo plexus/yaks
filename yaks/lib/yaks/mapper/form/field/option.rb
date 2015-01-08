@@ -11,7 +11,7 @@ module Yaks
           end
 
           def to_resource
-            to_h #placeholder
+            Resource::Form::Field::Option.new(to_h)
           end
         end
       end
