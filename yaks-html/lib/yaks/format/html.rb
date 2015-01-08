@@ -98,14 +98,14 @@ module Yaks
             H[:label, {for: field.name}, [field.label, field.required ? '*' : ''].join]],
           H[:td,
             case field.type
-            when /\A(button|checkbox|file|hidden|image|password|radio|reset|submit|text)\z/
-              H[:input, field.to_h_compact]
             when /select/
               H[:select, reject_keys(field.to_h_compact, :options), render_select_options(field.options)]
             when /textarea/
               H[:textarea, reject_keys(field.to_h_compact, :value), field.value || '']
             when /legend/
               H[:legend, field.to_h_compact]
+            else
+              H[:input, field.to_h_compact]
             end],
           H[:td, extra_info.empty? ? '' : extra_info.inspect]
          ]
