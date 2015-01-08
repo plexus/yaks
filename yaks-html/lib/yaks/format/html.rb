@@ -85,18 +85,34 @@ module Yaks
         form = form.attr('action', form_control.action)      if form_control.action
         form = form.attr('enctype', form_control.media_type) if form_control.media_type
 
-        rows = form_control.fields.map do |field|
-          H[:tr,
-            H[:td, H[:label, {for: field.name}, field.label || '']],
-            H[:td, case field.type
-                   when /\A(button|checkbox|file|hidden|image|password|radio|reset|submit|text)\z/
-                     H[:input, type: field.type, value: field.value, name: field.name]
-                   when /textarea/
-                     H[:textarea, { name: field.name },  field.value || '']
-                   end]
-           ]
-        end
+        rows = form_control.fields.map(&method(:render_field))
+
         form.content(H[:table, form_control.title || '', *rows, H[:tr, H[:td, H[:input, {type: 'submit'}]]]])
+      end
+
+      def render_field(field)
+        return render_fieldset(field) if field.type == :fieldset
+        H[:tr,
+          H[:td,
+            H[:label, {for: field.name}, [field.label, field.required ? '*' : ''].join]],
+          H[:td,
+            case field.type
+            when /\A(button|checkbox|file|hidden|image|password|radio|reset|submit|text)\z/
+              H[:input,
+                type: field.type,
+                value: field.value,
+                name: field.name]
+            when /textarea/
+              H[:textarea,
+                { name: field.name },
+                field.value || '']
+            when /legend/
+              H[:legend, field.name]
+            end]]
+      end
+
+      def render_fieldset(fieldset)
+        H[:fieldset, fieldset.fields.map(&method(:render_field))]
       end
     end
   end
