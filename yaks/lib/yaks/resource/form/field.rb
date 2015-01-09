@@ -4,13 +4,12 @@ module Yaks
       class Field
         include Yaks::Mapper::Form::Field.attributes.add(:error => nil)
 
-        def value(arg = Undefined)
-          return @value if arg.eql?(Undefined)
-          if type == :select
+        def value
+          if type.equal? :select
             selected = options.find { |option| option.selected }
             selected.value if selected
           else
-            with(value: arg)
+            @value
           end
         end
       end

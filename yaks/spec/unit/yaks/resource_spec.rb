@@ -88,6 +88,26 @@ RSpec.describe Yaks::Resource do
     end
   end
 
+  describe '#initialize' do
+    it 'should verify subresources is an array' do
+      expect { Yaks::Resource.new(subresources: { '/rel/comments' => []}) }
+        .to raise_exception /comments/
+    end
+
+    it 'should verify subresources is an array' do
+      expect { Yaks::Resource.new(subresources: []) }
+        .to_not raise_exception
+    end
+
+    it 'should work without args' do
+      expect( Yaks::Resource.new ).to be_a Yaks::Resource
+    end
+
+    it 'should take defaults when no args are passed' do
+      expect( Yaks::Resource.new.rels ).to eq []
+    end
+  end
+
   describe '#self_link' do
     let(:init_opts) {
       { links:
@@ -103,10 +123,27 @@ RSpec.describe Yaks::Resource do
     end
   end
 
+  describe '#add_rel' do
+    it 'should add to the rels' do
+      expect(resource.add_rel(:foo).add_rel(:bar))
+        .to eql Yaks::Resource.new(rels: [:foo, :bar])
+    end
+  end
+
   describe '#add_form' do
     it 'should append to the forms' do
-      expect(resource.add_form(:a_form))
-        .to eq Yaks::Resource.new(forms: [:a_form])
+      expect(resource.add_form(Yaks::Resource::Form.new(name: :a_form)))
+        .to eq Yaks::Resource.new(forms: [Yaks::Resource::Form.new(name: :a_form)])
+    end
+  end
+
+  describe '#find_form' do
+    it 'should find a form by name' do
+      expect(resource
+              .add_form(Yaks::Resource::Form.new(name: :a_form))
+              .add_form(Yaks::Resource::Form.new(name: :b_form))
+              .find_form(:b_form))
+        .to eq Yaks::Resource::Form.new(name: :b_form)
     end
   end
 
@@ -118,4 +155,11 @@ RSpec.describe Yaks::Resource do
     end
   end
 
+  describe '#with_collection' do
+    it 'should be a no-op' do
+      expect(Yaks::Resource.new.with_collection([:foo])).to eql Yaks::Resource.new
+    end
+  end
+
 end
+# ~> -:1:in `<main>': uninitialized constant RSpec (NameError)

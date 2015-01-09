@@ -36,31 +36,65 @@ task :mutant_chunked do
   # Yaks::Runner,
 
   [
-    # Yaks::Resource::Form,                   # no explicit coverage
-    # Yaks::Resource::Form::Field,            # no explicit coverage
-    # Yaks::Mapper::Form::Field::Option,      # no explicit coverage
-    # Yaks::Format::HTML,                     # no explicit coverage
-    Yaks::Resource,                         # 35/206  # 83.01%
-    Yaks::StatefulBuilder,                  # 25/192  # 86.98%
-    Yaks::Format::Halo,                     # 24/232  # 89.66%
-    Yaks::Mapper,                           # 15/482  # 96.89%
-    Yaks::Resource::Link,                   # 13/43   # 69.77%
-    Yaks::Mapper::Form::Field,              # 11/155  # 92.90%
-    Yaks::Mapper::Link,                     # 10/357  # 97.20%
-    Yaks::CollectionMapper,                 # 7/217   # 96.77%
-    Yaks::Primitivize,                      # 3/239   # 98.74%
-    Yaks::Mapper::Form,                     # 3/179   # 98.32%
-    Yaks::CollectionResource,               # 3/9     # 66.67%
-    Yaks::Format::JsonAPI,                  # 3/435   # 99.31%
-    Yaks::Format,                           # 2/29    # 93.10%
-    Yaks::Attributes,                       # 1/239   # 99.57%
-    Yaks::StatefulBuilder::StatefulMethods, # 1/66    # 98.49%
-    Yaks::Mapper::Association,              # 1/222   # 99.55%
-    Yaks::Serializer,                       # 1/74    # 98.65%
-    Yaks::Format::Hal,                      # 1/328   # 99.70%
-    # Yaks::Format::Transit,                  # no explicit coverage
-    # Yaks::Format::Transit::WriteHandler,    # no explicit coverage
-    # Yaks::Format::Transit::ReadHandler,     # no explicit coverage
+    # >> Yaks::Attributes
+    # >> Yaks::Attributes::InstanceMethods
+    # >> Yaks::Builder
+    # >> Yaks::CollectionMapper
+    # >> Yaks::CollectionResource
+    # >> Yaks::Config
+    # >> Yaks::Configurable
+    # >> Yaks::DefaultPolicy
+    # >> Yaks::Error
+    # >> Yaks::FP
+    # >> Yaks::FP::Callable
+    # >> Yaks::Format
+    # >> Yaks::Format::CollectionJson
+    # >> Yaks::Format::HTML
+    # >> Yaks::Format::Hal
+    # >> Yaks::Format::Halo
+    # >> Yaks::Format::JsonAPI
+    # >> Yaks::Format::Reader
+    # >> Yaks::Format::Transit
+    # >> Yaks::Format::Transit::ReadHandler
+    # >> Yaks::Format::Transit::WriteHandler
+    # >> Yaks::HTML5Forms
+    # >> Yaks::Identifier
+    # >> Yaks::Identifier::LinkRelation
+    # >> Yaks::IllegalStateError
+    # >> Yaks::Mapper
+    # >> Yaks::Mapper::Association
+    # >> Yaks::Mapper::AssociationMapper
+    # >> Yaks::Mapper::Attribute
+    # >> Yaks::Mapper::Config
+    # >> Yaks::Mapper::Form
+    # >> Yaks::Mapper::Form::Config
+    # >> Yaks::Mapper::Form::Field
+    # >> Yaks::Mapper::Form::Field::Option
+    # >> Yaks::Mapper::Form::Fieldset
+    # >> Yaks::Mapper::HasMany
+    # >> Yaks::Mapper::HasOne
+    # >> Yaks::Mapper::Link
+    # >> Yaks::NullResource
+    # >> Yaks::Pipeline
+    # >> Yaks::Primitivize
+    # >> Yaks::PrimitivizeError
+    # >> Yaks::Reader
+    # >> Yaks::Reader::Hal
+    # Yaks::Resource,
+    # Yaks::Resource::Form,
+    Yaks::Resource::Form::Field,
+    Yaks::Resource::Form::Field::Option,
+    Yaks::Resource::Form::Fieldset,
+    Yaks::Resource::Link,
+    # >> Yaks::Runner
+    # >> Yaks::RuntimeError
+    # >> Yaks::Serializer
+    # >> Yaks::Serializer::JSONReader
+    # >> Yaks::Serializer::JSONWriter
+    # >> Yaks::Undefined
+    # >> Yaks::UnsupportedOperationError
+    # >> Yaks::Util
+    # >> Yaks::Util::Deprecated
   ].each do |space|
     puts space
     ENV['PATTERN'] = "#{space}"

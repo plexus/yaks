@@ -4,7 +4,7 @@ module Yaks
       include Yaks::Mapper::Form::Config.attributes.remove(:dynamic_blocks)
 
       def [](name)
-        fields.find {|field| field.name == name}.value
+        fields.find {|field| field.name.equal? name}.value
       end
 
       def values
@@ -15,7 +15,7 @@ module Yaks
 
       def fields_flat(fields = fields)
         fields.each_with_object([]) do |field, acc|
-          if field.type == :fieldset
+          if field.type.equal? :fieldset
             acc.concat(fields_flat field.fields)
           else
             acc << field
