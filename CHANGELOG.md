@@ -1,6 +1,10 @@
 ### master
 [full changelog](http://github.com/plexus/yaks/compare/v0.7.7...master)
 
+### 0.8.0.beta1
+
+Improved form support, HTML form rendering, CJ support.
+
 ### 0.8.0.alpha
 
 Improved Collection+JSON support, dynamically generated form fields.
