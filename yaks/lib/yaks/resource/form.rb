@@ -22,6 +22,18 @@ module Yaks
           end
         end
       end
+
+      def map_fields(fields = fields, &block)
+        with(
+             fields: fields.map do |field|
+               if field.type.equal? :fieldset
+                 field.with(fields: field.fields.map(&block))
+               else
+                 block.call(field)
+               end
+             end
+        )
+      end
     end
   end
 end
