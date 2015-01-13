@@ -33,11 +33,12 @@ module Yaks
       end
 
       def add_to_resource(resource, mapper, _context)
+        return resource.with(links: resource.links.reject {|link| link.rel?(rel)}) if options[:remove]
+
         resource_link = map_to_resource_link(mapper)
         return resource unless resource_link
-        if options[:remove]
-          resource.with(links: resource.links.reject {|link| link.rel?(rel)})
-        elsif options[:replace]
+
+        if options[:replace]
           resource.with(links: resource.links.reject {|link| link.rel?(rel)} << resource_link)
         else
           resource.add_link(resource_link)
