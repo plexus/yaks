@@ -13,21 +13,21 @@ module Yaks
           end
         end
 
-        def with_value(attributes)
+        def with_value(value)
           if type.equal? :select
-            with(with_select_options(attributes))
+            with(options: select_options_for_value(value))
           else
-            with(attributes)
+            with(value: value)
           end
         end
 
         private
 
-        def with_select_options(attributes)
-          unset = ->(option) { option.selected && !(option.value == attributes[:value]) }
-          set   = ->(option) { !option.selected && (option.value == attributes[:value]) }
+        def select_options_for_value(value)
+          unset = ->(option) { option.selected && !value().eql?(value) }
+          set   = ->(option) { !option.selected && option.value.eql?(value) }
 
-          new_options = options.reduce([]) do |new_opts, option|
+          options.each_with_object([]) do |option, new_opts|
             new_opts << case option
                         when unset
                           option.update selected: false
@@ -37,8 +37,6 @@ module Yaks
                           option
                         end
           end
-
-          attributes.merge(options: new_options)
         end
       end
     end
