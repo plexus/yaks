@@ -2,6 +2,7 @@ module Yaks
   class Resource
     class Form
       include Yaks::Mapper::Form::Config.attributes.remove(:dynamic_blocks)
+      include Yaks::Resource::MapFields
 
       def [](name)
         fields.find {|field| field.name.equal? name}.value
@@ -21,18 +22,6 @@ module Yaks
             acc << field
           end
         end
-      end
-
-      def map_fields(fields = fields, &block)
-        with(
-             fields: fields.map do |field|
-               if field.type.equal? :fieldset
-                 field.with(fields: field.fields.map(&block))
-               else
-                 block.call(field)
-               end
-             end
-        )
       end
     end
   end
