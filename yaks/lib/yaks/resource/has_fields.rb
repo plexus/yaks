@@ -1,7 +1,7 @@
 module Yaks
   class Resource
-    module MapFields
-      def map_fields(fields = fields, &block)
+    module HasFields
+      def map_fields(&block)
         with(
           fields: fields.map do |field|
             if field.type.equal? :fieldset

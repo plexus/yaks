@@ -162,4 +162,3 @@ RSpec.describe Yaks::Resource do
   end
 
 end
-# ~> -:1:in `<main>': uninitialized constant RSpec (NameError)

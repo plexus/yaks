@@ -16,4 +16,16 @@ RSpec.describe Yaks::Resource::Link do
     let(:options) { super().merge(templated: true) }
     its(:templated?) { should be true }
   end
+
+  describe '#rel?' do
+    let(:rel) { "/rels/foo" }
+
+    it 'should be true if the rel matches' do
+      expect(link.rel?("/rels/foo")).to be true
+    end
+
+    it 'should be false if the rel does not match' do
+      expect(link.rel?(:foo)).to be false
+    end
+  end
 end

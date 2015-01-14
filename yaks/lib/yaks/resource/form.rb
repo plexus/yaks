@@ -2,7 +2,7 @@ module Yaks
   class Resource
     class Form
       include Yaks::Mapper::Form::Config.attributes.remove(:dynamic_blocks)
-      include Yaks::Resource::MapFields
+      include Yaks::Resource::HasFields
 
       def [](name)
         fields.find {|field| field.name.equal? name}.value

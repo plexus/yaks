@@ -85,7 +85,7 @@ require 'yaks/mapper'
 require 'yaks/mapper/association_mapper'
 require 'yaks/collection_mapper'
 
-require 'yaks/resource/map_fields'
+require 'yaks/resource/has_fields'
 require 'yaks/resource/form'
 require 'yaks/resource/form/field'
 require 'yaks/resource/form/field/option'

@@ -82,10 +82,11 @@ task :mutant_chunked do
     # >> Yaks::Reader::Hal
     # Yaks::Resource,
     # Yaks::Resource::Form,
-    Yaks::Resource::Form::Field,
-    Yaks::Resource::Form::Field::Option,
-    Yaks::Resource::Form::Fieldset,
-    Yaks::Resource::Link,
+    # Yaks::Resource::Form::Field,
+    # Yaks::Resource::Form::Field::Option,
+    # Yaks::Resource::Form::Fieldset,
+    #Yaks::Resource::Link,
+    Yaks::Resource::HasFields,
     # >> Yaks::Runner
     # >> Yaks::RuntimeError
     # >> Yaks::Serializer
