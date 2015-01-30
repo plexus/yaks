@@ -26,7 +26,7 @@ requested. These formats are presently supported:
 ## State of Development
 
 This library came into existence because we at
-[Ticketsolve](https://www.ticketsolve.com) wanted to build a rich
+[Ticketsolve](http://www.ticketsolve.com) wanted to build a rich
 hypermedia API, and were dissatisfied with any of the existing Ruby
 solutions at the time (November 2013).
 
