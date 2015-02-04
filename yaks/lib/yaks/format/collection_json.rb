@@ -77,11 +77,7 @@ module Yaks
       protected
 
       def form_is_query?(form)
-        method_is_get?(form.method) && !form.action.nil?
-      end
-
-      def method_is_get?(method)
-        !method.nil? && method.downcase.to_sym === :get
+        form.method?(:get) && form.has_action?
       end
 
       def template_form_exists?(resource)

@@ -49,4 +49,39 @@ RSpec.describe Yaks::Resource::Form do
     end
   end
 
+  describe "#method?" do
+    it 'should return true if method matches' do
+      form_sym = Yaks::Resource::Form.new(name: :foo, method: :get)
+      form_str = Yaks::Resource::Form.new(name: :foo, method: 'GET')
+
+      expect(form_sym.method?(:get)).to eq(true)
+      expect(form_sym.method?('get')).to eq(true)
+      expect(form_str.method?(:get)).to eq(true)
+      expect(form_str.method?('GET')).to eq(true)
+    end
+
+    it 'should return false if method does not match' do
+      form_sym = Yaks::Resource::Form.new(name: :foo, method: :get)
+      form_str = Yaks::Resource::Form.new(name: :foo, method: 'GET')
+
+      expect(form_sym.method?(:post)).to eq(false)
+      expect(form_sym.method?('patch')).to eq(false)
+      expect(form_str.method?(:delete)).to eq(false)
+      expect(form_str.method?('PUT')).to eq(false)
+    end
+  end
+
+  describe "#has_action?" do
+     it 'should return true if form has an action url' do
+      form = Yaks::Resource::Form.new(name: :foo, action: "/my-action")
+
+      expect(form.has_action?).to eq(true)
+    end
+
+    it 'should return false if form has not an action url' do
+      form = Yaks::Resource::Form.new(name: :foo)
+
+      expect(form.has_action?).to eq(false)
+    end
+  end
 end
