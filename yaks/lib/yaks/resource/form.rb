@@ -23,6 +23,14 @@ module Yaks
           end
         end
       end
+
+      def method?(meth)
+        !method.nil? && method.downcase.to_sym === meth.downcase.to_sym
+      end
+
+      def has_action?
+        !action.nil?
+      end
     end
   end
 end
