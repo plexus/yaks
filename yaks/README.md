@@ -37,7 +37,7 @@ supporting hypermedia formats in Ruby.
 Yaks can be used in production today, as we do, but until 1.0 is
 released there will regularly be breaking changes, as we figure out
 the best way to do things. These are all documented clearly in the
-[changelog](CHANGLOG.md). At this point we recommend locking to an
+[changelog](/CHANGELOG.md). At this point we recommend locking to an
 exact version number.
 
 ## Concepts
