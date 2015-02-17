@@ -1,5 +1,7 @@
 ### master
-[full changelog](http://github.com/plexus/yaks/compare/v0.7.7...master)
+[full changelog](http://github.com/plexus/yaks/compare/v0.8.0.beta1...master)
+
+Allow to use procs for dynamic values in "option" form elements (as used inside a "select"). This makes the form API more consistent.
 
 ### 0.8.0.beta1
 
