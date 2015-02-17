@@ -28,14 +28,14 @@ module Yaks
           Resource::Form::Field.new(
             resource_attributes.each_with_object({}) do |attr, attrs|
               attrs[attr] = mapper.expand_value(public_send(attr))
-            end.merge(options: resource_options)
+            end.merge(options: resource_options(mapper))
           )
         end
 
-        def resource_options
+        def resource_options(mapper)
           # make sure all empty options arrays are the same instance,
           # makes for prettier #pp
-          options.empty? ? options : options.map(&:to_resource)
+          options.empty? ? options : options.map {|opt| opt.to_resource_field_option(mapper) }
         end
 
         # All attributes that can be converted 1-to-1 to

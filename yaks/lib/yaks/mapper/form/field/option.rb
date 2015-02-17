@@ -10,8 +10,12 @@ module Yaks
             new(opts.merge(value: value))
           end
 
-          def to_resource
-            Resource::Form::Field::Option.new(to_h)
+          def to_resource_field_option(mapper)
+            Resource::Form::Field::Option.new(
+              value: mapper.expand_value(value),
+              label: mapper.expand_value(label),
+              selected: mapper.expand_value(selected),
+            )
           end
         end
       end
