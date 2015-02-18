@@ -68,6 +68,26 @@ RSpec.describe Yaks::Mapper::Link do
         )
       end
     end
+
+    context 'with :if defined and resolving to true' do
+      let(:options) { { if: ->{ true } } }
+
+      it 'should render the link' do
+        expect(link.add_to_resource(Yaks::Resource.new, mapper, yaks_context)).to eql(
+          Yaks::Resource.new(links: [Yaks::Resource::Link.new(rel: :next, uri: "/foo/bar/3/4")])
+        )
+      end
+    end
+
+    context 'with :if defined and resolving to false' do
+      let(:options) { { if: ->{ false } } }
+
+      it 'should not render the link' do
+        expect(link.add_to_resource(Yaks::Resource.new, mapper, yaks_context)).to eql(
+          Yaks::Resource.new
+        )
+      end
+    end
   end
 
   describe '#rel?' do
@@ -171,6 +191,38 @@ RSpec.describe Yaks::Mapper::Link do
       let(:template) { ->{ object.returns_nil } }
 
       it 'should return nil' do
+        expect(resource_link).to be_nil
+      end
+    end
+
+    context 'with a if lambda resolving to true' do
+      let(:options) { { if: -> { add_link? } } }
+
+      before do
+        mapper_class.class_eval do
+          def add_link?
+            true
+          end
+        end
+      end
+
+      it 'should evaluate the lambda in the context of the mapper' do
+        expect(resource_link).to be_a(Yaks::Resource::Link)
+      end
+    end
+
+    context 'with a if lambda resolving to false' do
+      let(:options) { { if: -> { add_link? } } }
+
+      before do
+        mapper_class.class_eval do
+          def add_link?
+            false
+          end
+        end
+      end
+
+      it 'should evaluate the lambda in the context of the mapper' do
         expect(resource_link).to be_nil
       end
     end

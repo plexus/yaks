@@ -55,6 +55,8 @@ module Yaks
       end
 
       def map_to_resource_link(mapper)
+        return unless mapper.expand_value(options.fetch(:if, true))
+
         uri = mapper.expand_uri(template, options.fetch(:expand, true))
         return if uri.nil?
 
@@ -69,7 +71,7 @@ module Yaks
         options = options()
         options = options.merge(title: Resolve(options[:title], mapper)) if options.key?(:title)
         options = options.merge(templated: true) if templated?
-        options.reject{|key| [:expand, :replace].include? key }
+        options.reject{|key| [:expand, :replace, :if].include? key }
       end
 
     end
