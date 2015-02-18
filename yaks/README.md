@@ -138,6 +138,30 @@ class CommentMapper < Yaks::Mapper
 end
 ```
 
+### Forms
+
+Mapper can contain form defintions, for formats that support them. The
+form DSL mimics the HTML5 field and attribute names.
+
+```ruby
+class PostMapper < Yaks::Mapper
+  attributes :id, :body, :date
+
+  form :add_comment do
+    action '/api/comments'
+    method 'POST'
+    media_type 'application/json'
+
+    text :body
+    hidden :post_id, value: -> { object.id }
+  end
+end
+```
+
+TODO: add more info on form element types, attributes, conditional
+rendering of forms, dynamic form sections, ...
+
+
 #### Filtering
 
 You can override `#attributes`, or `#associations`.
@@ -196,16 +220,36 @@ end
 
 ```
 
-You can pass a symbol instead of a template, in that case the symbol will be used as a method name on the object to retrieve the link. You can override this behavior just like with attributes.
+You can pass a proc instead of a template, in that case the proc will
+be resolved in the context of the mapper. What this means is that, if
+the proc takes no arguments, it will be evaluated with the mapper
+instance as the value of `self`. If the proc does take an argument,
+then it will receive the mapper instance, and will be evaluated as a
+closure, i.e. with access to the scope in which it was defined.
 
 ```ruby
 class FooMapper < Yaks::Mapper
-  link 'http://api.foo.com/rels/go_home', :home_url
+  link 'http://api.foo.com/rels/go_home', -> { home_url }
   # by default calls object.home_url
 
   def home_url
     object.setting('home_url')
   end
+end
+```
+
+
+To only include links based on certain conditions, add an `:if`
+option, passing it a block. The block will be resolved in the context
+of the mapper, as explained before.
+
+For example, say you want to notify the consumer of your API that upon
+confirming an order, the previously held cart is no longer valid, you
+could use the IANA standard `invalidates` rel to communicate this.
+
+``` ruby
+class OrderMapper < BaseMapper
+  link :invalidates, '/api/cart', if: ->{ env['api.invalidate_cart'] }
 end
 ```
 
@@ -218,6 +262,7 @@ Options
 * `:mapper` : Use a specific for each instance, will be derived from the class name if omitted (see Policy vs Configuration)
 * `:collection_mapper` : For mapping the collection as a whole, this defaults to Yaks::CollectionMapper, but you can subclass it for example to add links or attributes on the collection itself
 * `:rel` : Set the relation (symbol or URI) this association has with the object. Will be derived from the association name and the configured rel_template if ommitted
+* `:if`: Only render the association if a condition holds
 * `:link_if`: Conditionally render the association as a link. A `:href` option is required
 
 ```ruby
