@@ -5,10 +5,10 @@ rvm:
   - 2.0
   - 2.1
   - 2.2
-  - ruby-head
-  - rbx
   - jruby
   - jruby-head
+  - rbx
+  - ruby-head
 
 sudo: false
 
