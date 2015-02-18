@@ -7,7 +7,8 @@ RSpec.describe Yaks::Mapper::Association do
       item_mapper: mapper,
       rel: rel,
       href: href,
-      link_if: link_if
+      link_if: link_if,
+      if: self.if
     )
   end
 
@@ -16,6 +17,7 @@ RSpec.describe Yaks::Mapper::Association do
   let(:rel)               { Yaks::Undefined }
   let(:href)              { Yaks::Undefined }
   let(:link_if)           { Yaks::Undefined }
+  let(:if)                { Yaks::Undefined }
 
   its(:name)        { should equal :shoes }
   its(:item_mapper) { should equal Yaks::Mapper }
@@ -45,6 +47,23 @@ RSpec.describe Yaks::Mapper::Association do
     it 'should delegate to AssociationMapper' do
       expect(association.add_to_resource(Yaks::Resource.new, parent_mapper, yaks_context)).to eql Yaks::Resource.new(subresources: [Yaks::Resource.new(rels: ['rel:shoes'])])
     end
+
+    context 'with a truthy condition' do
+      let(:if)     { ->{ true } }
+
+      it 'should add the association' do
+        expect(association.add_to_resource(Yaks::Resource.new, parent_mapper, yaks_context).subresources.length).to be 1
+      end
+    end
+
+    context 'with a falsey condition' do
+      let(:if)     { ->{ false } }
+
+      it 'should not add the association' do
+        expect(association.add_to_resource(Yaks::Resource.new, parent_mapper, yaks_context).subresources.length).to be 0
+      end
+    end
+
   end
 
   describe '#render_as_link?' do

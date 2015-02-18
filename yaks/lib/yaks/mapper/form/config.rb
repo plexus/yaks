@@ -9,11 +9,16 @@ module Yaks
                   method: nil,
                   media_type: nil,
                   fields: [],
-                  dynamic_blocks: []
+                  dynamic_blocks: [],
+                  if: nil
                 )
 
         def dynamic(&blk)
           append_to(:dynamic_blocks, blk)
+        end
+
+        def condition(prc = nil, &blk)
+          with(if: prc || blk)
         end
       end
     end

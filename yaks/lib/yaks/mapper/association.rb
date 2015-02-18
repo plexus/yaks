@@ -6,7 +6,8 @@ module Yaks
                 item_mapper: Undefined,
                 rel:         Undefined,
                 href:        Undefined,
-                link_if:     Undefined
+                link_if:     Undefined,
+                if:          Undefined
               ),
               Util
 
@@ -21,6 +22,7 @@ module Yaks
       end
 
       def add_to_resource(resource, parent_mapper, context)
+        return resource if self.if != Undefined && !parent_mapper.expand_value(self.if)
         AssociationMapper.new(parent_mapper, self, context).call(resource)
       end
 

@@ -15,6 +15,7 @@ module Yaks
           )
         end
         def_forward :dynamic
+        def_forward :condition
       end
 
       def_delegators :config, :name, :action, :title, :method,
@@ -36,6 +37,7 @@ module Yaks
       include Concord.new(:config)
 
       def add_to_resource(resource, mapper, _context)
+        return resource if config.if && !mapper.expand_value(config.if)
         resource.add_form(to_resource(mapper))
       end
 

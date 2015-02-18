@@ -1,7 +1,20 @@
 ### master
-[full changelog](http://github.com/plexus/yaks/compare/v0.8.0.beta1...master)
+[full changelog](http://github.com/plexus/yaks/compare/v0.8.0.beta2...master)
 
-Allow to use procs for dynamic values in "option" form elements (as used inside a "select"). This makes the form API more consistent.
+Allow to use procs for dynamic values in "option" form elements (as
+used inside a "select"). This makes the form API more consistent.
+
+Add an `:if` option to links, to only render them upon a certain condition.
+
+Add an `:if` option to forms, and a corresponding `condition` method (it's tricky to have a method called `if`), to only render them upon a certain condition.
+
+Add an `:if` option to associtions, to only render them upon a certain condition.
+
+### 0.8.0.beta2
+
+In form select fields, allow the attributes of options to be generated
+dynamically by passing procs, in line with other form related
+attributes
 
 ### 0.8.0.beta1
 

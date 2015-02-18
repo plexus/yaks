@@ -1,4 +1,6 @@
 RSpec.describe Yaks::Mapper::Form do
+  include_context 'yaks context'
+
   let(:form)   { described_class.create( full_args ) }
   let(:name)      { :the_name }
   let(:full_args) { {name: name}.merge(args) }
@@ -20,8 +22,8 @@ RSpec.describe Yaks::Mapper::Form do
   end
 
   describe '#add_to_resource' do
-    let(:resource) { form.new.add_to_resource(Yaks::Resource.new, Yaks::Mapper.new(nil), nil) }
-
+    let(:mapper) { Yaks::Mapper.new(yaks_context) }
+    let(:resource) { form.new.add_to_resource(Yaks::Resource.new, mapper, nil) }
 
     context 'with fields' do
       let(:fields) {
@@ -34,7 +36,23 @@ RSpec.describe Yaks::Mapper::Form do
           )
         ]
       }
-
     end
+
+    context 'with a truthy condition' do
+      let(:form) { described_class.create { condition { true }}}
+
+      it 'should add the form' do
+        expect(form.add_to_resource(Yaks::Resource.new, mapper, nil).forms.length).to be 1
+      end
+    end
+
+    context 'with a falsey condition' do
+      let(:form) { described_class.create { condition { false }}}
+
+      it 'should not add the form' do
+        expect(form.add_to_resource(Yaks::Resource.new, mapper, nil).forms.length).to be 0
+      end
+    end
+
   end
 end
