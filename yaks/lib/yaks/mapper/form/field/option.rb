@@ -4,7 +4,7 @@ module Yaks
       class Field
         # <option>, as used in a <select>
         class Option
-          include Attributes.new(:value, :label, selected: false)
+          include Attributes.new(:value, :label, selected: false, disabled: false)
 
           def self.create(value, opts = {})
             new(opts.merge(value: value))
@@ -15,6 +15,7 @@ module Yaks
               value: mapper.expand_value(value),
               label: mapper.expand_value(label),
               selected: mapper.expand_value(selected),
+              disabled: mapper.expand_value(disabled),
             )
           end
         end
