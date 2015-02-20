@@ -1,5 +1,7 @@
 ### master
-[full changelog](http://github.com/plexus/yaks/compare/v0.8.0...master)
+[full changelog](http://github.com/plexus/yaks/compare/v0.8.1...master)
+
+### v0.8.1
 
 Add `disabled` as a possible attribute of a select option, so you can
 render form select controls with disabled options.
