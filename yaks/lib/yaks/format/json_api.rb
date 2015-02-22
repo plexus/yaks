@@ -10,7 +10,7 @@ module Yaks
       def call(resource, env = {})
         main_collection = resource.seq.map(&method(:serialize_resource))
 
-        { pluralize(resource.type) => main_collection }.tap do |serialized|
+        { data: main_collection }.tap do |serialized|
           linked = resource.seq.each_with_object({}) do |res, hsh|
             serialize_linked_subresources(res.subresources, hsh)
           end
@@ -21,7 +21,7 @@ module Yaks
       # @param [Yaks::Resource] resource
       # @return [Hash]
       def serialize_resource(resource)
-        result = resource.attributes
+        result = {type: pluralize(resource.type).to_sym}.merge(resource.attributes)
 
         unless resource.subresources.empty?
           result[:links] = serialize_links(resource.subresources)
@@ -81,25 +81,11 @@ module Yaks
       end
 
       def inverse
-        JsonApi::Reader.new
+        Yaks::Reader::JsonAPI.new
       end
     end
 
     class Reader
-      def call(data, env)
-        type = data.detect do |key, value|
-          key unless key == "links"
-        end
-
-        CollectionResource.new(
-          type: type,
-          members: map_to_resource(data[type], )
-        )
-      end
-
-      def inverse
-        JsonApi.new
-      end
     end
   end
 end

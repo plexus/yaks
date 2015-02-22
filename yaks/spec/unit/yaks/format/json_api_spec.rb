@@ -7,7 +7,7 @@ RSpec.describe Yaks::Format::JsonAPI do
 
     it 'should not include a "linked" key' do
       expect(format.call(resource)).to eql(
-        {'wizards' => [{foo: :bar}]}
+        {data: [{type: :wizards, foo: :bar}]}
       )
     end
   end
@@ -28,8 +28,9 @@ RSpec.describe Yaks::Format::JsonAPI do
     # TODO should it really behave this way? better to give preference to self link.
     it 'should give preference to the href attribute' do
       expect(format.call(resource)).to eql(
-        {'wizards' => [
+        {data: [
             {
+              type: :wizards,
               href: '/the/href'
             }
           ]
