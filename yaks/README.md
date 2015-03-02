@@ -24,6 +24,7 @@ requested. These formats are presently supported:
 * Collection+JSON
 * HTML
 * HALO
+* Transit
 
 ## State of Development
 
@@ -443,6 +444,9 @@ HAL. To stick close to the spec you're best to create your own
 singular types that represent collections, rather than rendering a top
 level CollectionResource.
 
+Yaks also has a derived format called HALO, which is a non-standard
+extension to HAL which includes form elements.
+
 ### HTML
 
 The hypermedia format *par excellence*. Yaks can generate a version of
@@ -513,11 +517,20 @@ class PostMapper < Yaks::Mapper
 end
 ```
 
-Subresources aren't mapped because Collection+JSON doesn't really have that concept.
+Subresources aren't mapped because Collection+JSON doesn't really have
+that concept.
+
+### Transit
+
+There is experimental support for Transit. The transit gem handles
+serialization internally, so there is no intermediate document. The
+`format` step already returns the serialized string.
 
 ## Hooks
 
-It is possible to hook into the Yaks pipeline to perform extra processing steps before, after, or around each step. It also possible to skip a step.
+It is possible to hook into the Yaks pipeline to perform extra
+processing steps before, after, or around each step. It also possible
+to skip a step.
 
 ``` ruby
 yaks = Yaks.new do
