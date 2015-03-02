@@ -4,44 +4,78 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <style type="text/css">
+      * {
+        box-sizing: border-box;
+      }
+
       body {
-        background-color: #F9CDAD;
+        background-color: #F9E9DE;
+        margin: 0;
+        font-family: sans-serif;
       }
 
       .resource {
-        border: 1px solid #83AF9B;
-      border-radius: 8px;
-      margin: 0.3em;
+        margin-left: 0.3em;
+        padding-left: 0.3em;
+      }
+
+      body .resource {
+        padding-right: 0.5em;
+      }
+
+      .resource .resource {
+        border-left: 4px solid #bababa;
       }
 
       h1,h2,h3,h4,h5 {
-        background-color: #FE4365;
-        margin-top: 0;
+        background-color: #FFB662;
+        padding: 0.2em;
         margin-bottom: 0.2em;
-        border-radius: 8px;
       }
 
-      th { background-color: #FC9D9A; }
-      td { background-color: #C8C8A9; }
+      .attributes {
+        margin-bottom: 0.2em;
+      }
+
+      th { background-color: #FFD19D; }
+      td { background-color: #E2ECBA; }
+
+      .rel a {
+        color: black;
+        text-decoration: none;
+      }
 
       .subresource {
-        border: 1px solid #83AF9B;
-        border-radius: 8px;
-        margin: 0.5em;
-        margin-left: 1em;
+        padding-top: 1em;
       }
 
-      .subresource .rel {
-        background-color: #83AF9B;
-      border-radius: 8px;
-      padding: 0.5em;
-      margin-bottom: 0.5em;
-
+      .subresource-rel {
+        background-color: #FFB662;
+        padding: 0.5em;
+        margin-bottom: 0.5em;
       }
 
+      .header, .footer {
+        width: 100%;
+        background-color: black;
+        color: white;
+        padding: 0.3em;
+      }
+
+      .footer a {
+        text-decoration: none;
+        color: white;
+      }
+
+      .footer {
+        margin-top: 1em;
+      }
     </style>
   </head>
   <body>
+    <div class="header request-info">
+    </div>
+
     <div class="resource">
       <h1 class="type">Resource Type</h1>
 
@@ -50,7 +84,6 @@
       </table>
 
       <table class="links">
-        Links:
         <tr>
           <th>Rel</th>
           <th>URI</th>
@@ -66,14 +99,18 @@
         </tr>
       </table>
 
+      <div class="forms"></div>
+
       <div class="subresource">
-        <div class="rel"><a></a></div>
+        <div class="subresource-rel rel"><a></a></div>
         <div class="value"></div>
       </div>
 
-      <div class="forms"></div>
     </div>
 
+    <div class="footer">
+      generated with <a href="https://github.com/plexus/yaks">Yaks <span class="yaks-version"></span></a>
+    </div>
 
   </body>
 </html>

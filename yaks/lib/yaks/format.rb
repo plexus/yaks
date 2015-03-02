@@ -8,6 +8,8 @@ module Yaks
     #   @return [Hash]
     attr_reader :options
 
+    attr_reader :env
+
     def_delegators :resource, :links, :attributes, :subresources
 
     protected :links, :attributes, :subresources, :options
@@ -20,7 +22,8 @@ module Yaks
 
     # @param [Yaks::Resource] resource
     # @return [Hash]
-    def call(resource, _env = {})
+    def call(resource, env = {})
+      @env = env
       serialize_resource(resource)
     end
     alias serialize call
