@@ -1,5 +1,21 @@
 ### master
-[full changelog](http://github.com/plexus/yaks/compare/v0.8.1...master)
+[full changelog](http://github.com/plexus/yaks/compare/v0.8.2...master)
+
+### v0.8.2
+
+Various improvements to the HTML formatter
+
+- use the form name as a title if there's no title
+- remove the link styling on rels to indicate they are purely
+  identifiers
+- link IANA registered rels (indicated by using a symbol) to the IANA
+  list
+- style the hierarchy in a cleaner way by using a gray left border
+  rather than complete boxes
+- Add a header that shows the current request method/path
+- Add a footer that shows the yaks version
+- show the name/value of hidden form fields
+- get rid of the all the border-radius, try a new color scheme
 
 ### v0.8.1
 
