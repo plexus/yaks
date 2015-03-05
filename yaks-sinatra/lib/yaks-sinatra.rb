@@ -12,7 +12,7 @@ module Sinatra
 
       configure do
         ::Yaks::Format.all.each do |format|
-          mime_type format.format_name, format.mime_type
+          mime_type format.format_name, format.media_type
         end
       end
     end
