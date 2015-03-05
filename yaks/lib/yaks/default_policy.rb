@@ -36,8 +36,16 @@ module Yaks
         end
         CollectionMapper
       else
+        klass = model.class
+        begin
+          name = klass.name.split('::').last
+          return @options[:namespace].const_get(name + 'Mapper')
+        rescue NameError
+          klass = klass.superclass
+          retry if klass
+        end
         name = model.class.name.split('::').last
-        @options[:namespace].const_get(name + 'Mapper')
+        raise "Failed to find a mapper for #{model.inspect}. Did you mean to implement #{name}Mapper?"
       end
     end
 

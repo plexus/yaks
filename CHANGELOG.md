@@ -1,6 +1,10 @@
 ### master
 [full changelog](http://github.com/plexus/yaks/compare/v0.8.2...master)
 
+The default policy for resolving mappers will now look up superclass
+names of the object being serialized, so you can define a single
+mapper to handle a class hierarchy.
+
 ### v0.8.2
 
 Various improvements to the HTML formatter

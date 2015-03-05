@@ -75,4 +75,20 @@ RSpec.describe Yaks::DefaultPolicy, '#derive_mapper_from_object' do
     end
   end
 
+  context 'when a mapper exists for a superclass' do
+    let(:options) { {namespace: MyMappers} }
+
+    it 'should use the superclass mapper' do
+      expect(policy.derive_mapper_from_object(Namespace::Nested::Mung.new)).to be(MyMappers::BeanMapper)
+    end
+  end
+
+  context 'when no mapper is found' do
+    it 'should give a nice message' do
+      expect {
+        policy.derive_mapper_from_object(Namespace::Nested::Mung.new)
+      }.to raise_error /Failed to find a mapper for #<Namespace::Nested::Mung:0x\h+>. Did you mean to implement MungMapper\?/
+    end
+  end
+
 end

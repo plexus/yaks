@@ -312,9 +312,15 @@ If `env` contains a `HTTP_ACCEPT` key (Rack's way of representing the
 `Accept` header), Yaks will return the format that most closely
 matches what was requested.
 
+<a id="namespace"></a>
+
 ## Namespace
 
-Yaks by default will find your mappers for you if they follow the naming convention of appending 'Mapper' to the model class name. This (and all other "conventions") can be easily redefined though, see below. If you have your mappers inside a module, use `namespace`.
+Yaks by default will find your mappers for you if they follow the
+naming convention of appending 'Mapper' to the model class name. This
+(and all other "conventions") can be easily redefined though, see the
+<a href="policy">policy</a> section. If you have your mappers inside a
+module, use `namespace`.
 
 ```ruby
 module API
@@ -330,7 +336,8 @@ yaks = Yaks.new do
 end
 ```
 
-If your namespace contains a `CollectionMapper`, Yaks will use that instead of `Yaks::CollectionMapper`, e.g.
+If your namespace contains a `CollectionMapper`, Yaks will use that
+instead of `Yaks::CollectionMapper`, e.g.
 
 ```ruby
 module API
@@ -342,7 +349,8 @@ module API
 end
 ```
 
-You can also have collection mappers based on the type of members the collection holds, e.g.
+You can also have collection mappers based on the type of members the
+collection holds, e.g.
 
 ```ruby
 module API
@@ -361,12 +369,20 @@ module API
 end
 ```
 
-Yaks will automatically detect and use this collection when serializing an array of `LineItem` objects.
+Yaks will automatically detect and use this collection when
+serializing an array of `LineItem` objects. See <a
+href="#derive_mapper_from_object">derive_mapper_from_object</a> for
+details.
 
 
 ## Custom attribute/link/subresource handling
 
-When inheriting from `Yaks::Mapper`, you can override `map_attributes`, `map_links` and `map_resources` to skip (or augment) above methods, and instead implement your own custom mechanism. These methods take a `Yaks::Resource` instance, and should return an updated resource. They should not alter the resource instance in-place. For example
+When inheriting from `Yaks::Mapper`, you can override
+`map_attributes`, `map_links` and `map_resources` to skip (or augment)
+above methods, and instead implement your own custom mechanism. These
+methods take a `Yaks::Resource` instance, and should return an updated
+resource. They should not alter the resource instance in-place. For
+example
 
 ```ruby
 class ErrorMapper < Yaks::Mapper
@@ -589,7 +605,89 @@ yaks = Yaks.new do
 end
 ```
 
-<a id="primitivizer">
+<a id="derive_mapper_from_object"></a>
+
+### derive_mapper_from_object
+
+This is called when trying to serialize something and no explicit
+mapper is given. To recap, it's always possible to be explicit, e.g.
+
+```
+yaks.call(widget, mapper: WidgetMapper)
+yaks.call(array_of_widgets, mapper: MyCollectionMapper, item_mapper: WidgetMapper)
+```
+
+If the mapper is left unspecified, Yaks will inspect whatever you pass
+it, and try various constant lookups based on naming. These all happen
+in the configured namespace, which defaults to the Ruby top level.
+
+If the object responds to `to_ary` it is considered a collection. If
+the first object in the collection has a class of `Widget`, and the
+configured namespace is `API`, then these are tried in turn
+
+* `API::WidgetCollectionMapper`
+* `API::CollectionMapper`
+* `Yaks::CollectionMapper`
+
+Note that Yaks can only find a specific collection mapper for a type
+if the collection passed to Yaks contains at least one element. If
+it's important that empty collections are handled by the right mapper
+(e.g. to set a specific `self` or `profile` link), then you have to be
+explicit.
+
+If the object is not a collection, then lookup happens based on the
+class name, and will traverse up the class hierarchy if no suitable
+mapper is found. So for a `class Widget < Thing`, yaks would look for
+
+* `API::WidgetMapper`
+* `API::ThingMapper`
+* `API::ObjectMapper`
+
+If none of these are found an error is raised.
+
+### derive_mapper_from_association
+
+When no mapper is specified for an association, then this method is
+called to find the right mapper, based on the association name. In
+case of `has_many` collections this is the "item mapper", the
+collection mapper is resolved using `derive_mapper_from_object`.
+
+By default the mapper class is derived from the name of the association, e.g.
+
+```
+has_many :widgets #=> WidgetMapper
+has_one :widget   #=> WidgetMapper
+```
+
+It is always possible to explicitly set a mapper.
+
+```
+has_one :widget, mapper: FooMapper
+has_many :widgets, collection_mapper: MyCollectionMapper, mapper: FooMapper
+```
+
+### derive_rel_from_association
+
+Associations have a "rel", an IANA registered identifier or fully
+qualified URI, that specifies how the object relates to the parent
+document.
+
+When configuring Yaks one can set a `rel_template`, that will be used
+to generate these rels if not explicitly given. The `rel` placeholder
+in the template will be substituted with the association name.
+
+``` ruby
+yaks = Yaks.new do
+  rel_template "http://api.example.com/rel/{rel}"
+end
+
+# ... mapper
+
+has_many :widgets #=> rel: "http://api.example.com/rel/widgets"
+has_one :widget #=> rel: "http://api.example.com/rel/widget"
+```
+
+<a id="primitivizer"></a>
 
 ## Primitivizer
 
@@ -618,7 +716,7 @@ end
 Yaks by default "primitivizes" symbols (as strings), and classes that include Enumerable (as arrays).
 
 
-<a id="integration">
+<a id="integration"></a>
 
 ## Integration
 
