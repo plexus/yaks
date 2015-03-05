@@ -5,7 +5,7 @@ module Yaks
       def call(parsed_json, env = {})
         attributes = parsed_json['data'].first.dup
         links = attributes.delete('links') || {}
-        linked = parsed_json['linked'].dup
+        linked = parsed_json['linked'].nil? ? {} : parsed_json['linked'].dup
         embedded   = convert_embedded(links, linked)
         Resource.new(
             type: Util.singularize(attributes.delete('type')[/\w+$/]),
