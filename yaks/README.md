@@ -319,7 +319,7 @@ matches what was requested.
 Yaks by default will find your mappers for you if they follow the
 naming convention of appending 'Mapper' to the model class name. This
 (and all other "conventions") can be easily redefined though, see the
-<a href="policy">policy</a> section. If you have your mappers inside a
+<a href="#policy">policy</a> section. If you have your mappers inside a
 module, use `namespace`.
 
 ```ruby
@@ -560,6 +560,8 @@ yaks = Yaks.new do
   skip :serialize
 end
 ```
+
+<a id="policy"></a>
 
 ## Policy over Configuration
 
