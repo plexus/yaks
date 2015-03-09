@@ -37,7 +37,7 @@ module Yaks
         def resource_options(mapper)
           # make sure all empty options arrays are the same instance,
           # makes for prettier #pp
-          options.empty? ? options : options.map {|opt| opt.to_resource_field_option(mapper) }
+          options.empty? ? options : options.map {|opt| opt.to_resource_field_option(mapper) }.compact
         end
 
         # All attributes that can be converted 1-to-1 to
