@@ -1,5 +1,7 @@
 ### master
-[full changelog](http://github.com/plexus/yaks/compare/v0.8.2...master)
+[full changelog](http://github.com/plexus/yaks/compare/v0.8.3...master)
+
+### v0.8.3
 
 The default policy for resolving mappers will now look up superclass
 names of the object being serialized, so you can define a single
