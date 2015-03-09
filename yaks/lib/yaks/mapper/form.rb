@@ -38,12 +38,10 @@ module Yaks
 
       def add_to_resource(resource, mapper, _context)
         return resource if config.if && !mapper.expand_value(config.if)
-        resource.add_form(to_resource(mapper))
+        resource.add_form(to_resource_form(mapper))
       end
 
-      private
-
-      def to_resource(mapper)
+      def to_resource_form(mapper)
         config = dynamic_blocks.inject(self.config) do |config, block|
           ConfigBuilder.build(config, mapper.object, &block)
         end
@@ -60,8 +58,10 @@ module Yaks
         Resource::Form.new(attrs)
       end
 
+      private
+
       def resource_fields(fields, mapper)
-        fields.map { |field| field.to_resource(mapper) }
+        fields.map {|field| field.to_resource(mapper) }.compact
       end
     end
   end

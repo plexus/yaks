@@ -20,12 +20,12 @@ module Yaks
           def_forward :dynamic
         end
 
-        def self.create(_opts={}, &block)
+        def self.create(_opts = nil, &block)
           new(ConfigBuilder.build(Config.new, &block))
         end
 
         def to_resource(mapper)
-          config = dynamic_blocks.inject(self.config) do |config, block|
+          config = dynamic_blocks.inject(config()) do |config, block|
             ConfigBuilder.build(config, mapper.object, &block)
           end
 
