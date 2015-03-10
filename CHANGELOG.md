@@ -1,6 +1,9 @@
 ### master
 [full changelog](http://github.com/plexus/yaks/compare/v0.8.3...master)
 
+Add if: options to Form::Field, Form::Fieldset, and Form::Field
+option, just as on links, associations, and forms.
+
 ### v0.8.3
 
 The default policy for resolving mappers will now look up superclass
