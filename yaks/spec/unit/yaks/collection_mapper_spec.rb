@@ -3,12 +3,13 @@ RSpec.describe Yaks::CollectionMapper do
 
   subject(:mapper) { mapper_class.new(context) }
   let(:mapper_class) { described_class }
+  let(:mapper_stack) { [] }
 
   let(:context) {
     { item_mapper: item_mapper,
       policy: policy,
       env: {},
-      mapper_stack: [] }
+      mapper_stack: mapper_stack }
   }
 
   let(:collection) { [] }
@@ -23,6 +24,24 @@ RSpec.describe Yaks::CollectionMapper do
       members: [],
       rels: ['rel:the_types']
     )
+  end
+
+  it 'should accept a second "env" argument' do
+    expect(mapper.call(collection, {})).to be_a Yaks::CollectionResource
+  end
+
+  context 'when at the top of the stack' do
+    it 'should have a "collection" rel derived from the type' do
+      expect(mapper.call(collection).rels).to  ['rel:the_types']
+    end
+  end
+
+  context 'when not at the top of the stack' do
+    let(:mapper_stack) { [ mapper ]}
+
+    it 'should not have a rel' do
+      expect(mapper.call(collection).rels).to  []
+    end
   end
 
   context 'with members' do
