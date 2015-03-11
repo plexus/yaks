@@ -18,7 +18,7 @@ module Yaks
 
     deprecated_alias :namespace, :mapper_namespace
 
-    def format_options(format = Undefined, options = Undefined)
+    def format_options(format, options = Undefined)
       with(format_options_hash: format_options_hash.merge(format => options))
     end
 
