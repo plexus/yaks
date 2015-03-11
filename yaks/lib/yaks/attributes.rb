@@ -13,7 +13,7 @@ module Yaks
     end
 
     def remove(*attrs)
-      self.class.new(*[*(names-attrs), @defaults.reject {|k,v| attrs.include?(k) }])
+      self.class.new(*[*(names-attrs), @defaults.reject {|k| attrs.include?(k) }])
     end
 
     def included(descendant)

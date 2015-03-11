@@ -38,7 +38,7 @@ RSpec.describe Yaks::Attributes do
   end
 
   context 'when extending' do
-    subject { Class.new(super()) { include attributes.add(baz: 7) } }
+    subject { Class.new(super()) { include attributes.add(baz: 7, bar: 4) } }
 
     it 'should make the new attributes available' do
       expect(subject.new(foo: 3, baz: 6).baz).to equal 6
@@ -46,6 +46,14 @@ RSpec.describe Yaks::Attributes do
 
     it 'should make the old attributes available' do
       expect(subject.new(foo: 3, baz: 6).foo).to equal 3
+    end
+
+    it 'should take new default values' do
+      expect(subject.new(foo: 3, baz: 6).bar).to equal 4
+    end
+
+    it 'should make sure attribute names are uniq' do
+      expect(subject.attributes.names.length).to equal 3
     end
 
     context 'without any defaults' do
@@ -58,6 +66,34 @@ RSpec.describe Yaks::Attributes do
       it 'should expect all attributes' do
         expect { subject.new(foo: 5, bar: 6) }.to raise_exception
       end
+    end
+  end
+
+  context 'when removing an attribute with a default' do
+    subject { Class.new(super()) { include attributes.remove(:bar) } }
+
+    it 'should still recognize attributes that were kept' do
+      expect(subject.new(foo: 2).foo).to equal 2
+    end
+
+    it 'should no longer recognize the old attributes' do
+      expect { subject.new(foo: 3, bar: 3).bar }.to raise_error
+    end
+  end
+
+  context 'when removing an attribute without a default' do
+    subject { Class.new(super()) { include attributes.remove(:foo) } }
+
+    it 'should still recognize attributes that were kept' do
+      expect(subject.new(bar: 2).bar).to equal 2
+    end
+
+    it 'should no longer recognize the old attributes' do
+      expect { subject.new(foo: 3).foo }.to raise_error
+    end
+
+    it 'should keep the defaults' do
+      expect(subject.new.bar).to equal 3
     end
   end
 end
