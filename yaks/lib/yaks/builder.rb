@@ -7,8 +7,8 @@ module Yaks
   #
   #   # This code
   #   Form.create(:search)
-  #          .method("POST")
-  #          .action("/search")
+  #       .method("POST")
+  #       .action("/search")
   #
   #   # Can be written as
   #   Builder.new(Form, [:method, :action]).create(:search) do
@@ -18,6 +18,13 @@ module Yaks
   #
   class Builder
     include Configurable
+
+    def initialize(klass, methods = [], &block)
+      @klass = klass
+      @methods = methods
+      def_forward *methods if methods.any?
+      instance_eval(&block) if block
+    end
 
     def create(*args, &block)
       build(@klass.create(*args), &block)
@@ -29,15 +36,8 @@ module Yaks
       @config
     end
 
-    def initialize(klass, methods = [], &block)
-      @klass = klass
-      @methods = methods
-      def_forward *methods if methods.any?
-      instance_eval(&block) if block
-    end
-
     def inspect
-      "#<Builder #{@klass} #{@methods.inspect}>"
+      "#<Builder #{@klass} #{@methods}>"
     end
   end
 end
