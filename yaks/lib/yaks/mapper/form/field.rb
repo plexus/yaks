@@ -13,6 +13,9 @@ module Yaks
           def_set :name
           def_set :label
           def_add :option, create: Option, append_to: :options
+          HTML5Forms::FIELD_OPTIONS.each do |option, _|
+            def_set option
+          end
         end
 
         def self.create(*args)
@@ -28,7 +31,7 @@ module Yaks
         def to_resource(mapper)
           return if self.if && !mapper.expand_value(self.if)
           Resource::Form::Field.new(
-            resource_attributes.each_with_object({}) do |attr, attrs|
+            (resource_attributes - [:if]).each_with_object({}) do |attr, attrs|
               attrs[attr] = mapper.expand_value(public_send(attr))
             end.merge(options: resource_options(mapper))
           )

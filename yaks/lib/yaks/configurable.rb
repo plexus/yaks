@@ -12,8 +12,14 @@ module Yaks
 
     def def_set(*method_names)
       method_names.each do |method_name|
-        define_singleton_method method_name do |arg|
-          self.config = config.update(method_name => arg)
+        define_singleton_method method_name do |arg = Undefined, &block|
+          if arg == Undefined && block
+            self.config = config.update(method_name => block)
+          elsif arg == Undefined
+            raise ArgumentError, "wrong number of arguments (0 for 1)"
+          else
+            self.config = config.update(method_name => arg)
+          end
         end
       end
     end

@@ -4,6 +4,32 @@
 Add if: options to Form::Field, Form::Fieldset, and Form::Field
 option, just as on links, associations, and forms.
 
+Allow form field details to be expressed in a block, and allow
+Configurable "setters" to take a block instead of a direct argument.
+
+``` ruby
+text :first_name,
+  label: 'views.checkout.first_name',
+  required: true,
+  value: ->{ customer_attribute(:first_name) }
+```
+
+becomes
+
+```
+text :first_name do
+  required true
+  label 'views.checkout.first_name'
+  value { customer_attribute(:first_name) }
+end
+```
+
+This makes the DSL more consistent, since e.g. `label` could already
+be set in this way, but not `value` or `required`.
+
+Prevent `:if` on a form field to be rendered as a form element
+attribute.
+
 ### v0.8.3
 
 The default policy for resolving mappers will now look up superclass
