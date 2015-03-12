@@ -23,9 +23,8 @@ module Yaks
       def serialize_resource(resource)
         result = {type: pluralize(resource.type).to_sym}.merge(resource.attributes)
 
-        unless resource.subresources.empty?
-          result[:links] = serialize_links(resource.subresources)
-        end
+        links = serialize_links(resource.subresources)
+        result[:links] = links unless links.empty?
 
         if resource.self_link && !result.key?(:href)
           result[:href]  = resource.self_link.uri
