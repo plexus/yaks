@@ -1,4 +1,3 @@
-require 'pry'
 module Yaks
   module Reader
     class JsonAPI
