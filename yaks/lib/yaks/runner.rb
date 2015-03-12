@@ -41,7 +41,7 @@ module Yaks
         Format.by_name(options.fetch(:format) { default_format })
       }
     end
-    memoize :format_class
+    memoize :format_class, freezer: :noop
 
     def steps
       [[ :map, mapper ],
@@ -61,7 +61,7 @@ module Yaks
     def formatter
       format_class.new(format_options_hash[format_name])
     end
-    memoize :formatter
+    memoize :formatter, freezer: :noop
 
     def primitivizer
       proc do |input|
@@ -77,7 +77,7 @@ module Yaks
     def serializer
       serializers.fetch(format_class.serializer)
     end
-    memoize :serializer
+    memoize :serializer, freezer: :noop
 
     def hooks
       config.hooks + options.fetch(:hooks, [])

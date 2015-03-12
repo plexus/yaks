@@ -52,6 +52,13 @@ RSpec.describe Yaks::CollectionResource do
     its(:rels) { should eq ['http://api.example.org/rels/orders'] }
 
     its(:subresources) { should eql [] }
+  end
 
+  describe '#seq' do
+    let(:init_opts) { { members: [1,2,3] } }
+
+    it 'iterates over the members' do
+      expect(subject.seq.map(&:next)).to eql [2,3,4]
+    end
   end
 end

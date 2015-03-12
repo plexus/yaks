@@ -14,6 +14,7 @@ RSpec.describe Yaks::Mapper::Form do
     }
   }
   let(:fields) { [] }
+  let(:mapper) { Yaks::Mapper.new(yaks_context) }
 
   describe '.create' do
     it 'should have a name of nil when ommitted' do
@@ -22,7 +23,6 @@ RSpec.describe Yaks::Mapper::Form do
   end
 
   describe '#add_to_resource' do
-    let(:mapper) { Yaks::Mapper.new(yaks_context) }
     let(:resource) { form.new.add_to_resource(Yaks::Resource.new, mapper, nil) }
 
     context 'with fields' do
@@ -51,6 +51,30 @@ RSpec.describe Yaks::Mapper::Form do
 
       it 'should not add the form' do
         expect(form.add_to_resource(Yaks::Resource.new, mapper, nil).forms.length).to be 0
+      end
+    end
+
+    describe '#to_resource_form' do
+      context 'with dynamic elements' do
+        let(:form) do
+          described_class.create(name) do
+            dynamic do |object|
+              text object.name
+            end
+          end
+        end
+
+        it 'should render them based on the mapped object' do
+          mapper.call(fake(name: :anthony)) # hack to set the mapper's object
+          expect(form.to_resource_form(mapper)).to eql(
+            Yaks::Resource::Form.new(
+              name: :the_name,
+              fields: [
+                Yaks::Resource::Form::Field.new(name: :anthony, type: :text)
+              ]
+            )
+          )
+        end
       end
     end
 

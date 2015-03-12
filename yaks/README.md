@@ -2,11 +2,13 @@
 [![Build Status](https://secure.travis-ci.org/plexus/yaks.png?branch=master)][travis]
 [![Dependency Status](https://gemnasium.com/plexus/yaks.png)][gemnasium]
 [![Code Climate](https://codeclimate.com/github/plexus/yaks.png)][codeclimate]
+[![Gitter](https://badges.gitter.im/Join Chat.svg)][gitter]
 
 [gem]: https://rubygems.org/gems/yaks
 [travis]: https://travis-ci.org/plexus/yaks
 [gemnasium]: https://gemnasium.com/plexus/yaks
 [codeclimate]: https://codeclimate.com/github/plexus/yaks
+[gitter]: https://gitter.im/plexus/yaks?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
 
 # Yaks
 
@@ -22,6 +24,7 @@ requested. These formats are presently supported:
 * Collection+JSON
 * HTML
 * HALO
+* Transit
 
 ## State of Development
 
@@ -37,8 +40,7 @@ supporting hypermedia formats in Ruby.
 Yaks can be used in production today, as we do, but until 1.0 is
 released there will regularly be breaking changes, as we figure out
 the best way to do things. These are all documented clearly in the
-[changelog](/CHANGELOG.md). At this point we recommend locking to an
-exact version number.
+[changelog](/CHANGELOG.md).
 
 ## Concepts
 
@@ -301,13 +303,24 @@ class FooMapper
 end
 ```
 
-The env hash will be available to all mappers, so you can use this to pass around context. In particular context related to the current HTTP request, e.g. the current logged in user, which is why the recommended use is to pass in the Rack environment.
+The env hash will be available to all mappers, so you can use this to
+pass around context. In particular context related to the current HTTP
+request, e.g. the current logged in user, which is why the recommended
+use is to pass in the Rack environment.
 
-If `env` contains a `HTTP_ACCEPT` key (Rack's way of representing the `Accept` header), Yaks will return the format that most closely matches what was requested.
+If `env` contains a `HTTP_ACCEPT` key (Rack's way of representing the
+`Accept` header), Yaks will return the format that most closely
+matches what was requested.
+
+<a id="namespace"></a>
 
 ## Namespace
 
-Yaks by default will find your mappers for you if they follow the naming convention of appending 'Mapper' to the model class name. This (and all other "conventions") can be easily redefined though, see below. If you have your mappers inside a module, use `namespace`.
+Yaks by default will find your mappers for you if they follow the
+naming convention of appending 'Mapper' to the model class name. This
+(and all other "conventions") can be easily redefined though, see the
+<a href="#policy">policy</a> section. If you have your mappers inside a
+module, use `namespace`.
 
 ```ruby
 module API
@@ -323,7 +336,8 @@ yaks = Yaks.new do
 end
 ```
 
-If your namespace contains a `CollectionMapper`, Yaks will use that instead of `Yaks::CollectionMapper`, e.g.
+If your namespace contains a `CollectionMapper`, Yaks will use that
+instead of `Yaks::CollectionMapper`, e.g.
 
 ```ruby
 module API
@@ -335,7 +349,8 @@ module API
 end
 ```
 
-You can also have collection mappers based on the type of members the collection holds, e.g.
+You can also have collection mappers based on the type of members the
+collection holds, e.g.
 
 ```ruby
 module API
@@ -354,12 +369,20 @@ module API
 end
 ```
 
-Yaks will automatically detect and use this collection when serializing an array of `LineItem` objects.
+Yaks will automatically detect and use this collection when
+serializing an array of `LineItem` objects. See <a
+href="#derive_mapper_from_object">derive_mapper_from_object</a> for
+details.
 
 
 ## Custom attribute/link/subresource handling
 
-When inheriting from `Yaks::Mapper`, you can override `map_attributes`, `map_links` and `map_resources` to skip (or augment) above methods, and instead implement your own custom mechanism. These methods take a `Yaks::Resource` instance, and should return an updated resource. They should not alter the resource instance in-place. For example
+When inheriting from `Yaks::Mapper`, you can override
+`map_attributes`, `map_links` and `map_resources` to skip (or augment)
+above methods, and instead implement your own custom mechanism. These
+methods take a `Yaks::Resource` instance, and should return an updated
+resource. They should not alter the resource instance in-place. For
+example
 
 ```ruby
 class ErrorMapper < Yaks::Mapper
@@ -385,23 +408,43 @@ class ErrorMapper < Yaks::Mapper
 end
 ```
 
-## Resources and Serializers
+## Resources, Formatters, Serializers
 
-Yaks uses an intermediate "Resource" representation to support multiple output formats. A mapper turns a domain model into a `Yaks::Resource`. A serializer (e.g. `Yaks::Serializer::Hal`) takes the resource and outputs the structure of the target format.
+Yaks uses an intermediate "Resource" representation to support
+multiple output formats. A mapper turns a domain model into a
+`Yaks::Resource`. A formatter (e.g. `Yaks::Format::Hal`) takes
+the resource and outputs the structure of the target format.
 
-Since version 0.4 the recommended API is through `Yaks.new {...}.serialize`. This will give you back a composite value consisting of primitives that have a mapping to JSON, so you can use your favorite JSON encoder to turn this into a character stream.
+Finally a serializer will take this document structure and turn it
+into a string. For JSON documents the intermediate format consists of
+Ruby primitives like arrays and hashes. HTML/XML based formats on the
+other hand return a [Hexp::Node](https://github.com/plexus/hexp).
 
-```ruby
-my_yaks = Yaks.new
-hal = my_yaks.call(model)
-puts JSON.dump(hal)
-```
+For JSON based format there's an extra step between `format` and
+`serialize` called `primitivize`, this way Ruby objects which don't
+have an equivalent in the JSON spec, like `Symbol` or `Date`, can be
+turned into objects that are representable in JSON. See
+[Primitiver](#primitivizer).
 
-There are at least a handful of JSON libraries and implementations for Ruby out there, with different trade-offs. Yaks does not impose an opinion on which one to use
+## Formats
+
+Below follows a brief overview of formats that are available in
+Yaks. The maturity of these formats varies, since we depend on people
+that use a certain format actively to contribute. Implementing formats
+is in generally straightforward, and consists mostly of deciding how
+the attributes, links, forms, of a `Yaks::Resource` should be
+represented. Depending on the format this might be a subject for
+debate. We welcome these discussions, and if your opinion differs from
+what ends up in Yaks, it should be trivial to change these
+representations for your use case.
 
 ### HAL
 
-This is the default. In HAL one decides when building an API which links can only be singular (e.g. self), and which are always represented as an array. Yaks defaults to singular as I've found it to be the most common case. If you want specific links to be plural, then configure their rel href as such.
+This is the default. In HAL one decides when building an API which
+links can only be singular (e.g. self), and which are always
+represented as an array. Yaks defaults to singular as I've found it to
+be the most common case. If you want specific links to be plural, then
+configure their rel href as such.
 
 ```ruby
 hal = Yaks.new do
@@ -409,17 +452,46 @@ hal = Yaks.new do
 end
 ```
 
-CURIEs are not explicitly supported (yet), but it's possible to use them with some effort, see `examples/hal01.rb` for an example.
+CURIEs are not explicitly supported (yet), but it's possible to use
+them with some manual effort.
 
-The line between a singular resource and a collection is fuzzy in HAL. To stick close to the spec you're best to create your own singular types that represent collections, rather than rendering a top level CollectionResource.
+The line between a singular resource and a collection is fuzzy in
+HAL. To stick close to the spec you're best to create your own
+singular types that represent collections, rather than rendering a top
+level CollectionResource.
+
+Yaks also has a derived format called HALO, which is a non-standard
+extension to HAL which includes form elements.
+
+### HTML
+
+The hypermedia format *par excellence*. Yaks can generate a version of
+your API, including links and forms, that is usable straight from a
+standard web browser. This allows API interactions to be developed and
+tested independent from any client application.
+
+If you let Yaks handle your content type negotiation (i.e. pass it the
+rack env, and honour the content type it detects, see
+[integration](#integration), simply opening a browser and pointing it
+at your API entry point should do the trick.
 
 ### JSON-API
+
+The JSON-API spec has evolved since the Yaks formatter was
+implemented. It is also not the most suitable format for Yaks
+feature-set due to its strong convention-driven nature and weak
+support for hypermedia.
+
+If you would like to see better JSON-API support, get in touch. We
+might be able to work something out.
 
 ```ruby
 default_format :json_api
 ```
 
-JSON-API has no concept of outbound links, so these will not be rendered. Instead the key will be inferred from the mapper class name by default. This can be changed per mapper:
+JSON-API has no concept of outbound links, so these will not be
+rendered. Instead the key will be inferred from the mapper class name
+by default. This can be changed per mapper:
 
 ```ruby
 class AnimalMapper
@@ -461,11 +533,20 @@ class PostMapper < Yaks::Mapper
 end
 ```
 
-Subresources aren't mapped because Collection+JSON doesn't really have that concept.
+Subresources aren't mapped because Collection+JSON doesn't really have
+that concept.
+
+### Transit
+
+There is experimental support for Transit. The transit gem handles
+serialization internally, so there is no intermediate document. The
+`format` step already returns the serialized string.
 
 ## Hooks
 
-It is possible to hook into the Yaks pipeline to perform extra processing steps before, after, or around each step. It also possible to skip a step.
+It is possible to hook into the Yaks pipeline to perform extra
+processing steps before, after, or around each step. It also possible
+to skip a step.
 
 ``` ruby
 yaks = Yaks.new do
@@ -479,6 +560,8 @@ yaks = Yaks.new do
   skip :serialize
 end
 ```
+
+<a id="policy"></a>
 
 ## Policy over Configuration
 
@@ -524,7 +607,91 @@ yaks = Yaks.new do
 end
 ```
 
-## Primitives
+<a id="derive_mapper_from_object"></a>
+
+### derive_mapper_from_object
+
+This is called when trying to serialize something and no explicit
+mapper is given. To recap, it's always possible to be explicit, e.g.
+
+```
+yaks.call(widget, mapper: WidgetMapper)
+yaks.call(array_of_widgets, mapper: MyCollectionMapper, item_mapper: WidgetMapper)
+```
+
+If the mapper is left unspecified, Yaks will inspect whatever you pass
+it, and try various constant lookups based on naming. These all happen
+in the configured namespace, which defaults to the Ruby top level.
+
+If the object responds to `to_ary` it is considered a collection. If
+the first object in the collection has a class of `Widget`, and the
+configured namespace is `API`, then these are tried in turn
+
+* `API::WidgetCollectionMapper`
+* `API::CollectionMapper`
+* `Yaks::CollectionMapper`
+
+Note that Yaks can only find a specific collection mapper for a type
+if the collection passed to Yaks contains at least one element. If
+it's important that empty collections are handled by the right mapper
+(e.g. to set a specific `self` or `profile` link), then you have to be
+explicit.
+
+If the object is not a collection, then lookup happens based on the
+class name, and will traverse up the class hierarchy if no suitable
+mapper is found. So for a `class Widget < Thing`, yaks would look for
+
+* `API::WidgetMapper`
+* `API::ThingMapper`
+* `API::ObjectMapper`
+
+If none of these are found an error is raised.
+
+### derive_mapper_from_association
+
+When no mapper is specified for an association, then this method is
+called to find the right mapper, based on the association name. In
+case of `has_many` collections this is the "item mapper", the
+collection mapper is resolved using `derive_mapper_from_object`.
+
+By default the mapper class is derived from the name of the association, e.g.
+
+```
+has_many :widgets #=> WidgetMapper
+has_one :widget   #=> WidgetMapper
+```
+
+It is always possible to explicitly set a mapper.
+
+```
+has_one :widget, mapper: FooMapper
+has_many :widgets, collection_mapper: MyCollectionMapper, mapper: FooMapper
+```
+
+### derive_rel_from_association
+
+Associations have a "rel", an IANA registered identifier or fully
+qualified URI, that specifies how the object relates to the parent
+document.
+
+When configuring Yaks one can set a `rel_template`, that will be used
+to generate these rels if not explicitly given. The `rel` placeholder
+in the template will be substituted with the association name.
+
+``` ruby
+yaks = Yaks.new do
+  rel_template "http://api.example.com/rel/{rel}"
+end
+
+# ... mapper
+
+has_many :widgets #=> rel: "http://api.example.com/rel/widgets"
+has_one :widget #=> rel: "http://api.example.com/rel/widget"
+```
+
+<a id="primitivizer"></a>
+
+## Primitivizer
 
 For JSON based formats, the "syntax tree" is merely a structure of Ruby primitives that have a JSON equivalent. If your mappers return non-primitive attribute values, you can define how they should be converted. For example, JSON has no notion of dates. If your mappers return these types as attributes, then Yaks needs to know how to turn these into primitives. To add extra types, use `map_to_primitive`
 
@@ -549,6 +716,38 @@ end
 ```
 
 Yaks by default "primitivizes" symbols (as strings), and classes that include Enumerable (as arrays).
+
+
+<a id="integration"></a>
+
+## Integration
+
+It is recommended to let Yaks handle the negotiation of media types,
+so that consumer can request the format they prefer using an `Accept:`
+header. To do this requires two steps: first make sure you pass the
+rack env to Yaks, this way it will detect any `Accept` header and
+honor it. While this is enough to get the correct serialized output,
+it will likely be served up with the wrong `Content-Type` header by
+your web framework.
+
+To fix this, ask Yaks first for the "runner" for a given input, then
+get the media type and serialized resource from the runner.
+
+```ruby
+# Tell your web framework about the supported formats
+Yaks::Format.all.each do |format|
+  mime_type format.format_name, format.media_type
+end
+
+# one time Yaks configuration
+yaks = Yaks.new {...}
+
+# on each request
+runner = yaks.runner(object, env: rack_env)
+format = runner.format_name
+output = runner.call
+```
+
 
 ## Real World Usage
 

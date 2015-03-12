@@ -20,12 +20,14 @@ module Yaks
           def_forward :dynamic
         end
 
-        def self.create(_opts={}, &block)
+        def self.create(_opts = nil, &block)
           new(ConfigBuilder.build(Config.new, &block))
         end
 
         def to_resource(mapper)
-          config = dynamic_blocks.inject(self.config) do |config, block|
+          return if config.if && !mapper.expand_value(config.if)
+
+          config = dynamic_blocks.inject(config()) do |config, block|
             ConfigBuilder.build(config, mapper.object, &block)
           end
 
@@ -35,7 +37,7 @@ module Yaks
         end
 
         def resource_fields(fields, mapper)
-          fields.map { |field| field.to_resource(mapper) }
+          fields.map { |field| field.to_resource(mapper) }.compact
         end
       end
     end

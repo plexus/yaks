@@ -3,22 +3,25 @@
 module Yaks
   class Format
     class HTML < self
-      include Adamantium, Util
+      include Util
 
       register :html, :html, 'text/html'
 
       def template
-        Hexp.parse(File.read(File.expand_path('../template.html', __FILE__)))
+        @template ||= Hexp.parse(File.read(File.expand_path('../template.html', __FILE__)))
       end
-      memoize :template
 
       def section(name)
         template.select(".#{name}").first
       end
 
       def serialize_resource(resource)
-        template.replace('body') do |body|
-          body.content(render_resource(resource))
+        template.replace('.resource') do |_|
+          render_resource(resource)
+        end.replace('.yaks-version') do |ver|
+          ver.content(Yaks::VERSION)
+        end.replace('.request-info') do |req|
+          req.content(env['REQUEST_METHOD'], ' ', env['PATH_INFO'])
         end
       end
 
@@ -41,11 +44,19 @@ module Yaks
         end
       end
 
+      def rel_href(rel)
+        if rel.is_a?(Symbol)
+          "http://www.iana.org/assignments/link-relations/link-relations.xhtml"
+        else
+          rel.to_s
+        end
+      end
+
       def render_links(links)
         ->(templ) do
           links.map do |link|
             templ
-              .replace('.rel a') {|a| a.attr('href', link.rel.to_s).content(link.rel.to_s) }
+              .replace('.rel a') {|a| a.attr('href', rel_href(link.rel)).content(link.rel.to_s) }
               .replace('.uri a') {|a| a.attr('href', link.uri).content(link.uri) }
               .replace('.title') {|x| x.content(link.title.to_s) }
               .replace('.templated') {|x| x.content(link.templated?.inspect) }
@@ -61,9 +72,9 @@ module Yaks
           end
         else
           resource.subresources.map do |resources|
-            rel = resources.rels.first.to_s
+            rel = resources.rels.first
             sub_templ
-              .replace('.rel a') {|a| a.attr('href', rel).content(rel) }
+              .replace('.rel a') {|a| a.attr('href', rel_href(rel)).content(rel.to_s) }
               .replace('.value') {|x| x.content(resources.seq.map { |resource| render_resource(resource, templ) })}
           end
         end
@@ -87,7 +98,7 @@ module Yaks
 
         rows = form_control.fields.map(&method(:render_field))
 
-        form.content(H[:table, form_control.title || '', *rows, H[:tr, H[:td, H[:input, {type: 'submit'}]]]])
+        form.content(H[:table, H[:h4, form_control.title || form_control.name.to_s], *rows, H[:tr, H[:td], H[:td, H[:input, {type: 'submit'}]]]])
       end
 
       def render_field(field)
@@ -95,7 +106,7 @@ module Yaks
         extra_info = reject_keys(field.to_h_compact, :type, :name, :value, :label, :options)
         H[:tr,
           H[:td,
-            H[:label, {for: field.name}, [field.label, field.required ? '*' : ''].join]],
+            H[:label, {for: field.name}, [field.label || field.name.to_s, field.required ? '*' : ''].join]],
           H[:td,
             case field.type
             when /select/
@@ -104,6 +115,10 @@ module Yaks
               H[:textarea, reject_keys(field.to_h_compact, :value), field.value || '']
             when /legend/
               H[:legend, field.to_h_compact]
+            when /hidden/
+              [ field.value.inspect,
+                H[:input, field.to_h_compact]
+              ]
             else
               H[:input, field.to_h_compact]
             end],
