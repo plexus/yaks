@@ -1,6 +1,12 @@
 ### master
 [full changelog](http://github.com/plexus/yaks/compare/v0.8.3...master)
 
+Some changes to bring JSONAPI formatting more in line with 1.0 format
+ - Top level key must be named 'data' rather than the resource type
+ - The resource name myst be included in a 'type' attribute
+
+Started a REader for JSONAPI, which can build a resource from JSONAPI input.
+
 Add if: options to Form::Field, Form::Fieldset, and Form::Field
 option, just as on links, associations, and forms.
 
