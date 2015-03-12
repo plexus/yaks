@@ -482,6 +482,11 @@ implemented. It is also not the most suitable format for Yaks
 feature-set due to its strong convention-driven nature and weak
 support for hypermedia.
 
+At this time, The JSON-API specification has not reached a 1.0 release.
+Some changes to the Yaks JSON-API formatter may still be required
+before it is completely compatible with the latest version of the
+specification.
+
 If you would like to see better JSON-API support, get in touch. We
 might be able to work something out.
 

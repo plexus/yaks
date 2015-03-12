@@ -40,6 +40,7 @@ RSpec.describe Yaks::Format::JsonAPI do
   end
 
   include_examples 'JSON output format', config, :json_api, 'confucius'
+  include_examples 'JSON round trip',    config, :json_api, 'confucius'
 end
 
 RSpec.describe Yaks::Format::CollectionJson do

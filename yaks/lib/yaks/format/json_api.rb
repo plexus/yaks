@@ -7,12 +7,12 @@ module Yaks
 
       # @param [Yaks::Resource] resource
       # @return [Hash]
-      def call(resource, env = {})
+      def call(resource, _env = nil)
         main_collection = resource.seq.map(&method(:serialize_resource))
 
-        { pluralize(resource.type) => main_collection }.tap do |serialized|
-          linked = resource.seq.each_with_object({}) do |res, hsh|
-            serialize_linked_subresources(res.subresources, hsh)
+        { data: main_collection }.tap do |serialized|
+          linked = resource.seq.each_with_object([]) do |res, array|
+            serialize_linked_subresources(res.subresources, array)
           end
           serialized.merge!(linked: linked) unless linked.empty?
         end
@@ -21,11 +21,10 @@ module Yaks
       # @param [Yaks::Resource] resource
       # @return [Hash]
       def serialize_resource(resource)
-        result = resource.attributes
+        result = {type: pluralize(resource.type).to_sym}.merge(resource.attributes)
 
-        unless resource.subresources.empty?
-          result[:links] = serialize_links(resource.subresources)
-        end
+        links = serialize_links(resource.subresources)
+        result[:links] = links unless links.empty?
 
         if resource.self_link && !result.key?(:href)
           result[:href]  = resource.self_link.uri
@@ -39,29 +38,32 @@ module Yaks
       def serialize_links(subresources)
         subresources.each_with_object({}) do |resource, hsh|
           next if resource.null_resource?
-          key = resource.collection? ? pluralize(resource.type) : resource.type
-          hsh[key] = serialize_link(resource)
+          hsh[resource.type] = serialize_link(resource)
         end
       end
 
       # @param [Yaks::Resource] resource
       # @return [Array, String]
       def serialize_link(resource)
-        resource.collection? ? resource.map(&send_with_args(:[], :id)) : resource[:id]
+        if resource.collection?
+          {type: resource.type, ids: resource.map(&send_with_args(:[], :id))}
+        else
+          {type: pluralize(resource.type), id: resource[:id]}
+        end
       end
 
       # @param [Hash] subresources
-      # @param [Hash] hsh
-      # @return [Hash]
-      def serialize_linked_subresources(subresources, hsh)
+      # @param [Array] array
+      # @return [Array]
+      def serialize_linked_subresources(subresources, array)
         subresources.each do |resources|
-          serialize_linked_resources(resources, hsh)
+          serialize_linked_resources(resources, array)
         end
       end
 
       # @param [Array] resources
-      # @param [Hash] linked
-      # @return [Hash]
+      # @param [Array] linked
+      # @return [Array]
       def serialize_linked_resources(subresource, linked)
         subresource.seq.each_with_object(linked) do |resource, memo|
           serialize_subresource(resource, memo)
@@ -74,32 +76,16 @@ module Yaks
       # @param [Hash] linked
       # @return [Hash]
       def serialize_subresource(resource, linked)
-        key = pluralize(resource.type)
-        set = linked.fetch(key) { Set.new }
-        linked[key] = (set << serialize_resource(resource))
+        linked << serialize_resource(resource)
         serialize_linked_subresources(resource.subresources, linked)
       end
 
       def inverse
-        JsonApi::Reader.new
+        Yaks::Reader::JsonAPI.new
       end
     end
 
     class Reader
-      def call(data, env)
-        type = data.detect do |key, value|
-          key unless key == "links"
-        end
-
-        CollectionResource.new(
-          type: type,
-          members: map_to_resource(data[type], )
-        )
-      end
-
-      def inverse
-        JsonApi.new
-      end
     end
   end
 end
