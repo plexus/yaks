@@ -97,8 +97,11 @@ module Yaks
         form = form.attr('enctype', form_control.media_type) if form_control.media_type
 
         rows = form_control.fields.map(&method(:render_field))
+        rows << H[:tr, H[:td], H[:td, H[:input, {type: 'submit'}]]]
 
-        form.content(H[:table, H[:h4, form_control.title || form_control.name.to_s], *rows, H[:tr, H[:td], H[:td, H[:input, {type: 'submit'}]]]])
+        H[:div,
+          H[:h4, form_control.title || form_control.name.to_s],
+          form.content(H[:table, rows])]
       end
 
       def render_field(field)
@@ -127,7 +130,12 @@ module Yaks
       end
 
       def render_fieldset(fieldset)
-        H[:fieldset, fieldset.fields.map(&method(:render_field))]
+        legend = fieldset.fields.select {|field|field.type == :legend}.first
+        legend = legend ? legend.name : ''
+
+        H[:tr,
+          H[:th, legend],
+          H[:td, H[:fieldset, H[:table, fieldset.fields.map(&method(:render_field))]]]]
       end
 
       def render_select_options(options)
