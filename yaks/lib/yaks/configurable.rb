@@ -1,4 +1,22 @@
 module Yaks
+  # A "Configurable" class is one that keeps a configuration in a
+  # separate immutable object, of type class::Config. say you have
+  #
+  #     class MyMapper < Yaks::Mapper
+  #       # use yaks configuration DSL in here
+  #     end
+  #
+  # The links, associations, etc, that you set up for MyMapper, will
+  # be available in MyMapper.config, which is an instance of
+  # Yaks::Mapper::Config.
+  #
+  # Each configuration step, like `link`, `has_many`, will replace
+  # MyMapper.config with an updated version, discarding the old
+  # config.
+  #
+  # By extending Configurable, a number of "macros" become available
+  # to describe the DSL that subclasses can use. See the docs for
+  # `def_set`. `def_forward`, and `def_add`.
   module Configurable
     attr_accessor :config
 
@@ -10,6 +28,9 @@ module Yaks
       child.config = config
     end
 
+    # Create a DSL method to set a certain config property. The
+    # generated method will take either a plain value, or a block,
+    # which will be captured and stored instead.
     def def_set(*method_names)
       method_names.each do |method_name|
         define_singleton_method method_name do |arg = Undefined, &block|
@@ -24,6 +45,11 @@ module Yaks
       end
     end
 
+    # Forward a method to the config object. This assumes the method
+    # will return an updated config instance.
+    #
+    # Either takes a list of methods to forward, or a mapping (hash)
+    # of source to destination method name.
     def def_forward(method_names, *args)
       unless method_names.is_a? Hash
         def_forward([method_names, *args].map{|name| {name => name}}.inject(:merge))
@@ -36,6 +62,13 @@ module Yaks
       end
     end
 
+    # Generate a DSL method that creates a certain type of domain
+    # object, and adds it to a list on the config.
+    #
+    #     def_add :fieldset, create: Fieldset, append_to: :fields
+    #
+    # This will generate a `fieldset` method, which will call
+    # `Fieldset.create`, and append the result to `config.fields`
     def def_add(name, options)
       define_singleton_method name do |*args, &block|
         defaults = options.fetch(:defaults, {})

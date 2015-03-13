@@ -10,8 +10,7 @@ module Yaks
                 ).add(HTML5Forms::FIELD_OPTIONS)
 
         Builder = Builder.new(self) do
-          def_set :name
-          def_set :label
+          def_set :name, :label
           def_add :option, create: Option, append_to: :options
           HTML5Forms::FIELD_OPTIONS.each do |option, _|
             def_set option
