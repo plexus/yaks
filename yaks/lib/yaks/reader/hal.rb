@@ -7,7 +7,6 @@ module Yaks
         links      = convert_links(attributes.delete('_links') || {})
         embedded   = convert_embedded(attributes.delete('_embedded') || {})
 
-
         Resource.new(
           type: attributes.delete('type') || type_from_links(links),
           attributes: Util.symbolize_keys(attributes),

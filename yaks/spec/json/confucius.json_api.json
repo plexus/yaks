@@ -1,51 +1,50 @@
 {
-  "scholars": [
+  "data": [
     {
       "id": 9,
+      "type": "scholars",
       "href": "http://literature.example.com/authors/kongzi",
       "name": "孔子",
       "pinyin": "Kongzi",
       "latinized": "Confucius",
       "links": {
-        "works": [11,12]
+        "works": {"type": "works", "ids": [11,12]}
       }
     }
   ],
-  "linked": {
-    "works": [
+  "linked": [
       {
         "id": 11,
+        "type": "works",
         "href": "http://literature.example.com/work/11",
         "chinese_name": "論語",
         "english_name": "Analects",
         "links": {
-          "quotes": [17, 18],
-          "era": 99
+          "quotes": {"type": "quotes", "ids": [17, 18]},
+          "era": {"type": "erae", "id": 99}
         }
       },
       {
-        "id": 12,
-        "href": "http://literature.example.com/work/12",
-        "chinese_name": "易經",
-        "english_name": "Commentaries to the Yi-jing",
-        "links": {}
-      }
-    ],
-    "quotes": [
-      {
         "id": 17,
+        "type": "quotes",
         "chinese": "廄焚。子退朝，曰：“傷人乎？” 不問馬。"
       },
       {
         "id": 18,
+        "type": "quotes",
         "chinese": "子曰：“其恕乎！己所不欲、勿施於人。”"
-      }
-    ],
-    "erae": [
+      },
       {
         "id": 99,
+        "type": "erae",
         "name": "Zhou Dynasty"
+      },
+      {
+        "id": 12,
+        "type": "works",
+        "href": "http://literature.example.com/work/12",
+        "chinese_name": "易經",
+        "english_name": "Commentaries to the Yi-jing"
       }
-    ]
-  }
+  ]
 }

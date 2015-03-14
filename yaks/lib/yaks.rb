@@ -98,5 +98,6 @@ require 'yaks/format/json_api'
 require 'yaks/format/collection_json'
 
 require 'yaks/reader/hal'
+require 'yaks/reader/json_api'
 require 'yaks/pipeline'
 require 'yaks/runner'
