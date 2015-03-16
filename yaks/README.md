@@ -12,7 +12,14 @@
 
 # Yaks
 
+![](logo.png)
+
 The library that understands hypermedia.
+
+Yaks takes your data and transforms it into hypermedia formats such as
+HAL, JSON-API, or HTML. It allows you to build APIs that are
+discoverable and browsable. It is built from the ground up around
+linked resources, a concept central to the architecture of the web.
 
 Yaks consists of a resource representation that is independent of any
 output type. A Yaks mapper transforms an object into a resource, which
