@@ -27,13 +27,12 @@ module Yaks
 
         # Convert to a Resource::Form::Field, expanding any dynamic
         # values
-        def to_resource(mapper)
-          return if self.if && !mapper.expand_value(self.if)
-          Resource::Form::Field.new(
-            (resource_attributes - [:if]).each_with_object({}) do |attr, attrs|
-              attrs[attr] = mapper.expand_value(public_send(attr))
-            end.merge(options: resource_options(mapper))
-          )
+        def to_resource_fields(mapper)
+          return [] if self.if && !mapper.expand_value(self.if)
+          [ Resource::Form::Field.new(
+              (resource_attributes - [:if]).each_with_object({}) do |attr, attrs|
+                attrs[attr] = mapper.expand_value(public_send(attr))
+              end.merge(options: resource_options(mapper))) ]
         end
 
         def resource_options(mapper)

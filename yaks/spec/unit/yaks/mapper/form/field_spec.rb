@@ -33,30 +33,30 @@ RSpec.describe Yaks::Mapper::Form::Field do
     end
   end
 
-  describe '#to_resource' do
+  describe '#to_resource_fields' do
     it 'creates a Yaks::Resource::Form::Field with the same attributes' do
-      expect(field.to_resource(mapper)).to eql Yaks::Resource::Form::Field.new(full_args)
+      expect(field.to_resource_fields(mapper)).to eql [Yaks::Resource::Form::Field.new(full_args)]
     end
 
     context 'with dynamic attributes' do
       let(:name) { ->{ month } }
 
       it 'should expand attributes using the mapper' do
-        expect(field.to_resource(mapper).name).to eql 'January'
+        expect(field.to_resource_fields(mapper).first.name).to eql 'January'
       end
     end
 
     context 'with a falsey if condition' do
       let(:args) { super().merge(if: ->{ false })}
-      it 'returns nil' do
-        expect(field.to_resource(mapper)).to be_nil
+      it 'returns an empty array' do
+        expect(field.to_resource_fields(mapper)).to eql []
       end
     end
 
     context 'with a truthy if condition' do
       let(:args) { super().merge(if: ->{ true })}
-      it 'returns nil' do
-        expect(field.to_resource(mapper)).to be_a Yaks::Resource::Form::Field
+      it 'returns a field' do
+        expect(field.to_resource_fields(mapper).first).to be_a Yaks::Resource::Form::Field
       end
     end
 
@@ -87,7 +87,7 @@ RSpec.describe Yaks::Mapper::Form::Field do
           type: "text",
           value: "hello"
         )
-        expect(field.to_resource(mapper)).to eql form_field
+        expect(field.to_resource_fields(mapper)).to eql [form_field]
       end
     end
   end

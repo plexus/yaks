@@ -1,22 +1,8 @@
 module Yaks
   class Mapper
     class Form
-      extend Configurable, Forwardable, Util
+      extend Forwardable, Util
 
-      ConfigBuilder = Builder.new(Config) do
-        def_set :action, :title, :method, :media_type
-        def_add :field, create: Field::Builder, append_to: :fields
-        def_add :fieldset, create: Fieldset, append_to: :fields
-        HTML5Forms::INPUT_TYPES.each do |type|
-          def_add(type,
-            create: Field::Builder,
-            append_to: :fields,
-            defaults: { type: type }
-          )
-        end
-        def_forward :dynamic
-        def_forward :condition
-      end
 
       def_delegators :config, :name, :action, :title, :method,
                               :media_type, :fields, :dynamic_blocks
@@ -28,13 +14,13 @@ module Yaks
           options[:name] = args.first
         end
 
-        new(ConfigBuilder.build(Config.new(options), &block))
+        new(config: Config.build(options, &block))
       end
 
       ############################################################
       # instance
 
-      include Concord.new(:config)
+      include Attributes.new(:config)
 
       def add_to_resource(resource, mapper, _context)
         return resource if config.if && !mapper.expand_value(config.if)
@@ -42,12 +28,8 @@ module Yaks
       end
 
       def to_resource_form(mapper)
-        config = dynamic_blocks.inject(self.config) do |config, block|
-          ConfigBuilder.build(config, mapper.object, &block)
-        end
-
         attrs = {
-          fields: resource_fields(config.fields, mapper),
+          fields: config.to_resource_fields(mapper),
           action: mapper.expand_uri(config.action, true)
         }
 
@@ -58,11 +40,6 @@ module Yaks
         Resource::Form.new(attrs)
       end
 
-      private
-
-      def resource_fields(fields, mapper)
-        fields.map {|field| field.to_resource(mapper) }.compact
-      end
     end
   end
 end
