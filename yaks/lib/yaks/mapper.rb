@@ -2,7 +2,8 @@ module Yaks
   class Mapper
     extend Configurable
 
-    def_forward :type       => :with_type
+    def_set :type
+
     def_forward :attributes => :add_attributes
     def_forward :append_to
 
