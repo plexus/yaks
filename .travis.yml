@@ -23,7 +23,6 @@ matrix:
   allow_failures:
     - rvm: ruby-head
     - rvm: jruby-head
-    - rvm: rbx
     - env: TASK=mutant
   exclude:
     - rvm: jruby
@@ -31,4 +30,6 @@ matrix:
     - rvm: jruby-head
       env: TASK=mutant
     - rvm: 1.9.3
+      env: TASK=mutant
+    - rvm: rbx
       env: TASK=mutant
