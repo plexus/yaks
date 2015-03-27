@@ -70,6 +70,26 @@
       .footer {
         margin-top: 1em;
       }
+
+      .collapsed .heading::before, .expanded .heading::before {
+        font-size: 0.6em;
+        display: block;
+        float: left;
+        margin-top: 0.4em;
+        margin-right: 0.5em;
+      }
+
+      .collapsed .heading::before {
+        content: "▶";
+      }
+
+      .expanded .heading::before {
+        content: "▼";
+      }
+
+      .collapsed .body {
+        display: none;
+      }
     </style>
   </head>
   <body>
@@ -77,40 +97,65 @@
     </div>
 
     <div class="resource">
-      <h1 class="type">Resource Type</h1>
+      <h1 class="heading type">Resource Type</h1>
 
-      <table class="attributes">
-        <tr class="attribute"><td class="name">name</td><td class="value">value</td></tr>
-      </table>
+      <div class="resource-data body">
+        <table class="attributes">
+          <tr class="attribute"><td class="name">name</td><td class="value">value</td></tr>
+        </table>
 
-      <table class="links">
-        <tr>
-          <th>Rel</th>
-          <th>URI</th>
-          <th>Title</th>
-          <th>Templated</th>
-        </tr>
+        <table class="links">
+          <tr>
+            <th>Rel</th>
+            <th>URI</th>
+            <th>Title</th>
+            <th>Templated</th>
+          </tr>
 
-        <tr class="link">
-          <td class="rel"><a href="">rel</a></td>
-          <td class="uri"><a href="">uri</a></td>
-          <td class="title">title</td>
-          <td class="templated">false</td>
-        </tr>
-      </table>
+          <tr class="link">
+            <td class="rel"><a href="">rel</a></td>
+            <td class="uri"><a href="">uri</a></td>
+            <td class="title">title</td>
+            <td class="templated">false</td>
+          </tr>
+        </table>
 
-      <div class="forms"></div>
+        <div class="forms"></div>
 
-      <div class="subresource">
-        <div class="subresource-rel rel"><a></a></div>
-        <div class="value"></div>
+        <div class="subresource collapsed">
+          <div class="subresource-rel rel heading"><a></a></div>
+          <div class="value body" class="collapsed"></div>
+        </div>
+
       </div>
-
     </div>
 
     <div class="footer">
       generated with <a href="https://github.com/plexus/yaks">Yaks <span class="yaks-version"></span></a>
     </div>
 
+    <script>
+      function setupCollapseExpand() {
+        var nodes = document.getElementsByClassName("heading");
+
+        for (var i=0; i < nodes.length; i++) {
+          var node = nodes[i];
+          node.onclick = function() {
+            var parent = this.parentNode;
+            if (parent.className.indexOf("collapsed") >= 0) {
+              parent.className = parent.className.replace("collapsed", "expanded");
+            } else {
+              parent.className = parent.className.replace("expanded", "collapsed");
+            }
+          };
+        }
+      };
+
+      if (window.addEventListener) {
+        window.addEventListener("load", setupCollapseExpand, false);
+      } else if (window.attachEvent) {
+        window.attachEvent("onload", setupCollapseExpand);
+      }
+    </script>
   </body>
 </html>

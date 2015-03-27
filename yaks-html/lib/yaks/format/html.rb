@@ -17,12 +17,18 @@ module Yaks
 
       def serialize_resource(resource)
         template.replace('.resource') do |_|
-          render_resource(resource)
+          render(resource)
         end.replace('.yaks-version') do |ver|
           ver.content(Yaks::VERSION)
         end.replace('.request-info') do |req|
           req.content(env['REQUEST_METHOD'], ' ', env['PATH_INFO'])
         end
+      end
+
+      def render(*args)
+        object = args.first
+        type = object.class.name.split('::').last
+        send("render_#{underscore(type)}", *args)
       end
 
       def render_resource(resource, templ = section('resource'))
@@ -65,17 +71,19 @@ module Yaks
       end
 
       def render_subresources(resource, templ, sub_templ)
-        templ = templ.replace('h1,h2,h3,h4') {|h| h.set_tag("h#{h.tag[/\d/].to_i.next}") }
+        templ = templ
+                  .replace('h1,h2,h3,h4') {|h| h.set_tag("h#{h.tag[/\d/].to_i.next}") }
+                  .add_class('collapsed')
         if resource.collection?
           resource.seq.map do |r|
-            render_resource(r, templ)
+            render(r, templ)
           end
         else
           resource.subresources.map do |resources|
             rel = resources.rels.first
             sub_templ
               .replace('.rel a') {|a| a.attr('href', rel_href(rel)).content(rel.to_s) }
-              .replace('.value') {|x| x.content(resources.seq.map { |resource| render_resource(resource, templ) })}
+              .replace('.value') {|x| x.content(resources.seq.map { |resource| render(resource, templ) })}
           end
         end
       end
@@ -84,7 +92,7 @@ module Yaks
       def render_forms(forms)
         ->(div) do
           div.content(
-            forms.map(&method(:render_form))
+            forms.map(&method(:render))
           )
         end
       end
@@ -96,7 +104,7 @@ module Yaks
         form = form.attr('action', form_control.action)      if form_control.action
         form = form.attr('enctype', form_control.media_type) if form_control.media_type
 
-        rows = form_control.fields.map(&method(:render_field))
+        rows = form_control.fields.map(&method(:render))
         rows << H[:tr, H[:td], H[:td, H[:input, {type: 'submit'}]]]
 
         H[:div,
@@ -105,7 +113,6 @@ module Yaks
       end
 
       def render_field(field)
-        return render_fieldset(field) if field.type == :fieldset
         extra_info = reject_keys(field.to_h_compact, :type, :name, :value, :label, :options)
         H[:tr,
           H[:td,
@@ -116,8 +123,6 @@ module Yaks
               H[:select, reject_keys(field.to_h_compact, :options), render_select_options(field.options)]
             when /textarea/
               H[:textarea, reject_keys(field.to_h_compact, :value), field.value || '']
-            when /legend/
-              H[:legend, field.to_h_compact]
             when /hidden/
               [ field.value.inspect,
                 H[:input, field.to_h_compact]
@@ -130,12 +135,13 @@ module Yaks
       end
 
       def render_fieldset(fieldset)
-        legend = fieldset.fields.select {|field|field.type == :legend}.first
-        legend = legend ? legend.name : ''
+        legend = fieldset.fields.select {|field| field.type == :legend}.first
+        fields = fieldset.fields.reject {|field| field.type == :legend}
+        legend = legend ? legend.label : ''
 
         H[:tr,
           H[:th, legend],
-          H[:td, H[:fieldset, H[:table, fieldset.fields.map(&method(:render_field))]]]]
+          H[:td, H[:fieldset, H[:table, fields.map(&method(:render))]]]]
       end
 
       def render_select_options(options)
