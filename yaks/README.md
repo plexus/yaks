@@ -763,7 +763,10 @@ output = runner.call
 
 ## Real World Usage
 
-Yaks is used in production by [Ticketsolve](http://www.ticketsolve.com/). You can find an example API endpoint [here](http://leicestersquaretheatre.ticketsolve.com/api).
+Yaks is used in production by
+
+* [Ticketsolve](http://www.ticketsolve.com/). You can find an example API endpoint [here](http://leicestersquaretheatre.ticketsolve.com/api).
+* Advertile Mobile for their product AppBounty (internal API)
 
 ## Demo
 
