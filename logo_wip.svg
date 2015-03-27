@@ -68,17 +68,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.08"
-     inkscape:cx="-12708.751"
-     inkscape:cy="-13606.736"
+     inkscape:zoom="0.056568543"
+     inkscape:cx="-19945.099"
+     inkscape:cy="-13431.082"
      inkscape:document-units="px"
      inkscape:current-layer="layer3"
      showgrid="false"
      showborder="false"
-     inkscape:window-width="1918"
-     inkscape:window-height="1078"
+     inkscape:window-width="1400"
+     inkscape:window-height="525"
      inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-y="525"
      inkscape:window-maximized="0" />
   <metadata
      id="metadata4427">
@@ -1237,7 +1237,10 @@
          id="path5151" />
     </g>
     <g
-       id="g3983">
+       id="g3983"
+       inkscape:export-filename="/home/arne/github/yaks/logo.png"
+       inkscape:export-xdpi="5.8800001"
+       inkscape:export-ydpi="5.8800001">
       <path
          sodipodi:nodetypes="cssccsscssssssscssssscsscsssssc"
          inkscape:connector-curvature="0"
