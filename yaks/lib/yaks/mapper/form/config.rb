@@ -23,6 +23,7 @@ module Yaks
                       append_to: :fields,
                       defaults: { type: type })
             end
+            def_add :legend, create: Legend, append_to: :fields
             def_add :dynamic, create: DynamicField, append_to: :fields
             def_forward :condition
           end

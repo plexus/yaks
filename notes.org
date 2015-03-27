@@ -77,3 +77,17 @@ https://www.google.com/search?q=hair+over+eyes&num=20&source=lnms&tbm=isch&sa=X&
 https://www.google.com/search?q=hair+over+eyes&num=20&source=lnms&tbm=isch&sa=X&ei=p2sBVajOOIKvPdDjgPgL&ved=0CAcQ_AUoAQ&biw=1758&bih=923&dpr=1.09#imgdii=_&imgrc=RmzHL5NICZcanM%253A%3BwMr__Up6S7s_9M%3Bhttp%253A%252F%252Fwww.peakdistrictonline.co.uk%252Fimages%252Fwildlife%252Fanimals%252FHighland_Cattle_In_The_Peak_District_5.jpg%3Bhttp%253A%252F%252Fwww.peakdistrictonline.co.uk%252Ffarm-animals-highland-cattle-c101118.html%3B620%3B412
 https://www.google.com/search?biw=1758&bih=923&tbm=isch&sa=1&q=yak+horns&oq=yak+horns&gs_l=img.3..0j0i24.118958.120138.0.120293.9.8.0.1.1.0.142.713.6j2.8.0.msedr...0...1c.1.62.img..0.9.701.rHB0v54VT9k#imgdii=_&imgrc=c8D4U_x1gob0YM%253A%3BzvdhmtL1g8r_UM%3Bhttp%253A%252F%252F4.bp.blogspot.com%252F_2Sr5OicZPHQ%252FTFT2H5ViKWI%252FAAAAAAAAAFs%252FfYlG-en9mFk%252Fs1600%252Fyak%252Band%252BDri.jpg%3Bhttp%253A%252F%252Fthewodakpa.blogspot.com%252F2010%252F07%252Ftibetan-yak_29.html%3B1080%3B672
 https://www.google.com/search?biw=1758&bih=923&tbm=isch&sa=1&q=yak+horns&oq=yak+horns&gs_l=img.3..0j0i24.118958.120138.0.120293.9.8.0.1.1.0.142.713.6j2.8.0.msedr...0...1c.1.62.img..0.9.701.rHB0v54VT9k#imgdii=_&imgrc=_N83z2DYkcc7DM%253A%3BDV8K7BLZksSGrM%3Bhttp%253A%252F%252Fthumbs.dreamstime.com%252Fz%252Fyak-stuffed-animal-like-bull-23182676.jpg%3Bhttp%253A%252F%252Fwww.dreamstime.com%252Froyalty-free-stock-image-yak-stuffed-animal-like-bull-image23182676%3B1300%3B957
+
+
+* JSON-LD / RDF
+** Useful protocols used in RDF.rb
+
+   - to_rdf, to_uri
+   - RDF::URI pname, qname
+   - RDF::Vocabulary::Term
+
+http://ruby-rdf.github.io/
+https://github.com/ruby-rdf/json-ld/
+http://schema.org/MusicEvent
+https://developers.google.com/structured-data/events/venues
+http://json-ld.org/playground/index.html

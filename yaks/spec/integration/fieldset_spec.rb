@@ -22,7 +22,7 @@ RSpec.describe 'dynamic form fields' do
           fields: [
             Yaks::Resource::Form::Fieldset.new(
               fields: [
-                Yaks::Resource::Form::Field.new(name: "I am legend", type: :legend),
+                Yaks::Resource::Form::Legend.new(label: "I am legend", type: :legend),
                 Yaks::Resource::Form::Field.new(name: :bar, type: :text)
               ]
             )
@@ -45,7 +45,7 @@ RSpec.describe 'dynamic form fields' do
                 "type" => "fieldset",
                 "fields" => [
                   {
-                    "name" => "I am legend",
+                    "label" => "I am legend",
                     "type" => "legend"
                   }, {
                     "name" => "bar",
