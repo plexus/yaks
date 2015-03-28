@@ -9,7 +9,8 @@ def mutant_task(gem)
   task :mutant do
     pattern = ENV.fetch('PATTERN', 'Yaks*')
     opts    = ENV.fetch('MUTANT_OPTS', '').split(' ')
-    result  = Mutant::CLI.run(%w[-Ilib -ryaks --use rspec --score 100] + opts + [pattern])
+    args    = %w[-Ilib -ryaks --use rspec --score 100] + opts + [pattern]
+    result  = Mutant::CLI.run(args)
     fail unless result == Mutant::CLI::EXIT_SUCCESS
   end
 end
