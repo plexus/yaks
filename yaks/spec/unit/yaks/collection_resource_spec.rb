@@ -61,4 +61,10 @@ RSpec.describe Yaks::CollectionResource do
       expect(subject.seq.map(&:next)).to eql [2,3,4]
     end
   end
+
+  describe '#collection?' do
+    it 'should always be true' do
+      expect(subject.collection?).to be true
+    end
+  end
 end

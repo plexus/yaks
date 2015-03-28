@@ -1,4 +1,4 @@
-RSpec.describe Yaks::CollectionMapper do
+RSpec.describe Yaks::CollectionMapper, '#call' do
   include_context 'fixtures'
 
   subject(:mapper) { mapper_class.new(context) }
