@@ -212,4 +212,16 @@ WidgetContainer.new(
       expect(widget.new(color: :blue, size: 3).options).to eql({})
     end
   end
+
+  describe '#to_h_compact' do
+    it 'should not show values that are identical to the defaults' do
+      expect(widget.new(color: :red, size: 7).to_h_compact)
+        .to eql({color: :red, size: 7})
+    end
+
+    it 'should include values that are equivalent but not identical' do
+      expect(widget.new(color: :red, size: 7, options: {}).to_h_compact)
+        .to eql({color: :red, size: 7, options: {}})
+    end
+  end
 end
