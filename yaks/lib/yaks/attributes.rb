@@ -24,12 +24,6 @@ module Yaks
 
         alias with update
 
-        this.names.each do |attr|
-          define_method "with_#{attr}" do |value|
-            with(attr => value)
-          end
-        end
-
         define_singleton_method(:attributes) { this }
       end
     end

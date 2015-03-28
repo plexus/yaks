@@ -168,7 +168,7 @@ WidgetContainer.new(
 
   describe '#initialize' do
     it 'should take hash-based args' do
-      expect(widget_container.new(widgets: [:bar])).to eql widget_container.new.with_widgets([:bar])
+      expect(widget_container.new(widgets: [:bar])).to eql widget_container.new.with(widgets: [:bar])
     end
 
     it 'should use defaults when available' do
