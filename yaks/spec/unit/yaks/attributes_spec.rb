@@ -1,43 +1,78 @@
 RSpec.describe Yaks::Attributes do
-  subject { Class.new { include Yaks::Attributes.new(:foo, bar: 3) } }
+  subject { Class.new.instance_exec(args) {|args| include Yaks::Attributes.new(*args) } }
+  let(:args) { [:foo, bar: 3] }
 
-  it 'should have a hash-based constructor' do
-    expect(subject.new(foo: 3, bar: 4).bar).to equal 4
-  end
-
-  it 'should have defaults constructor' do
-    expect(subject.new(foo: 3).bar).to equal 3
-  end
-
-  it 'should allow updating through with' do
-    expect(subject.new(foo: 3).with(foo: 4).to_h).to eql(foo: 4, bar: 3)
-  end
-
-  it 'should add an #append_to method' do
-    expect(subject.new(foo: [6]).append_to(:foo, 7, 8).foo).to eql [6, 7, 8]
-  end
-
-  context 'with all defaults' do
-    subject { Class.new { include Yaks::Attributes.new(foo: 5, bar: 3) } }
-
-    it 'should be able to construct without arguments' do
-      expect(subject.new.to_h).to eql(foo: 5, bar: 3)
+  let(:attributes_module) do
+    subject.included_modules.detect do |mod|
+      mod.instance_of?(described_class)
     end
   end
 
-  context 'without any defaults' do
-    subject { Class.new { include Yaks::Attributes.new(:foo, :bar) } }
-
-    it 'should allow setting all attributes' do
-      expect(subject.new(foo: 5, bar: 6).bar).to equal 6
+  describe '#initialize' do
+    it 'should store defaults' do
+      expect(attributes_module.defaults).to eql(bar: 3)
     end
 
-    it 'should expect all attributes' do
-      expect { subject.new(foo: 5) }.to raise_exception
+    it 'should store attribute names' do
+      expect(attributes_module.names).to eql [:foo, :bar]
+    end
+
+    context 'without defaults' do
+      let(:args) { [:foo, :bar] }
+
+      it 'should have no defaults' do
+        expect(attributes_module.defaults).to eql({})
+      end
+    end
+
+    context 'with a name given both with and without default' do
+      let(:args) { [:foo, foo: 3] }
+
+      it 'should only store the name once' do
+        expect(attributes_module.names).to eql([:foo])
+      end
     end
   end
 
-  context 'when extending' do
+  describe '#included' do
+    it 'should have a hash-based constructor' do
+      expect(subject.new(foo: 3, bar: 4).bar).to equal 4
+    end
+
+    it 'should have defaults constructor' do
+      expect(subject.new(foo: 3).bar).to equal 3
+    end
+
+    it 'should allow updating through with' do
+      expect(subject.new(foo: 3).with(foo: 4).to_h).to eql(foo: 4, bar: 3)
+    end
+
+    it 'should add an #append_to method' do
+      expect(subject.new(foo: [6]).append_to(:foo, 7, 8).foo).to eql [6, 7, 8]
+    end
+
+    context 'with all defaults' do
+      subject { Class.new { include Yaks::Attributes.new(foo: 5, bar: 3) } }
+
+      it 'should be able to construct without arguments' do
+        expect(subject.new.to_h).to eql(foo: 5, bar: 3)
+      end
+    end
+
+    context 'without any defaults' do
+      subject { Class.new { include Yaks::Attributes.new(:foo, :bar) } }
+
+      it 'should allow setting all attributes' do
+        expect(subject.new(foo: 5, bar: 6).bar).to equal 6
+      end
+
+      it 'should expect all attributes' do
+        expect { subject.new(foo: 5) }.to raise_exception
+      end
+    end
+  end
+
+  describe '#add' do
     subject { Class.new(super()) { include attributes.add(baz: 7, bar: 4) } }
 
     it 'should make the new attributes available' do
@@ -69,31 +104,33 @@ RSpec.describe Yaks::Attributes do
     end
   end
 
-  context 'when removing an attribute with a default' do
-    subject { Class.new(super()) { include attributes.remove(:bar) } }
+  describe '#remove' do
+    context 'when removing an attribute with a default' do
+      subject { Class.new(super()) { include attributes.remove(:bar) } }
 
-    it 'should still recognize attributes that were kept' do
-      expect(subject.new(foo: 2).foo).to equal 2
+      it 'should still recognize attributes that were kept' do
+        expect(subject.new(foo: 2).foo).to equal 2
+      end
+
+      it 'should no longer recognize the old attributes' do
+        expect { subject.new(foo: 3, bar: 3).bar }.to raise_error
+      end
     end
 
-    it 'should no longer recognize the old attributes' do
-      expect { subject.new(foo: 3, bar: 3).bar }.to raise_error
-    end
-  end
+    context 'when removing an attribute without a default' do
+      subject { Class.new(super()) { include attributes.remove(:foo) } }
 
-  context 'when removing an attribute without a default' do
-    subject { Class.new(super()) { include attributes.remove(:foo) } }
+      it 'should still recognize attributes that were kept' do
+        expect(subject.new(bar: 2).bar).to equal 2
+      end
 
-    it 'should still recognize attributes that were kept' do
-      expect(subject.new(bar: 2).bar).to equal 2
-    end
+      it 'should no longer recognize the old attributes' do
+        expect { subject.new(foo: 3).foo }.to raise_error
+      end
 
-    it 'should no longer recognize the old attributes' do
-      expect { subject.new(foo: 3).foo }.to raise_error
-    end
-
-    it 'should keep the defaults' do
-      expect(subject.new.bar).to equal 3
+      it 'should keep the defaults' do
+        expect(subject.new.bar).to equal 3
+      end
     end
   end
 end
