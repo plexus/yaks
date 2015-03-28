@@ -3,6 +3,13 @@
 require 'mutant'
 require 'pry'
 
+# These are private methods that are tested by other methods in the same class
+SKIP=%w[
+Yaks::CollectionMapper#collection_rel
+Yaks::CollectionMapper#collection_type
+Yaks::CollectionMapper#mapper_for_model
+]
+
 args = ["-Ilib", "-ryaks", "--use", "rspec", "Yaks*"]
 env = Mutant::Env::Bootstrap.call(Mutant::CLI.call(args))
 
@@ -16,7 +23,7 @@ env.subjects.each do |subject|
   subject_tests = integration.all_tests.select do |test|
     match_expression.prefix?(test.expression)
   end
-  unless subject_tests.any?
+  unless subject_tests.any? || SKIP.include?(subject.expression.syntax)
     puts subject.identification
     exit if ARGV.include?("-1")
   end
