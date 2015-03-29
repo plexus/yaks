@@ -16,41 +16,103 @@ RSpec.describe Yaks::Config do
       its(:hooks)               { should eql([])  }
       its(:format_options_hash) { should eql({})}
     end
+  end
 
-    context 'with a default format' do
-      configure do
-        default_format :json_api
-      end
-
-      its(:default_format) { should equal :json_api }
+  describe '#default_format' do
+    configure do
+      default_format :json_api
     end
 
-    context 'with a custom policy class' do
-      MyPolicy = Struct.new(:options)
-      configure do
-        policy_class MyPolicy
-      end
+    its(:default_format) { should equal :json_api }
+  end
 
-      its(:policy_class) { should equal MyPolicy }
-      its(:policy)       { should be_a  MyPolicy }
+  describe '#policy_class' do
+    MyPolicy = Struct.new(:options)
+    configure do
+      policy_class MyPolicy
     end
 
-    context 'with a rel template' do
-      configure do
-        rel_template 'http://rel/foo'
-      end
+    its(:policy_class) { should equal MyPolicy }
+    its(:policy)       { should be_a  MyPolicy }
+  end
 
-      its(:policy_options) { should eql(rel_template: 'http://rel/foo') }
+  describe '#rel_template' do
+    configure do
+      mapper_namespace Object
+      rel_template 'http://rel/foo'
     end
 
-    context 'with format options' do
-      configure do
-        format_options :hal, plural_links: [:self, :profile]
-      end
+    its(:policy_options) { should eql(namespace: Object, rel_template: 'http://rel/foo') }
+  end
 
-      specify do
-        expect(config.format_options_hash[:hal]).to eql(plural_links: [:self, :profile])
+  describe '#format_options' do
+    configure do
+      format_options :hal, plural_links: [:self, :profile]
+      format_options :collection_json, template: :template_form_name
+    end
+
+    it 'should set format options' do
+      expect(config.format_options_hash[:hal]).to eql(plural_links: [:self, :profile])
+    end
+  end
+
+  describe '#json_serializer' do
+    configure do
+      json_serializer {|resource| resource.upcase }
+    end
+
+    specify do
+      expect(config.serializers[:json].call('foo')).to eql "FOO"
+    end
+  end
+
+  describe '#map_to_primitive' do
+    configure do
+      map_to_primitive Date do |date|
+        date.strftime("%Y-%m")
       end
+    end
+
+    it 'registers how to handle a primitive type' do
+      expect(config.primitivize.call(Date.new(2015, 10))).to eql "2015-10"
+    end
+
+    it 'should not change the existing primitize instance' do
+      old_prim = config.primitivize
+      config.map_to_primitive Date do |date|
+        date.strftime("%m-%Y")
+      end
+      expect(old_prim.call(Date.new(2015, 10))).to eql "2015-10"
+    end
+  end
+
+  describe '#mapper_namespace' do
+    configure do
+      rel_template '/foo/{rel}'
+      mapper_namespace Yaks::Mapper
+    end
+
+    it 'configures the policy to look in the given namespace' do
+      expect(config.policy.options[:namespace]).to eql Yaks::Mapper
+    end
+
+    it 'should not overwrite other options' do
+      expect(config.policy.options[:rel_template]).to eql '/foo/{rel}'
+    end
+  end
+
+  describe '#policy' do
+    PolicyClass = Class.new do
+      include Yaks::Attributes.new(:namespace)
+    end
+
+    configure do
+      policy_class PolicyClass
+      mapper_namespace Yaks::Mapper
+    end
+
+    it 'returns an instantiated policy' do
+      expect(config.policy).to eql PolicyClass.new(namespace: Yaks::Mapper)
     end
   end
 
@@ -66,4 +128,55 @@ RSpec.describe Yaks::Config do
     end
   end
 
+  describe '#map' do
+    configure {}
+
+    it 'only performs the mapping stage' do
+      expect(config.map(wassup))
+        .to eql Yaks::Resource.new(
+                  type: "pet",
+                  attributes: {id: 3, name: "wassup", species: "cat"}
+                )
+    end
+  end
+
+  describe '#read' do
+    configure {
+      default_format :json_api
+    }
+
+    it 'invokes the reader for the given format' do
+      expect(config.read('{"data": [{"type": "pets",
+                                     "id": 3,
+                                     "name": "wassup",
+                                     "species": "cat"}]}'))
+        .to eql Yaks::Resource.new(
+                  type: "pet",
+                  attributes: {:id=>3, :name=>"wassup", :species=>"cat"}
+                )
+    end
+  end
+
+  describe '#runner' do
+    configure {}
+
+    it 'provides a Yaks::Runner' do
+      expect(config.runner(:foo, {bar: 1}))
+        .to eql Yaks::Runner.new(config: config, object: :foo, options: {bar: 1})
+    end
+  end
+
+  describe '#serializer' do
+    configure do
+      serializer(:foo) {|x| x.upcase.reverse }
+    end
+
+    it 'registers a serializer for a given type' do
+      expect(config.serializers[:foo].call('bar')).to eql 'RAB'
+    end
+
+    it 'should keep existing serializers' do
+      expect(config.serializers[:json].call([:foo, :bar], {})).to eql %{[\n  "foo",\n  "bar"\n]}
+    end
+  end
 end

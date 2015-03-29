@@ -18,7 +18,7 @@ module Yaks
 
     deprecated_alias :namespace, :mapper_namespace
 
-    def format_options(format, options = Undefined)
+    def format_options(format, options)
       with(format_options_hash: format_options_hash.merge(format => options))
     end
 
@@ -27,7 +27,7 @@ module Yaks
     end
 
     def json_serializer(&serializer)
-      with(serializer: :json, &serializer)
+      serializer(:json, &serializer)
     end
 
     %w[before after around skip].map(&:intern).each do |hook_type|
@@ -37,11 +37,11 @@ module Yaks
     end
 
     def rel_template(template)
-      with(policy_options: policy_options.merge(:rel_template => template))
+      with(policy_options: policy_options.merge(rel_template: template))
     end
 
     def mapper_namespace(namespace)
-      with(policy_options: policy_options.merge(:namespace => namespace))
+      with(policy_options: policy_options.merge(namespace: namespace))
     end
 
     def map_to_primitive(*args, &block)

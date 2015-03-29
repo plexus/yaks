@@ -13,9 +13,9 @@ module Yaks
       raise PrimitivizeError, "don't know how to turn #{object.class} (#{object.inspect}) into a primitive"
     end
 
-    def map(*types, &blk)
+    def map(*types, &block)
       types.each do |type|
-        mappings[type] = blk
+        @mappings = mappings.merge(type => block)
       end
     end
 
