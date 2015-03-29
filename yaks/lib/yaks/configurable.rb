@@ -34,11 +34,15 @@ module Yaks
     def def_set(*method_names)
       method_names.each do |method_name|
         define_singleton_method method_name do |arg = Undefined, &block|
-          if arg == Undefined && block
+          if arg.equal?(Undefined)
+            unless block
+              raise ArgumentError, "setting #{method_name}: no value and no block given"
+            end
             self.config = config.update(method_name => block)
-          elsif arg == Undefined
-            raise ArgumentError, "wrong number of arguments (0 for 1)"
           else
+            if block
+              raise ArgumentError, "ambiguous invocation setting #{method_name}: give either a value or a block, not both."
+            end
             self.config = config.update(method_name => arg)
           end
         end
@@ -50,15 +54,15 @@ module Yaks
     #
     # Either takes a list of methods to forward, or a mapping (hash)
     # of source to destination method name.
-    def def_forward(method_names, *args)
-      unless method_names.is_a? Hash
-        def_forward([method_names, *args].map{|name| {name => name}}.inject(:merge))
-        return
-      end
-      method_names.each do |method_name, target|
-        define_singleton_method method_name do |*args, &block|
-          self.config = config.public_send(target, *args, &block)
+    def def_forward(mappings, *args)
+      if mappings.instance_of? Hash
+        mappings.each do |method_name, target|
+          define_singleton_method method_name do |*args, &block|
+            self.config = config.public_send(target, *args, &block)
+          end
         end
+      else
+        def_forward([mappings, *args].map{|name| {name => name}}.inject(:merge))
       end
     end
 
