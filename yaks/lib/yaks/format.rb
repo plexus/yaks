@@ -28,6 +28,10 @@ module Yaks
     end
     alias serialize call
 
+    # @abstract
+    def serialize_resource(_resource)
+    end
+
     class << self
       extend Util::Deprecated
 

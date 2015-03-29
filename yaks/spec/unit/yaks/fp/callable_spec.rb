@@ -1,4 +1,4 @@
-RSpec.describe Yaks::FP::Callable do
+RSpec.describe Yaks::FP::Callable, "#to_proc" do
   it 'should delegate to_proc to method(:call)' do
     obj = Class.new do
       include Yaks::FP::Callable
