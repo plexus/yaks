@@ -48,15 +48,32 @@ RSpec.describe Yaks::Util do
   end
 
   describe '#slice_hash' do
-    it '#should retain the given keys from a hash' do
-      expect(slice_hash({a: 1, b:2, c:3}, :a, :c, :d)).to eql(a: 1, c:3)
+    it 'should retain the given keys from a hash' do
+      expect(slice_hash({a: 1, b: 2, c: 3}, :a, :c, :d)).to eql(a: 1, c:3)
+    end
+  end
+
+  describe '#reject_keys' do
+    it 'should reject specific keys from a hash' do
+      expect(reject_keys({foo: 1, bar: 2}, :foo)).to eql(bar: 2)
+    end
+  end
+
+  describe "#symbolize_keys" do
+    it "should turn string keys into symbols" do
+      expect(symbolize_keys({'foo' => 1, 'bar' => 2})).to eql(foo: 1, bar: 2)
     end
   end
 
   describe '#extract_options' do
-    it 'should extract a final hash' do
-      args, opts = extract_options([:a, :b, {hello: :world}])
-      expect([args, opts]).to eql [[:a, :b], {hello: :world}]
+    it 'should extract a final hash - one arg given' do
+      args, opts = extract_options([:a, {hello: :world}])
+      expect([args, opts]).to eql [[:a], {hello: :world}]
+    end
+
+    it 'should extract a final hash - multi arg given' do
+      args, opts = extract_options([:a, :b, :c, {hello: :world}])
+      expect([args, opts]).to eql [[:a, :b, :c], {hello: :world}]
     end
 
     it 'should provide an empty hash if none was given' do
@@ -67,7 +84,7 @@ RSpec.describe Yaks::Util do
 
 end
 
-RSpec.describe Yaks::Util::Deprecated do
+RSpec.describe Yaks::Util::Deprecated, '#deprecated_alias' do
   let(:klass) {
     Class.new do
       extend Yaks::Util::Deprecated
