@@ -1,59 +1,6 @@
 RSpec.describe Yaks::NullResource do
   subject(:null_resource) { described_class.new }
 
-  its(:attributes)     { should eql({}) }
-  its(:links)          { should eql [] }
-  its(:rels)           { should eql [] }
-  its(:subresources)   { should eql [] }
-  its(:collection?)    { should be false }
-  its(:null_resource?) { should be true }
-  its(:seq)            { should eql [] }
-
-  it { should respond_to :[] }
-
-  its(:type) { should be_nil }
-
-  describe '#each' do
-    its(:each) { should be_a Enumerator }
-
-    it 'should not yield anything' do
-      null_resource.each { fail }
-    end
-  end
-
-  it 'should contain nothing' do
-    expect( null_resource[:key] ).to be_nil
-  end
-
-  context 'when a collection' do
-    subject(:null_resource) { described_class.new( collection: true ) }
-    its(:collection?) { should be true }
-  end
-
-  it 'should not allow updating attributes' do
-    expect { null_resource.merge_attributes({}) }.to raise_error(
-      Yaks::UnsupportedOperationError, "Operation merge_attributes not supported on Yaks::NullResource"
-    )
-  end
-
-  it 'should not allow adding links' do
-    expect { null_resource.add_link(nil) }.to raise_error(
-      Yaks::UnsupportedOperationError, "Operation add_link not supported on Yaks::NullResource"
-    )
-  end
-
-  it 'should not allow adding forms' do
-    expect { null_resource.add_form(nil) }.to raise_error(
-      Yaks::UnsupportedOperationError, "Operation add_form not supported on Yaks::NullResource"
-    )
-  end
-
-  it 'should not allow adding subresources' do
-    expect { null_resource.add_subresource(nil) }.to raise_error(
-      Yaks::UnsupportedOperationError, "Operation add_subresource not supported on Yaks::NullResource"
-    )
-  end
-
   describe '#initialize' do
     it 'should have defaults for everything' do
       expect( described_class.new.to_h ).to eql({
@@ -76,6 +23,89 @@ RSpec.describe Yaks::NullResource do
 
     it 'should not allow attributes in the contstructor' do
       expect( described_class.new(attributes: {foo: :bar}).attributes ).to eql({})
+    end
+  end
+
+  describe "#attributes" do
+    its(:attributes) { should eql({}) }
+  end
+
+  describe "#links" do
+    its(:links) { should eql [] }
+  end
+
+  describe "#rels" do
+    its(:rels) { should eql [] }
+  end
+
+  describe "#subresources" do
+    its(:subresources) { should eql [] }
+  end
+
+  describe "#collection?" do
+    its(:collection?) { should be false }
+
+    context 'when a collection' do
+      subject(:null_resource) { described_class.new( collection: true ) }
+      its(:collection?) { should be true }
+    end
+  end
+
+  describe "#null_resource?" do
+    its(:null_resource?) { should be true }
+  end
+
+  describe "#seq" do
+    its(:seq) { should eql [] }
+  end
+
+  describe "#[]" do
+    it 'should contain nothing' do
+      expect( null_resource[:key] ).to be_nil
+    end
+  end
+
+  describe "#type" do
+    its(:type) { should be_nil }
+  end
+
+  describe '#each' do
+    its(:each) { should be_a Enumerator }
+
+    it 'should not yield anything' do
+      null_resource.each { fail }
+    end
+  end
+
+  describe "#merge_attributes" do
+    it 'should not allow updating attributes' do
+      expect { null_resource.merge_attributes({}) }.to raise_error(
+        Yaks::UnsupportedOperationError, "Operation merge_attributes not supported on Yaks::NullResource"
+      )
+    end
+  end
+
+  describe "#add_link" do
+    it 'should not allow adding links' do
+      expect { null_resource.add_link(nil) }.to raise_error(
+        Yaks::UnsupportedOperationError, "Operation add_link not supported on Yaks::NullResource"
+      )
+    end
+  end
+
+  describe "#add_form" do
+    it 'should not allow adding forms' do
+      expect { null_resource.add_form(nil) }.to raise_error(
+        Yaks::UnsupportedOperationError, "Operation add_form not supported on Yaks::NullResource"
+      )
+    end
+  end
+
+  describe "#add_subresource" do
+    it 'should not allow adding subresources' do
+      expect { null_resource.add_subresource(nil) }.to raise_error(
+        Yaks::UnsupportedOperationError, "Operation add_subresource not supported on Yaks::NullResource"
+      )
     end
   end
 
