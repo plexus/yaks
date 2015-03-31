@@ -16,7 +16,7 @@ module Yaks
 
       def fields_flat(fs = fields)
         fs.each_with_object([]) do |field, acc|
-          next if field.type == :legend
+          next if field.type.equal? :legend
           if field.type.equal? :fieldset
             acc.concat(fields_flat field.fields)
           else
