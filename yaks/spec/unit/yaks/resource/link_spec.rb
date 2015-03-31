@@ -9,12 +9,17 @@ RSpec.describe Yaks::Resource::Link do
   its(:uri)     { should eql 'http://api.example.org/rel/foo' }
   its(:options) { should eql(title: 'mr. spectacular') }
 
-  its(:title)      { should eql('mr. spectacular') }
-  its(:templated?) { should be false }
+  describe '#title' do
+    its(:title)      { should eql('mr. spectacular') }
+  end
 
-  context 'with explicit templated option' do
-    let(:options) { super().merge(templated: true) }
-    its(:templated?) { should be true }
+  describe '#templated?' do
+    its(:templated?) { should be false }
+
+    context 'with explicit templated option' do
+      let(:options) { super().merge(templated: true) }
+      its(:templated?) { should be true }
+    end
   end
 
   describe '#rel?' do
