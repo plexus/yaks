@@ -35,19 +35,11 @@ requested. These formats are presently supported:
 
 ## State of Development
 
-This library came into existence because we at
-[Ticketsolve](http://www.ticketsolve.com) wanted to build a rich
-hypermedia API, and were dissatisfied with any of the existing Ruby
-solutions at the time (November 2013).
-
-We are still actively expanding our API, and with that Yaks continues
-to grow and improve. The aim is to create *the reference* for
-supporting hypermedia formats in Ruby.
-
-Yaks can be used in production today, as we do, but until 1.0 is
-released there will regularly be breaking changes, as we figure out
-the best way to do things. These are all documented clearly in the
-[changelog](/CHANGELOG.md).
+Recent focus has been on stabilizing the core classes, improving
+format support, and increasing test (mutation) coverage. We are
+committed to a stable public API and semantic version. On the 0.x line
+the minor version is bumped when non-backwards compatible changes are
+introduced. After 1.x regular semver conventions will be used.
 
 ## Concepts
 
@@ -772,6 +764,10 @@ Yaks is used in production by
 
 You can find an outdated example app at [Yakports](https://github.com/plexus/yakports), or browse the HAL api directly using the [HAL browser](http://yaks-airports.herokuapp.com/browser.html).
 
+## Cookbook
+
+See the [cookbook](COOKBOOK.md) for some usage examples taking from a real world app.
+
 ## Standards Based
 
 Yaks is based on internet standards, including
@@ -784,7 +780,7 @@ Yaks is based on internet standards, including
 
 ## How to contribute
 
-Run the tests, the examples, try it with your own stuff and leave your impressions in the issues. Or discuss on [API-craft](https://groups.google.com/d/forum/api-craft).
+Run the tests, the examples, try it with your own stuff and leave your impressions in the issues.
 
 To fix a bug
 
