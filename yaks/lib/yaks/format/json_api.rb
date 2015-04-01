@@ -11,10 +11,10 @@ module Yaks
         main_collection = resource.seq.map(&method(:serialize_resource))
 
         { data: main_collection }.tap do |serialized|
-          linked = resource.seq.each_with_object([]) do |res, array|
-            serialize_linked_subresources(res.subresources, array)
+          included = resource.seq.each_with_object([]) do |res, array|
+            serialize_included_subresources(res.subresources, array)
           end
-          serialized.merge!(linked: linked) unless linked.empty?
+          serialized.merge!(included: included) unless included.empty?
         end
       end
 
@@ -38,7 +38,7 @@ module Yaks
       def serialize_links(subresources)
         subresources.each_with_object({}) do |resource, hsh|
           next if resource.null_resource?
-          hsh[resource.type] = serialize_link(resource)
+          hsh[resource.rels.first] = serialize_link(resource)
         end
       end
 
@@ -46,26 +46,26 @@ module Yaks
       # @return [Array, String]
       def serialize_link(resource)
         if resource.collection?
-          {type: resource.type, ids: resource.map {|member| member[:id] }}
+          {linkage: resource.map{|r| {type: pluralize(r.type), id: r[:id]} }}
         else
-          {type: pluralize(resource.type), id: resource[:id]}
+          {linkage: {type: pluralize(resource.type), id: resource[:id]}}
         end
       end
 
       # @param [Hash] subresources
       # @param [Array] array
       # @return [Array]
-      def serialize_linked_subresources(subresources, array)
+      def serialize_included_subresources(subresources, array)
         subresources.each do |resources|
-          serialize_linked_resources(resources, array)
+          serialize_included_resources(resources, array)
         end
       end
 
       # @param [Array] resources
-      # @param [Array] linked
+      # @param [Array] included
       # @return [Array]
-      def serialize_linked_resources(subresource, linked)
-        subresource.seq.each_with_object(linked) do |resource, memo|
+      def serialize_included_resources(subresource, included)
+        subresource.seq.each_with_object(included) do |resource, memo|
           serialize_subresource(resource, memo)
         end
       end
@@ -73,11 +73,11 @@ module Yaks
       # {shows => [{id: 3, name: 'foo'}]}
       #
       # @param [Yaks::Resource] resource
-      # @param [Hash] linked
+      # @param [Hash] included
       # @return [Hash]
-      def serialize_subresource(resource, linked)
-        linked << serialize_resource(resource)
-        serialize_linked_subresources(resource.subresources, linked)
+      def serialize_subresource(resource, included)
+        included << serialize_resource(resource)
+        serialize_included_subresources(resource.subresources, included)
       end
 
       def inverse

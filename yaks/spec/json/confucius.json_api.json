@@ -8,11 +8,11 @@
       "pinyin": "Kongzi",
       "latinized": "Confucius",
       "links": {
-        "works": {"type": "works", "ids": [11,12]}
+        "works": {"linkage": [{"type": "works", "id": 11}, {"type": "works", "id": 12}]}
       }
     }
   ],
-  "linked": [
+  "included": [
       {
         "id": 11,
         "type": "works",
@@ -20,8 +20,8 @@
         "chinese_name": "論語",
         "english_name": "Analects",
         "links": {
-          "quotes": {"type": "quotes", "ids": [17, 18]},
-          "era": {"type": "erae", "id": 99}
+          "quotes": {"linkage": [{"type": "quotes", "id": 17}, {"type": "quotes", "id": 18}]},
+          "era": {"linkage": {"type": "erae", "id": 99}}
         }
       },
       {

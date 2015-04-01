@@ -6,7 +6,13 @@
 Make dynamic form fields respect the order in which they were declared
 in the form relative to other form fields.
 
+Further changes to bring JSONAPI formatting more in line with 1.0 format
+
+- Changed `linked` to `included`
+- Change format of `links` to include 'linkages'
+
 Some changes to bring JSONAPI formatting more in line with 1.0 format
+
  - Top level key must be named 'data' rather than the resource type
  - The resource name myst be included in a 'type' attribute
 
