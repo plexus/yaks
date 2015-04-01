@@ -76,7 +76,9 @@ module Yaks
       # @param [Hash] included
       # @return [Hash]
       def serialize_subresource(resource, included)
-        included << serialize_resource(resource)
+        included << serialize_resource(resource) unless included.any? do |item|
+          item[:id].equal?(resource[:id]) && item[:type].equal?(pluralize(resource.type).to_sym)
+        end
         serialize_included_subresources(resource.subresources, included)
       end
 
