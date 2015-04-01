@@ -25,7 +25,7 @@ module Yaks
     #   it will receive the mapper instance as argument. Otherwise it is evaluated in the mapper context
     class Link
       extend Forwardable, Util
-      include Attributes.new(:rel, :template, options: {}), Util
+      include Attribs.new(:rel, :template, options: {}), Util
 
       def self.create(*args)
         args, options = extract_options(args)

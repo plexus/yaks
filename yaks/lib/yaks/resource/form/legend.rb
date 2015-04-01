@@ -2,7 +2,7 @@ module Yaks
   class Resource
     class Form
       class Legend
-        include Attributes.new(:label, :type)
+        include Attribs.new(:label, :type)
 
         def initialize(opts)
           super(opts.merge(type: :legend))

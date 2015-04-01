@@ -2,7 +2,7 @@ RSpec.describe Yaks::Resource::HasFields do
   let(:class_with_fields) do
     Class.new do
       include Yaks::Resource::HasFields
-      include Yaks::Attributes.new(:fields)
+      include Attribs.new(:fields)
     end
   end
 

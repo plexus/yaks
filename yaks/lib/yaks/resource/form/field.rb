@@ -30,9 +30,9 @@ module Yaks
           options.each_with_object([]) do |option, new_opts|
             new_opts << case option
                         when unset
-                          option.update selected: false
+                          option.with selected: false
                         when set
-                          option.update selected: true
+                          option.with selected: true
                         else
                           option
                         end

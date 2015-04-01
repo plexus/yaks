@@ -3,7 +3,7 @@ module Yaks
     class Form
       class Fieldset
         extend Forwardable
-        include Attributes.new(:config)
+        include Attribs.new(:config)
 
         def_delegators :config, :fields
 

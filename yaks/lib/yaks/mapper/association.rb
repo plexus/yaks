@@ -1,7 +1,7 @@
 module Yaks
   class Mapper
     class Association
-      include Attributes.new(
+      include Attribs.new(
                 name:        Undefined,
                 item_mapper: Undefined,
                 rel:         Undefined,

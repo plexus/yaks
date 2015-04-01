@@ -23,6 +23,7 @@ Gem::Specification.new do |gem|
   end
 
   gem.add_runtime_dependency 'inflection'   , '~> 1.0'
+  gem.add_runtime_dependency 'attribs'      , '~> 1.0'
   gem.add_runtime_dependency 'concord'      , '~> 0.1.4'
   gem.add_runtime_dependency 'uri_template' , '~> 0.6.0'
   gem.add_runtime_dependency 'rack-accept'  , '~> 0.4.5'

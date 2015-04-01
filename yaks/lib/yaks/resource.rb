@@ -1,6 +1,6 @@
 module Yaks
   class Resource
-    include Attributes.new(
+    include Attribs.new(
               type: nil,
               rels: [],
               links: [],

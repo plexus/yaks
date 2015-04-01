@@ -3,14 +3,14 @@
 This document is for when you want to hack on Yaks itself, or better
 understand its internals. To simply use it, consult the README.
 
-## Yaks::Attributes
+## Attribs
 
 You'll find that most classes in Yaks include an instance of
-`Yaks::Attributes`, for example
+`Attribs`, for example
 
 ``` ruby
 class Yaks::Resource::Link
-  include Attributes.new(:rel, :uri, options: {})
+  include Attribs.new(:rel, :uri, options: {})
 end
 ```
 
@@ -19,7 +19,7 @@ You can think of this (as a starting point) as replacing
 getter methods for `rel`, `uri`, and `options`. But that's really just
 scratching the surface.
 
-`Yaks::Attributes` relies on Anima, so you get the same things as
+`Attribs` relies on Anima, so you get the same things as
 using `include Anima.new`
 
 * a hash-based constructor
@@ -42,7 +42,7 @@ by their (object) identity.
 
 Note that there are no setters, these objects are immutable.
 
-There are some other things that `Yaks::Attributes` adds that make it
+There are some other things that `Attribs` adds that make it
 a pleasure to work with these objects.
 
 * default values
@@ -52,7 +52,7 @@ a pleasure to work with these objects.
 * `append_to` method
 * `to_h_compact` method
 
-You can include default values for properties in `Attributes.new(...)`, for example the options of a `Link` default to `{}`.
+You can include default values for properties in `Attribs.new(...)`, for example the options of a `Link` default to `{}`.
 
 `with` (see
 [this discussion](https://gist.github.com/plexus/42c6c9c63212182ee440)
@@ -68,7 +68,7 @@ link2 # => #<Yaks::Resource::Link rel=:self uri="/foo/bar" options={:templated=>
 
 For each property `foo` there's also `with_foo`, so `x.with(foo: 'bar')` is the same as `x.with_foo('bar')`
 
-`pp` recursively turns nested `Attributes` based objects into nicely
+`pp` recursively turns nested `Attribs` based objects into nicely
 format, valid Ruby code. This is great for debugging, and very helpful
 when writing test cases.
 
@@ -149,7 +149,7 @@ associations, this config object is an instance of
 Yaks itself (through `Yaks.new do ...`), you are creating a
 `Yaks::Config`, etc.
 
-Because the objects created by the DSL all use `Yaks::Attributes`,
+Because the objects created by the DSL all use `Attribs`,
 their constructor takes a Hash. For the DSL we often prefer positional
 arguments, however. E.g. `form :create` instead of `form name:
 :create`. To bridge this gap classes like `Form` implement a class

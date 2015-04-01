@@ -4,7 +4,7 @@ module Yaks
       class Field
         # <option>, as used in a <select>
         class Option
-          include Attributes.new(:value, :label, selected: false, disabled: false, if: nil)
+          include Attribs.new(:value, :label, selected: false, disabled: false, if: nil)
 
           def self.create(value, opts = {})
             new(opts.merge(value: value))

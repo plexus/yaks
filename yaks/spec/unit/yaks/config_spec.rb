@@ -103,7 +103,7 @@ RSpec.describe Yaks::Config do
 
   describe '#policy' do
     PolicyClass = Class.new do
-      include Yaks::Attributes.new(:namespace)
+      include Attribs.new(:namespace)
     end
 
     configure do

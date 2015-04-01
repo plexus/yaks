@@ -2,7 +2,7 @@ module Yaks
   class Mapper
     class Form
       class Config
-        include Attributes.new(
+        include Attribs.new(
                   name: nil,
                   action: nil,
                   title: nil,

@@ -1,6 +1,6 @@
 RSpec.describe Yaks::Builder do
   class Buildable
-    include Yaks::Attributes.new(:foo, :bar)
+    include Attribs.new(:foo, :bar)
 
     def self.create(foo, bar)
       new(foo: foo, bar: bar)
@@ -18,7 +18,7 @@ RSpec.describe Yaks::Builder do
   subject do
     Yaks::Builder.new(Buildable, [:finalize]) do
       def_set :foo, :bar
-      def_forward :wrong_type, :update
+      def_forward :wrong_type, :with
     end
   end
 
@@ -49,7 +49,7 @@ RSpec.describe Yaks::Builder do
       expect(
         subject.create(3, 4) do
           foo 7
-          update bar: 6
+          with bar: 6
         end.to_h
       ).to eql(foo: 7, bar: 6)
     end

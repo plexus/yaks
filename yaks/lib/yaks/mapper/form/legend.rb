@@ -2,7 +2,7 @@ module Yaks
   class Mapper
     class Form
       class Legend
-        include Attributes.new(:type, :label, if: nil)
+        include Attribs.new(:type, :label, if: nil)
 
         def self.create(label, opts = {})
           new(opts.merge(type: :legend, label: label))

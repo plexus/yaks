@@ -2,7 +2,7 @@ module Yaks
   class Resource
     class Form
       class Fieldset
-        include Attributes.new(:fields)
+        include Attribs.new(:fields)
         include Yaks::Resource::HasFields
 
         def type

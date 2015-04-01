@@ -2,7 +2,7 @@ module Yaks
   class Mapper
     class Form
       class Field
-        include Attributes.new(
+        include Attribs.new(
                   :name,
                   label: nil,
                   options: [].freeze,

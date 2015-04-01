@@ -20,7 +20,7 @@ module Yaks
       ############################################################
       # instance
 
-      include Attributes.new(:config)
+      include Attribs.new(:config)
 
       def add_to_resource(resource, mapper, _context)
         return resource if config.if && !mapper.expand_value(config.if)

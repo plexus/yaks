@@ -2,7 +2,7 @@ module Yaks
   class Mapper
     class Form
       class DynamicField
-        include Attributes.new(:block)
+        include Attribs.new(:block)
 
         def self.create(_opts = nil, &block)
           new(block: block)

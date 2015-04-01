@@ -2,7 +2,7 @@ module Yaks
   class Config
     extend Yaks::Util::Deprecated
     include Yaks::FP::Callable,
-            Attributes.new(
+            Attribs.new(
               format_options_hash: Hash.new({}),
               default_format: :hal,
               policy_options: {},

@@ -1,7 +1,7 @@
 module Yaks
   class Mapper
     class Config
-      include Attributes.new(
+      include Attribs.new(
                 type: nil, attributes: [], links: [], associations: [], forms: []
               )
 

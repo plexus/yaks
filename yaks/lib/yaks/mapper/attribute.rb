@@ -1,7 +1,7 @@
 module Yaks
   class Mapper
     class Attribute
-      include Attributes.new(:name)
+      include Attribs.new(:name)
 
       def initialize(name)
         super(name: name)

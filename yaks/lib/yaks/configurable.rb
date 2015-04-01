@@ -38,12 +38,12 @@ module Yaks
             unless block
               raise ArgumentError, "setting #{method_name}: no value and no block given"
             end
-            self.config = config.update(method_name => block)
+            self.config = config.with(method_name => block)
           else
             if block
               raise ArgumentError, "ambiguous invocation setting #{method_name}: give either a value or a block, not both."
             end
-            self.config = config.update(method_name => arg)
+            self.config = config.with(method_name => arg)
           end
         end
       end

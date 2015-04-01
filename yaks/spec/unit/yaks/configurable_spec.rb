@@ -1,5 +1,5 @@
 class Kitten
-  include Yaks::Attributes.new(:furriness)
+  include Attribs.new(:furriness)
 
   def self.create(opts, &block)
     level = opts[:fur_level]
@@ -9,7 +9,7 @@ class Kitten
 end
 
 class Hanky
-  include Yaks::Attributes.new(:stickyness, :size, :color)
+  include Attribs.new(:stickyness, :size, :color)
 
   def self.create(sticky, opts = {})
     new(stickyness: sticky, size: opts[:size], color: opts[:color])
@@ -22,7 +22,7 @@ RSpec.describe Yaks::Configurable do
     eval %Q<
 class TestConfigurable#{suffix}
   class Config
-    include Yaks::Attributes.new(color: 'blue', taste: 'sour', contents: [])
+    include Attribs.new(color: 'blue', taste: 'sour', contents: [])
 
     def turn_into_orange
       with(color: 'orange', taste: 'like an orange')
