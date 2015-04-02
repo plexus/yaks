@@ -46,7 +46,7 @@ module Yaks
       # @return [Array, String]
       def serialize_link(resource)
         if resource.collection?
-          {type: resource.type, ids: resource.map(&send_with_args(:[], :id))}
+          {type: resource.type, ids: resource.map {|member| member[:id] }}
         else
           {type: pluralize(resource.type), id: resource[:id]}
         end
