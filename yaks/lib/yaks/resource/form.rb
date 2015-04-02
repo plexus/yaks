@@ -14,17 +14,6 @@ module Yaks
         end
       end
 
-      def fields_flat(fs = fields)
-        fs.each_with_object([]) do |field, acc|
-          next if field.type.equal? :legend
-          if field.type.equal? :fieldset
-            acc.concat(fields_flat field.fields)
-          else
-            acc << field
-          end
-        end
-      end
-
       def method?(meth)
         !method.nil? && method.downcase.to_sym === meth.downcase.to_sym
       end
