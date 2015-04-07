@@ -1,6 +1,12 @@
 RSpec.describe Yaks::Primitivize do
   subject(:primitivizer) { described_class.create }
 
+  describe "#initialize" do
+    it "should not create any mappings" do
+      expect(described_class.new.mappings).to eql Hash[]
+    end
+  end
+
   describe '.create' do
     it 'should map String, true, false, nil, numbers to themselves' do
       [
@@ -27,9 +33,12 @@ RSpec.describe Yaks::Primitivize do
     end
 
     it 'should handle arrays recursively' do
-      expect(primitivizer.call(
-          [:foo, [:wassup, :friends], 123, '456']
-      )).to eql( ['foo', ['wassup', 'friends'], 123, '456'] )
+      expect(primitivizer.call([:foo, [:wassup, :friends], 123, '456']))
+        .to eql( ['foo', ['wassup', 'friends'], 123, '456'] )
+    end
+
+    it "should handle URIs by turning them to strings" do
+      expect(primitivizer.call(URI("http://foo.bar/baz"))).to eql "http://foo.bar/baz"
     end
   end
 
@@ -45,7 +54,8 @@ RSpec.describe Yaks::Primitivize do
         "I am funny"
       end
 
-      expect { primitivizer.call(funny_object) }.to raise_error "don't know how to turn OpenStruct (I am funny) into a primitive"
+      expect { primitivizer.call(funny_object) }
+        .to raise_error Yaks::PrimitivizeError, "don't know how to turn OpenStruct (I am funny) into a primitive"
     end
 
     context 'with custom mapping' do
@@ -70,6 +80,17 @@ RSpec.describe Yaks::Primitivize do
       end
     end
 
-
   end
+
+  describe "#map" do
+    let(:primitivizer) { described_class.new }
+
+    it "should add new mappings" do
+      primitivizer.map(String) {|s| s.upcase }
+      primitivizer.map(Numeric) {|n| n.next }
+
+      expect(primitivizer.call("foo")).to eql "FOO"
+    end
+  end
+
 end
