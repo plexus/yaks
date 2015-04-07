@@ -45,7 +45,7 @@ module Yaks
       self.class.mapper_name(policy)
     end
 
-    def call(object, env = {})
+    def call(object, _env = nil)
       @object = object
 
       return NullResource.new if object.nil?
@@ -55,7 +55,7 @@ module Yaks
         :map_subresources,
         :map_forms
       ].inject(Resource.new(type: mapper_name)) do |resource, method|
-        send(method, resource)
+        __send__(method, resource)
       end
     end
 

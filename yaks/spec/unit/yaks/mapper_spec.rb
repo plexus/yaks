@@ -8,7 +8,21 @@ RSpec.describe Yaks::Mapper do
 
   let(:instance) { fake(foo: 'hello', bar: 'world') }
 
-  its(:env) { should equal rack_env }
+  describe "#initialize" do
+    it "should store the context" do
+      expect(mapper.context).to equal yaks_context
+    end
+  end
+
+  describe "#env" do
+    its(:env) { should equal rack_env }
+  end
+
+  describe "#policy" do
+    it "should pull it out of the context" do
+      expect(mapper.policy).to equal policy
+    end
+  end
 
   describe '#call' do
     context 'with attributes' do
@@ -226,6 +240,10 @@ RSpec.describe Yaks::Mapper do
       end
     end
 
+    it "should optionally take a rack env" do
+      expect { mapper.call(fake, {}) }.to_not raise_error
+    end
+
   end # describe '#call'
 
   describe '.mapper_name' do
@@ -314,11 +332,27 @@ RSpec.describe Yaks::Mapper do
     it_should_behave_like 'something that can be added to a resource'
   end
 
+  describe "#map_forms" do
+    let(:object) { fake('Form') }
+    before { mapper_class.config = mapper.config.append_to(:forms, object) }
+    it_should_behave_like "something that can be added to a resource"
+  end
+
   describe '#mapper_stack' do
     let(:yaks_context) { super().merge(mapper_stack: [:foo]) }
 
     it 'should delegate to context' do
       expect(mapper.mapper_stack).to eql [:foo]
+    end
+  end
+
+  describe "#expand_value" do
+    it "should immediately return plain values" do
+      expect(mapper.expand_value(:foo)).to equal :foo
+    end
+
+    it "should resolve lambdas in the context of the mapper" do
+      expect(mapper.expand_value(->{ self })).to be_a Yaks::Mapper
     end
   end
 
@@ -361,6 +395,14 @@ RSpec.describe Yaks::Mapper do
 
       it 'should use the lookup mechanism for finding the link' do
         expect(expanded).to eq '/foo/foo'
+      end
+    end
+
+    context "with a nil uri" do
+      let(:template) { nil }
+
+      it "should return nil" do
+        expect(expanded).to be_nil
       end
     end
   end

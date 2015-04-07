@@ -12,6 +12,11 @@ module Yaks
         Builder = Builder.new(self) do
           def_set :name, :label
           def_add :option, create: Option, append_to: :options
+
+          def condition(blk1 = nil, &blk2)
+            @config = @config.with(if: blk1 || blk2)
+          end
+
           HTML5Forms::FIELD_OPTIONS.each do |option, _|
             def_set option
           end
