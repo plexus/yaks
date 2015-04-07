@@ -1,16 +1,34 @@
 RSpec.describe Yaks::Mapper::AssociationMapper do
   include_context 'yaks context'
 
-  subject(:association_mapper) { described_class.new(parent_mapper, association, yaks_context) }
+  subject(:association_mapper) {
+    described_class.new(parent_mapper, association, yaks_context)
+  }
 
   let(:parent_mapper_class) { Yaks::Mapper }
-  let(:parent_mapper)       { parent_mapper_class.new(yaks_context) }
+  let(:parent_mapper) { parent_mapper_class.new(yaks_context) }
+  let(:mapper_stack) { [:bottom_mapper] }
 
   fake(:association) { Yaks::Mapper::Association }
 
-  its(:policy) { should be policy }
+  describe "#policy" do
+    its(:policy) { should be policy }
+  end
 
-  let(:mapper_stack) { [:bottom_mapper] }
+  describe "#initialize" do
+    its(:parent_mapper) { should equal parent_mapper }
+    its(:association) { should equal association }
+
+    it "should add the parent mapper to the mapper stack" do
+      expect(association_mapper.context[:mapper_stack])
+        .to eql [:bottom_mapper, parent_mapper]
+    end
+
+    it "should set the rel based on the association" do
+      stub(association).map_rel(policy) { '/association/rel' }
+      expect(association_mapper.rel).to eql '/association/rel'
+    end
+  end
 
   describe '#call' do
     context 'when the association should be rendered as link' do

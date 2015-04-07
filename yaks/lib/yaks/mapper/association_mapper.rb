@@ -24,6 +24,8 @@ module Yaks
         end
       end
 
+      private
+
       def add_link(resource)
         Link.create(rel, association.href)
           .add_to_resource(resource, parent_mapper, nil)

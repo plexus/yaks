@@ -9,6 +9,9 @@ Yaks::CollectionMapper#collection_rel
 Yaks::CollectionMapper#collection_type
 Yaks::CollectionMapper#mapper_for_model
 Yaks::Resource::Form::Field#select_options_for_value
+Yaks::Mapper::AssociationMapper#add_link
+Yaks::Mapper::AssociationMapper#add_subresource
+
 ]
 
 args = ["-Ilib", "-ryaks", "--use", "rspec", "Yaks*"]
