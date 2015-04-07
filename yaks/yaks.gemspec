@@ -29,6 +29,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'rack-accept'  , '~> 0.4.5'
   gem.add_runtime_dependency 'anima'        , '~> 0.2.0'
   gem.add_runtime_dependency 'adamantium'   , '~> 0.2.0'
+  gem.add_runtime_dependency 'abstract_type', '~> 0.0.7'
 
   gem.add_development_dependency 'virtus'
   gem.add_development_dependency 'rspec', '~> 3.0'

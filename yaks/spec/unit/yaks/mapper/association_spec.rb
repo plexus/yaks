@@ -1,8 +1,15 @@
 RSpec.describe Yaks::Mapper::Association do
   include_context 'yaks context'
 
+  let(:association_class) {
+    Class.new(described_class) do
+      def map_resource(object, context)
+      end
+    end
+  }
+
   subject(:association) do
-    described_class.new(
+    association_class.new(
       name: name,
       item_mapper: mapper,
       rel: rel,
@@ -23,7 +30,7 @@ RSpec.describe Yaks::Mapper::Association do
   its(:item_mapper) { should equal Yaks::Mapper }
 
   context 'with a minimal constructor' do
-    subject(:association) { described_class.new(name: :foo) }
+    subject(:association) { association_class.new(name: :foo) }
 
     its(:name)         { should be :foo }
     its(:item_mapper)  { should be Yaks::Undefined }
@@ -51,6 +58,12 @@ RSpec.describe Yaks::Mapper::Association do
     context 'with a truthy condition' do
       let(:if)     { ->{ true } }
 
+      it 'should add the association' do
+        expect(association.add_to_resource(Yaks::Resource.new, parent_mapper, yaks_context).subresources.length).to be 1
+      end
+    end
+
+    context 'without a condition' do
       it 'should add the association' do
         expect(association.add_to_resource(Yaks::Resource.new, parent_mapper, yaks_context).subresources.length).to be 1
       end
@@ -154,24 +167,24 @@ RSpec.describe Yaks::Mapper::Association do
 
   describe '.create' do
     it 'should take a name' do
-      expect(described_class.create(:foo).name).to be :foo
+      expect(association_class.create(:foo).name).to be :foo
     end
 
     it 'should optionally take a mapper' do
-      expect(described_class.create(:foo, mapper: :bar).item_mapper).to be :bar
+      expect(association_class.create(:foo, mapper: :bar).item_mapper).to be :bar
     end
 
     it 'should take other options' do
-      expect(described_class.create(:foo, mapper: :bar, href: 'xxx').href).to eql 'xxx'
+      expect(association_class.create(:foo, mapper: :bar, href: 'xxx').href).to eql 'xxx'
     end
 
     it 'should respect attribute defaults' do
-      expect(described_class.create(:foo, href: 'xxx').item_mapper).to be Yaks::Undefined
+      expect(association_class.create(:foo, href: 'xxx').item_mapper).to be Yaks::Undefined
     end
 
     it 'should not munge the options hash' do
       opts  = {mapper: :foo}
-      described_class.create(:foo, opts)
+      association_class.create(:foo, opts)
       expect(opts).to eql(mapper: :foo)
     end
   end

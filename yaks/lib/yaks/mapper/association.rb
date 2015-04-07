@@ -9,7 +9,8 @@ module Yaks
                 link_if:     Undefined,
                 if:          Undefined
               ),
-              Util
+              Util,
+              AbstractType
 
       def self.create(name, options = {})
         if options.key?(:mapper)
@@ -22,7 +23,7 @@ module Yaks
       end
 
       def add_to_resource(resource, parent_mapper, context)
-        return resource if self.if != Undefined && !parent_mapper.expand_value(self.if)
+        return resource unless parent_mapper.expand_value(self.if)
         AssociationMapper.new(parent_mapper, self, context).call(resource)
       end
 
@@ -35,9 +36,9 @@ module Yaks
         policy.derive_rel_from_association(self)
       end
 
-      # @abstract
-      def map_resource(_object, _context)
-      end
+      # @param object
+      # @param context
+      abstract_method :map_resource
 
       # support for HasOne and HasMany
       def resolve_association_mapper(policy)
