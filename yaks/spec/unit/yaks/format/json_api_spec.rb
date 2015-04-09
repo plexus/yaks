@@ -12,6 +12,24 @@ RSpec.describe Yaks::Format::JsonAPI do
     end
   end
 
+  context 'collection with metadata' do
+    let(:resource) { Yaks::CollectionResource.new(
+        type: 'wizard',
+        members: [Yaks::Resource.new(type: 'wizard', attributes: {foo: :bar})],
+        attributes: {meta: {page: {limit: 20, offset: 0, count: 25}}}
+    ) }
+
+    it 'should include the "meta" key' do
+      expect(format.call(resource)).to eql(
+        {
+          meta: {page: {limit: 20, offset: 0, count: 25}},
+          data: [{type: :wizards, foo: :bar}]
+        }
+      )
+
+    end
+  end
+
   context 'with both a "href" attribute and a self link' do
     let(:resource) {
       Yaks::Resource.new(

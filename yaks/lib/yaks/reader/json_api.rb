@@ -6,6 +6,7 @@ module Yaks
 
         if parsed_json['data'].is_a?(Array)
           CollectionResource.new(
+              attributes: parsed_json['meta'].nil? ? nil : {meta: parsed_json['meta']},
               members: parsed_json['data'].map { |data| call({'data'  => data, 'included' => included}) }
           )
         else
