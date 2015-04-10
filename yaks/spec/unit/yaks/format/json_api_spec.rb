@@ -85,7 +85,7 @@ RSpec.describe Yaks::Format::JsonAPI do
       Yaks::Resource.new(
           type: 'wizard',
           subresources: [
-              Yaks::Resource.new(rels: ['favourite_spell'], type: 'spell', attributes: {id: 777, name: 'Lucky Sevens'})
+              Yaks::Resource.new(rels: ['rel:favourite_spell'], type: 'spell', attributes: {id: 777, name: 'Lucky Sevens'})
           ]
       )
     }

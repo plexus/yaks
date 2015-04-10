@@ -38,7 +38,7 @@ module Yaks
       def serialize_links(subresources)
         subresources.each_with_object({}) do |resource, hsh|
           next if resource.null_resource?
-          hsh[resource.rels.first] = serialize_link(resource)
+          hsh[resource.rels.first.sub(/^rel:/, '')] = serialize_link(resource)
         end
       end
 
