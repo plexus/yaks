@@ -5,10 +5,28 @@ RSpec.describe Yaks::Format::JsonAPI do
   context 'with no subresources' do
     let(:resource) { Yaks::Resource.new(type: 'wizard', attributes: {foo: :bar}) }
 
-    it 'should not include a "linked" key' do
+    it 'should not include an "included" key' do
       expect(format.call(resource)).to eql(
         {data: [{type: :wizards, foo: :bar}]}
       )
+    end
+  end
+
+  context 'collection with metadata' do
+    let(:resource) { Yaks::CollectionResource.new(
+        type: 'wizard',
+        members: [Yaks::Resource.new(type: 'wizard', attributes: {foo: :bar})],
+        attributes: {meta: {page: {limit: 20, offset: 0, count: 25}}}
+    ) }
+
+    it 'should include the "meta" key' do
+      expect(format.call(resource)).to eql(
+        {
+          meta: {page: {limit: 20, offset: 0, count: 25}},
+          data: [{type: :wizards, foo: :bar}]
+        }
+      )
+
     end
   end
 
@@ -67,20 +85,20 @@ RSpec.describe Yaks::Format::JsonAPI do
       Yaks::Resource.new(
           type: 'wizard',
           subresources: [
-              Yaks::Resource.new(type: 'spell', attributes: {id: 777, name: 'Lucky Sevens'})
+              Yaks::Resource.new(rels: ['rel:favourite_spell'], type: 'spell', attributes: {id: 777, name: 'Lucky Sevens'})
           ]
       )
     }
-    it 'should include links and linked' do
+    it 'should include links and included' do
       expect(format.call(resource)).to eql(
          {
            data: [
              {
                type: :wizards,
-               links: {'spell'  => {type: 'spells', id: 777}}
+               links: {'favourite_spell'  => {linkage: {type: 'spells', id: 777}}}
              }
            ],
-           linked: [{type: :spells, id: 777, name: 'Lucky Sevens'}]
+           included: [{type: :spells, id: 777, name: 'Lucky Sevens'}]
          }
       )
     end

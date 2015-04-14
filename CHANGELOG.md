@@ -1,12 +1,21 @@
 ### master
 [full changelog](http://github.com/plexus/yaks/compare/v0.9.0...master)
 
+Updated JSON-API Reader to handle collections
+
+Further changes to bring JSONAPI formatting more in line with 1.0 format
+
+- Changed `linked` to `included`
+- Change format of `links` to include 'linkages'
+- `included` no longer contains duplicates
+
 ### v0.9.0
 
 Make dynamic form fields respect the order in which they were declared
 in the form relative to other form fields.
 
 Some changes to bring JSONAPI formatting more in line with 1.0 format
+
  - Top level key must be named 'data' rather than the resource type
  - The resource name myst be included in a 'type' attribute
 

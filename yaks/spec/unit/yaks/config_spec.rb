@@ -149,7 +149,7 @@ RSpec.describe Yaks::Config do
       expect(config.read('{"data": [{"type": "pets",
                                      "id": 3,
                                      "name": "wassup",
-                                     "species": "cat"}]}'))
+                                     "species": "cat"}]}').members.first)
         .to eql Yaks::Resource.new(
                   type: "pet",
                   attributes: {:id=>3, :name=>"wassup", :species=>"cat"}
