@@ -67,6 +67,8 @@ module Yaks
         )
       end
 
+      private
+
       def resource_link_options(mapper)
         options = options()
         options = options.merge(title: Resolve(options[:title], mapper)) if options.key?(:title)

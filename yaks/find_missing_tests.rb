@@ -11,6 +11,7 @@ Yaks::CollectionMapper#mapper_for_model
 Yaks::Resource::Form::Field#select_options_for_value
 Yaks::Mapper::AssociationMapper#add_link
 Yaks::Mapper::AssociationMapper#add_subresource
+Yaks::Mapper::Link#resource_link_options
 
 ]
 
