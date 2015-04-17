@@ -12,9 +12,15 @@
 
 # Yaks
 
+<div style="float: left;">
+
 ![](logo.png)
 
+</div>
+
 The library that understands hypermedia.
+
+**If you use Yaks please help out by filling out the [Yaks Users Survey](https://docs.google.com/forms/d/1sZB03Vf32igmNmJ7RP8mo8H4VZHcVIpSrUSbvx2xD8s/viewform)**
 
 Yaks takes your data and transforms it into hypermedia formats such as
 HAL, JSON-API, or HTML. It allows you to build APIs that are
