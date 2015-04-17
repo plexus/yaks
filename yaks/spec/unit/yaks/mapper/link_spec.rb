@@ -43,31 +43,58 @@ RSpec.describe Yaks::Mapper::Link do
       end
     end
 
-    context 'with :replace => true' do
+    context 'with remove: true' do
       let(:options) { { remove: true } }
       let(:resource) {
-        Yaks::Resource.new.add_link(Yaks::Resource::Link.new(rel: :next, uri: '/api/next'))
+        Yaks::Resource.new(links: [
+          Yaks::Resource::Link.new(rel: :next, uri: '/api/next'),
+          Yaks::Resource::Link.new(rel: :prev, uri: '/api/prev')
+        ])
       }
 
       it 'should remove earlier links of the same rel' do
         expect(link.add_to_resource(resource, mapper, yaks_context)).to eql(
-          Yaks::Resource.new
+          Yaks::Resource.new(links: [
+            Yaks::Resource::Link.new(rel: :prev, uri: '/api/prev')
+          ])
         )
       end
     end
 
-    context 'with :replace => true' do
+    context 'with a link with the same rel already present' do
+      let(:resource) {
+        Yaks::Resource.new(links: [Yaks::Resource::Link.new(rel: :next, uri: '/api/next')])
+      }
+
+      it 'should keep both links' do
+        expect(link.add_to_resource(resource, mapper, yaks_context)).to eql(
+          Yaks::Resource.new(links: [
+            Yaks::Resource::Link.new(rel: :next, uri: "/api/next"),
+            Yaks::Resource::Link.new(rel: :next, uri: "/foo/bar/3/4")
+          ])
+        )
+      end
+    end
+
+    context 'with replace: true' do
       let(:options) { { replace: true } }
       let(:resource) {
-        Yaks::Resource.new.add_link(Yaks::Resource::Link.new(rel: :next, uri: '/api/next'))
+        Yaks::Resource.new(links: [
+          Yaks::Resource::Link.new(rel: :next, uri: '/api/next'),
+          Yaks::Resource::Link.new(rel: :prev, uri: '/api/prev')
+        ])
       }
 
       it 'should replace earlier links of the same rel' do
         expect(link.add_to_resource(resource, mapper, yaks_context)).to eql(
-          Yaks::Resource.new(links: [Yaks::Resource::Link.new(rel: :next, uri: "/foo/bar/3/4")])
+          Yaks::Resource.new(links: [
+            Yaks::Resource::Link.new(rel: :prev, uri: "/api/prev"),
+            Yaks::Resource::Link.new(rel: :next, uri: "/foo/bar/3/4")
+          ])
         )
       end
     end
+
 
     context 'with :if defined and resolving to true' do
       let(:options) { { if: ->{ true } } }
@@ -152,6 +179,10 @@ RSpec.describe Yaks::Mapper::Link do
 
       it 'should not propagate :expand' do
         expect(resource_link.options.key?(:expand)).to be false
+      end
+
+      it 'should keep the link template intact' do
+        expect(resource_link.uri).to eql "/foo/bar/{x}/{y}"
       end
     end
 

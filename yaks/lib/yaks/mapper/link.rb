@@ -29,11 +29,13 @@ module Yaks
 
       def self.create(*args)
         args, options = extract_options(args)
-        new(rel: args[0], template: args[1], options: options)
+        new(rel: args.first, template: args.last, options: options)
       end
 
       def add_to_resource(resource, mapper, _context)
-        return resource.with(links: resource.links.reject {|link| link.rel?(rel)}) if options[:remove]
+        if options[:remove]
+          return resource.with(links: resource.links.reject {|link| link.rel?(rel)})
+        end
 
         resource_link = map_to_resource_link(mapper)
         return resource unless resource_link
