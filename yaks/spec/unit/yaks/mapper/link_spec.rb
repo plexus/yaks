@@ -238,4 +238,26 @@ RSpec.describe Yaks::Mapper::Link do
       expect(Yaks::Mapper::Link.create(:foo, :bar).options).to eql({})
     end
   end
+
+  describe '#templated?' do
+    context 'when no expansion behavior is set (defaults to expand fully)' do
+      let(:options) { {} }
+      its(:templated?) { should be false }
+    end
+
+    context 'when the link does not expand' do
+      let(:options) { {expand: false} }
+      its(:templated?) { should be true }
+    end
+
+    context 'when the link expands fully' do
+      let(:options) { {expand: true} }
+      its(:templated?) { should be false }
+    end
+
+    context 'when the link expands partially' do
+      let(:options) { {expand: [:x]} }
+      its(:templated?) { should be true }
+    end
+  end
 end
