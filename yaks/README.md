@@ -35,6 +35,41 @@ requested. These formats are presently supported:
 * HALO
 * Transit
 
+## Table of Contents
+
+- [State of Development](#state-of-development)
+- [Concepts](#concepts)
+- [Mappers](#mappers)
+  - [Attributes](#attributes)
+  - [Forms](#forms)
+    - [Filtering](#filtering)
+  - [Links](#links)
+  - [Associations](#associations)
+- [Calling Yaks](#calling-yaks)
+  - [Rack env](#rack-env)
+- [Namespace](#namespace)
+- [Custom attribute/link/subresource handling](#custom-attribute-link-subresource-handling)
+- [Resources, Formatters, Serializers](#resources--formatters--serializers)
+- [Formats](#formats)
+  - [HAL](#hal)
+  - [HTML](#html)
+  - [JSON-API](#json-api)
+  - [Collection+JSON](#collection-json)
+  - [Transit](#transit)
+- [Hooks](#hooks)
+- [Policy over Configuration](#policy-over-configuration)
+  - [derive_mapper_from_object](#derive_mapper_from_object)
+  - [derive_mapper_from_association](#derive_mapper_from_association)
+  - [derive_rel_from_association](#derive_rel_from_association)
+- [Primitivizer](#primitivizer)
+- [Integration](#integration)
+- [Real World Usage](#real-world-usage)
+- [Demo](#demo)
+- [Cookbook](#cookbook)
+- [Standards Based](#standards-based)
+- [How to contribute](#how-to-contribute)
+- [License](#license)
+
 ## State of Development
 
 Recent focus has been on stabilizing the core classes, improving
