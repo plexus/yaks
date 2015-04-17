@@ -12,11 +12,7 @@
 
 # Yaks
 
-<div style="float: left;">
-
-![](logo.png)
-
-</div>
+<img align="left" src="https://raw.githubusercontent.com/plexus/yaks/master/logo.png">
 
 The library that understands hypermedia.
 
