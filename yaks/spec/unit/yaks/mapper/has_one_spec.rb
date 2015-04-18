@@ -20,30 +20,38 @@ RSpec.describe Yaks::Mapper::HasOne do
     derive_mapper_from_association: AuthorMapper
   ){ Yaks::DefaultPolicy }
 
-  its(:singular_name) { should eq 'author' }
-
-  it 'should map to a single Resource' do
-    expect(has_one.map_resource(author, yaks_context)).to eq Yaks::Resource.new(type: 'author', attributes: {name: name})
+  describe "#singular_name" do
+    its(:singular_name) { should eq 'author' }
   end
 
-  context 'with no mapper specified' do
-    subject(:subresource)    { has_one.add_to_resource(Yaks::Resource.new, parent_mapper, yaks_context) }
-    let(:association_mapper) { Yaks::Undefined }
-    fake(:parent_mapper) { Yaks::Mapper }
-
-    before do
-      stub(parent_mapper).load_association(:author) { author }
+  describe "#map_resource" do
+    it 'should map to a single Resource' do
+      expect(has_one.map_resource(author, yaks_context))
+        .to eq Yaks::Resource.new(type: 'author', attributes: {name: name})
     end
 
-    it 'should derive one based on policy' do
-      expect(subresource).to eql(
-        Yaks::Resource.new(
-          subresources: [
-            Yaks::Resource.new(type: 'author', attributes: {name: name}, rels: ['http://rel'])
-          ]
+    context 'with no mapper specified' do
+      subject(:subresource) {
+        has_one.add_to_resource(Yaks::Resource.new, parent_mapper, yaks_context)
+      }
+      let(:association_mapper) { Yaks::Undefined }
+      fake(:parent_mapper) { Yaks::Mapper }
+
+      before do
+        stub(parent_mapper).load_association(:author) { author }
+      end
+
+      it 'should derive one based on policy' do
+        expect(subresource).to eql(
+          Yaks::Resource.new(subresources: [
+            Yaks::Resource.new(
+              type: 'author',
+              attributes: {name: name},
+              rels: ['http://rel']
+            )
+          ])
         )
-      )
+      end
     end
-
   end
 end
