@@ -9,8 +9,8 @@ module Yaks
         end
 
         def to_resource_fields(mapper)
-          return [] if self.if && !mapper.expand_value(self.if)
-          [ Yaks::Resource::Form::Legend.new(label: mapper.expand_value(label)) ]
+          return [] unless self.if.nil? || mapper.expand_value(self.if)
+          [ Resource::Form::Legend.new(label: mapper.expand_value(label)) ]
         end
       end
     end
