@@ -7,7 +7,7 @@ RSpec.describe Yaks::Format::CollectionJson do
     it { should deep_eql(load_json_fixture('plant_collection.collection')) }
   end
 
-  context '#links?' do
+  describe '#links?' do
     context 'when resource is not a collection' do
       let(:resource) {
         Yaks::Resource.new(
@@ -52,7 +52,7 @@ RSpec.describe Yaks::Format::CollectionJson do
     end
   end
 
-  context '#queries?' do
+  describe '#queries?' do
     let(:resource) {
       Yaks::Resource.new(
         attributes: {foo: 'fooval', bar: 'barval'},
@@ -124,7 +124,7 @@ RSpec.describe Yaks::Format::CollectionJson do
     end
   end
 
-  context '#template?' do
+  describe '#template?' do
     context 'when no template form has been specified' do
       let(:format) {
         described_class.new
@@ -183,7 +183,7 @@ RSpec.describe Yaks::Format::CollectionJson do
     end
   end
 
-  context 'serialize_links' do
+  describe '#serialize_links' do
     context 'without title' do
       let(:resource) {
         Yaks::Resource.new(
@@ -245,7 +245,7 @@ RSpec.describe Yaks::Format::CollectionJson do
     end
   end
 
-  context 'serialize_queries' do
+  describe '#serialize_queries' do
     let(:resource) {
       Yaks::Resource.new(
         attributes: {foo: 'fooval', bar: 'barval'},
@@ -336,7 +336,7 @@ RSpec.describe Yaks::Format::CollectionJson do
     end
   end
 
-  context 'serialize_template' do
+  describe '#serialize_template' do
     let(:format) {
       described_class.new(:template => :form_for_new)
     }
