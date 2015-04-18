@@ -8,7 +8,7 @@ module Yaks
                   title: nil,
                   method: nil,
                   media_type: nil,
-                  fields: [],
+                  fields: [].freeze,
                   if: nil
                 )
 

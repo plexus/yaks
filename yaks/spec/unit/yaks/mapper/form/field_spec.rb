@@ -91,4 +91,43 @@ RSpec.describe Yaks::Mapper::Form::Field do
       end
     end
   end
+
+  describe "#resource_options" do
+    context "when empty" do
+      it "should always be the same identical object" do
+        opt1 = described_class.new(name: :foo).resource_options(mapper)
+        opt2 = described_class.new(name: :bar).resource_options(mapper)
+        expect(opt1).to eql []
+        expect(opt1).to equal opt2
+      end
+    end
+
+    context "with select options" do
+      let(:options) do
+        [
+          Yaks::Mapper::Form::Field::Option.new(value: 0, label: "zero"),
+          Yaks::Mapper::Form::Field::Option.new(value: 1, label: "one"),
+          Yaks::Mapper::Form::Field::Option.new(value: 2, label: "two", if: ->{ false })
+        ]
+      end
+
+      it "should map to Resource::Field::Option instances" do
+        expect(field.resource_options(mapper))
+          .to eql [
+            Yaks::Resource::Form::Field::Option.new(value: 0, label: "zero"),
+            Yaks::Resource::Form::Field::Option.new(value: 1, label: "one")
+          ]
+      end
+    end
+  end
+
+  describe "#resource_attributes" do
+    it "should have all the HTML form field attributes" do
+      expect(field.resource_attributes).to eql [
+        :name, :label, :type, :required, :rows, :value, :pattern,
+        :maxlength, :minlength, :size, :readonly, :multiple, :min,
+        :max, :step, :list, :placeholder, :checked, :disabled
+      ]
+    end
+  end
 end

@@ -3,7 +3,7 @@ module Yaks
     class Form
       class Field
         class Option
-          include Yaks::Mapper::Form::Field::Option.attributes
+          include Attribs.new(:value, :label, selected: false, disabled: false)
         end
       end
     end

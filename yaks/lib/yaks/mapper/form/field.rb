@@ -9,7 +9,7 @@ module Yaks
                   if: nil
                 ).add(HTML5Forms::FIELD_OPTIONS)
 
-        Builder = Builder.new(self) do
+        Builder = Yaks::Builder.new(self) do
           def_set :name, :label
           def_add :option, create: Option, append_to: :options
 
@@ -33,9 +33,9 @@ module Yaks
         # Convert to a Resource::Form::Field, expanding any dynamic
         # values
         def to_resource_fields(mapper)
-          return [] if self.if && !mapper.expand_value(self.if)
+          return [] unless self.if.nil? || mapper.expand_value(self.if)
           [ Resource::Form::Field.new(
-              (resource_attributes - [:if]).each_with_object({}) do |attr, attrs|
+              resource_attributes.each_with_object({}) do |attr, attrs|
                 attrs[attr] = mapper.expand_value(public_send(attr))
               end.merge(options: resource_options(mapper))) ]
         end
@@ -43,15 +43,19 @@ module Yaks
         def resource_options(mapper)
           # make sure all empty options arrays are the same instance,
           # makes for prettier #pp
-          options.empty? ? options : options.map {|opt| opt.to_resource_field_option(mapper) }.compact
+          if options.empty?
+            options
+          else
+            options.map {|opt| opt.to_resource_field_option(mapper) }.compact
+          end
         end
 
         # All attributes that can be converted 1-to-1 to
         # Resource::Form::Field
         def resource_attributes
-          self.class.attributes.names - [:options]
+          self.class.attributes.names - [:options, :if]
         end
-      end #Field
+      end # Field
     end # Form
   end # Mapper
 end # Yaks
