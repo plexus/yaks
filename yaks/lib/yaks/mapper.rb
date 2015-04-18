@@ -68,7 +68,7 @@ module Yaks
       Resolve(value, self)
     end
 
-    def expand_uri(uri, expand)
+    def expand_uri(uri, expand = true)
       return if uri.nil?
       return Resolve(uri, self) if uri.respond_to?(:to_proc)
 

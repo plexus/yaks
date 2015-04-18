@@ -358,12 +358,20 @@ RSpec.describe Yaks::Mapper do
 
   describe '#expand_uri' do
     let(:template) { '/foo/bar/{x}/{y}' }
-    let(:expand)   { true }
+    let(:expand) { true }
+    let(:args) { [template, expand] }
 
-    subject(:expanded) { mapper.expand_uri(template, expand) }
+    subject(:expanded) { mapper.expand_uri(*args) }
 
     before do
       mapper.call( Struct.new(:x, :y) { def foo ; '/foo/foo' ; end }.new(6, 7) )
+    end
+
+    context "with full expansion" do
+      let(:args) { [template] }
+      it "should expand all template variables" do
+        expect(expanded).to eq "/foo/bar/6/7"
+      end
     end
 
     context 'with expansion turned off' do
@@ -375,7 +383,7 @@ RSpec.describe Yaks::Mapper do
     end
 
     context 'with a URI without expansion variables' do
-      let(:template) { '/orders' }
+      let(:args) { ['/orders'] }
 
       it 'should return the link as is' do
         expect(expanded).to eq '/orders'
@@ -391,7 +399,7 @@ RSpec.describe Yaks::Mapper do
     end
 
     context 'with a symbol for a template' do
-      let(:template) { -> { object.foo } }
+      let(:args) { [->{ object.foo }] }
 
       it 'should use the lookup mechanism for finding the link' do
         expect(expanded).to eq '/foo/foo'
@@ -399,7 +407,7 @@ RSpec.describe Yaks::Mapper do
     end
 
     context "with a nil uri" do
-      let(:template) { nil }
+      let(:args) { [nil] }
 
       it "should return nil" do
         expect(expanded).to be_nil

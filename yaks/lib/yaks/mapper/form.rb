@@ -9,11 +9,7 @@ module Yaks
 
       def self.create(*args, &block)
         args, options = extract_options(args)
-
-        if args.first.is_a? Symbol
-          options[:name] = args.first
-        end
-
+        options[:name] = args.first if args.first
         new(config: Config.build(options, &block))
       end
 
@@ -30,11 +26,11 @@ module Yaks
       def to_resource_form(mapper)
         attrs = {
           fields: config.to_resource_fields(mapper),
-          action: mapper.expand_uri(config.action, true)
+          action: mapper.expand_uri(action)
         }
 
         [:name, :title, :method, :media_type].each do |attr|
-          attrs[attr] = mapper.expand_value(config.public_send(attr))
+          attrs[attr] = mapper.expand_value(public_send(attr))
         end
 
         Resource::Form.new(attrs)
