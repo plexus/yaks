@@ -205,7 +205,7 @@ rendering of forms, dynamic form sections, ...
 You can override `#attributes`, or `#associations`.
 
 ```ruby
-class SongMapper
+class SongMapper < Yaks::Mapper
   attributes :title, :duration, :lyrics
 
   has_one :artist
@@ -527,7 +527,9 @@ If you would like to see better JSON-API support, get in touch. We
 might be able to work something out.
 
 ```ruby
-default_format :json_api
+Yaks.new do
+  default_format :json_api
+end
 ```
 
 JSON-API has no concept of outbound links, so these will not be
@@ -557,10 +559,12 @@ option can be used. It will map the specified form to a CJ template. Please
 notice that CJ only allows one template per representation.
 
 ```ruby
-default_format :collection_json
+Yaks.new do
+  default_format :collection_json
 
-collection_json = Yaks.new do
-  format_options :collection_json, template: :my_template_form
+  collection_json = Yaks.new do
+    format_options :collection_json, template: :my_template_form
+  end
 end
 
 class PostMapper < Yaks::Mapper
@@ -724,10 +728,10 @@ yaks = Yaks.new do
   rel_template "http://api.example.com/rel/{rel}"
 end
 
-# ... mapper
-
-has_many :widgets #=> rel: "http://api.example.com/rel/widgets"
-has_one :widget #=> rel: "http://api.example.com/rel/widget"
+class MyMapper < Yaks::Mapper
+  has_many :widgets # => rel: "http://api.example.com/rel/widgets"
+  has_one :widget # => rel: "http://api.example.com/rel/widget"
+end
 ```
 
 <a id="primitivizer"></a>
