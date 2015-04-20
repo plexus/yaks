@@ -91,3 +91,7 @@ https://github.com/ruby-rdf/json-ld/
 http://schema.org/MusicEvent
 https://developers.google.com/structured-data/events/venues
 http://json-ld.org/playground/index.html
+
+
+    http://www.iana.org/assignments/relation/
+    http://microformats.org/wiki/rel- and http://microformats.org/profile/
