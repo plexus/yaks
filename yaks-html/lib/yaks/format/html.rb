@@ -64,8 +64,13 @@ module Yaks
         ->(templ) do
           links.map do |link|
             templ
-              .replace('.rel a') {|a| a.attr('href', rel_href(link.rel)).content(link.rel.to_s) }
-              .replace('.uri a') {|a| a.attr('href', link.uri).content(link.uri) }
+              .replace('.rel a') {|a|
+                a.attr('href', rel_href(link.rel)).content(link.rel.to_s)
+              }
+              .replace('.uri a') {|a|
+                a.attr('href', link.uri).content(link.uri)
+                 .attr('rel', link.rel.to_s)
+              }
               .replace('.title') {|x| x.content(link.title.to_s) }
               .replace('.templated') {|x| x.content(link.templated?.inspect) }
           end
@@ -86,10 +91,10 @@ module Yaks
             sub_templ
               .replace('.rel a') {|a| a.attr('href', rel_href(rel)).content(rel.to_s) }
               .replace('.value') {|x| x.content(resources.seq.map { |resource| render(resource, templ) })}
+              .attr('rel', rel.to_s)
           end
         end
       end
-
 
       def render_forms(forms)
         ->(div) do
