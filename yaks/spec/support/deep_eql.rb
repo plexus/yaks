@@ -25,7 +25,9 @@ module Matchers
     end
 
     def recurse(target, expectation)
-      @result &&= DeepEql.new(expectation, stack, diffs).matches?(target)
+      # leave this in two lines so it doesn't short circuit
+      result = DeepEql.new(expectation, stack, diffs).matches?(target)
+      @result = @result && result
     end
 
     def stack_as_jsonpath
@@ -51,14 +53,14 @@ module Matchers
           recurse(target[key], expectation[key])
         else
           add_failure_message begin
-                            if expectation[key].class == target[key].class
-                              "expected #{expectation[key].inspect}, got #{target[key].inspect}"
-                            else
-                              "expected #{expectation[key].class}: #{expectation[key].inspect}, got #{target[key].class}: #{target[key].inspect}"
-                            end
-                          rescue Encoding::CompatibilityError
-                            "expected #{expectation[key].encoding}, got #{target[key].encoding}"
-                          end
+                                if expectation[key].class == target[key].class
+                                  "expected #{expectation[key].inspect}, got #{target[key].inspect}"
+                                else
+                                  "expected #{expectation[key].class}: #{expectation[key].inspect}, got #{target[key].class}: #{target[key].inspect}"
+                                end
+                              rescue Encoding::CompatibilityError
+                                "expected #{expectation[key].encoding}, got #{target[key].encoding}"
+                              end
         end
       end
       pop
@@ -66,7 +68,6 @@ module Matchers
 
     def matches?(target)
       @target = target
-
       case expectation
       when Hash
         if target.is_a?(Hash)
@@ -74,12 +75,12 @@ module Matchers
             add_failure_message("expected #{expectation.class}, got #{target.class}")
           end
           (expectation.keys - target.keys).each do |key|
-            add_failure_message "Expected key #{key}"
+            add_failure_message "Expected key #{key.inspect} => #{expectation[key].inspect}"
           end
           (target.keys - expectation.keys).each do |key|
-            add_failure_message "Unexpected key #{key}"
+            add_failure_message "Unexpected key #{key.inspect} => #{target[key].inspect}"
           end
-          (target.keys | expectation.keys).each do |key|
+          (target.keys & expectation.keys).each do |key|
             compare key
           end
         else
