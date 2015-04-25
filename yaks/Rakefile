@@ -58,8 +58,6 @@ task :mutant_chunked do
     # >> Yaks::Format::Transit::ReadHandler
     # >> Yaks::Format::Transit::WriteHandler
     # >> Yaks::HTML5Forms
-    # >> Yaks::Identifier
-    # >> Yaks::Identifier::LinkRelation
     # >> Yaks::IllegalStateError
     # >> Yaks::Mapper
     # >> Yaks::Mapper::Association

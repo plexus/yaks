@@ -1,6 +1,7 @@
 module Yaks
   module Reader
     class Hal
+      include Util
 
       def call(parsed_json, env = {})
         attributes = parsed_json.dup
@@ -21,15 +22,14 @@ module Yaks
       end
 
       def convert_links(links)
-        Set[*
-            links.flat_map do |rel, link|
-              array(link).map do |l|
-                options = Util.symbolize_keys(Util.slice_hash(l, 'title', 'templated'))
-                rel = rel.to_sym if Yaks::Identifier::LinkRelation.iana?(rel)
-                Resource::Link.new(rel: rel, uri: l['href'], options: options)
-              end
-            end
-           ]
+        links.flat_map do |rel, link|
+          array(link).map do |l|
+            options = symbolize_keys(slice_hash(l, 'title', 'templated'))
+            # if it looks like a keyword we'll assume it's a registered rel type
+            rel = rel.to_sym if rel =~ /\A\w+\z/
+            Resource::Link.new(rel: rel, uri: l['href'], options: options)
+          end
+        end.to_set
       end
 
       def array(x)

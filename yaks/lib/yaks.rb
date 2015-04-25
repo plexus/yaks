@@ -66,7 +66,6 @@ require 'yaks/resource/link'
 require 'yaks/collection_resource'
 
 require 'yaks/html5_forms'
-require 'yaks/identifier/link_relation'
 
 require 'yaks/mapper/association'
 require 'yaks/mapper/has_one'
