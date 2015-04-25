@@ -1,0 +1,1 @@
+require 'yaks-rails/controller_additions'
