@@ -1,5 +1,5 @@
 require 'rails'
-require 'yaks'
+require 'yaks-html'
 
 module Rails
   module Yaks
@@ -7,8 +7,8 @@ module Rails
       @global_config ||= ::Yaks.new
     end
 
-    def self.global_config=(config)
-      @global_config = config
+    class << self
+      attr_writer :global_config
     end
 
     def self.configure(&block)
@@ -16,16 +16,10 @@ module Rails
     end
 
     module ControllerAdditions
-      module ClassMethods
-        def yaks(object, opts = {})
-          runner = Yaks.global_config.runner(object, {env: env}.merge(opts))
-          runner.call
-        end
-      end
-
       def yaks(object, opts = {})
-        runner = Yaks.global_config.runner(object, {env: env}.merge(opts))
-        runner.call
+        runner = Yaks.global_config.runner(object, { env: env }.merge(opts))
+        puts runner.media_type
+        render body: runner.call, content_type: runner.media_type
       end
 
       def self.included(base)
