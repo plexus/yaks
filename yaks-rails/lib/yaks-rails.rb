@@ -16,14 +16,13 @@ module Rails
     end
 
     module ControllerAdditions
-      def yaks(object, opts = {})
-        runner = Yaks.global_config.runner(object, { env: env }.merge(opts))
-        puts runner.media_type
-        render body: runner.call, content_type: runner.media_type
-      end
+        def yaks(object, opts = {})
+          runner = Yaks.global_config.runner(object, {env: env}.merge(opts))
+          puts runner.media_type
+          render body: runner.call, content_type: runner.media_type
+        end
 
       def self.included(base)
-        base.extend ClassMethods
         base.helper_method :yaks if base.respond_to? :helper_method
       end
     end
