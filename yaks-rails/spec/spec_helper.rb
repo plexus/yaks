@@ -1,3 +1,8 @@
+require 'rspec'
+require 'rspec/its'
+require 'rspec/mocks'
+require 'rspec/expectations'
+
 RSpec.configure do |rspec|
   rspec.backtrace_exclusion_patterns = [] if ENV['FULLSTACK']
   rspec.disable_monkey_patching!
