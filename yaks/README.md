@@ -1,12 +1,10 @@
 [![Gem Version](https://badge.fury.io/rb/yaks.png)][gem]
 [![Build Status](https://secure.travis-ci.org/plexus/yaks.png?branch=master)][travis]
-[![Dependency Status](https://gemnasium.com/plexus/yaks.png)][gemnasium]
 [![Code Climate](https://codeclimate.com/github/plexus/yaks.png)][codeclimate]
 [![Gitter](https://badges.gitter.im/Join Chat.svg)][gitter]
 
 [gem]: https://rubygems.org/gems/yaks
 [travis]: https://travis-ci.org/plexus/yaks
-[gemnasium]: https://gemnasium.com/plexus/yaks
 [codeclimate]: https://codeclimate.com/github/plexus/yaks
 [gitter]: https://gitter.im/plexus/yaks?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
 
