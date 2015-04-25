@@ -64,3 +64,9 @@ task :console do
   ARGV.clear
   IRB.start
 end
+
+task :ataru do
+  require "ataru"
+  Dir.chdir("yaks")
+  Ataru::CLI::Application.start(["check", "README.md"])
+end

@@ -18,6 +18,7 @@ env:
   - TASK=yaks:rspec
   - TASK=yaks-html:rspec
   - TASK=mutant
+  - TASK=ataru
 
 matrix:
   allow_failures:
@@ -37,5 +38,20 @@ matrix:
       env: TASK=mutant
     - rvm: rbx
       env: TASK=mutant
+    - rvm: ruby-head
+      env: TASK=mutant
+  exclude:
+    - rvm: 1.9.3
+      env: TASK=ataru
+    - rvm: 2.0
+      env: TASK=ataru
     - rvm: 2.1
-      env: TASK=ruby-head
+      env: TASK=ataru
+    - rvm: jruby
+      env: TASK=ataru
+    - rvm: jruby-head
+      env: TASK=ataru
+    - rvm: rbx
+      env: TASK=ataru
+    - rvm: 2.1
+      env: TASK=ataru
