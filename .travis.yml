@@ -25,11 +25,17 @@ matrix:
     - rvm: jruby-head
     - env: TASK=mutant
   exclude:
+    - rvm: 1.9.3
+      env: TASK=mutant
+    - rvm: 2.0
+      env: TASK=mutant
+    - rvm: 2.1
+      env: TASK=mutant
     - rvm: jruby
       env: TASK=mutant
     - rvm: jruby-head
       env: TASK=mutant
-    - rvm: 1.9.3
-      env: TASK=mutant
     - rvm: rbx
       env: TASK=mutant
+    - rvm: 2.1
+      env: TASK=ruby-head
