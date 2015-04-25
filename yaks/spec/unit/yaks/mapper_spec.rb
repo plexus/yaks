@@ -25,20 +25,13 @@ RSpec.describe Yaks::Mapper do
   end
 
   describe '#call' do
-    context 'with attributes' do
-      before do
-        mapper_class.attributes :foo, :bar
-      end
-
+    shared_examples "a mapper with attributes" do
       it 'should make the configured attributes available on the instance' do
-        expect(mapper.attributes).to eq [
-          Yaks::Mapper::Attribute.new(:foo),
-          Yaks::Mapper::Attribute.new(:bar)
-        ]
+        expect(mapper.attributes).to eq attributes
       end
 
-      it 'should load them from the model' do
-        expect(resource.attributes).to eq(foo: 'hello', bar: 'world')
+      it 'should load attributes from the model' do
+        expect(resource.attributes).to eq(attributes_from_model)
       end
 
       context 'with attribute filtering' do
@@ -51,9 +44,53 @@ RSpec.describe Yaks::Mapper do
         end
 
         it 'should only map the non-filtered attributes' do
-          expect(resource.attributes).to eq(:bar => 'world')
+          expect(resource.attributes).to eq(non_filtered_attributes)
         end
       end
+    end
+
+    context "with attribute" do
+      let(:attributes) { [ Yaks::Mapper::Attribute.create(:foo) ] }
+      let(:attributes_from_model) { { foo: 'hello' } }
+      let(:non_filtered_attributes) { { } }
+
+      context "called without block" do
+        before do
+          mapper_class.attribute :foo
+        end
+
+        it_behaves_like "a mapper with attributes"
+      end
+
+      context "called with a block" do
+        let(:block) { Proc.new { object.bar } }
+        let(:attributes) { [ Yaks::Mapper::Attribute.create(:foo, &block) ] }
+        let(:attributes_from_model) { { foo: 'world' } }
+
+        before do
+          mapper_class.attribute :foo, &block
+        end
+
+        it_behaves_like "a mapper with attributes"
+      end
+    end
+
+    context 'with attributes' do
+      let(:attributes) do
+        [
+          Yaks::Mapper::Attribute.create(:foo),
+          Yaks::Mapper::Attribute.create(:bar)
+        ]
+      end
+
+      let(:attributes_from_model) { { foo: 'hello', bar: 'world' } }
+      let(:non_filtered_attributes) { { bar: 'world' } }
+
+      before do
+        mapper_class.attributes :foo, :bar
+      end
+
+      it_behaves_like "a mapper with attributes"
     end
 
     context 'with links' do
