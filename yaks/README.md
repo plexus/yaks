@@ -88,13 +88,13 @@ yaks = Yaks.new do
   default_format :hal
   rel_template 'http://api.example.com/rels/{rel}'
   format_options(:hal, plural_links: [:copyright])
-  namespace ::MyAPI
+  mapper_namespace ::MyAPI
   json_serializer do |data|
-    MultiJson.dump(data)
+    JSON.dump(data)
   end
 end
 
-yaks.call(data) # => '{"foo": "bar", "_links": { ... }}'
+yaks.call(product)
 ```
 
 Yaks performs this serialization in three steps
@@ -144,7 +144,7 @@ yaks = Yaks.new do
   format_options(:hal, plural_links: [:copyright])
 end
 
-yaks.call(post, mapper: PostMapper, format: :hal)
+yaks.call(post, mapper: ::PostMapper, format: :hal)
 ```
 
 ### Attributes
@@ -286,7 +286,7 @@ confirming an order, the previously held cart is no longer valid, you
 could use the IANA standard `invalidates` rel to communicate this.
 
 ``` ruby
-class OrderMapper < BaseMapper
+class OrderMapper < Yaks::Mapper
   link :invalidates, '/api/cart', if: ->{ env['api.invalidate_cart'] }
 end
 ```
@@ -325,10 +325,7 @@ it the data to be serialized, plus options.
 When serializing, Yaks lets you pass in an `env` hash, which will be made available to all mappers.
 
 ```ruby
-yaks = Yaks.new
-yaks.call(foo, env: my_env)
-
-class FooMapper
+class FooMapper < Yaks::Mapper
   attributes :bar
 
   def bar
@@ -337,6 +334,9 @@ class FooMapper
     end
   end
 end
+
+yaks = Yaks.new
+yaks.call(foo, env: my_env)
 ```
 
 The env hash will be available to all mappers, so you can use this to
@@ -356,7 +356,7 @@ Yaks by default will find your mappers for you if they follow the
 naming convention of appending 'Mapper' to the model class name. This
 (and all other "conventions") can be easily redefined though, see the
 <a href="#policy">policy</a> section. If you have your mappers inside a
-module, use `namespace`.
+module, use `mapper_namespace`.
 
 ```ruby
 module API
@@ -368,7 +368,7 @@ module API
 end
 
 yaks = Yaks.new do
-  namespace API::Mappers
+  mapper_namespace API::Mappers
 end
 ```
 
@@ -537,8 +537,8 @@ rendered. Instead the key will be inferred from the mapper class name
 by default. This can be changed per mapper:
 
 ```ruby
-class AnimalMapper
-  key :pet
+class AnimalMapper < Yaks::Mapper
+  type :pet
 end
 ```
 
@@ -643,12 +643,12 @@ end
 You can also subclass or create from scratch your own policy class
 
 ```ruby
-class MyPolicy < DefaultPolicy
+class MyPolicy < Yaks::DefaultPolicy
   #...
 end
 
 yaks = Yaks.new do
-  policy MyPolicy
+  policy_class MyPolicy
 end
 ```
 
@@ -729,8 +729,11 @@ yaks = Yaks.new do
 end
 
 class MyMapper < Yaks::Mapper
-  has_many :widgets # => rel: "http://api.example.com/rel/widgets"
-  has_one :widget # => rel: "http://api.example.com/rel/widget"
+  # rel: "http://api.example.com/rel/widgets"
+  has_many :widgets
+
+  # rel: "http://api.example.com/rel/widget"
+  has_one :widget
 end
 ```
 
@@ -785,10 +788,10 @@ Yaks::Format.all.each do |format|
 end
 
 # one time Yaks configuration
-yaks = Yaks.new {...}
+yaks = Yaks.new
 
 # on each request
-runner = yaks.runner(object, env: rack_env)
+runner = yaks.runner(post, env: rack_env)
 format = runner.format_name
 output = runner.call
 ```

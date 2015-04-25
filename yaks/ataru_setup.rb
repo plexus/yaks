@@ -7,13 +7,30 @@ class Post < Struct.new(:id, :title, :author, :comments)
 end
 
 module MyAPI
+  class Product < Struct.new(:id, :label)
+  end
+
+  class ProductMapper < Yaks::Mapper
+    attributes :id, :label
+  end
 end
 
 class AuthorMapper < Yaks::Mapper
 end
 
-class PostMapper < Yaks::Mapper
+class CommentMapper < Yaks::Mapper
 end
+
+class PostMapper < Yaks::Mapper
+  link :self, '/api/posts/{id}'
+
+  attributes :id, :title
+
+  has_one :author
+  has_many :comments
+end
+
+
 
 module Setup
   def setup
@@ -31,8 +48,28 @@ module Setup
   #  101
   # end
 
+  def my_env
+    {'something' => true}
+  end
+  alias rack_env my_env
+
   def post
     Post.new(7, "Yaks is Al Dente", nil, [])
+  end
+  alias foo post
+
+
+  def product
+    MyAPI::Product.new(42, "Shiny thing")
+  end
+
+
+
+  # # Tell your web framework about the supported formats
+  # Yaks::Format.all.each do |format|
+  #   mime_type format.format_name, format.media_type
+  # end
+  def mime_type(*args)
   end
 
 end
