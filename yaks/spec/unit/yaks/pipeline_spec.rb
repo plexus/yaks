@@ -74,6 +74,35 @@ RSpec.describe Yaks::Pipeline do
               .call(1000, env)
             ).to equal 13222
     end
+  end
+
+  let(:fake_step) {
+    Class.new do
+      include Attribs.new(:transitive, :call, inverse: nil)
+      alias transitive? transitive
+    end
+  }
+
+  let(:transitive_step) {
+    fake_step.new(transitive: true, inverse: ->(x, env) {}, call: "t")
+  }
+
+  let(:intransitive_step) {
+    fake_step.new(transitive: false, call: "i")
+  }
+
+  subject(:pipeline) { described_class.new(steps) }
+
+  describe '#transitive?' do
+    context 'with transitive steps' do
+      let(:steps) { [[:name1, transitive_step]] }
+      it 'should be transitive' do
+        expect(pipeline.transitive?).to be true
+      end
+    end
+  end
+
+  describe '#inverse' do
 
   end
 end
