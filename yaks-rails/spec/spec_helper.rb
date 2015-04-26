@@ -1,6 +1,5 @@
 require 'rspec'
 require 'rspec/its'
-require 'rspec/mocks'
 require 'rspec/expectations'
 
 RSpec.configure do |rspec|

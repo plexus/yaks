@@ -1,6 +1,6 @@
 require 'yaks-rails'
 
-RSpec.describe Rails::Yaks::ControllerAdditions do
+RSpec.describe Yaks::Rails::ControllerAdditions do
   let(:mapper) do
     Class.new(Yaks::Mapper) do
       type :awesome
@@ -10,11 +10,9 @@ RSpec.describe Rails::Yaks::ControllerAdditions do
 
   let(:object) { OpenStruct.new(foo: 'hey', bar: 'world') }
   let (:controller) { double }
-
   before(:each) do
-    controller.class.send(:include, Rails::Yaks::ControllerAdditions)
+    controller.class.send(:include, Yaks::Rails::ControllerAdditions)
   end
-
   describe '#yaks' do
     it 'renders application/hal+json content-type without specifying content-type' do
       allow(controller).to receive(:env).and_return({})
