@@ -6,7 +6,7 @@ module Yaks
               )
 
       def add_attributes(*attrs)
-        append_to(:attributes, *attrs.map(&Attribute.method(:new)))
+        append_to(:attributes, *attrs.map(&Attribute.method(:create)))
       end
     end
   end

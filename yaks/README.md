@@ -147,7 +147,7 @@ yaks.call(post, mapper: ::PostMapper, format: :hal)
 
 ### Attributes
 
-Use the `attributes` DSL method to specify which attributes of your model you want to expose, as in the example above. You can override the `load_attribute` method to change how attributes are fetched from the model.
+Use the `attribute` or `attributes` DSL methods to specify which attributes of your model you want to expose, as in the example above. You can override the `load_attribute` method to change how attributes are fetched from the model.
 
 For example, if you are representing data that is stored in a Hash, you could do
 
@@ -161,12 +161,14 @@ class PostHashMapper < Yaks::Mapper
   end
 end
 ```
-
-The default implementation will first try to find a matching method for an attribute on the mapper itself, and will then fall back to calling the actual model. So you can add extra 'virtual' attributes like so :
+The `.attribute` method may also take a block that will be called with the context of the mapper instance. The default implementation will use the block if provided, otherwise it will first try to find a matching method for an attribute on the mapper itself, and will then fall back to calling the actual model. So you can add extra 'virtual' attributes like so :
 
 ```ruby
 class CommentMapper < Yaks::Mapper
-  attributes :id, :body, :date
+  attributes :body, :date
+  attribute :id do
+    "Id-#{object.id}"
+  end
 
   def date
     object.created_at.strftime("at %I:%M%p")
