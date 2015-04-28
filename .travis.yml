@@ -17,40 +17,14 @@ script: bundle exec rake $TASK
 env:
   - TASK=yaks:rspec
   - TASK=yaks-html:rspec
-  - TASK=mutant
-  - TASK=ataru
 
 matrix:
   allow_failures:
     - rvm: ruby-head
     - rvm: jruby-head
     - env: TASK=mutant
-  exclude:
-    - rvm: 1.9.3
-      env: TASK=mutant
-    - rvm: 2.0
-      env: TASK=mutant
-    - rvm: 2.1
-      env: TASK=mutant
-    - rvm: jruby
-      env: TASK=mutant
-    - rvm: jruby-head
-      env: TASK=mutant
-    - rvm: rbx
-      env: TASK=mutant
-    - rvm: ruby-head
-      env: TASK=mutant
-    - rvm: 1.9.3
+  include:
+    - rvm: 2.2
       env: TASK=ataru
-    - rvm: 2.0
-      env: TASK=ataru
-    - rvm: 2.1
-      env: TASK=ataru
-    - rvm: jruby
-      env: TASK=ataru
-    - rvm: jruby-head
-      env: TASK=ataru
-    - rvm: rbx
-      env: TASK=ataru
-    - rvm: ruby-head
-      env: TASK=ataru
+    - rvm: 2.2
+      env: TASK=mutant
