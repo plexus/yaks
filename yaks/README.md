@@ -684,11 +684,35 @@ explicit.
 
 If the object is not a collection, then lookup happens based on the
 class name, and will traverse up the class hierarchy if no suitable
-mapper is found. So for a `class Widget < Thing`, yaks would look for
+mapper is found. Take the following
+code:
+```ruby
+module Stuff
+  class Thing ; end
+  class Widget < Thing ; end
+end
+```
+The lookup we'll be done as followed.
 
-* `API::WidgetMapper`
-* `API::ThingMapper`
-* `API::ObjectMapper`
+* If the `namespace` option is set (to `Mappers` for example):
+ * `Mappers::Stuff::WidgetMapper`
+ * `Mappers::Stuff::ThingMapper`
+ * `Mappers::Stuff::ObjectMapper`
+ * `Mappers::Stuff::BasicObjectMapper`
+ * `Mappers::WidgetMapper`
+ * `Mappers::ThingMapper`
+ * `Mappers::ObjectMapper`
+ * `Mappers::BasicObjectMapper`
+
+* If the `namespace` option is not set:
+ * `Stuff::WidgetMapper`
+ * `Stuff::ThingMapper`
+ * `Stuff::ObjectMapper`
+ * `Stuff::BasicObjectMapper`
+ * `WidgetMapper`
+ * `ThingMapper`
+ * `ObjectMapper`
+ * `BasicObjectMapper`
 
 If none of these are found an error is raised.
 

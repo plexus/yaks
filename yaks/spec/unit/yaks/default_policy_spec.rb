@@ -12,7 +12,7 @@ RSpec.describe Yaks::DefaultPolicy do
     let(:options) { {foo: :bar} }
 
     it 'should merge default and given options' do
-      expect(policy.options.values_at(:namespace, :foo)).to eql [Kernel, :bar]
+      expect(policy.options.values_at(:namespace, :foo)).to eql [Object, :bar]
     end
   end
 

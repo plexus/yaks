@@ -1,13 +1,33 @@
 # Used by Yaks::DefaultPolicy* tests to test various name inference schemes
 
 class SoyMapper; end
-class Bean; end
-class Soy < Bean; end
-class Wheat; end
+class Soy; end
+class WildSoy < Soy; end
+
+module Grain
+  class Soy; end
+  class WildSoy < Soy; end
+
+  class Wheat; end
+  class Durum < Wheat; end
+
+  module Dry
+    class Soy < ::Grain::Soy; end
+    class SoyMapper; end
+  end
+
+  class SoyMapper; end
+end
+
+class WheatMapper; end
 
 module MyMappers
   class SoyMapper; end
-  class BeanMapper; end
+  class WheatMapper; end
+
+  module Grain
+    class SoyMapper; end
+  end
 end
 
 class SoyCollectionMapper; end
@@ -15,7 +35,7 @@ class SoyCollectionMapper; end
 module Namespace
   module Nested
     class Rye; end
-    class Mung < Bean
+    class Mung
       alias_method :inspect, :to_s # on 1.9 inspect calls to_s
       def to_s
         "mungbean"
