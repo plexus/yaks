@@ -161,7 +161,7 @@ class PostHashMapper < Yaks::Mapper
   end
 end
 ```
-The `.attribute` method may also take a block that will be called with the context of the mapper instance. The default implementation will use the block if provided, otherwise it will first try to find a matching method for an attribute on the mapper itself, and will then fall back to calling the actual model. So you can add extra 'virtual' attributes like so :
+The `attribute` method may also take a block that will be called with the context of the mapper instance. The default implementation will use the block if provided, otherwise it will first try to find a matching method for an attribute on the mapper itself, and will then fall back to calling the actual model. So you can add extra 'virtual' attributes like so :
 
 ```ruby
 class CommentMapper < Yaks::Mapper
