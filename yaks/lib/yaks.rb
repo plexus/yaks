@@ -44,9 +44,9 @@ module Yaks
   ]
 
   ConfigBuilder = Builder.new(Yaks::Config) do
-    def_set *Yaks::Config.attributes.names
-    def_forward *DSL_METHODS
-    def_forward *Yaks::DefaultPolicy.public_instance_methods(false)
+    def_set(*Yaks::Config.attributes.names)
+    def_forward(*DSL_METHODS)
+    def_forward(*Yaks::DefaultPolicy.public_instance_methods(false))
   end
 
   class << self

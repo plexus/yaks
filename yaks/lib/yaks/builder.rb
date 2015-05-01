@@ -22,7 +22,7 @@ module Yaks
     def initialize(klass, methods = [], &block)
       @klass = klass
       @methods = methods
-      def_forward *methods if methods.any?
+      def_forward(*methods) if methods.any?
       instance_eval(&block) if block
     end
 
