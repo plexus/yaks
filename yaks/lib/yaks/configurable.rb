@@ -74,6 +74,7 @@ module Yaks
     # This will generate a `fieldset` method, which will call
     # `Fieldset.create`, and append the result to `config.fields`
     def def_add(name, options)
+      old_verbose, $VERBOSE = $VERBOSE, false # skip method redefinition warning
       define_singleton_method name do |*args, &block|
         defaults = options.fetch(:defaults, {})
         klass    = options.fetch(:create)
@@ -89,6 +90,8 @@ module Yaks
           klass.create(*args, &block)
         )
       end
+    ensure
+      $VERBOSE = old_verbose
     end
 
   end
