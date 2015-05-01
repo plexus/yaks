@@ -54,7 +54,7 @@ module Yaks
     #
     # Either takes a list of methods to forward, or a mapping (hash)
     # of source to destination method name.
-    def def_forward(mappings, *args)
+    def def_forward(mappings, *names)
       if mappings.instance_of? Hash
         mappings.each do |method_name, target|
           define_singleton_method method_name do |*args, &block|
@@ -62,7 +62,7 @@ module Yaks
           end
         end
       else
-        def_forward([mappings, *args].map{|name| {name => name}}.inject(:merge))
+        def_forward([mappings, *names].map{|name| {name => name}}.inject(:merge))
       end
     end
 
