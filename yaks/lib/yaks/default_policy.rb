@@ -22,7 +22,7 @@ module Yaks
     #
     # @raise [NameError] only occurs when the model is anything but a collection.
     def derive_mapper_from_object(model)
-      if model.respond_to? :to_ary
+      if Enumerable === model
         if m = model.first
           name = m.class.name.split('::').last + 'CollectionMapper'
           begin
