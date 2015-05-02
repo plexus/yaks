@@ -12,6 +12,7 @@ module Yaks
         collection_mapper(collection, policy).new(context).call(collection)
       end
 
+      undef collection_mapper
       def collection_mapper(collection = nil, policy = nil)
         return @collection_mapper unless @collection_mapper.equal? Undefined
         policy.derive_mapper_from_object(collection) if policy && collection

@@ -54,7 +54,7 @@ module Yaks
     #
     # Either takes a list of methods to forward, or a mapping (hash)
     # of source to destination method name.
-    def def_forward(mappings, *args)
+    def def_forward(mappings, *names)
       if mappings.instance_of? Hash
         mappings.each do |method_name, target|
           define_singleton_method method_name do |*args, &block|
@@ -62,7 +62,7 @@ module Yaks
           end
         end
       else
-        def_forward([mappings, *args].map{|name| {name => name}}.inject(:merge))
+        def_forward([mappings, *names].map{|name| {name => name}}.inject(:merge))
       end
     end
 
@@ -74,6 +74,7 @@ module Yaks
     # This will generate a `fieldset` method, which will call
     # `Fieldset.create`, and append the result to `config.fields`
     def def_add(name, options)
+      old_verbose, $VERBOSE = $VERBOSE, false # skip method redefinition warning
       define_singleton_method name do |*args, &block|
         defaults = options.fetch(:defaults, {})
         klass    = options.fetch(:create)
@@ -89,6 +90,8 @@ module Yaks
           klass.create(*args, &block)
         )
       end
+    ensure
+      $VERBOSE = old_verbose
     end
 
   end

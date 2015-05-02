@@ -4,6 +4,7 @@ module Yaks
       class Field
         include Yaks::Mapper::Form::Field.attributes.add(:error => nil)
 
+        undef value
         def value
           if type.equal? :select
             selected = options.find(&:selected)
