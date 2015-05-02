@@ -23,6 +23,7 @@ matrix:
     - rvm: ruby-head
     - rvm: jruby-head
     - env: TASK=mutant
+  fast_finish: true
   include:
     - rvm: 2.2
       env: TASK=ataru
