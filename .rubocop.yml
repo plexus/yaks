@@ -53,6 +53,9 @@ Style/ModuleFunction:
   Exclude:
     - yaks/lib/yaks/util.rb
 
+Style/MultilineBlockChain:
+  Enabled: false
+
 Style/PercentLiteralDelimiters:
   Exclude:
     - yaks/lib/yaks/breaking_changes.rb

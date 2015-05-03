@@ -45,7 +45,3 @@ Style/FileName:
 # Configuration parameters: AllowedVariables.
 Style/GlobalVars:
   Enabled: false
-
-# Offense count: 4
-Style/MultilineBlockChain:
-  Enabled: false
