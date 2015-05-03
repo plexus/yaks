@@ -17,6 +17,8 @@ Gem::Specification.new do |gem|
   gem.test_files       = gem.files.grep(/^spec/)
   gem.extra_rdoc_files = %w[README.md]
 
+  gem.required_ruby_version = '>= 1.9.3'
+
   gem.add_runtime_dependency 'yaks', Yaks::VERSION
   gem.add_runtime_dependency 'hexp', '>= 0.4'
 end

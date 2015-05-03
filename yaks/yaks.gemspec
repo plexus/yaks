@@ -22,6 +22,8 @@ Gem::Specification.new do |gem|
     gem.post_install_message = Yaks::BreakingChanges[Yaks::VERSION]
   end
 
+  gem.required_ruby_version = '>= 1.9.3'
+
   gem.add_runtime_dependency 'inflection'   , '~> 1.0'
   gem.add_runtime_dependency 'attribs'      , '~> 1.0'
   gem.add_runtime_dependency 'concord'      , '~> 0.1.4'
