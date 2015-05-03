@@ -1,58 +1,4 @@
-# Offense count: 4
-Lint/AmbiguousRegexpLiteral:
-  Enabled: false
-
-# Offense count: 3
-# Configuration parameters: AllowSafeAssignment.
-Lint/AssignmentInCondition:
-  Enabled: false
-
-# Offense count: 1
-Lint/Debugger:
-  Enabled: false
-
-# Offense count: 1
-Lint/Eval:
-  Enabled: false
-
-# Offense count: 2
-Lint/HandleExceptions:
-  Enabled: false
-
-# Offense count: 1
-Lint/ShadowingOuterLocalVariable:
-  Enabled: false
-
-# Offense count: 1
-Lint/UnderscorePrefixedVariableName:
-  Enabled: false
-
-# Offense count: 19
-Metrics/AbcSize:
-  Max: 54
-
-# Offense count: 1
-# Configuration parameters: CountComments.
-Metrics/ClassLength:
-  Max: 135
-
-# Offense count: 4
-Metrics/CyclomaticComplexity:
-  Max: 8
-
-# Offense count: 279
-# Configuration parameters: AllowURI, URISchemes.
-Metrics/LineLength:
-  Max: 184
-
-# Offense count: 21
-# Configuration parameters: CountComments.
-Metrics/MethodLength:
-  Max: 33
-
-# Offense count: 3
-Metrics/PerceivedComplexity:
-  Max: 8
+inherit_from: .rubocop_todo.yml
 
 # def_delegators’ first symbol is the target, the rest are calls
 Style/AlignParameters:
@@ -62,57 +8,15 @@ Style/AlignParameters:
 Style/BlockDelimiters:
   Enabled: false
 
-# Offense count: 2
-Style/CaseEquality:
-  Enabled: false
-
-# Offense count: 1
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/ClassAndModuleChildren:
-  Enabled: false
-
 # including parametrised modules looks much better without this alignment
 Style/ClosingParenthesisIndentation:
-  Enabled: false
-
-# Offense count: 3
-# Configuration parameters: Keywords.
-Style/CommentAnnotation:
-  Enabled: false
-
-# Offense count: 1
-Style/ConstantName:
-  Enabled: false
-
-# Offense count: 83
-Style/Documentation:
   Enabled: false
 
 Style/EmptyLineBetweenDefs:
   AllowAdjacentOneLineDefs: true
 
-# Offense count: 3
-# Configuration parameters: Exclude.
-Style/FileName:
-  Enabled: false
-
 # including parametrised modules looks much better without this indentation
 Style/FirstParameterIndentation:
-  Enabled: false
-
-# Offense count: 1
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/FormatString:
-  Enabled: false
-
-# Offense count: 7
-# Configuration parameters: AllowedVariables.
-Style/GlobalVars:
-  Enabled: false
-
-# Offense count: 1
-# Configuration parameters: MinBodyLength.
-Style/GuardClause:
   Enabled: false
 
 Style/HashSyntax:
@@ -135,28 +39,10 @@ Style/Lambda:
 Style/MethodCallParentheses:
   Enabled: false
 
-# Offense count: 1
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/MethodName:
-  Enabled: false
-
-# Offense count: 2
-Style/ModuleFunction:
-  Enabled: false
-
-# Offense count: 4
-Style/MultilineBlockChain:
-  Enabled: false
-
 Style/PercentLiteralDelimiters:
   Exclude:
     - yaks/lib/yaks/breaking_changes.rb
     - yaks/spec/unit/yaks/config_spec.rb
-
-# Offense count: 1
-# Configuration parameters: NamePrefix, NamePrefixBlacklist.
-Style/PredicateName:
-  Enabled: false
 
 Style/Semicolon:
   AllowAsExpressionSeparator: true
@@ -181,10 +67,6 @@ Style/SpaceInsideHashLiteralBraces:
 
 # FIXME: enforce either single_quotes (fewer fixes) or double_quotes
 Style/StringLiterals:
-  Enabled: false
-
-# Offense count: 2
-Style/StructInheritance:
   Enabled: false
 
 Style/UnneededPercentQ:
