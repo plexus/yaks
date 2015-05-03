@@ -63,11 +63,6 @@ Style/Documentation:
 Style/FileName:
   Enabled: false
 
-# Offense count: 1
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/FormatString:
-  Enabled: false
-
 # Offense count: 7
 # Configuration parameters: AllowedVariables.
 Style/GlobalVars:
