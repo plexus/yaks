@@ -1,7 +1,7 @@
 require 'yaks'
 require 'transit'
 
-Yaks::Serializer.register(:transit, ->(i, _env={}) {i})
+Yaks::Serializer.register(:transit, ->(i, _env = {}) {i})
 
 module Yaks
   class Format
