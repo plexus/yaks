@@ -54,9 +54,7 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Max: 8
 
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
+# def_delegators’ first symbol is the target, the rest are calls
 Style/AlignParameters:
   Enabled: false
 
