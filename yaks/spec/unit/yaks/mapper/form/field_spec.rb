@@ -15,7 +15,9 @@ RSpec.describe Yaks::Mapper::Form::Field do
 
   let(:mapper) do
     Class.new(Yaks::Mapper) do
-      def month ; 'January' ; end
+      def month
+        'January'
+      end
     end.new(yaks_context)
   end
 

@@ -20,7 +20,9 @@ module Yaks
         def rep(_o)
         end
 
-        def string_rep(_) nil end
+        def string_rep(_)
+          nil
+        end
       end
 
       class ReadHandler

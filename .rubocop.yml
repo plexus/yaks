@@ -164,12 +164,6 @@ Style/Semicolon:
 Style/SignalException:
   EnforcedStyle: only_raise
 
-# Offense count: 9
-# Cop supports --auto-correct.
-# Configuration parameters: AllowIfMethodIsEmpty.
-Style/SingleLineMethods:
-  Enabled: false
-
 # Offense count: 3
 # Cop supports --auto-correct.
 Style/SingleSpaceBeforeFirstArg:

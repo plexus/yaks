@@ -99,8 +99,13 @@ RSpec.describe Yaks::CollectionMapper, '#call' do
 
     let(:collection) {
       Class.new(SimpleDelegator) do
-        def foo ; 123 ; end
-        def bar ; 'pi la~~~' ; end
+        def foo
+          123
+        end
+
+        def bar
+          'pi la~~~'
+        end
       end.new([])
     }
 

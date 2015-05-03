@@ -88,8 +88,12 @@ RSpec.describe Yaks::Util::Deprecated, '#deprecated_alias' do
     Class.new do
       extend Yaks::Util::Deprecated
 
-      def self.to_s ; 'FancyClass' end
-      def foo(x); "#{x}yz#{yield}" end
+      def self.to_s
+        'FancyClass'
+      end
+      def foo(x)
+        "#{x}yz#{yield}"
+      end
       deprecated_alias :bar, :foo
     end
   }
