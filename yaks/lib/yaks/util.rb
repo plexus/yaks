@@ -71,6 +71,5 @@ module Yaks
         end
       end
     end
-
   end
 end

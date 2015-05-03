@@ -1,5 +1,4 @@
 module Yaks
-
 # These are displayed in a post-install message when installing the
 # gem to aid upgraiding
 
@@ -81,5 +80,4 @@ documentation.
 
 BreakingChanges['0.4.4'] = BreakingChanges['0.4.3']
 BreakingChanges['0.7.1'] = BreakingChanges['0.7.0']
-
 end

@@ -40,6 +40,5 @@ module Yaks
         JSONWriter
       end
     end
-
   end
 end

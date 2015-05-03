@@ -66,5 +66,4 @@ module Setup
   # end
   def mime_type(*_args)
   end
-
 end

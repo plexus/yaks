@@ -91,12 +91,6 @@ Style/Documentation:
 Style/EmptyLineBetweenDefs:
   AllowAdjacentOneLineDefs: true
 
-# Offense count: 8
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/EmptyLinesAroundModuleBody:
-  Enabled: false
-
 # Offense count: 3
 # Configuration parameters: Exclude.
 Style/FileName:
