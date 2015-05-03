@@ -3,8 +3,9 @@ require 'yaks-html'
 require 'yaks-sinatra'
 require 'yaks-transit'
 
-require 'rubygems/package_task'
 require 'rspec/core/rake_task'
+require 'rubocop/rake_task'
+require 'rubygems/package_task'
 require 'yard'
 
 def delegate_task(gem, task_name)
@@ -69,4 +70,8 @@ task :ataru do
   require "ataru"
   Dir.chdir("yaks")
   Ataru::CLI::Application.start(["check", "README.md"])
+end
+
+RuboCop::RakeTask.new do |task|
+  task.options << '--display-cop-names'
 end
