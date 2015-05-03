@@ -90,7 +90,7 @@ module Yaks
             rel = resources.rels.first
             sub_templ
               .replace('.rel a') {|a| a.attr('href', rel_href(rel)).content(rel.to_s) }
-              .replace('.value') {|x| x.content(resources.seq.map { |resource| render(resource, templ) })}
+              .replace('.value') {|x| x.content(resources.seq.map { |res| render(res, templ) })}
               .attr('rel', rel.to_s)
           end
         end

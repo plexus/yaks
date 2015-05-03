@@ -19,10 +19,6 @@ Lint/HandleExceptions:
   Enabled: false
 
 # Offense count: 1
-Lint/ShadowingOuterLocalVariable:
-  Enabled: false
-
-# Offense count: 1
 Lint/UnderscorePrefixedVariableName:
   Enabled: false
 
