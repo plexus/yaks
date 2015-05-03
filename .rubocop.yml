@@ -190,9 +190,3 @@ Style/StructInheritance:
 Style/UnneededPercentQ:
   Exclude:
     - yaks/lib/yaks/breaking_changes.rb
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: WordRegex.
-Style/WordArray:
-  MinSize: 2
