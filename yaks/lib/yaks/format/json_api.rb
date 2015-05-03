@@ -8,9 +8,10 @@ module Yaks
       # @param [Yaks::Resource] resource
       # @return [Hash]
       def call(resource, _env = nil)
-        main_collection = resource.seq.map(&method(:serialize_resource))
+        main_object = resource.seq.map(&method(:serialize_resource))
+        main_object = main_object.first unless resource.collection?
         output = resource.attributes.select{|k| k.equal?(:meta)}
-        output.merge({ data: main_collection }).tap do |serialized|
+        output.merge({ data: main_object }).tap do |serialized|
           included = resource.seq.each_with_object([]) do |res, array|
             serialize_included_subresources(res.subresources, array)
           end
