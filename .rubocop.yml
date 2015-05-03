@@ -115,11 +115,9 @@ Style/GlobalVars:
 Style/GuardClause:
   Enabled: false
 
-# Offense count: 50
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, UseHashRocketsWithSymbolValues.
 Style/HashSyntax:
-  Enabled: false
+  Exclude:
+    - Rakefile
 
 # Offense count: 2
 # Cop supports --auto-correct.

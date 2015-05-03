@@ -28,7 +28,7 @@ RSpec.describe Yaks::Primitivize do
 
     it 'should recursively handle hashes' do
       expect(primitivizer.call(
-          :foo => {:wassup => :friends, 123 => '456'}
+          foo: {:wassup => :friends, 123 => '456'}
       )).to eql('foo' => {'wassup' => 'friends', 123 => '456'})
     end
 

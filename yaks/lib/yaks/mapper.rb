@@ -4,7 +4,7 @@ module Yaks
 
     def_set :type
 
-    def_forward :attributes => :add_attributes
+    def_forward attributes: :add_attributes
     def_forward :append_to
 
     def_add :link,      create: Link,      append_to: :links

@@ -152,7 +152,7 @@ RSpec.describe Yaks::Config do
                                      "species": "cat"}]}').members.first)
         .to eql Yaks::Resource.new(
                   type: "pet",
-                  attributes: {:id=>3, :name=>"wassup", :species=>"cat"}
+                  attributes: {id: 3, name: "wassup", species: "cat"}
                 )
     end
   end

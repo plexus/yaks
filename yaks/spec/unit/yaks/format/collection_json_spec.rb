@@ -144,7 +144,7 @@ RSpec.describe Yaks::Format::CollectionJson do
 
     context 'when a template form has been specified' do
       let(:format) {
-        described_class.new(:template => :template_form_name)
+        described_class.new(template: :template_form_name)
       }
 
       context 'and the form is not present' do
@@ -338,7 +338,7 @@ RSpec.describe Yaks::Format::CollectionJson do
 
   describe '#serialize_template' do
     let(:format) {
-      described_class.new(:template => :form_for_new)
+      described_class.new(template: :form_for_new)
     }
 
     let(:resource) {

@@ -58,8 +58,8 @@ RSpec.describe Yaks::CollectionMapper, '#call' do
         links: [],
         attributes: {},
         members: [
-          Yaks::Resource.new(type: 'pet', attributes: {:id => 2, :species => "dog", :name => "boingboing"}),
-          Yaks::Resource.new(type: 'pet', attributes: {:id => 3, :species => "cat", :name => "wassup"})
+          Yaks::Resource.new(type: 'pet', attributes: {id: 2, species: "dog", name: "boingboing"}),
+          Yaks::Resource.new(type: 'pet', attributes: {id: 3, species: "cat", name: "wassup"})
         ],
         rels: ['rel:pets']
       )
@@ -82,8 +82,8 @@ RSpec.describe Yaks::CollectionMapper, '#call' do
         links: [],
         attributes: {},
         members: [
-          Yaks::Resource.new(type: 'pet', attributes: {:id => 2, :species => "dog", :name => "boingboing"}),
-          Yaks::Resource.new(type: 'pet', attributes: {:id => 3, :species => "cat", :name => "wassup"})
+          Yaks::Resource.new(type: 'pet', attributes: {id: 2, species: "dog", name: "boingboing"}),
+          Yaks::Resource.new(type: 'pet', attributes: {id: 3, species: "cat", name: "wassup"})
         ],
         rels: ['rel:pets']
       )
@@ -153,7 +153,7 @@ RSpec.describe Yaks::CollectionMapper, '#call' do
         links: [],
         attributes: {},
         members: [
-          Yaks::Resource.new(type: 'pet', attributes: {:id => 3, :species => "cat", :name => "wassup"})
+          Yaks::Resource.new(type: 'pet', attributes: {id: 3, species: "cat", name: "wassup"})
         ],
         rels: ['rel:pets']
       )

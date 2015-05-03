@@ -146,13 +146,13 @@ RSpec.describe Yaks::Mapper do
         end
 
         it 'should have the subresource in the resource' do
-          expect(resource.subresources).to eq([Yaks::Resource.new(type: 'widget', attributes: {:type => 'super_widget'}, rels: ['http://foo.bar/rels/widgets'])])
+          expect(resource.subresources).to eq([Yaks::Resource.new(type: 'widget', attributes: {type: 'super_widget'}, rels: ['http://foo.bar/rels/widgets'])])
         end
 
         context 'with explicit mapper and rel' do
           it 'should delegate to the given mapper' do
             expect(resource.subresources).to eq([
-              Yaks::Resource.new(type: 'widget', attributes: {:type => 'super_widget'}, rels: ['http://foo.bar/rels/widgets'])
+              Yaks::Resource.new(type: 'widget', attributes: {type: 'super_widget'}, rels: ['http://foo.bar/rels/widgets'])
             ])
           end
         end
@@ -170,7 +170,7 @@ RSpec.describe Yaks::Mapper do
 
           it 'should derive the mapper based on policy' do
             expect(resource.subresources).to eq([
-              Yaks::Resource.new(type: 'widget', attributes: {:type => 'super_widget'}, rels: ['http://foo.bar/rels/widgets'])
+              Yaks::Resource.new(type: 'widget', attributes: {type: 'super_widget'}, rels: ['http://foo.bar/rels/widgets'])
             ])
           end
         end
@@ -188,7 +188,7 @@ RSpec.describe Yaks::Mapper do
 
           it 'should derive the rel based on policy' do
             expect(resource.subresources).to eq([
-              Yaks::Resource.new(type: 'widget', attributes: {:type => 'super_widget'}, rels: ['http://rel/rel'])
+              Yaks::Resource.new(type: 'widget', attributes: {type: 'super_widget'}, rels: ['http://rel/rel'])
             ])
           end
         end

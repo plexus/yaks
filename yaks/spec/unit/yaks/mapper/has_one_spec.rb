@@ -13,7 +13,7 @@ RSpec.describe Yaks::Mapper::HasOne do
 
   let(:association_mapper) { AuthorMapper }
   let(:name)               { 'William S. Burroughs' }
-  let(:author)             { fake(:name => name) }
+  let(:author)             { fake(name: name) }
 
   fake(:policy,
     derive_type_from_mapper_class: 'author',

@@ -43,7 +43,7 @@ RSpec.describe Yaks::Mapper::Association do
   let(:parent_mapper)       { parent_mapper_class.new(yaks_context) }
 
   describe '#add_to_resource' do
-    let(:object) { fake(:shoes => []) }
+    let(:object) { fake(shoes: []) }
     let(:rel)    { 'rel:shoes' }
 
     before do

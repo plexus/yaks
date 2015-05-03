@@ -20,7 +20,7 @@ RSpec.describe Yaks::Mapper::HasMany do
 
   let(:closet) {
     fake(
-      :shoes => [
+      shoes: [
         fake(size: 9,    color: :blue),
         fake(size: 11.5, color: :red),
       ]
