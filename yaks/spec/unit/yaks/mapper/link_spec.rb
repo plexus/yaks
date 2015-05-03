@@ -32,7 +32,7 @@ RSpec.describe Yaks::Mapper::Link do
       let(:template) { ->{ link_computer } }
       before do
         mapper_class.class_eval do
-          def link_computer ; end
+          def link_computer; end
         end
       end
 

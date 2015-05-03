@@ -8,7 +8,7 @@ RSpec.describe Yaks::Mapper::HasMany do
       type 'closet'
       has_many :shoes,
         rel: 'http://foo/shoes',
-        item_mapper: Class.new(Yaks::Mapper) { type 'shoe' ; attributes :size, :color }
+        item_mapper: Class.new(Yaks::Mapper) { type 'shoe'; attributes :size, :color }
     end
   end
 
@@ -49,7 +49,7 @@ RSpec.describe Yaks::Mapper::HasMany do
 
     context 'without an explicit mapper' do
       let(:dress_mapper) {
-        Class.new(Yaks::Mapper) { type 'dress' ; attributes :color }
+        Class.new(Yaks::Mapper) { type 'dress'; attributes :color }
       }
 
       before do
