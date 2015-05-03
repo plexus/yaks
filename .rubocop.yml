@@ -164,9 +164,7 @@ Style/Semicolon:
 Style/SignalException:
   EnforcedStyle: only_raise
 
-# Offense count: 47
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
+# FIXME: this should be enforced to either space or no_space
 Style/SpaceBeforeBlockBraces:
   Enabled: false
 
