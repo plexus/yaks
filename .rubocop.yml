@@ -158,11 +158,8 @@ Style/PercentLiteralDelimiters:
 Style/PredicateName:
   Enabled: false
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: AllowAsExpressionSeparator.
 Style/Semicolon:
-  Enabled: false
+  AllowAsExpressionSeparator: true
 
 # Offense count: 16
 # Cop supports --auto-correct.
