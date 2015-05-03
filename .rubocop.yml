@@ -168,11 +168,6 @@ Style/SignalException:
 Style/SpaceBeforeBlockBraces:
   Enabled: false
 
-# Offense count: 15
-# Cop supports --auto-correct.
-Style/SpaceBeforeComma:
-  Enabled: false
-
 # Offense count: 25
 # Cop supports --auto-correct.
 Style/SpaceBeforeSemicolon:
