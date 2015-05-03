@@ -17,10 +17,24 @@ RSpec.describe Yaks::DefaultPolicy, '#derive_mapper_from_object' do
     end
   end
 
-  context 'for array-like objects' do
+  context 'for enumerable objects' do
     context 'given an empty array' do
       it 'should return the vanilla CollectionMapper' do
         expect(policy.derive_mapper_from_object([])).to be Yaks::CollectionMapper
+      end
+    end
+
+    context 'given an Enumerable' do
+      let(:enumerable_class) do
+        Class.new do
+          include Enumerable
+          def each(*); end
+        end
+      end
+      let(:collection) { enumerable_class.new }
+
+      it 'should return the vanilla CollectionMapper' do
+        expect(policy.derive_mapper_from_object(collection)).to be Yaks::CollectionMapper
       end
     end
 
