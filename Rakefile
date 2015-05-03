@@ -1,6 +1,7 @@
 require 'yaks'
 require 'yaks-html'
 require 'yaks-sinatra'
+require 'yaks-rails'
 require 'yaks-transit'
 
 require 'rubygems/package_task'
@@ -15,7 +16,7 @@ def delegate_task(gem, task_name)
   end
 end
 
-[:yaks, :"yaks-html", :"yaks-sinatra"].each do |gem|
+[:yaks, :"yaks-html", :"yaks-sinatra", :"yaks-rails"].each do |gem|
   namespace gem do
     desc 'Run rspec'
     delegate_task gem, :rspec
@@ -52,7 +53,7 @@ task :push_all => [
 task :push => :push_all
 
 desc "Run all the tests"
-task :rspec => ["yaks:rspec", "yaks-html:rspec"]
+task :rspec => ["yaks:rspec", "yaks-html:rspec", "yaks-rails:rspec"]
 
 desc 'Run mutation tests'
 delegate_task :yaks, :mutant
