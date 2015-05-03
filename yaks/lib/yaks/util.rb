@@ -46,7 +46,7 @@ module Yaks
     #   A proc or a plain value
     # @param [Object] context
     #   (optional) A context used to instance_eval the proc
-    def Resolve(maybe_proc, context = nil)
+    def Resolve(maybe_proc, context = nil)    # rubocop:disable Style/MethodName
       if maybe_proc.respond_to?(:to_proc) && !maybe_proc.instance_of?(Symbol)
         if context
           if maybe_proc.arity > 0

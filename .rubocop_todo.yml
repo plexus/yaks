@@ -68,11 +68,6 @@ Style/FileName:
 Style/GlobalVars:
   Enabled: false
 
-# Offense count: 1
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/MethodName:
-  Enabled: false
-
 # Offense count: 2
 Style/ModuleFunction:
   Enabled: false
