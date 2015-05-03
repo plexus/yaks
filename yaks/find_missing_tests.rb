@@ -4,7 +4,7 @@ require 'mutant'
 require 'pry'
 
 # These are private methods that are tested by other methods in the same class
-SKIP=%w(
+SKIP = %w(
   Yaks::CollectionMapper#collection_rel
   Yaks::CollectionMapper#collection_type
   Yaks::CollectionMapper#mapper_for_model

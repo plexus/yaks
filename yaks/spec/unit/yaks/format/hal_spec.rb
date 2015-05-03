@@ -32,8 +32,8 @@ RSpec.describe Yaks::Format::Hal do
         'bar' => 'barval',
         '_links' => {
           "my_plural_rel" => [
-            {"href"=>"the_uri1"},
-            {"href"=>"the_uri2"}
+            {"href" => "the_uri1"},
+            {"href" => "the_uri2"}
           ]
         }
       )

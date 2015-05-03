@@ -38,7 +38,7 @@ RSpec.describe 'dynamic form fields' do
     ).to eql(
       "_controls" => {
         "foo" => {
-          "name" =>"foo",
+          "name" => "foo",
           "fields" => [
             {
               "type" => "fieldset",

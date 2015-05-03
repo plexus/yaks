@@ -4,7 +4,7 @@ require 'benchmark/ips'
 require 'yaks'
 require 'ruby-prof'
 
-SIZE=20
+SIZE = 20
 $timestamp = Time.now.utc.iso8601.gsub('-', '').gsub(':', '')
 $yaks = Yaks.new
 

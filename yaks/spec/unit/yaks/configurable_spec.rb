@@ -72,7 +72,7 @@ end
     end
 
     it 'should pass on a block' do
-      subject.cat(fur_level: 3) {|l| l+3}
+      subject.cat(fur_level: 3) {|l| l + 3}
       expect(subject.config.contents).to eql [Kitten.new(furriness: 6)]
     end
 
