@@ -43,6 +43,10 @@ Style/Lambda:
 Style/MethodCallParentheses:
   Enabled: false
 
+Style/ModuleFunction:
+  Exclude:
+    - yaks/lib/yaks/util.rb
+
 Style/PercentLiteralDelimiters:
   Exclude:
     - yaks/lib/yaks/breaking_changes.rb

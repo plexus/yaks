@@ -60,10 +60,6 @@ Style/FileName:
 Style/GlobalVars:
   Enabled: false
 
-# Offense count: 2
-Style/ModuleFunction:
-  Enabled: false
-
 # Offense count: 4
 Style/MultilineBlockChain:
   Enabled: false
