@@ -148,11 +148,6 @@ Style/ModuleFunction:
 Style/MultilineBlockChain:
   Enabled: false
 
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/NumericLiterals:
-  MinDigits: 6
-
 # Offense count: 14
 # Cop supports --auto-correct.
 # Configuration parameters: PreferredDelimiters.

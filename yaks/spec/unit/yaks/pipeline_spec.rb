@@ -70,9 +70,9 @@ RSpec.describe Yaks::Pipeline do
               .insert_hooks([[:after,  :step1_1, :step1_2, ->(i, _e) { i+100 }]])
               .insert_hooks([[:around, :step1_1, :step1_1_0, ->(i, e, &b) { b.call(i, e)+1000 }]])
               .insert_hooks([[:around, :step1_2, :step1_3, ->(i, e, &b) { b.call(i, e)+1000 }]])
-              .insert_hooks([[:after,  :step1_3, :step1_4, ->(i, _e) { i + 10000 }]])
+              .insert_hooks([[:after,  :step1_3, :step1_4, ->(i, _e) { i + 10_000 }]])
               .call(1000, env)
-            ).to equal 13222
+            ).to equal 13_222
     end
   end
 
