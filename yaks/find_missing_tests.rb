@@ -5,13 +5,13 @@ require 'pry'
 
 # These are private methods that are tested by other methods in the same class
 SKIP=%w[
-Yaks::CollectionMapper#collection_rel
-Yaks::CollectionMapper#collection_type
-Yaks::CollectionMapper#mapper_for_model
-Yaks::Resource::Form::Field#select_options_for_value
-Yaks::Mapper::AssociationMapper#add_link
-Yaks::Mapper::AssociationMapper#add_subresource
-Yaks::Mapper::Link#resource_link_options
+  Yaks::CollectionMapper#collection_rel
+  Yaks::CollectionMapper#collection_type
+  Yaks::CollectionMapper#mapper_for_model
+  Yaks::Resource::Form::Field#select_options_for_value
+  Yaks::Mapper::AssociationMapper#add_link
+  Yaks::Mapper::AssociationMapper#add_subresource
+  Yaks::Mapper::Link#resource_link_options
 
 ]
 

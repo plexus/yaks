@@ -54,7 +54,7 @@ RSpec.describe Yaks::Format::JsonAPI do
       Yaks::Resource.new(
         type: 'wizard',
         links: [
-            Yaks::Resource::Link.new(rel: :self, uri: '/the/self/link')
+          Yaks::Resource::Link.new(rel: :self, uri: '/the/self/link')
         ]
       )
     }
@@ -70,7 +70,7 @@ RSpec.describe Yaks::Format::JsonAPI do
       Yaks::Resource.new(
         type: 'wizard',
         subresources: [
-            Yaks::Resource.new(rels: ['rel:favourite_spell'], type: 'spell', attributes: {id: 777, name: 'Lucky Sevens'})
+          Yaks::Resource.new(rels: ['rel:favourite_spell'], type: 'spell', attributes: {id: 777, name: 'Lucky Sevens'})
         ]
       )
     }
@@ -90,7 +90,7 @@ RSpec.describe Yaks::Format::JsonAPI do
       Yaks::Resource.new(
         type: 'wizard',
         subresources: [
-            Yaks::NullResource.new
+          Yaks::NullResource.new
         ]
       )
     }

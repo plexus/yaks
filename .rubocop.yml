@@ -119,8 +119,7 @@ Style/HashSyntax:
   Exclude:
     - Rakefile
 
-# Offense count: 10
-# Cop supports --auto-correct.
+# some arrays need deeper indenting for readability
 Style/IndentArray:
   Enabled: false
 
