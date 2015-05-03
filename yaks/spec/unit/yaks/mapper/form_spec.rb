@@ -128,7 +128,7 @@ RSpec.describe Yaks::Mapper::Form do
       end
 
       it 'should render them based on the mapped object' do
-        mapper.call(fake(name: :anthony)) # hack to set the mapper's object
+        mapper.call(fake(name: :anthony)) # HACK: set the mapper's object
         expect(form.to_resource_form(mapper)).to eql(
           Yaks::Resource::Form.new(
             name: :the_name,

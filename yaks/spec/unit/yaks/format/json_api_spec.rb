@@ -42,7 +42,7 @@ RSpec.describe Yaks::Format::JsonAPI do
       )
     }
 
-    # TODO should it really behave this way? better to give preference to self link.
+    # TODO: should it really behave this way? better to give preference to self link.
     it 'should give preference to the href attribute' do
       expect(format.call(resource)).to eql(
         data: {type: :wizards, href: '/the/href'}
