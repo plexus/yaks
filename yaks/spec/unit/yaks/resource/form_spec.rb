@@ -58,10 +58,10 @@ RSpec.describe Yaks::Resource::Form do
       expect(form.has_action?).to be true
      end
 
-    it 'should return false if form has not an action url' do
-      form = Yaks::Resource::Form.new(name: :foo)
+     it 'should return false if form has not an action url' do
+       form = Yaks::Resource::Form.new(name: :foo)
 
-      expect(form.has_action?).to be false
-    end
+       expect(form.has_action?).to be false
+     end
   end
 end
