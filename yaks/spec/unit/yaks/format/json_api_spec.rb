@@ -121,4 +121,20 @@ RSpec.describe Yaks::Format::JsonAPI do
     end
   end
 
+  context 'with links as collection' do
+    let(:resource) {
+      Yaks::CollectionResource.new(
+        type: 'wizard',
+        links: [Yaks::Resource::Link.new(rel: :next, uri: '/next/page/link')]
+      )
+    }
+
+    it 'should include links' do
+      expect(format.call(resource)).to eql(
+        data: [],
+        links: {next: '/next/page/link'}
+      )
+    end
+  end
+
 end
