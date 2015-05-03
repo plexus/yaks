@@ -131,8 +131,7 @@ Style/IndentationWidth:
 Style/Lambda:
   Enabled: false
 
-# Offense count: 7
-# Cop supports --auto-correct.
+# FIXME: figure out why fixing this blows tests up
 Style/MethodCallParentheses:
   Enabled: false
 
