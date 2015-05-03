@@ -16,7 +16,7 @@ module Namespace
   module Nested
     class Rye ; end
     class Mung < Bean
-      alias inspect to_s # on 1.9 inspect calls to_s
+      alias_method :inspect, :to_s # on 1.9 inspect calls to_s
       def to_s
         "mungbean"
       end

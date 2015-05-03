@@ -62,7 +62,7 @@ module Yaks
     def load_attribute(name)
       respond_to?(name) ? public_send(name) : object.public_send(name)
     end
-    alias load_association load_attribute
+    alias_method :load_association, :load_attribute
 
     def expand_value(value)
       Resolve(value, self)

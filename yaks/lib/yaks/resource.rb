@@ -46,7 +46,7 @@ module Yaks
     def collection?
       false
     end
-    alias collection collection?
+    alias_method :collection, :collection?
 
     def with_collection(*)
       self
@@ -59,10 +59,10 @@ module Yaks
     def members
       raise UnsupportedOperationError, "Only Yaks::CollectionResource has members"
     end
-    alias each members
-    alias map members
-    alias each_with_object members
-    alias with_members members
+    alias_method :each, :members
+    alias_method :map, :members
+    alias_method :each_with_object, :members
+    alias_method :with_members, :members
 
     def merge_attributes(new_attrs)
       with(attributes: @attributes.merge(new_attrs))

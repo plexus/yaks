@@ -39,8 +39,8 @@ module Yaks
           .replace('.forms') {|div| render_forms(resource.forms).call(div) }
           .replace('.subresource') {|sub_templ| render_subresources(resource, templ, sub_templ) }
       end
-      alias render_collection_resource render_resource
-      alias render_null_resource render_resource
+      alias_method :render_collection_resource, :render_resource
+      alias_method :render_null_resource, :render_resource
 
       def render_attributes(attributes)
         ->(templ) do

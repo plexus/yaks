@@ -79,7 +79,7 @@ RSpec.describe Yaks::Pipeline do
   let(:fake_step) {
     Class.new do
       include Attribs.new(:transitive, :call, inverse: nil)
-      alias transitive? transitive
+      alias_method :transitive?, :transitive
     end
   }
 

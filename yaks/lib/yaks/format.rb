@@ -26,7 +26,7 @@ module Yaks
       @env = env
       serialize_resource(resource)
     end
-    alias serialize call
+    alias_method :serialize, :call
 
     # @abstract
     def serialize_resource(_resource)

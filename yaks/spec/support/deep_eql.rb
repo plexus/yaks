@@ -108,12 +108,12 @@ module Matchers
     def failure_message_for_should
       diffs.join("\n")
     end
-    alias failure_message failure_message_for_should
+    alias_method :failure_message, :failure_message_for_should
 
     def failure_message_for_should_not
       "expected #{@target.inspect} not to be in deep_eql with #{@expectation.inspect}"
     end
-    alias failure_message_when_negated failure_message_for_should_not
+    alias_method :failure_message_when_negated, :failure_message_for_should_not
   end
 end
 

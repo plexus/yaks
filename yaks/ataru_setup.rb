@@ -51,12 +51,12 @@ module Setup
   def my_env
     {'something' => true}
   end
-  alias rack_env my_env
+  alias_method :rack_env, :my_env
 
   def post
     Post.new(7, "Yaks is Al Dente", nil, [])
   end
-  alias foo post
+  alias_method :foo, :post
 
 
   def product

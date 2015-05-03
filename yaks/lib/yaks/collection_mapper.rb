@@ -1,6 +1,6 @@
 module Yaks
   class CollectionMapper < Mapper
-    alias collection object
+    alias_method :collection, :object
 
     # @param [Array] collection
     # @return [Array]
