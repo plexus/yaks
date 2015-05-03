@@ -11,6 +11,7 @@ module Yaks
         output = {}
         if resource.collection?
           output[:data]  = resource.map(&method(:serialize_resource))
+          output[:links] = serialize_links(resource.links) if resource.links.any?
         else
           output[:data] = serialize_resource(resource)
         end
@@ -20,6 +21,14 @@ module Yaks
         output[:included] = included if included.any?
         output[:meta] = resource[:meta] if resource[:meta]
         output
+      end
+
+      # @param [Yaks::Resource] resource
+      # @return [Hash]
+      def serialize_links(links)
+        links.inject({}) do |hash, link|
+          hash.update(link.rel => link.uri)
+        end
       end
 
       # @param [Yaks::Resource] resource
