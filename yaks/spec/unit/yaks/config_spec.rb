@@ -58,7 +58,7 @@ RSpec.describe Yaks::Config do
 
   describe '#json_serializer' do
     configure do
-      json_serializer {|resource| resource.upcase }
+      json_serializer(&:upcase)
     end
 
     specify do
