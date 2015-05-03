@@ -13,10 +13,10 @@ Gem::Specification.new do |gem|
   gem.homepage    = 'https://github.com/plexus/yaks'
   gem.license     = 'MIT'
 
-  gem.require_paths    = %w[lib]
+  gem.require_paths    = %w(lib)
   gem.files            = `git ls-files`.split($/)
   gem.test_files       = gem.files.grep(/^spec/)
-  gem.extra_rdoc_files = %w[README.md]
+  gem.extra_rdoc_files = %w(README.md)
 
   if Yaks::BreakingChanges.key? Yaks::VERSION
     gem.post_install_message = Yaks::BreakingChanges[Yaks::VERSION]

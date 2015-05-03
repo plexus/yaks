@@ -30,7 +30,7 @@ module Yaks
       serializer(:json, &serializer)
     end
 
-    %w[before after around skip].map(&:intern).each do |hook_type|
+    %w(before after around skip).map(&:intern).each do |hook_type|
       define_method hook_type do |step, name = :"#{hook_type}_#{step}", &block|
         append_to(:hooks, [hook_type, step, name, block])
       end

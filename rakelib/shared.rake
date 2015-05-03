@@ -9,7 +9,7 @@ def mutant_task(_gem)
   task :mutant do
     pattern = ENV.fetch('PATTERN', 'Yaks*')
     opts    = ENV.fetch('MUTANT_OPTS', '').split(' ')
-    args    = %w[-Ilib -ryaks --use rspec --score 100] + opts + [pattern]
+    args    = %w(-Ilib -ryaks --use rspec --score 100) + opts + [pattern]
     result  = Mutant::CLI.run(args)
     fail unless result == Mutant::CLI::EXIT_SUCCESS
   end
@@ -29,6 +29,6 @@ def gem_tasks(gem)
 
   YARD::Rake::YardocTask.new do |t|
     t.files   = ["lib/**/*.rb" "**/*.md"]
-    t.options = %w[--output-dir ../doc]
+    t.options = %w(--output-dir ../doc)
   end
 end
