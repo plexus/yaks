@@ -188,7 +188,7 @@ RSpec.describe Yaks::Runner do
     end
 
     it 'should fall back to the policy' do
-      expect(runner.serializer.call([1,2,3], {})).to eql "[\n  1,\n  2,\n  3\n]"
+      expect(runner.serializer.call([1, 2, 3], {})).to eql "[\n  1,\n  2,\n  3\n]"
     end
   end
 

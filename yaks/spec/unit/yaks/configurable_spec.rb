@@ -125,11 +125,11 @@ end
 
     it 'should forward arguments and block' do
       subject.with_color_and_contents('brown') do |contents|
-        contents + [1,2,3]
+        contents + [1, 2, 3]
       end
 
       expect(subject.config.color).to eql 'brown'
-      expect(subject.config.contents).to eql [1,2,3]
+      expect(subject.config.contents).to eql [1, 2, 3]
     end
   end
 

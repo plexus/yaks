@@ -57,10 +57,10 @@ RSpec.describe Yaks::CollectionResource do
   end
 
   describe '#seq' do
-    let(:init_opts) { { members: [1,2,3] } }
+    let(:init_opts) { { members: [1, 2, 3] } }
 
     it 'iterates over the members' do
-      expect(subject.seq.map(&:next)).to eql [2,3,4]
+      expect(subject.seq.map(&:next)).to eql [2, 3, 4]
     end
   end
 

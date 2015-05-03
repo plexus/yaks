@@ -8,6 +8,6 @@ RSpec.describe Yaks::FP::Callable, "#to_proc" do
       end
     end.new
 
-    expect([1,2,3].map(&obj)).to eql [1,4,9]
+    expect([1, 2, 3].map(&obj)).to eql [1, 4, 9]
   end
 end

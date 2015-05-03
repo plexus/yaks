@@ -18,15 +18,15 @@ module Yaks
     end
 
     def slice_hash(hash, *keys)
-      keys.each_with_object({}) {|k,dest| dest[k] = hash[k] if hash.key?(k) }
+      keys.each_with_object({}) {|k, dest| dest[k] = hash[k] if hash.key?(k) }
     end
 
     def reject_keys(hash, *keys)
-      hash.keys.each_with_object({}) {|k,dest| dest[k] = hash[k] unless keys.include?(k) }
+      hash.keys.each_with_object({}) {|k, dest| dest[k] = hash[k] unless keys.include?(k) }
     end
 
     def symbolize_keys(hash)
-      hash.each_with_object({}) {|(k,v), hsh| hsh[k.to_sym] = v}
+      hash.each_with_object({}) {|(k, v), hsh| hsh[k.to_sym] = v}
     end
 
     def extract_options(args)
