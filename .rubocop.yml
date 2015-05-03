@@ -166,11 +166,6 @@ Style/SignalException:
 
 # Offense count: 3
 # Cop supports --auto-correct.
-Style/SingleSpaceBeforeFirstArg:
-  Enabled: false
-
-# Offense count: 3
-# Cop supports --auto-correct.
 Style/SpaceAfterColon:
   Enabled: false
 

@@ -32,7 +32,7 @@ RSpec.describe Yaks::CollectionMapper, '#call' do
 
   context 'when at the top of the stack' do
     it 'should have a "collection" rel derived from the type' do
-      expect(mapper.call(collection).rels).to eql  ['rel:the_types']
+      expect(mapper.call(collection).rels).to eql ['rel:the_types']
     end
   end
 

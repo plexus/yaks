@@ -33,7 +33,7 @@ RSpec.describe Yaks::Config do
     end
 
     its(:policy_class) { should equal MyPolicy }
-    its(:policy)       { should be_a  MyPolicy }
+    its(:policy)       { should be_a MyPolicy  }
   end
 
   describe '#rel_template' do

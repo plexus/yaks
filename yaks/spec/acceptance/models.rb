@@ -45,7 +45,7 @@ end
 class WorkMapper < LiteratureBaseMapper
   attributes :id, :chinese_name, :english_name
   has_many :quotes
-  has_one  :era
+  has_one :era
 end
 
 class QuoteMapper < Yaks::Mapper
