@@ -90,9 +90,11 @@ RSpec.describe Yaks::Resource do
   end
 
   describe "#add_link" do
-    let(:init_opts) {{
-      links: [Yaks::Resource::Link.new(rel: :next, uri: '/next')]
-    }}
+    let(:init_opts) {
+      {
+        links: [Yaks::Resource::Link.new(rel: :next, uri: '/next')]
+      }
+    }
 
     it "should append to the links list" do
       expect(resource.add_link(Yaks::Resource::Link.new(rel: :previous, uri: '/previous')))
@@ -111,9 +113,11 @@ RSpec.describe Yaks::Resource do
   end
 
   describe "#add_subresource" do
-    let(:init_opts) {{
-      subresources: [Yaks::Resource.new(attributes: {foo: 1})]
-    }}
+    let(:init_opts) {
+      {
+        subresources: [Yaks::Resource.new(attributes: {foo: 1})]
+      }
+    }
     it "should append to the subresources list" do
       expect(resource.add_subresource(Yaks::Resource.new(attributes: {bar: 2})))
         .to eql Yaks::Resource.new(

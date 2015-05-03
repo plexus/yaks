@@ -35,13 +35,15 @@ RSpec.describe Yaks::CollectionResource do
     }
 
     its(:type)       { should eql 'order' }
-    its(:links)      { should eql [
+    its(:links)      {
+      should eql [
         Yaks::Resource::Link.new(rel: 'http://rels/summary', uri: 'http://order/10/summary'),
         Yaks::Resource::Link.new(rel: :profile, uri: 'http://rels/collection')
       ]
     }
     its(:attributes) { should eql( total: 10.00 ) }
-    its(:members)    { should eql [
+    its(:members)    {
+      should eql [
         Yaks::Resource.new(
           type: 'order',
           links: [Yaks::Resource::Link.new(rel: :self, uri: 'http://order/10')],

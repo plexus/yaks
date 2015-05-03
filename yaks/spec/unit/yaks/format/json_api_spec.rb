@@ -13,7 +13,8 @@ RSpec.describe Yaks::Format::JsonAPI do
   end
 
   context 'collection with metadata' do
-    let(:resource) { Yaks::CollectionResource.new(
+    let(:resource) {
+      Yaks::CollectionResource.new(
         type: 'wizard',
         members: [Yaks::Resource.new(type: 'wizard', attributes: {foo: :bar})],
         attributes: {meta: {page: {limit: 20, offset: 0, count: 25}}}

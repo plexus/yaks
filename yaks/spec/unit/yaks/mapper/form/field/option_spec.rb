@@ -10,11 +10,13 @@ RSpec.describe Yaks::Mapper::Form::Field::Option do
   end
 
   let(:mapper) { mapper_class.new(yaks_context) }
-  let(:args) { {
-    value: ->{ color },
-    label: ->{ :color },
-    selected: ->{ true },
-    disabled: ->{ true }}
+  let(:args) {
+    {
+      value: ->{ color },
+      label: ->{ :color },
+      selected: ->{ true },
+      disabled: ->{ true }
+    }
   }
 
   let(:option) { described_class.new(args) }
