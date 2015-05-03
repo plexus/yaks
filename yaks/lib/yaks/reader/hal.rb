@@ -48,7 +48,8 @@ module Yaks
             else
               CollectionResource.new(
                 members: resource.map { |r|
-                  call(r).with(type: Util.singularize(rel[/\w+$/])) }
+                  call(r).with(type: Util.singularize(rel[/\w+$/]))
+                }
               )
             end
           else

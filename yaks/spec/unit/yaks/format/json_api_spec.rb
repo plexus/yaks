@@ -17,7 +17,8 @@ RSpec.describe Yaks::Format::JsonAPI do
         type: 'wizard',
         members: [Yaks::Resource.new(type: 'wizard', attributes: {foo: :bar})],
         attributes: {meta: {page: {limit: 20, offset: 0, count: 25}}}
-    ) }
+    )
+    }
 
     it 'should include the "meta" key' do
       expect(format.call(resource)).to eql(
