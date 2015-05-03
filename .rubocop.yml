@@ -1,10 +1,32 @@
-inherit_from: .rubocop_todo.yml
-
 Lint/AmbiguousRegexpLiteral:
   Enabled: false
 
 Lint/AssignmentInCondition:
   Enabled: false
+
+# FIXME: lower by fixing the biggest offenders
+Metrics/AbcSize:
+  Max: 54
+
+# FIXME: lower by fixing the biggest offenders
+Metrics/ClassLength:
+  Max: 135
+
+# FIXME: lower by fixing the biggest offenders
+Metrics/CyclomaticComplexity:
+  Max: 8
+
+# FIXME: lower by fixing the biggest offenders
+Metrics/LineLength:
+  Max: 184
+
+# FIXME: lower by fixing the biggest offenders
+Metrics/MethodLength:
+  Max: 33
+
+# FIXME: lower by fixing the biggest offenders
+Metrics/PerceivedComplexity:
+  Max: 8
 
 # def_delegators’ first symbol is the target, the rest are calls
 Style/AlignParameters:
@@ -22,8 +44,17 @@ Style/ConstantName:
   Exclude:
     - yaks/lib/yaks/breaking_changes.rb
 
+Style/Documentation:
+  Enabled: false
+
 Style/EmptyLineBetweenDefs:
   AllowAdjacentOneLineDefs: true
+
+Style/FileName:
+  Exclude:
+    - yaks-html/lib/yaks-html.rb
+    - yaks-sinatra/lib/yaks-sinatra.rb
+    - yaks-transit/lib/yaks-transit.rb
 
 # including parametrised modules looks much better without this indentation
 Style/FirstParameterIndentation:
