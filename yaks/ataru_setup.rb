@@ -3,12 +3,10 @@
 require "yaks"
 require "hamster"
 
-class Post < Struct.new(:id, :title, :author, :comments)
-end
+Post = Struct.new(:id, :title, :author, :comments)
 
 module MyAPI
-  class Product < Struct.new(:id, :label)
-  end
+  Product = Struct.new(:id, :label)
 
   class ProductMapper < Yaks::Mapper
     attributes :id, :label
