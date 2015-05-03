@@ -19,9 +19,7 @@ module Yaks
       # use a generic rel. This matters especially for HAL, where a
       # top-level collection is rendered as an object with the
       # collection as a subresource.
-      if context[:mapper_stack].empty?
-        attrs[:rels] = [collection_rel]
-      end
+      attrs[:rels] = [collection_rel] if context[:mapper_stack].empty?
 
       map_attributes(
         map_links(
