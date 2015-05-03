@@ -145,7 +145,6 @@ RSpec.describe Yaks::Mapper do
           mapper_class.has_one(:widget, has_one_opts)
         end
 
-
         it 'should have the subresource in the resource' do
           expect(resource.subresources).to eq([Yaks::Resource.new(type: 'widget', attributes: {:type => 'super_widget'}, rels: ['http://foo.bar/rels/widgets'])])
         end

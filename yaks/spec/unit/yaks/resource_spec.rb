@@ -125,7 +125,6 @@ RSpec.describe Yaks::Resource do
     end
   end
 
-
   describe '#members' do
     it 'should raise unsupported operation error' do
       expect { resource.members }.to raise_error(

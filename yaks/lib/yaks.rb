@@ -22,7 +22,6 @@ require 'yaks/default_policy'
 require 'yaks/serializer'
 require 'yaks/config'
 
-
 module Yaks
   Undefined = Module.new.freeze
 
@@ -58,7 +57,6 @@ module Yaks
     end
   end
 end
-
 
 require 'yaks/resource'
 require 'yaks/null_resource'

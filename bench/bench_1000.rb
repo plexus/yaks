@@ -31,7 +31,6 @@ class DeepMapper < Yaks::Mapper
   has_one :next, mapper: DeepMapper
 end
 
-
 def profile!(name)
   RubyProf.start
   yield

@@ -30,8 +30,6 @@ class PostMapper < Yaks::Mapper
   has_many :comments
 end
 
-
-
 module Setup
   def setup
     # Do some nice setup that is run before every snippet
@@ -58,12 +56,9 @@ module Setup
   end
   alias_method :foo, :post
 
-
   def product
     MyAPI::Product.new(42, "Shiny thing")
   end
-
-
 
   # # Tell your web framework about the supported formats
   # Yaks::Format.all.each do |format|

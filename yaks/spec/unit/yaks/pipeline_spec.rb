@@ -107,7 +107,6 @@ RSpec.describe Yaks::Pipeline do
   end
 end
 
-
 # describe 'after' do
 #   let(:hooks) { proc { after(:format) { :after_format_impl } } }
 

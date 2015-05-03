@@ -95,7 +95,6 @@ RSpec.describe Yaks::Mapper::Link do
       end
     end
 
-
     context 'with :if defined and resolving to true' do
       let(:options) { { if: ->{ true } } }
 

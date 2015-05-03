@@ -18,7 +18,6 @@ require_relative 'support/youtypeit_models_mappers'
 require_relative 'support/deep_eql'
 require_relative 'support/classes_for_policy_testing'
 
-
 RSpec.configure do |rspec|
   rspec.include FixtureHelpers
   rspec.backtrace_exclusion_patterns = [] if ENV['FULLSTACK']

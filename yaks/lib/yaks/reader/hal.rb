@@ -36,7 +36,6 @@ module Yaks
         x.instance_of?(Array) ? x : [x]
       end
 
-
       def convert_embedded(embedded)
         embedded.flat_map do |rel, resource|
           case resource
