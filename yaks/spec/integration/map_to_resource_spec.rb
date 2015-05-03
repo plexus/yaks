@@ -13,7 +13,7 @@ RSpec.describe 'Mapping domain models to Resource objects' do
   specify {
     subject.subresources == [
       Yaks::Resource.new(
-        type:'pet_peeve',
+        type: 'pet_peeve',
         rels: ['rel:pet_peeve'],
         attributes: {id: 4, type: 'parsing with regexps'}
       ),
@@ -38,7 +38,7 @@ RSpec.describe 'Mapping domain models to Resource objects' do
     should eq(
       [
         Yaks::Resource.new(
-          type:'pet_peeve',
+          type: 'pet_peeve',
           rels: ['rel:pet_peeve'],
           attributes: {id: 4, type: 'parsing with regexps'}
         ),

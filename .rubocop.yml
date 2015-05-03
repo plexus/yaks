@@ -164,11 +164,6 @@ Style/Semicolon:
 Style/SignalException:
   EnforcedStyle: only_raise
 
-# Offense count: 3
-# Cop supports --auto-correct.
-Style/SpaceAfterColon:
-  Enabled: false
-
 # Offense count: 26
 # Cop supports --auto-correct.
 Style/SpaceAfterComma:
