@@ -40,8 +40,3 @@ Style/Documentation:
 # Configuration parameters: Exclude.
 Style/FileName:
   Enabled: false
-
-# Offense count: 7
-# Configuration parameters: AllowedVariables.
-Style/GlobalVars:
-  Enabled: false

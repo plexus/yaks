@@ -29,6 +29,11 @@ Style/EmptyLineBetweenDefs:
 Style/FirstParameterIndentation:
   Enabled: false
 
+Style/GlobalVars:
+  Exclude:
+    - bench/bench.rb
+    - bench/bench_1000.rb
+
 Style/HashSyntax:
   Exclude:
     - Rakefile
