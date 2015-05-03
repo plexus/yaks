@@ -165,7 +165,7 @@ RSpec.describe Yaks::CollectionMapper, '#call' do
       let(:context) { Yaks::Util.slice_hash(super(), :policy, :env, :mapper_stack) }
 
       it 'should use a rel of "collection"' do
-        expect(mapper.([]).rels).to eq ['collection']
+        expect(mapper.call([]).rels).to eq ['collection']
       end
     end
 
@@ -173,7 +173,7 @@ RSpec.describe Yaks::CollectionMapper, '#call' do
       let(:context) { Yaks::Util.slice_hash(super(), :policy, :env, :mapper_stack, :item_mapper) }
 
       it 'should derive the collection rel from the item mapper' do
-        expect(mapper.([]).rels).to eq ['rel:the_types']
+        expect(mapper.call([]).rels).to eq ['rel:the_types']
       end
     end
   end
