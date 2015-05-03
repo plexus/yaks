@@ -127,8 +127,7 @@ Style/IndentationWidth:
   Exclude:
     - yaks/lib/yaks/breaking_changes.rb
 
-# Offense count: 7
-# Cop supports --auto-correct.
+# the codebase uses -> consistently
 Style/Lambda:
   Enabled: false
 
