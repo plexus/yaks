@@ -123,11 +123,9 @@ Style/HashSyntax:
 Style/IndentArray:
   Enabled: false
 
-# Offense count: 5
-# Cop supports --auto-correct.
-# Configuration parameters: Width.
 Style/IndentationWidth:
-  Enabled: false
+  Exclude:
+    - yaks/lib/yaks/breaking_changes.rb
 
 # Offense count: 7
 # Cop supports --auto-correct.
