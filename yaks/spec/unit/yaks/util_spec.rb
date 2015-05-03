@@ -112,6 +112,6 @@ RSpec.describe Yaks::Util::Deprecated, '#deprecated_alias' do
       capture_stderr do
         expect(klass.new.bar('x') {'a'}).to eql 'xyza'
       end
-    ).to match /WARNING: FancyClass#bar is deprecated, use `foo'\. at \/.*util_spec.rb:#{__LINE__ - 2}:in/
+    ).to match %r{WARNING: FancyClass#bar is deprecated, use `foo'\. at /.*util_spec.rb:#{__LINE__ - 2}:in}
   end
 end

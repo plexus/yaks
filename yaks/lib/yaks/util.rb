@@ -7,13 +7,13 @@ module Yaks
 
     def underscore(str)
       str.gsub(/::/, '/')
-        .gsub(/(?<!^|\/)([A-Z])(?=[a-z$])|(?<=[a-z])([A-Z])/, '_\1\2')
+        .gsub(%r{(?<!^|/)([A-Z])(?=[a-z$])|(?<=[a-z])([A-Z])}, '_\1\2')
         .tr("-", "_")
         .downcase
     end
 
     def camelize(str)
-      str.gsub(/\/(.?)/)     { "::#{ Regexp.last_match(1).upcase }" }
+      str.gsub(%r{/(.?)})    { "::#{ Regexp.last_match(1).upcase }" }
         .gsub!(/(?:^|_)(.)/) { Regexp.last_match(1).upcase          }
     end
 
