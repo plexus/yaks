@@ -27,12 +27,12 @@ module Yaks
           name = m.class.name.split('::').last + 'CollectionMapper'
           begin
             return @options[:namespace].const_get(name)
-          rescue NameError
+          rescue NameError               # rubocop:disable Lint/HandleExceptions
           end
         end
         begin
           return @options[:namespace].const_get(:CollectionMapper)
-        rescue NameError
+        rescue NameError                 # rubocop:disable Lint/HandleExceptions
         end
         CollectionMapper
       else

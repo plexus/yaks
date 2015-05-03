@@ -14,10 +14,6 @@ Lint/AmbiguousRegexpLiteral:
 Lint/AssignmentInCondition:
   Enabled: false
 
-# Offense count: 2
-Lint/HandleExceptions:
-  Enabled: false
-
 # Offense count: 19
 Metrics/AbcSize:
   Max: 54
