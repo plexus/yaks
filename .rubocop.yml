@@ -172,8 +172,7 @@ Style/SpaceBeforeBlockBraces:
 Style/SpaceInsideBlockBraces:
   Enabled: false
 
-# Offense count: 69
-# Cop supports --auto-correct.
+# FIXME: make a call whether to fix this one or not
 Style/SpaceInsideBrackets:
   Enabled: false
 
