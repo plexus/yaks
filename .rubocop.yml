@@ -3,6 +3,9 @@ inherit_from: .rubocop_todo.yml
 Lint/AmbiguousRegexpLiteral:
   Enabled: false
 
+Lint/AssignmentInCondition:
+  Enabled: false
+
 # def_delegators’ first symbol is the target, the rest are calls
 Style/AlignParameters:
   Enabled: false
