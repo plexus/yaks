@@ -75,3 +75,5 @@ end
 RuboCop::RakeTask.new do |task|
   task.options << '--display-cop-names'
 end
+
+task :default => [:rspec, :rubocop]
