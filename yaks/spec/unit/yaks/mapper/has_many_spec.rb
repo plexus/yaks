@@ -66,7 +66,7 @@ RSpec.describe Yaks::Mapper::HasMany do
          expect(closet_mapper.policy).to equal policy
          closet_mapper.call(fake(shoes: [], dresses: [fake(color: 'blue')]))
        end
-    end
+     end
   end
 
   describe '#collection_mapper' do

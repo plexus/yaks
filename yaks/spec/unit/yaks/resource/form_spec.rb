@@ -56,7 +56,7 @@ RSpec.describe Yaks::Resource::Form do
       form = Yaks::Resource::Form.new(name: :foo, action: "/my-action")
 
       expect(form.has_action?).to be true
-    end
+     end
 
     it 'should return false if form has not an action url' do
       form = Yaks::Resource::Form.new(name: :foo)
