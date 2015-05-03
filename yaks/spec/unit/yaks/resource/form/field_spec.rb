@@ -11,7 +11,7 @@ RSpec.describe Yaks::Resource::Form::Field do
         described_class.new(name: 'foo', type: :select, options: [
           Yaks::Resource::Form::Field::Option.new(label: 'foo', selected: false, value: 1),
           Yaks::Resource::Form::Field::Option.new(label: 'foo', selected: true, value: 2),
-          Yaks::Resource::Form::Field::Option.new(label: 'foo', selected: false, value: 3),
+          Yaks::Resource::Form::Field::Option.new(label: 'foo', selected: false, value: 3)
         ])
       end
 
@@ -25,7 +25,7 @@ RSpec.describe Yaks::Resource::Form::Field do
         described_class.new(name: 'foo', type: :select, options: [
           Yaks::Resource::Form::Field::Option.new(label: 'foo', selected: false, value: 1),
           Yaks::Resource::Form::Field::Option.new(label: 'foo', selected: false, value: 2),
-          Yaks::Resource::Form::Field::Option.new(label: 'foo', selected: false, value: 3),
+          Yaks::Resource::Form::Field::Option.new(label: 'foo', selected: false, value: 3)
         ])
       end
 
@@ -48,7 +48,7 @@ RSpec.describe Yaks::Resource::Form::Field do
           Yaks::Resource::Form::Field::Option.new(label: 'f', selected: true,  value: "1"),
           Yaks::Resource::Form::Field::Option.new(label: 'f', selected: false, value: "2"),
           Yaks::Resource::Form::Field::Option.new(label: 'f', selected: true,  value: "3"),
-          Yaks::Resource::Form::Field::Option.new(label: 'f', selected: false, value: "4"),
+          Yaks::Resource::Form::Field::Option.new(label: 'f', selected: false, value: "4")
         ])
       end
 

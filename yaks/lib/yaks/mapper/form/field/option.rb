@@ -17,7 +17,7 @@ module Yaks
               value: mapper.expand_value(value),
               label: mapper.expand_value(label),
               selected: mapper.expand_value(selected),
-              disabled: mapper.expand_value(disabled),
+              disabled: mapper.expand_value(disabled)
             )
           end
         end

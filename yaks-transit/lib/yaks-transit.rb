@@ -39,7 +39,7 @@ module Yaks
         Resource              => WriteHandler.new(Resource),
         Resource::Link        => WriteHandler.new(Resource::Link),
         Resource::Form        => WriteHandler.new(Resource::Form),
-        Resource::Form::Field => WriteHandler.new(Resource::Form::Field),
+        Resource::Form::Field => WriteHandler.new(Resource::Form::Field)
       }
 
       def call(resource, _env = {})

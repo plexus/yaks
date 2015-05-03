@@ -4,7 +4,7 @@ RSpec.describe Yaks::Pipeline do
     [
       [:step1, ->(i, _e) { i + 1 }],
       [:step2, ->(i, _e) { i + 10 }],
-      [:step3, ->(i, e) { i + e[:foo] }],
+      [:step3, ->(i, e) { i + e[:foo] }]
     ]
   }
   let(:env) {{foo: 100}}

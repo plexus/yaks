@@ -31,7 +31,7 @@ RSpec.describe Yaks::Mapper::Form::Fieldset do
         expect(fieldset.config)
           .to eql Yaks::Mapper::Form::Config.new(
             fields: [
-              Yaks::Mapper::Form::Field.new(name: :first_name, type: :text),
+              Yaks::Mapper::Form::Field.new(name: :first_name, type: :text)
             ],
             if: true
           )

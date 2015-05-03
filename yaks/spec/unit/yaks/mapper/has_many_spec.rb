@@ -22,7 +22,7 @@ RSpec.describe Yaks::Mapper::HasMany do
     fake(
       shoes: [
         fake(size: 9,    color: :blue),
-        fake(size: 11.5, color: :red),
+        fake(size: 11.5, color: :red)
       ]
     )
   }
