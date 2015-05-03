@@ -1,7 +1,7 @@
 module Yaks
   module Reader
     class JsonAPI
-      def call(parsed_json, env = {})
+      def call(parsed_json, _env = {})
         included = parsed_json['included'].nil? ? {} : parsed_json['included'].dup
 
         if parsed_json['data'].is_a?(Array)

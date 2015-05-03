@@ -3,7 +3,7 @@ module Yaks
     class Hal
       include Util
 
-      def call(parsed_json, env = {})
+      def call(parsed_json, _env = {})
         attributes = parsed_json.dup
         links      = convert_links(attributes.delete('_links') || {})
         embedded   = convert_embedded(attributes.delete('_embedded') || {})

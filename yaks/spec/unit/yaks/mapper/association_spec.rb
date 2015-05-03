@@ -3,7 +3,7 @@ RSpec.describe Yaks::Mapper::Association do
 
   let(:association_class) {
     Class.new(described_class) do
-      def map_resource(object, context)
+      def map_resource(_object, _context)
       end
     end
   }

@@ -247,7 +247,7 @@ RSpec.describe Yaks::Runner do
     let(:mapper_class) do
       Struct.new(:options) do
         include Yaks::FP::Callable
-        def call(obj, env) "mapped[#{obj}]" end
+        def call(obj, _env) "mapped[#{obj}]" end
       end
     end
 

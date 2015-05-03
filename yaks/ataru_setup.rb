@@ -69,7 +69,7 @@ module Setup
   # Yaks::Format.all.each do |format|
   #   mime_type format.format_name, format.media_type
   # end
-  def mime_type(*args)
+  def mime_type(*_args)
   end
 
 end

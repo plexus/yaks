@@ -4,7 +4,7 @@ require 'rubygems/package_task'
 require 'rspec/core/rake_task'
 require 'yard'
 
-def mutant_task(gem)
+def mutant_task(_gem)
   require 'mutant'
   task :mutant do
     pattern = ENV.fetch('PATTERN', 'Yaks*')

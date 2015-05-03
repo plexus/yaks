@@ -13,11 +13,11 @@ module Yaks
           @klass = klass
         end
 
-        def tag(o)
+        def tag(_o)
           Util.underscore(@klass.name.gsub(/.*::/, ''))
         end
 
-        def rep(o)
+        def rep(_o)
         end
 
         def string_rep(_) nil end
@@ -40,7 +40,7 @@ module Yaks
         Resource::Form::Field => WriteHandler.new(Resource::Form::Field),
       }
 
-      def call(resource, env = {})
+      def call(resource, _env = {})
         StringIO.new.tap do |io|
           ::Transit::Writer.new(:json, io, handlers: HANDLERS).write(resource)
         end.string
