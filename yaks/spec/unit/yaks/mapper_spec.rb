@@ -63,7 +63,7 @@ RSpec.describe Yaks::Mapper do
       end
 
       context "called with a block" do
-        let(:block) { Proc.new { object.bar } }
+        let(:block) { proc { object.bar } }
         let(:attributes) { [ Yaks::Mapper::Attribute.create(:foo, &block) ] }
         let(:attributes_from_model) { { foo: 'world' } }
 
