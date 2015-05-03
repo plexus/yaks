@@ -6,10 +6,6 @@
 # versions of RuboCop, may require this file to be generated again.
 
 # Offense count: 3
-Lint/AmbiguousRegexpLiteral:
-  Enabled: false
-
-# Offense count: 3
 # Configuration parameters: AllowSafeAssignment.
 Lint/AssignmentInCondition:
   Enabled: false

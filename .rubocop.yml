@@ -1,5 +1,8 @@
 inherit_from: .rubocop_todo.yml
 
+Lint/AmbiguousRegexpLiteral:
+  Enabled: false
+
 # def_delegators’ first symbol is the target, the rest are calls
 Style/AlignParameters:
   Enabled: false
