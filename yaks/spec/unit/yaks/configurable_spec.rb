@@ -19,7 +19,7 @@ end
 RSpec.describe Yaks::Configurable do
   let(:suffix) { SecureRandom.hex(16) }
   subject do
-    eval %Q<
+    eval %<
 class TestConfigurable#{suffix}
   class Config
     include Attribs.new(color: 'blue', taste: 'sour', contents: [])
