@@ -71,8 +71,7 @@ Style/CaseEquality:
 Style/ClassAndModuleChildren:
   Enabled: false
 
-# Offense count: 8
-# Cop supports --auto-correct.
+# including parametrised modules looks much better without this alignment
 Style/ClosingParenthesisIndentation:
   Enabled: false
 
