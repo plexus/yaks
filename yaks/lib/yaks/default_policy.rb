@@ -63,9 +63,9 @@ module Yaks
 
     # Derive the mapper type name from a collection
     #
-    # This inspects the first element of the collection, so it
-    # requires a non-empty collection. Will return nil if the
-    # collection is empty.
+    # This inspects the first element of the collection, so
+    # it requires a collection with truthy elements. Will
+    # return `nil` if the collection has no truthy elements.
     #
     # @param [#first] collection
     #
