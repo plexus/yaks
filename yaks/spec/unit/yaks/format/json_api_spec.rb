@@ -7,7 +7,7 @@ RSpec.describe Yaks::Format::JsonAPI do
 
     it 'should not include an "included" key' do
       expect(format.call(resource)).to eql(
-        {data: [{type: :wizards, foo: :bar}]}
+        {data: {type: :wizards, foo: :bar}}
       )
     end
   end
@@ -26,7 +26,6 @@ RSpec.describe Yaks::Format::JsonAPI do
           data: [{type: :wizards, foo: :bar}]
         }
       )
-
     end
   end
 
@@ -46,12 +45,8 @@ RSpec.describe Yaks::Format::JsonAPI do
     # TODO should it really behave this way? better to give preference to self link.
     it 'should give preference to the href attribute' do
       expect(format.call(resource)).to eql(
-        {data: [
-            {
-              type: :wizards,
-              href: '/the/href'
-            }
-          ]
+        {
+          data: {type: :wizards, href: '/the/href'}
         }
       )
     end
@@ -68,12 +63,8 @@ RSpec.describe Yaks::Format::JsonAPI do
     }
     it 'should use the self link in output' do
       expect(format.call(resource)).to eql(
-         {data: [
-             {
-                 type: :wizards,
-                 href: '/the/self/link'
-             }
-         ]
+         {
+           data: {type: :wizards, href: '/the/self/link'}
          }
       )
 
@@ -92,12 +83,10 @@ RSpec.describe Yaks::Format::JsonAPI do
     it 'should include links and included' do
       expect(format.call(resource)).to eql(
          {
-           data: [
-             {
-               type: :wizards,
-               links: {'favourite_spell'  => {linkage: {type: 'spells', id: 777}}}
-             }
-           ],
+           data: {
+             type: :wizards,
+             links: {'favourite_spell'  => {linkage: {type: 'spells', id: 777}}}
+           },
            included: [{type: :spells, id: 777, name: 'Lucky Sevens'}]
          }
       )
@@ -116,11 +105,8 @@ RSpec.describe Yaks::Format::JsonAPI do
     }
     it 'should not include links' do
       expect(format.call(resource)).to eql(
-         {data: [
-             {
-                 type: :wizards,
-             }
-         ]
+         {
+           data: {type: :wizards}
          }
       )
     end
@@ -135,11 +121,8 @@ RSpec.describe Yaks::Format::JsonAPI do
     }
     it 'should not include links' do
       expect(format.call(resource)).to eql(
-         {data: [
-             {
-                 type: :wizards
-             }
-         ]
+         {
+           data: {type: :wizards}
          }
       )
     end
