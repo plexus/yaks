@@ -153,11 +153,6 @@ Style/PercentLiteralDelimiters:
     - yaks/lib/yaks/breaking_changes.rb
     - yaks/spec/unit/yaks/config_spec.rb
 
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/PerlBackrefs:
-  Enabled: false
-
 # Offense count: 1
 # Configuration parameters: NamePrefix, NamePrefixBlacklist.
 Style/PredicateName:
