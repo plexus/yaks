@@ -69,7 +69,7 @@ module Yaks
               }
               .replace('.uri a') {|a|
                 a.attr('href', link.uri).content(link.uri)
-                 .attr('rel', link.rel.to_s)
+                  .attr('rel', link.rel.to_s)
               }
               .replace('.title') {|x| x.content(link.title.to_s) }
               .replace('.templated') {|x| x.content(link.templated?.inspect) }
@@ -79,8 +79,8 @@ module Yaks
 
       def render_subresources(resource, templ, sub_templ)
         templ = templ
-                  .replace('h1,h2,h3,h4') {|h| h.set_tag("h#{h.tag[/\d/].to_i.next}") }
-                  .add_class('collapsed')
+                .replace('h1,h2,h3,h4') {|h| h.set_tag("h#{h.tag[/\d/].to_i.next}") }
+                .add_class('collapsed')
         if resource.collection?
           resource.seq.map do |r|
             render(r, templ)
