@@ -88,11 +88,8 @@ Style/ConstantName:
 Style/Documentation:
   Enabled: false
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: AllowAdjacentOneLineDefs.
 Style/EmptyLineBetweenDefs:
-  Enabled: false
+  AllowAdjacentOneLineDefs: true
 
 # Offense count: 16
 # Cop supports --auto-correct.
