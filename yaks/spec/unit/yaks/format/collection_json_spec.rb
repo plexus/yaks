@@ -150,8 +150,8 @@ RSpec.describe Yaks::Format::CollectionJson do
       context 'and the form is not present' do
         let(:resource) {
           Yaks::Resource.new(
-          attributes: {foo: 'fooval', bar: 'barval'},
-          forms: [Yaks::Resource::Form.new(name: :not_the_form_name)]
+            attributes: {foo: 'fooval', bar: 'barval'},
+            forms: [Yaks::Resource::Form.new(name: :not_the_form_name)]
           )
         }
 
@@ -167,8 +167,8 @@ RSpec.describe Yaks::Format::CollectionJson do
       context 'and the form is present' do
         let(:resource) {
           Yaks::Resource.new(
-          attributes: {foo: 'fooval', bar: 'barval'},
-          forms: [Yaks::Resource::Form.new(name: :template_form_name)]
+            attributes: {foo: 'fooval', bar: 'barval'},
+            forms: [Yaks::Resource::Form.new(name: :template_form_name)]
           )
         }
 

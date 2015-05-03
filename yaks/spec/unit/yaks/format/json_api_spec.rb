@@ -52,10 +52,10 @@ RSpec.describe Yaks::Format::JsonAPI do
   context 'with a self link' do
     let(:resource) {
       Yaks::Resource.new(
-          type: 'wizard',
-          links: [
-              Yaks::Resource::Link.new(rel: :self, uri: '/the/self/link')
-          ]
+        type: 'wizard',
+        links: [
+            Yaks::Resource::Link.new(rel: :self, uri: '/the/self/link')
+        ]
       )
     }
     it 'should use the self link in output' do
@@ -68,10 +68,10 @@ RSpec.describe Yaks::Format::JsonAPI do
   context 'with subresources' do
     let(:resource) {
       Yaks::Resource.new(
-          type: 'wizard',
-          subresources: [
-              Yaks::Resource.new(rels: ['rel:favourite_spell'], type: 'spell', attributes: {id: 777, name: 'Lucky Sevens'})
-          ]
+        type: 'wizard',
+        subresources: [
+            Yaks::Resource.new(rels: ['rel:favourite_spell'], type: 'spell', attributes: {id: 777, name: 'Lucky Sevens'})
+        ]
       )
     }
     it 'should include links and included' do
@@ -88,10 +88,10 @@ RSpec.describe Yaks::Format::JsonAPI do
   context 'with null subresources' do
     let(:resource) {
       Yaks::Resource.new(
-          type: 'wizard',
-          subresources: [
-              Yaks::NullResource.new
-          ]
+        type: 'wizard',
+        subresources: [
+            Yaks::NullResource.new
+        ]
       )
     }
     it 'should not include links' do
@@ -104,8 +104,8 @@ RSpec.describe Yaks::Format::JsonAPI do
   context 'with no subresources or links' do
     let(:resource) {
       Yaks::Resource.new(
-          type: 'wizard',
-          subresources: []
+        type: 'wizard',
+        subresources: []
       )
     }
     it 'should not include links' do
