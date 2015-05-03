@@ -81,11 +81,6 @@ Style/CommentAnnotation:
   Enabled: false
 
 # Offense count: 1
-# Cop supports --auto-correct.
-Style/CommentIndentation:
-  Enabled: false
-
-# Offense count: 1
 Style/ConstantName:
   Enabled: false
 

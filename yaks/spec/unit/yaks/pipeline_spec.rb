@@ -108,62 +108,62 @@ RSpec.describe Yaks::Pipeline do
 end
 
 
-    # describe 'after' do
-    #   let(:hooks) { proc { after(:format) { :after_format_impl } } }
+# describe 'after' do
+#   let(:hooks) { proc { after(:format) { :after_format_impl } } }
 
-    #   it 'should insert a hook after the step' do
-    #     expect(runner.steps.map(&:first)).to eql [
-    #       :map, :format, :after_format, :primitivize, :serialize
-    #     ]
-    #     expect(runner.steps[1].last).to be runner.formatter
-    #     expect(runner.steps[2].last.call).to be :after_format_impl
-    #   end
-    # end
+#   it 'should insert a hook after the step' do
+#     expect(runner.steps.map(&:first)).to eql [
+#       :map, :format, :after_format, :primitivize, :serialize
+#     ]
+#     expect(runner.steps[1].last).to be runner.formatter
+#     expect(runner.steps[2].last.call).to be :after_format_impl
+#   end
+# end
 
-    # describe 'around' do
-    #   let(:hooks) do
-    #     proc {
-    #       around(:serialize) do |res, env, &block|
-    #         "serialized[#{env}][#{block.call(res, env)}]"
-    #       end
-    #     }
-    #   end
+# describe 'around' do
+#   let(:hooks) do
+#     proc {
+#       around(:serialize) do |res, env, &block|
+#         "serialized[#{env}][#{block.call(res, env)}]"
+#       end
+#     }
+#   end
 
-    #   it 'should insert a hook around the step' do
-    #     expect(runner.steps.map(&:first)).to eql [
-    #       :map, :format, :primitivize, :serialize
-    #     ]
-    #     expect(runner.steps.assoc(:serialize).last.call(["res1"], "env1")).to eql(
-    #       "serialized[env1][[\n  \"res1\"\n]]"
-    #     )
-    #   end
-    # end
+#   it 'should insert a hook around the step' do
+#     expect(runner.steps.map(&:first)).to eql [
+#       :map, :format, :primitivize, :serialize
+#     ]
+#     expect(runner.steps.assoc(:serialize).last.call(["res1"], "env1")).to eql(
+#       "serialized[env1][[\n  \"res1\"\n]]"
+#     )
+#   end
+# end
 
-    # describe 'around' do
-    #   let(:hooks) { ->(*) { skip(:serialize) } }
+# describe 'around' do
+#   let(:hooks) { ->(*) { skip(:serialize) } }
 
-    #   it 'should skip a certain step' do
-    #     expect(runner.steps.map(&:first)).to eql [
-    #       :map, :format, :primitivize
-    #     ]
-    #   end
-    # end
+#   it 'should skip a certain step' do
+#     expect(runner.steps.map(&:first)).to eql [
+#       :map, :format, :primitivize
+#     ]
+#   end
+# end
 
-    # describe 'multiple hooks' do
-    #   let(:hooks) {
-    #     proc {
-    #       after(:format) { :after_format_impl }
-    #       skip(:serialize)
-    #     }
-    #   }
+# describe 'multiple hooks' do
+#   let(:hooks) {
+#     proc {
+#       after(:format) { :after_format_impl }
+#       skip(:serialize)
+#     }
+#   }
 
-    #   it 'should insert the hooks' do
-    #     expect(runner.steps.map(&:first)).to eql [
-    #       :map, :format, :after_format, :primitivize
-    #     ]
-    #   end
+#   it 'should insert the hooks' do
+#     expect(runner.steps.map(&:first)).to eql [
+#       :map, :format, :after_format, :primitivize
+#     ]
+#   end
 
-    #   it 'should pass on unchanged steps' do
-    #     expect(runner.steps.assoc(:map)[1]).to eql runner.mapper
-    #   end
-    # end
+#   it 'should pass on unchanged steps' do
+#     expect(runner.steps.assoc(:map)[1]).to eql runner.mapper
+#   end
+# end
