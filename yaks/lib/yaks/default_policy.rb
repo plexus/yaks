@@ -73,11 +73,8 @@ module Yaks
     #
     # @raise [NameError]
     def derive_type_from_collection(collection)
-      if collection.any?
-        derive_type_from_mapper_class(
-          derive_mapper_from_object(collection.first)
-        )
-      end
+      return if collection.none?
+      derive_type_from_mapper_class(derive_mapper_from_object(collection.first))
     end
 
     def derive_mapper_from_association(association)

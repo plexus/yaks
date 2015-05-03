@@ -69,11 +69,6 @@ Style/GlobalVars:
   Enabled: false
 
 # Offense count: 1
-# Configuration parameters: MinBodyLength.
-Style/GuardClause:
-  Enabled: false
-
-# Offense count: 1
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 Style/MethodName:
   Enabled: false
