@@ -95,6 +95,5 @@ module Yaks
     def expand_rel(relname)
       URITemplate.new(@options[:rel_template]).expand(rel: relname)
     end
-
   end
 end

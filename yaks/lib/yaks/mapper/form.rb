@@ -34,7 +34,6 @@ module Yaks
 
         Resource::Form.new(attrs)
       end
-
     end
   end
 end

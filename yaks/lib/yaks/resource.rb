@@ -84,6 +84,5 @@ module Yaks
     def add_subresource(subresource)
       append_to(:subresources, subresource)
     end
-
   end
 end

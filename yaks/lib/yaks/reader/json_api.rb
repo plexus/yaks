@@ -49,7 +49,6 @@ module Yaks
           end
         end.compact
       end
-
     end
   end
 end

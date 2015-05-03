@@ -56,7 +56,6 @@ module Yaks
           end.with(rels: [rel])
         end
       end
-
     end
   end
 end

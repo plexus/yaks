@@ -77,7 +77,6 @@ module Yaks
         options = options.merge(templated: true) if templated?
         options.reject{|key| [:expand, :replace, :if].include? key }
       end
-
     end
   end
 end
