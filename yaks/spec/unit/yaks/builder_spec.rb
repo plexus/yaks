@@ -90,5 +90,4 @@ RSpec.describe Yaks::Builder do
       expect(subject.inspect).to eql '#<Builder Buildable [:foo, :bar]>'
     end
   end
-
 end

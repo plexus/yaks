@@ -62,7 +62,6 @@ RSpec.describe Yaks::Format::JsonAPI do
       expect(format.call(resource)).to eql(
         data: {type: :wizards, href: '/the/self/link'}
       )
-
     end
   end
 
@@ -84,7 +83,6 @@ RSpec.describe Yaks::Format::JsonAPI do
         included: [{type: :spells, id: 777, name: 'Lucky Sevens'}]
       )
     end
-
   end
 
   context 'with null subresources' do
@@ -116,5 +114,4 @@ RSpec.describe Yaks::Format::JsonAPI do
       )
     end
   end
-
 end

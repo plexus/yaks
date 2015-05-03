@@ -272,5 +272,4 @@ RSpec.describe Yaks::Runner do
       end
     end
   end
-
 end

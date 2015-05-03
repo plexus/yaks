@@ -58,5 +58,4 @@ RSpec.describe Yaks::DefaultPolicy do
       expect(policy.expand_rel('rockets')).to eql 'http://foo/?rel=rockets'
     end
   end
-
 end

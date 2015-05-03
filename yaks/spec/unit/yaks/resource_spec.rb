@@ -146,5 +146,4 @@ RSpec.describe Yaks::Resource do
       expect(described_class.new.with_collection([:foo])).to eql Yaks::Resource.new
     end
   end
-
 end

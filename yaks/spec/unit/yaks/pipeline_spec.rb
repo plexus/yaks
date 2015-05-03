@@ -103,7 +103,6 @@ RSpec.describe Yaks::Pipeline do
   end
 
   describe '#inverse' do
-
   end
 end
 

@@ -58,5 +58,4 @@ RSpec.describe Yaks::Mapper::Form::Field::Option do
       end
     end
   end
-
 end

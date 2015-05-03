@@ -161,7 +161,6 @@ RSpec.describe Yaks::CollectionMapper, '#call' do
   end
 
   context 'with an empty collection' do
-
     context 'without an item_mapper specified' do
       let(:context) { Yaks::Util.slice_hash(super(), :policy, :env, :mapper_stack) }
 
@@ -177,6 +176,5 @@ RSpec.describe Yaks::CollectionMapper, '#call' do
         expect(mapper.([]).rels).to eq ['rel:the_types']
       end
     end
-
   end
 end

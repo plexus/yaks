@@ -86,5 +86,4 @@ RSpec.describe Yaks::Mapper::Form::Fieldset do
       end
     end
   end
-
 end

@@ -279,7 +279,6 @@ RSpec.describe Yaks::Mapper do
     it "should optionally take a rack env" do
       expect { mapper.call(fake, {}) }.to_not raise_error
     end
-
   end # describe '#call'
 
   describe '.mapper_name' do
@@ -450,5 +449,4 @@ RSpec.describe Yaks::Mapper do
       end
     end
   end
-
 end

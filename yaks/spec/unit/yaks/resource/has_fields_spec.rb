@@ -24,7 +24,6 @@ RSpec.describe Yaks::Resource::HasFields do
   subject(:with_fields) { class_with_fields.new(fields: fields) }
 
   describe '#map_fields' do
-
     let(:update_fields) do
       ->(field) do
         field.with(value: "updated")
@@ -88,7 +87,5 @@ RSpec.describe Yaks::Resource::HasFields do
         ])
       ]
     end
-
   end
-
 end

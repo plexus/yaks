@@ -90,7 +90,6 @@ RSpec.describe Yaks::Mapper::Form::Config do
             ]
           )
         ]
-
     end
   end
 end

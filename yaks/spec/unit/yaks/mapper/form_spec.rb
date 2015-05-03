@@ -140,5 +140,4 @@ RSpec.describe Yaks::Mapper::Form do
       end
     end
   end
-
 end

@@ -90,5 +90,4 @@ RSpec.describe Yaks::DefaultPolicy, '#derive_mapper_from_object' do
       }.to raise_error /Failed to find a mapper for #<Namespace::Nested::Mung:0x\h+>. Did you mean to implement MungMapper\?/
     end
   end
-
 end

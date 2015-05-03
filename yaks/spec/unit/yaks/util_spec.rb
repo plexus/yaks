@@ -81,7 +81,6 @@ RSpec.describe Yaks::Util do
       expect([args, opts]).to eql [[:a, :b], {}]
     end
   end
-
 end
 
 RSpec.describe Yaks::Util::Deprecated, '#deprecated_alias' do

@@ -79,7 +79,6 @@ RSpec.describe Yaks::Primitivize do
         expect( primitivizer.call( Vector[:foo, :baxxx, :bazz] ) ).to eql( [3, 5, 4] )
       end
     end
-
   end
 
   describe "#map" do
@@ -92,5 +91,4 @@ RSpec.describe Yaks::Primitivize do
       expect(primitivizer.call("foo")).to eql "FOO"
     end
   end
-
 end

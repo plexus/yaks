@@ -91,12 +91,6 @@ Style/Documentation:
 Style/EmptyLineBetweenDefs:
   AllowAdjacentOneLineDefs: true
 
-# Offense count: 28
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/EmptyLinesAroundBlockBody:
-  Enabled: false
-
 # Offense count: 10
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.

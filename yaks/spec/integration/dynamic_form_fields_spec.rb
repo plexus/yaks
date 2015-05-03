@@ -17,7 +17,6 @@ RSpec.describe 'dynamic form fields' do
   let(:object) { [:a, :b, :c] }
 
   it 'should create dynamic form fields' do
-
     expect(yaks.map(object, mapper: mapper)).to eql Yaks::Resource.new(
       type: :awesome,
       forms: [

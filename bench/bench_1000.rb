@@ -52,7 +52,6 @@ exit
 
 Benchmark.ips(10) do |job|
   Yaks::Format.names.each do |format|
-
     job.report "#{format} ; #{SIZE} objects in a list ; no nesting", &do_flat.(format)
     job.report "#{format} ; #{SIZE} objects nested", &do_deep.(format)
   end

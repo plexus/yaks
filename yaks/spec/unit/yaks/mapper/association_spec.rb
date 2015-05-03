@@ -76,7 +76,6 @@ RSpec.describe Yaks::Mapper::Association do
         expect(association.add_to_resource(Yaks::Resource.new, parent_mapper, yaks_context).subresources.length).to be 0
       end
     end
-
   end
 
   describe '#render_as_link?' do
