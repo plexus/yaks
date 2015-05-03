@@ -117,8 +117,10 @@ module Matchers
   end
 end
 
-module RSpec::Matchers
-  def deep_eql(exp)
-    Matchers::DeepEql.new(exp)
+module RSpec
+  module Matchers
+    def deep_eql(exp)
+      ::Matchers::DeepEql.new(exp)
+    end
   end
 end
