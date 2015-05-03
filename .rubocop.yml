@@ -176,11 +176,8 @@ Style/SpaceInsideBlockBraces:
 Style/SpaceInsideBrackets:
   Enabled: false
 
-# Offense count: 243
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBraces, SupportedStyles.
 Style/SpaceInsideHashLiteralBraces:
-  Enabled: false
+  EnforcedStyle: no_space
 
 # Offense count: 50
 # Cop supports --auto-correct.

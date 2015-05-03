@@ -33,7 +33,7 @@ RSpec.describe Yaks::Mapper::Attribute do
   describe "#add_to_resource" do
     it "should add itself to a resource based on a lookup" do
       expect(attribute.add_to_resource(Yaks::Resource.new, mapper, yaks_context))
-        .to eql(Yaks::Resource.new(attributes: { the_name: 123 }))
+        .to eql(Yaks::Resource.new(attributes: {the_name: 123}))
     end
 
     context "when the attribute has a block" do
@@ -41,7 +41,7 @@ RSpec.describe Yaks::Mapper::Attribute do
 
       it "should add itself to a resource with the block value" do
         expect(attribute.add_to_resource(Yaks::Resource.new, mapper, yaks_context))
-          .to eql(Yaks::Resource.new(attributes: { the_name: "Alice" }))
+          .to eql(Yaks::Resource.new(attributes: {the_name: "Alice"}))
       end
 
       context "using the mapper context" do
@@ -49,7 +49,7 @@ RSpec.describe Yaks::Mapper::Attribute do
 
         it "should add itself to a resource with the block value" do
           expect(attribute.add_to_resource(Yaks::Resource.new, mapper, yaks_context))
-            .to eql(Yaks::Resource.new(attributes: { the_name: "Bob" }))
+            .to eql(Yaks::Resource.new(attributes: {the_name: "Bob"}))
         end
       end
     end

@@ -20,7 +20,7 @@ module Yaks
             def_add(type,
                     create: Field::Builder,
                     append_to: :fields,
-                    defaults: { type: type })
+                    defaults: {type: type})
           end
           def_add :legend, create: Legend, append_to: :fields
           def_add :dynamic, create: DynamicField, append_to: :fields

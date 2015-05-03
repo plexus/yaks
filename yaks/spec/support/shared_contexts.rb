@@ -14,7 +14,7 @@ RSpec.shared_context 'yaks context' do
   let(:policy)            { Yaks::DefaultPolicy.new }
   let(:rack_env)          { {} }
   let(:mapper_stack)      { [] }
-  let(:yaks_context)      { { policy: policy, env: rack_env, mapper_stack: mapper_stack } }
+  let(:yaks_context)      { {policy: policy, env: rack_env, mapper_stack: mapper_stack} }
 end
 
 RSpec.shared_context 'plant collection resource' do

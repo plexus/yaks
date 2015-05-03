@@ -7,7 +7,7 @@ RSpec.describe Yaks::Pipeline do
       [:step3, ->(i, e) { i + e[:foo] }],
     ]
   }
-  let(:env) {{ foo: 100 }}
+  let(:env) {{foo: 100}}
 
   describe '#call' do
     it 'should call steps in turn, passing in the last result and env' do

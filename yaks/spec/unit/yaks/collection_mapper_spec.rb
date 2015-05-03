@@ -6,10 +6,10 @@ RSpec.describe Yaks::CollectionMapper, '#call' do
   let(:mapper_stack) { [] }
 
   let(:context) {
-    { item_mapper: item_mapper,
-      policy: policy,
-      env: {},
-      mapper_stack: mapper_stack }
+    {item_mapper: item_mapper,
+     policy: policy,
+     env: {},
+     mapper_stack: mapper_stack}
   }
 
   let(:collection) { [] }
@@ -113,7 +113,7 @@ RSpec.describe Yaks::CollectionMapper, '#call' do
       expect(mapper.call(collection)).to eql Yaks::CollectionResource.new(
         type: 'the_type',
         links: [],
-        attributes: { foo: 123, bar: 'pi la~~~' },
+        attributes: {foo: 123, bar: 'pi la~~~'},
         members: [],
         rels: ['rel:the_types']
       )
@@ -131,7 +131,7 @@ RSpec.describe Yaks::CollectionMapper, '#call' do
       expect(mapper.call(collection)).to eql Yaks::CollectionResource.new(
         type: 'the_type',
         links: [ Yaks::Resource::Link.new(rel: :self, uri: 'http://api.example.com/orders') ],
-        attributes: { },
+        attributes: {},
         members: [],
         rels: ['rel:the_types']
       )

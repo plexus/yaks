@@ -22,12 +22,12 @@ RSpec.describe Yaks::CollectionResource do
           Yaks::Resource::Link.new(rel: 'http://rels/summary', uri: 'http://order/10/summary'),
           Yaks::Resource::Link.new(rel: :profile, uri: 'http://rels/collection')
         ],
-        attributes: { total: 10.00 },
+        attributes: {total: 10.00},
         members: [
           Yaks::Resource.new(
             type: 'order',
             links: [Yaks::Resource::Link.new(rel: :self, uri: 'http://order/10')],
-            attributes: { customer: 'John Doe', price: 10.00 }
+            attributes: {customer: 'John Doe', price: 10.00}
           )
         ],
         rels: ['http://api.example.org/rels/orders']
@@ -47,7 +47,7 @@ RSpec.describe Yaks::CollectionResource do
         Yaks::Resource.new(
           type: 'order',
           links: [Yaks::Resource::Link.new(rel: :self, uri: 'http://order/10')],
-          attributes: { customer: 'John Doe', price: 10.00 }
+          attributes: {customer: 'John Doe', price: 10.00}
         )
       ]
     }
@@ -57,7 +57,7 @@ RSpec.describe Yaks::CollectionResource do
   end
 
   describe '#seq' do
-    let(:init_opts) { { members: [1, 2, 3] } }
+    let(:init_opts) { {members: [1, 2, 3]} }
 
     it 'iterates over the members' do
       expect(subject.seq.map(&:next)).to eql [2, 3, 4]

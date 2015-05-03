@@ -15,7 +15,7 @@ RSpec.describe Yaks::Resource do
     end
 
     it 'should verify subresources is an array' do
-      expect { Yaks::Resource.new(subresources: { '/rel/comments' => []}) }
+      expect { Yaks::Resource.new(subresources: {'/rel/comments' => []}) }
         .to raise_exception /comments/
     end
 
@@ -57,7 +57,7 @@ RSpec.describe Yaks::Resource do
 
   describe '#self_link' do
     let(:init_opts) {
-      { links:
+      {links:
         [
           Yaks::Resource::Link.new(rel: :self, uri: 'foo'),
           Yaks::Resource::Link.new(rel: :self, uri: 'bar'),
@@ -138,7 +138,7 @@ RSpec.describe Yaks::Resource do
   end
 
   describe "#merge_attributes" do
-    let(:init_opts) {{ attributes: {foo: 1, bar: 2} }}
+    let(:init_opts) {{attributes: {foo: 1, bar: 2}}}
     it "should merge attributes into any existing attributes" do
       expect(resource.merge_attributes(bar: 3, baz: 4))
         .to eql Yaks::Resource.new(attributes: {foo: 1, bar: 3, baz: 4})

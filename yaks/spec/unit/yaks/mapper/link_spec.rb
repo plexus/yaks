@@ -44,7 +44,7 @@ RSpec.describe Yaks::Mapper::Link do
     end
 
     context 'with remove: true' do
-      let(:options) { { remove: true } }
+      let(:options) { {remove: true} }
       let(:resource) {
         Yaks::Resource.new(links: [
           Yaks::Resource::Link.new(rel: :next, uri: '/api/next'),
@@ -77,7 +77,7 @@ RSpec.describe Yaks::Mapper::Link do
     end
 
     context 'with replace: true' do
-      let(:options) { { replace: true } }
+      let(:options) { {replace: true} }
       let(:resource) {
         Yaks::Resource.new(links: [
           Yaks::Resource::Link.new(rel: :next, uri: '/api/next'),
@@ -96,7 +96,7 @@ RSpec.describe Yaks::Mapper::Link do
     end
 
     context 'with :if defined and resolving to true' do
-      let(:options) { { if: ->{ true } } }
+      let(:options) { {if: ->{ true }} }
 
       it 'should render the link' do
         expect(link.add_to_resource(Yaks::Resource.new, mapper, yaks_context)).to eql(
@@ -106,7 +106,7 @@ RSpec.describe Yaks::Mapper::Link do
     end
 
     context 'with :if defined and resolving to false' do
-      let(:options) { { if: ->{ false } } }
+      let(:options) { {if: ->{ false }} }
 
       it 'should not render the link' do
         expect(link.add_to_resource(Yaks::Resource.new, mapper, yaks_context)).to eql(
@@ -194,7 +194,7 @@ RSpec.describe Yaks::Mapper::Link do
     end
 
     context 'with a title set' do
-      let(:options) { { title: 'link title' } }
+      let(:options) { {title: 'link title'} }
 
       it 'should set the title on the resource link' do
         expect(resource_link.title).to eq 'link title'
@@ -202,7 +202,7 @@ RSpec.describe Yaks::Mapper::Link do
     end
 
     context 'with a title lambda' do
-      let(:options) { { title: -> { "say #{mapper_method}" } } }
+      let(:options) { {title: -> { "say #{mapper_method}" }} }
 
       before do
         mapper_class.class_eval do
@@ -226,7 +226,7 @@ RSpec.describe Yaks::Mapper::Link do
     end
 
     context 'with a if lambda resolving to true' do
-      let(:options) { { if: -> { add_link? } } }
+      let(:options) { {if: -> { add_link? }} }
 
       before do
         mapper_class.class_eval do
@@ -242,7 +242,7 @@ RSpec.describe Yaks::Mapper::Link do
     end
 
     context 'with a if lambda resolving to false' do
-      let(:options) { { if: -> { add_link? } } }
+      let(:options) { {if: -> { add_link? }} }
 
       before do
         mapper_class.class_eval do

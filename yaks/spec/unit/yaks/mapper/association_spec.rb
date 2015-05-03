@@ -81,7 +81,7 @@ RSpec.describe Yaks::Mapper::Association do
   describe '#render_as_link?' do
     let(:href)     { '/foo/{bar}/baz' }
     let(:link_if)  { -> { env.fetch('env_entry') == 123 } }
-    let(:rack_env) { { 'env_entry' => 123 } }
+    let(:rack_env) { {'env_entry' => 123} }
 
     let(:render_as_link?) { association.render_as_link?(parent_mapper) }
 
@@ -92,7 +92,7 @@ RSpec.describe Yaks::Mapper::Association do
     end
 
     context 'when evaluating to false' do
-      let(:rack_env) { { 'env_entry' => 0 } }
+      let(:rack_env) { {'env_entry' => 0} }
 
       it 'should resolve :link_if in the context of the mapper' do
         expect(render_as_link?).to be false

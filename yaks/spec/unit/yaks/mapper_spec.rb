@@ -51,8 +51,8 @@ RSpec.describe Yaks::Mapper do
 
     context "with attribute" do
       let(:attributes) { [ Yaks::Mapper::Attribute.create(:foo) ] }
-      let(:attributes_from_model) { { foo: 'hello' } }
-      let(:non_filtered_attributes) { { } }
+      let(:attributes_from_model) { {foo: 'hello'} }
+      let(:non_filtered_attributes) { {} }
 
       context "called without block" do
         before do
@@ -65,7 +65,7 @@ RSpec.describe Yaks::Mapper do
       context "called with a block" do
         let(:block) { proc { object.bar } }
         let(:attributes) { [ Yaks::Mapper::Attribute.create(:foo, &block) ] }
-        let(:attributes_from_model) { { foo: 'world' } }
+        let(:attributes_from_model) { {foo: 'world'} }
 
         before do
           mapper_class.attribute :foo, &block
@@ -83,8 +83,8 @@ RSpec.describe Yaks::Mapper do
         ]
       end
 
-      let(:attributes_from_model) { { foo: 'hello', bar: 'world' } }
-      let(:non_filtered_attributes) { { bar: 'world' } }
+      let(:attributes_from_model) { {foo: 'hello', bar: 'world'} }
+      let(:non_filtered_attributes) { {bar: 'world'} }
 
       before do
         mapper_class.attributes :foo, :bar
@@ -136,8 +136,8 @@ RSpec.describe Yaks::Mapper do
 
       describe 'has_one' do
         let(:has_one_opts) do
-          { mapper: widget_mapper,
-            rel: 'http://foo.bar/rels/widgets' }
+          {mapper: widget_mapper,
+           rel: 'http://foo.bar/rels/widgets'}
         end
 
         before do
@@ -159,7 +159,7 @@ RSpec.describe Yaks::Mapper do
 
         context 'with unspecified mapper' do
           let(:has_one_opts) do
-            { rel: 'http://foo.bar/rels/widgets' }
+            {rel: 'http://foo.bar/rels/widgets'}
           end
 
           before do
@@ -177,7 +177,7 @@ RSpec.describe Yaks::Mapper do
 
         context 'with unspecified rel' do
           let(:has_one_opts) do
-            { mapper: widget_mapper }
+            {mapper: widget_mapper}
           end
 
           before do
