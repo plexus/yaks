@@ -41,10 +41,6 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Max: 8
 
-# Offense count: 2
-Style/CaseEquality:
-  Enabled: false
-
 # Offense count: 3
 # Configuration parameters: Keywords.
 Style/CommentAnnotation:
