@@ -1,8 +1,9 @@
 #!/usr/bin/env ruby
 
+require 'English'
 require 'benchmark/ips'
-require 'yaks'
 require 'ruby-prof'
+require 'yaks'
 
 SIZE = 20
 $timestamp = Time.now.utc.iso8601.gsub('-', '').gsub(':', '')
@@ -35,7 +36,7 @@ def profile!(name)
   RubyProf.start
   yield
   results = RubyProf.stop
-  File.open "/tmp/#{name}-#{$timestamp}.out.#{$$}", 'w' do |file|
+  File.open "/tmp/#{name}-#{$timestamp}.out.#{$PROCESS_ID}", 'w' do |file|
     RubyProf::CallTreePrinter.new(results).print(file)
   end
 end
