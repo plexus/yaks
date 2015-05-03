@@ -27,7 +27,7 @@ module Matchers
     def recurse(target, expectation)
       # leave this in two lines so it doesn't short circuit
       result = DeepEql.new(expectation, stack, diffs).matches?(target)
-      @result = @result && result
+      @result &&= result
     end
 
     def stack_as_jsonpath
