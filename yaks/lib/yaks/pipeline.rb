@@ -33,7 +33,7 @@ module Yaks
 
     def inverse
       unless transitive?
-        raise RuntimeError, "Unable to get inverse pipeline, not all pipeline steps are transitive."
+        raise "Unable to get inverse pipeline, not all pipeline steps are transitive."
       end
 
       self.class.new(steps.map {|name, step| [name, step.inverse]}.reverse)
