@@ -25,11 +25,11 @@ RSpec.describe Yaks::Resource do
     end
 
     it 'should work without args' do
-      expect( Yaks::Resource.new ).to be_a Yaks::Resource
+      expect(Yaks::Resource.new).to be_a Yaks::Resource
     end
 
     it 'should take defaults when no args are passed' do
-      expect( Yaks::Resource.new.rels ).to eq []
+      expect(Yaks::Resource.new.rels).to eq []
     end
   end
 

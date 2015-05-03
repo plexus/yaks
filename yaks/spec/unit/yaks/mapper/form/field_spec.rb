@@ -1,7 +1,7 @@
 RSpec.describe Yaks::Mapper::Form::Field do
   include_context 'yaks context'
 
-  let(:field)     { described_class.new( full_args ) }
+  let(:field)     { described_class.new(full_args) }
   let(:name)      { :the_field }
   let(:full_args) { {name: name, options: options}.merge(args) }
   let(:options)   { [] }

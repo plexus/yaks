@@ -1,5 +1,5 @@
 RSpec.describe Yaks::DefaultPolicy do
-  subject(:policy) { described_class.new( options ) }
+  subject(:policy) { described_class.new(options) }
 
   let(:options) { {} }
   let(:association) { Yaks::Mapper::HasMany.create('shoes') }

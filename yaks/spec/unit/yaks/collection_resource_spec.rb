@@ -41,7 +41,7 @@ RSpec.describe Yaks::CollectionResource do
         Yaks::Resource::Link.new(rel: :profile, uri: 'http://rels/collection')
       ]
     }
-    its(:attributes) { should eql( total: 10.00 ) }
+    its(:attributes) { should eql(total: 10.00) }
     its(:members)    {
       should eql [
         Yaks::Resource.new(

@@ -34,7 +34,7 @@ RSpec.describe Yaks::Primitivize do
 
     it 'should handle arrays recursively' do
       expect(primitivizer.call([:foo, [:wassup, :friends], 123, '456']))
-        .to eql( ['foo', ['wassup', 'friends'], 123, '456'] )
+        .to eql(['foo', ['wassup', 'friends'], 123, '456'])
     end
 
     it "should handle URIs by turning them to strings" do
@@ -76,7 +76,7 @@ RSpec.describe Yaks::Primitivize do
       end
 
       it 'should evaluate in the context of primitivize' do
-        expect( primitivizer.call( Vector[:foo, :baxxx, :bazz] ) ).to eql( [3, 5, 4] )
+        expect(primitivizer.call(Vector[:foo, :baxxx, :bazz])).to eql([3, 5, 4])
       end
     end
   end

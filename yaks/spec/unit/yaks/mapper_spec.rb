@@ -399,11 +399,11 @@ RSpec.describe Yaks::Mapper do
     subject(:expanded) { mapper.expand_uri(*args) }
 
     before do
-      mapper.call( Struct.new(:x, :y) {
+      mapper.call(Struct.new(:x, :y) {
         def foo
           '/foo/foo'
         end
-      }.new(6, 7) )
+      }.new(6, 7))
     end
 
     context "with full expansion" do

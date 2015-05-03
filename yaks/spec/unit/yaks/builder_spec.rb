@@ -55,7 +55,7 @@ RSpec.describe Yaks::Builder do
     end
 
     it 'should unwrap again' do
-      expect( subject.create(3, 4) { finalize } ).to eql Buildable.new(foo: 7, bar: 8)
+      expect(subject.create(3, 4) { finalize }).to eql Buildable.new(foo: 7, bar: 8)
     end
 
     context 'with no methods to forward' do

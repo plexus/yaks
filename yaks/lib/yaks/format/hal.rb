@@ -87,7 +87,7 @@ module Yaks
       def serialize_embedded(subresources)
         subresources.each_with_object({}) do |sub, memo|
           memo[sub.rels.first] = if sub.collection?
-                                   sub.map( &method(:serialize_resource) )
+                                   sub.map(&method(:serialize_resource))
                                  elsif sub.null_resource?
                                    nil
                                  else

@@ -87,7 +87,7 @@ module Yaks
     # @param association [Yaks::Mapper::Association]
     # @return [String]
     def derive_rel_from_association(association)
-      expand_rel( association.name )
+      expand_rel(association.name)
     end
 
     # @param relname [String]

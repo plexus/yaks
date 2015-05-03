@@ -1,7 +1,7 @@
 RSpec.describe Yaks::Mapper::Form do
   include_context 'yaks context'
 
-  let(:form) { described_class.create( *full_args, &block_arg ) }
+  let(:form) { described_class.create(*full_args, &block_arg) }
   let(:name) { :the_name }
   let(:full_args) { [{name: name}.merge(args)] }
   let(:block_arg) { nil }

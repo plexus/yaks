@@ -16,7 +16,7 @@ RSpec.describe Yaks::Resource::Form::Field do
       end
 
       it 'should return the selected value' do
-        expect( subject.value ).to eql 2
+        expect(subject.value).to eql 2
       end
     end
 
@@ -30,7 +30,7 @@ RSpec.describe Yaks::Resource::Form::Field do
       end
 
       it 'should return nothing' do
-        expect( subject.value ).to be nil
+        expect(subject.value).to be nil
       end
     end
   end
