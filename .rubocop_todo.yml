@@ -18,10 +18,6 @@ Lint/AssignmentInCondition:
 Lint/HandleExceptions:
   Enabled: false
 
-# Offense count: 1
-Lint/UnderscorePrefixedVariableName:
-  Enabled: false
-
 # Offense count: 19
 Metrics/AbcSize:
   Max: 54
