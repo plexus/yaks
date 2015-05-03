@@ -74,7 +74,7 @@ RSpec.describe Yaks::NullResource do
     its(:each) { should be_a Enumerator }
 
     it 'should not yield anything' do
-      null_resource.each { fail }
+      null_resource.each { raise }
     end
   end
 

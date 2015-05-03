@@ -161,11 +161,8 @@ Style/PredicateName:
 Style/Semicolon:
   AllowAsExpressionSeparator: true
 
-# Offense count: 16
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
 Style/SignalException:
-  Enabled: false
+  EnforcedStyle: only_raise
 
 # Offense count: 9
 # Cop supports --auto-correct.

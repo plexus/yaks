@@ -11,7 +11,7 @@ def mutant_task(_gem)
     opts    = ENV.fetch('MUTANT_OPTS', '').split(' ')
     args    = %w(-Ilib -ryaks --use rspec --score 100) + opts + [pattern]
     result  = Mutant::CLI.run(args)
-    fail unless result == Mutant::CLI::EXIT_SUCCESS
+    raise unless result == Mutant::CLI::EXIT_SUCCESS
   end
 end
 
