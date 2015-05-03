@@ -22,7 +22,7 @@ def gem_tasks(gem)
 
   mutant_task(gem) if RUBY_ENGINE == 'ruby'
 
-  RSpec::Core::RakeTask.new(:rspec) do |t, task_args|
+  RSpec::Core::RakeTask.new(:rspec) do |t, _task_args|
     t.rspec_opts = "-Ispec"
     t.pattern = "spec"
   end

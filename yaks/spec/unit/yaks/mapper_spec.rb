@@ -338,7 +338,7 @@ RSpec.describe Yaks::Mapper do
     let(:attribute) { fake('Attribute') }
 
     it 'should receive a context' do
-      stub(attribute).add_to_resource(any_args) {|r,_,_| Yaks::Resource.new}
+      stub(attribute).add_to_resource(any_args) {|_r,_,_| Yaks::Resource.new}
 
       mapper.config.attributes[0..-1] = [attribute]
       mapper.call(instance)
@@ -349,7 +349,7 @@ RSpec.describe Yaks::Mapper do
 
   shared_examples 'something that can be added to a resource' do
     it 'should receive a context' do
-      stub(object).add_to_resource(any_args) {|r,_,_| Yaks::Resource.new}
+      stub(object).add_to_resource(any_args) {|_r,_,_| Yaks::Resource.new}
 
       mapper.call(instance)
 

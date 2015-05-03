@@ -28,7 +28,7 @@ module Yaks
     end
 
     def transitive?
-      steps.all? {|name, step| step.respond_to?(:transitive?) && step.transitive?}
+      steps.all? {|_name, step| step.respond_to?(:transitive?) && step.transitive?}
     end
 
     def inverse

@@ -54,7 +54,7 @@ RSpec.describe Yaks::Format do
     end
 
     it 'should delegate to #serialize_resource' do
-      stub(format).serialize_resource(:foo) {|r| :bar}
+      stub(format).serialize_resource(:foo) {|_r| :bar}
       expect(format.call(:foo)).to equal :bar
     end
   end

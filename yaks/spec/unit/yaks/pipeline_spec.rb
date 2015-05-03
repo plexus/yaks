@@ -2,8 +2,8 @@ RSpec.describe Yaks::Pipeline do
   subject(:pipeline) { described_class.new(steps) }
   let(:steps) {
     [
-      [:step1, ->(i, e) { i + 1 }],
-      [:step2, ->(i, e) { i + 10 }],
+      [:step1, ->(i, _e) { i + 1 }],
+      [:step2, ->(i, _e) { i + 10 }],
       [:step3, ->(i, e) { i + e[:foo] }],
     ]
   }
@@ -19,7 +19,7 @@ RSpec.describe Yaks::Pipeline do
     let(:hooks)   { [] }
 
     describe 'before' do
-      let(:hooks) { [[:before, :step2, :before_step2, ->(i, e) { i - (i % 100) }]] }
+      let(:hooks) { [[:before, :step2, :before_step2, ->(i, _e) { i - (i % 100) }]] }
 
       it 'should insert a hook before the step' do
         expect(pipeline.insert_hooks(hooks).call(1000, env)).to equal 1110
@@ -27,7 +27,7 @@ RSpec.describe Yaks::Pipeline do
     end
 
     describe 'after' do
-      let(:hooks) { [[:after, :step2, :after_step2, ->(i, e) { i - (i % 100) }]] }
+      let(:hooks) { [[:after, :step2, :after_step2, ->(i, _e) { i - (i % 100) }]] }
 
       it 'should insert a hook after the step' do
         expect(pipeline.insert_hooks(hooks).call(1000, env)).to equal 1100
@@ -53,7 +53,7 @@ RSpec.describe Yaks::Pipeline do
     describe 'multiple hooks' do
       let(:hooks) {
         [
-          [:after, :step2, :after_step2, ->(i, e) { i % 10 }],
+          [:after, :step2, :after_step2, ->(i, _e) { i % 10 }],
           [:skip, :step3]
         ]
       }
@@ -65,12 +65,12 @@ RSpec.describe Yaks::Pipeline do
 
     it 'should return a pipeline with the right step names' do
       expect(pipeline
-              .insert_hooks([[:before, :step2, :step1_1, ->(i, e) { i+1 }]])
-              .insert_hooks([[:before, :step1_1, :step1_0, ->(i, e) { i+10 }]])
-              .insert_hooks([[:after,  :step1_1, :step1_2, ->(i, e) { i+100 }]])
+              .insert_hooks([[:before, :step2, :step1_1, ->(i, _e) { i+1 }]])
+              .insert_hooks([[:before, :step1_1, :step1_0, ->(i, _e) { i+10 }]])
+              .insert_hooks([[:after,  :step1_1, :step1_2, ->(i, _e) { i+100 }]])
               .insert_hooks([[:around, :step1_1, :step1_1_0, ->(i, e, &b) { b.call(i, e)+1000 }]])
               .insert_hooks([[:around, :step1_2, :step1_3, ->(i, e, &b) { b.call(i, e)+1000 }]])
-              .insert_hooks([[:after,  :step1_3, :step1_4, ->(i, e) { i + 10000 }]])
+              .insert_hooks([[:after,  :step1_3, :step1_4, ->(i, _e) { i + 10000 }]])
               .call(1000, env)
             ).to equal 13222
     end
@@ -84,7 +84,7 @@ RSpec.describe Yaks::Pipeline do
   }
 
   let(:transitive_step) {
-    fake_step.new(transitive: true, inverse: ->(x, env) {}, call: "t")
+    fake_step.new(transitive: true, inverse: ->(_x, _env) {}, call: "t")
   }
 
   let(:intransitive_step) {
