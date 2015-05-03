@@ -3,14 +3,15 @@ RSpec.describe Yaks::NullResource do
 
   describe '#initialize' do
     it 'should have defaults for everything' do
-      expect( described_class.new.to_h ).to eql({
+      expect( described_class.new.to_h ).to eql(
         type: nil,
         rels: [],
         links: [],
         attributes: {},
         subresources: [],
         forms: [],
-        collection: false})
+        collection: false
+      )
     end
 
     it 'should allow setting rels' do

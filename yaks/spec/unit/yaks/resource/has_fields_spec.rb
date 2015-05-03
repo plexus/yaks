@@ -27,7 +27,7 @@ RSpec.describe Yaks::Resource::HasFields do
 
     let(:update_fields) do
       ->(field) do
-        field.with({ value: "updated" })
+        field.with(value: "updated")
       end
     end
 

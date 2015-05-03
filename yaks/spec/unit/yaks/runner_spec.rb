@@ -117,7 +117,7 @@ RSpec.describe Yaks::Runner do
     let(:config) {
       Yaks.new do
         default_format :json_api
-        format_options :json_api, {format_option: [:foo]}
+        format_options :json_api, format_option: [:foo]
       end
     }
 

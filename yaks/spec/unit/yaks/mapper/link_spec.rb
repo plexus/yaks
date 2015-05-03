@@ -261,7 +261,7 @@ RSpec.describe Yaks::Mapper::Link do
 
   describe '.create' do
     it 'should take positional arguments' do
-      expect(Yaks::Mapper::Link.create(:foo, :bar, {baz: 3}))
+      expect(Yaks::Mapper::Link.create(:foo, :bar, baz: 3))
         .to eql Yaks::Mapper::Link.new(rel: :foo, template: :bar, options: {baz: 3})
     end
 

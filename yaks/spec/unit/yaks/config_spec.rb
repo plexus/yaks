@@ -161,7 +161,7 @@ RSpec.describe Yaks::Config do
     configure {}
 
     it 'provides a Yaks::Runner' do
-      expect(config.runner(:foo, {bar: 1}))
+      expect(config.runner(:foo, bar: 1))
         .to eql Yaks::Runner.new(config: config, object: :foo, options: {bar: 1})
     end
   end

@@ -61,7 +61,7 @@ RSpec.describe Yaks::Util do
 
   describe "#symbolize_keys" do
     it "should turn string keys into symbols" do
-      expect(symbolize_keys({'foo' => 1, 'bar' => 2})).to eql(foo: 1, bar: 2)
+      expect(symbolize_keys('foo' => 1, 'bar' => 2)).to eql(foo: 1, bar: 2)
     end
   end
 
