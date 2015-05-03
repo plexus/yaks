@@ -54,11 +54,6 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Max: 8
 
-# Offense count: 2
-# Cop supports --auto-correct.
-Performance/Detect:
-  Enabled: false
-
 # Offense count: 19
 # Cop supports --auto-correct.
 Style/Alias:

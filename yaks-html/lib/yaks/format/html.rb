@@ -12,7 +12,7 @@ module Yaks
       end
 
       def section(name)
-        template.select(".#{name}").first
+        template.find(".#{name}")
       end
 
       def serialize_resource(resource)
@@ -142,7 +142,7 @@ module Yaks
       end
 
       def render_fieldset(fieldset)
-        legend = fieldset.fields.select {|field| field.type == :legend}.first
+        legend = fieldset.fields.find {|field| field.type == :legend}
         fields = fieldset.fields.reject {|field| field.type == :legend}
         legend = legend ? legend.label : ''
 
