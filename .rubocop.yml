@@ -12,6 +12,10 @@ Style/BlockDelimiters:
 Style/ClosingParenthesisIndentation:
   Enabled: false
 
+Style/ConstantName:
+  Exclude:
+    - yaks/lib/yaks/breaking_changes.rb
+
 Style/EmptyLineBetweenDefs:
   AllowAdjacentOneLineDefs: true
 
