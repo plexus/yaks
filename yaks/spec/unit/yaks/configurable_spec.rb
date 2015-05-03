@@ -19,6 +19,7 @@ end
 RSpec.describe Yaks::Configurable do
   let(:suffix) { SecureRandom.hex(16) }
   subject do
+    # rubocop:disable Lint/Eval
     eval %<
 class TestConfigurable#{suffix}
   class Config
