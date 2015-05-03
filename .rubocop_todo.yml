@@ -15,10 +15,6 @@ Lint/AssignmentInCondition:
   Enabled: false
 
 # Offense count: 1
-Lint/Debugger:
-  Enabled: false
-
-# Offense count: 1
 Lint/Eval:
   Enabled: false
 
