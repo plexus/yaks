@@ -96,6 +96,10 @@ Style/PercentLiteralDelimiters:
   Exclude:
     - yaks/lib/yaks/breaking_changes.rb
     - yaks/spec/unit/yaks/config_spec.rb
+  PreferredDelimiters:
+    '%i': '[]'
+    '%w': '[]'
+    '%W': '[]'
 
 Style/Semicolon:
   AllowAsExpressionSeparator: true
