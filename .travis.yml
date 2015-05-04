@@ -15,7 +15,7 @@ sudo: false
 script: bundle exec rake $TASK
 
 env:
-  - TASK=yaks:rspec
+  - TASK='yaks:rspec rubocop'
   - TASK=yaks-html:rspec
 
 matrix:
