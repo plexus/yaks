@@ -14,6 +14,11 @@ module Yaks
         end
       }
 
+      # For collections from associations the rel will be based on the
+      # association. At the top level there's no association, so we
+      # use a generic rel. This matters especially for HAL, where a
+      # top-level collection is rendered as an object with the
+      # collection as a subresource.
       if context[:mapper_stack].empty?
         attrs[:rels] = [collection_rel]
       end
