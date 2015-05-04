@@ -13,8 +13,8 @@ module Yaks
     end
 
     def camelize(str)
-      str.gsub(%r{/(.?)})    { "::#{ Regexp.last_match(1).upcase }" }
-        .gsub!(/(?:^|_)(.)/) { Regexp.last_match(1).upcase          }
+      str.gsub(%r{/(.?)})    { "::#{ $1.upcase }" }
+        .gsub!(/(?:^|_)(.)/) { $1.upcase          }
     end
 
     def slice_hash(hash, *keys)

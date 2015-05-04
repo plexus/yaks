@@ -104,6 +104,9 @@ Style/PercentLiteralDelimiters:
     '%w': '[]'
     '%W': '[]'
 
+Style/PerlBackrefs:
+  Enabled: false
+
 Style/Semicolon:
   AllowAsExpressionSeparator: true
 
