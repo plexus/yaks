@@ -1,6 +1,6 @@
 module Yaks
   module Changelog
-    extend self
+    module_function
 
     def current
       versions[Yaks::VERSION]

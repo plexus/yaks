@@ -9,7 +9,7 @@ RSpec.describe Yaks::Serializer do
   end
 
   it 'should by default have a serializer for JSON' do
-    expect(Yaks::Serializer.all[:json].call([1,2,3], {})).to eql "[\n  1,\n  2,\n  3\n]"
+    expect(Yaks::Serializer.all[:json].call([1, 2, 3], {})).to eql "[\n  1,\n  2,\n  3\n]"
   end
 
   it 'should warn when registering a key again' do

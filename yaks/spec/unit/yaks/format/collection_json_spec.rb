@@ -144,14 +144,14 @@ RSpec.describe Yaks::Format::CollectionJson do
 
     context 'when a template form has been specified' do
       let(:format) {
-        described_class.new(:template => :template_form_name)
+        described_class.new(template: :template_form_name)
       }
 
       context 'and the form is not present' do
         let(:resource) {
           Yaks::Resource.new(
-          attributes: {foo: 'fooval', bar: 'barval'},
-          forms: [Yaks::Resource::Form.new(name: :not_the_form_name)]
+            attributes: {foo: 'fooval', bar: 'barval'},
+            forms: [Yaks::Resource::Form.new(name: :not_the_form_name)]
           )
         }
 
@@ -167,8 +167,8 @@ RSpec.describe Yaks::Format::CollectionJson do
       context 'and the form is present' do
         let(:resource) {
           Yaks::Resource.new(
-          attributes: {foo: 'fooval', bar: 'barval'},
-          forms: [Yaks::Resource::Form.new(name: :template_form_name)]
+            attributes: {foo: 'fooval', bar: 'barval'},
+            forms: [Yaks::Resource::Form.new(name: :template_form_name)]
           )
         }
 
@@ -203,10 +203,10 @@ RSpec.describe Yaks::Format::CollectionJson do
             "items" => [
               {
                 "data" => [
-                  { "name"=>"foo", "value"=>"fooval" },
-                  { "name"=>"bar", "value"=>"barval" }
+                  {"name" => "foo", "value" => "fooval"},
+                  {"name" => "bar", "value" => "barval"}
                 ],
-                "links" => [{"rel"=>"the_rel", "href"=>"the_uri"}]
+                "links" => [{"rel" => "the_rel", "href" => "the_uri"}]
               }
             ]
           }
@@ -233,10 +233,10 @@ RSpec.describe Yaks::Format::CollectionJson do
             "items" => [
               {
                 "data" => [
-                  { "name"=>"foo", "value"=>"fooval" },
-                  { "name"=>"bar", "value"=>"barval" }
+                  {"name" => "foo", "value" => "fooval"},
+                  {"name" => "bar", "value" => "barval"}
                 ],
-                "links" => [{"name"=>"the_name", "rel"=>"the_rel", "href"=>"the_uri"}]
+                "links" => [{"name" => "the_name", "rel" => "the_rel", "href" => "the_uri"}]
               }
             ]
           }
@@ -277,13 +277,13 @@ RSpec.describe Yaks::Format::CollectionJson do
               "items" => [
                 {
                   "data" => [
-                    { "name"=>"foo", "value"=>"fooval" },
-                    { "name"=>"bar", "value"=>"barval" }
+                    {"name" => "foo", "value" => "fooval"},
+                    {"name" => "bar", "value" => "barval"}
                   ]
                 }
               ],
               "queries" => [
-                { "href"=>"/foo", "rel"=>"search" }
+                {"href" => "/foo", "rel" => "search"}
               ]
             }
           )
@@ -315,17 +315,16 @@ RSpec.describe Yaks::Format::CollectionJson do
               "items" => [
                 {
                   "data" => [
-                    { "name"=>"foo", "value"=>"fooval" },
-                    { "name"=>"bar", "value"=>"barval" }
+                    {"name" => "foo", "value" => "fooval"},
+                    {"name" => "bar", "value" => "barval"}
                   ]
                 }
               ],
               "queries" => [
-                { "href"=>"/foo", "rel"=>"search", "prompt"=>"My query prompt",
-                  "data"=>
-                  [
-                    { "name"=>"foo", "value"=>"" },
-                    { "name"=>"bar", "value"=>"", "prompt"=>"My Bar Field" }
+                {"href" => "/foo", "rel" => "search", "prompt" => "My query prompt",
+                 "data" =>                   [
+                    {"name" => "foo", "value" => ""},
+                    {"name" => "bar", "value" => "", "prompt" => "My Bar Field"}
                   ]
                 }
               ]
@@ -338,7 +337,7 @@ RSpec.describe Yaks::Format::CollectionJson do
 
   describe '#serialize_template' do
     let(:format) {
-      described_class.new(:template => :form_for_new)
+      described_class.new(template: :form_for_new)
     }
 
     let(:resource) {
@@ -367,15 +366,15 @@ RSpec.describe Yaks::Format::CollectionJson do
             "items" => [
               {
                 "data" => [
-                  { "name"=>"foo", "value"=>"fooval" },
-                  { "name"=>"bar", "value"=>"barval" }
+                  {"name" => "foo", "value" => "fooval"},
+                  {"name" => "bar", "value" => "barval"}
                 ]
               }
             ],
             "template" => {
               "data" => [
-                { "name"=>"foo", "value"=>"", "prompt"=>"My Foo Field" },
-                { "name"=>"bar", "value"=>"", "prompt"=>"My Bar Field" }
+                {"name" => "foo", "value" => "", "prompt" => "My Foo Field"},
+                {"name" => "bar", "value" => "", "prompt" => "My Bar Field"}
               ]
             }
           }
@@ -398,15 +397,15 @@ RSpec.describe Yaks::Format::CollectionJson do
             "items" => [
               {
                 "data" => [
-                  { "name"=>"foo", "value"=>"fooval" },
-                  { "name"=>"bar", "value"=>"barval" }
+                  {"name" => "foo", "value" => "fooval"},
+                  {"name" => "bar", "value" => "barval"}
                 ]
               }
             ],
             "template" => {
               "data" => [
-                { "name"=>"foo", "value"=>"" },
-                { "name"=>"bar", "value"=>"" }
+                {"name" => "foo", "value" => ""},
+                {"name" => "bar", "value" => ""}
               ]
             }
           }

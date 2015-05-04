@@ -1,5 +1,5 @@
 RSpec.describe Yaks::DefaultPolicy do
-  subject(:policy) { described_class.new( options ) }
+  subject(:policy) { described_class.new(options) }
 
   let(:options) { {} }
   let(:association) { Yaks::Mapper::HasMany.create('shoes') }
@@ -39,7 +39,7 @@ RSpec.describe Yaks::DefaultPolicy do
   end
 
   describe '#derive_mapper_from_association' do
-    let(:options) { { namespace: Namespace } }
+    let(:options) { {namespace: Namespace} }
 
     it 'should derive using the singular association name, and look inside the namespace' do
       expect(policy.derive_mapper_from_association(association)).to be Namespace::ShoeMapper
@@ -53,10 +53,9 @@ RSpec.describe Yaks::DefaultPolicy do
   end
 
   describe '#expand_rel' do
-    let(:options) { { rel_template: 'http://foo/{?rel}' } }
+    let(:options) { {rel_template: 'http://foo/{?rel}'} }
     it 'should expand the given template' do
       expect(policy.expand_rel('rockets')).to eql 'http://foo/?rel=rockets'
     end
   end
-
 end

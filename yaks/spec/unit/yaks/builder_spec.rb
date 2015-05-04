@@ -24,7 +24,7 @@ RSpec.describe Yaks::Builder do
 
   describe '#initialize' do
     it 'should set the class to be instantiated' do
-      expect(subject.create(1,2)).to be_instance_of Buildable
+      expect(subject.create(1, 2)).to be_instance_of Buildable
     end
 
     it 'should accept just a class' do
@@ -55,7 +55,7 @@ RSpec.describe Yaks::Builder do
     end
 
     it 'should unwrap again' do
-      expect( subject.create(3, 4) { finalize } ).to eql Buildable.new(foo: 7, bar: 8)
+      expect(subject.create(3, 4) { finalize }).to eql Buildable.new(foo: 7, bar: 8)
     end
 
     context 'with no methods to forward' do
@@ -64,7 +64,7 @@ RSpec.describe Yaks::Builder do
       end
 
       it 'should still work' do
-        expect(subject.create(3,4)).to eql Buildable.new(foo: 3, bar: 4)
+        expect(subject.create(3, 4)).to eql Buildable.new(foo: 3, bar: 4)
       end
     end
   end
@@ -90,5 +90,4 @@ RSpec.describe Yaks::Builder do
       expect(subject.inspect).to eql '#<Builder Buildable [:foo, :bar]>'
     end
   end
-
 end

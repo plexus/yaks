@@ -1,5 +1,6 @@
 # encoding: utf-8
 
+require 'English'
 require File.expand_path('../lib/yaks/version', __FILE__)
 require File.expand_path('../lib/yaks/breaking_changes', __FILE__)
 
@@ -14,7 +15,7 @@ Gem::Specification.new do |gem|
   gem.license     = 'MIT'
 
   gem.require_paths    = %w[lib]
-  gem.files            = `git ls-files`.split($/)
+  gem.files            = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
   gem.test_files       = gem.files.grep(/^spec/)
   gem.extra_rdoc_files = %w[README.md]
 
@@ -40,6 +41,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'mutant'
   gem.add_development_dependency 'mutant-rspec'
   gem.add_development_dependency 'rake'
+  gem.add_development_dependency 'rubocop'
   gem.add_development_dependency 'rspec', '~> 3.0'
   gem.add_development_dependency 'rspec-its'
   gem.add_development_dependency 'virtus'

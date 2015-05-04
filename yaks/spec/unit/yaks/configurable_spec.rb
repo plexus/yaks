@@ -19,7 +19,8 @@ end
 RSpec.describe Yaks::Configurable do
   let(:suffix) { SecureRandom.hex(16) }
   subject do
-    eval %Q<
+    # rubocop:disable Lint/Eval
+    eval %<
 class TestConfigurable#{suffix}
   class Config
     include Attribs.new(color: 'blue', taste: 'sour', contents: [])
@@ -72,7 +73,7 @@ end
     end
 
     it 'should pass on a block' do
-      subject.cat(fur_level: 3) {|l| l+3}
+      subject.cat(fur_level: 3) {|l| l + 3}
       expect(subject.config.contents).to eql [Kitten.new(furriness: 6)]
     end
 
@@ -125,11 +126,11 @@ end
 
     it 'should forward arguments and block' do
       subject.with_color_and_contents('brown') do |contents|
-        contents + [1,2,3]
+        contents + [1, 2, 3]
       end
 
       expect(subject.config.color).to eql 'brown'
-      expect(subject.config.contents).to eql [1,2,3]
+      expect(subject.config.contents).to eql [1, 2, 3]
     end
   end
 

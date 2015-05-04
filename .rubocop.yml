@@ -1,0 +1,137 @@
+Lint/AmbiguousRegexpLiteral:
+  Enabled: false
+
+Lint/AssignmentInCondition:
+  Enabled: false
+
+# FIXME: lower by fixing the biggest offenders
+Metrics/AbcSize:
+  Max: 54
+
+# FIXME: lower by fixing the biggest offenders
+Metrics/ClassLength:
+  Max: 135
+
+# FIXME: lower by fixing the biggest offenders
+Metrics/CyclomaticComplexity:
+  Max: 8
+
+# FIXME: lower by fixing the biggest offenders
+Metrics/LineLength:
+  Max: 184
+
+# FIXME: lower by fixing the biggest offenders
+Metrics/MethodLength:
+  Max: 33
+
+# FIXME: lower by fixing the biggest offenders
+Metrics/PerceivedComplexity:
+  Max: 8
+
+# def_delegators’ first symbol is the target, the rest are calls
+Style/AlignParameters:
+  Enabled: false
+
+# FIXME: should this be normalised to `EnforcedStyle: semantic`?
+Style/BlockDelimiters:
+  Enabled: false
+
+# including parametrised modules looks much better without this alignment
+Style/ClosingParenthesisIndentation:
+  Enabled: false
+
+Style/ConstantName:
+  Exclude:
+    - yaks/lib/yaks/breaking_changes.rb
+
+Style/Documentation:
+  Enabled: false
+
+Style/EmptyLineBetweenDefs:
+  AllowAdjacentOneLineDefs: true
+
+Style/FileName:
+  Exclude:
+    - yaks-html/lib/yaks-html.rb
+    - yaks-sinatra/lib/yaks-sinatra.rb
+    - yaks-transit/lib/yaks-transit.rb
+
+# including parametrised modules looks much better without this indentation
+Style/FirstParameterIndentation:
+  Enabled: false
+
+Style/FormatString:
+  EnforcedStyle: percent
+
+Style/GlobalVars:
+  Exclude:
+    - bench/bench.rb
+    - bench/bench_1000.rb
+
+Style/HashSyntax:
+  Exclude:
+    - Rakefile
+
+# some arrays need deeper indenting for readability
+Style/IndentArray:
+  Enabled: false
+
+Style/IndentationWidth:
+  Exclude:
+    - yaks/lib/yaks/breaking_changes.rb
+
+# the codebase uses -> consistently
+Style/Lambda:
+  Enabled: false
+
+# FIXME: figure out why fixing this blows tests up
+Style/MethodCallParentheses:
+  Enabled: false
+
+Style/ModuleFunction:
+  Exclude:
+    - yaks/lib/yaks/util.rb
+
+Style/MultilineBlockChain:
+  Enabled: false
+
+Style/PercentLiteralDelimiters:
+  Exclude:
+    - yaks/lib/yaks/breaking_changes.rb
+    - yaks/spec/unit/yaks/config_spec.rb
+  PreferredDelimiters:
+    '%i': '[]'
+    '%w': '[]'
+    '%W': '[]'
+
+Style/PerlBackrefs:
+  Enabled: false
+
+Style/Semicolon:
+  AllowAsExpressionSeparator: true
+
+Style/SignalException:
+  EnforcedStyle: only_raise
+
+# FIXME: this should be enforced to either space or no_space
+Style/SpaceBeforeBlockBraces:
+  Enabled: false
+
+# FIXME: this should be enforced to either space or no_space
+Style/SpaceInsideBlockBraces:
+  Enabled: false
+
+# FIXME: make a call whether to fix this one or not
+Style/SpaceInsideBrackets:
+  Enabled: false
+
+Style/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
+
+# FIXME: enforce either single_quotes (fewer fixes) or double_quotes
+Style/StringLiterals:
+  Enabled: false
+
+Style/UnneededPercentQ:
+  Exclude:
+    - yaks/lib/yaks/breaking_changes.rb

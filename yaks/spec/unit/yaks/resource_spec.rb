@@ -15,7 +15,7 @@ RSpec.describe Yaks::Resource do
     end
 
     it 'should verify subresources is an array' do
-      expect { Yaks::Resource.new(subresources: { '/rel/comments' => []}) }
+      expect { Yaks::Resource.new(subresources: {'/rel/comments' => []}) }
         .to raise_exception /comments/
     end
 
@@ -25,11 +25,11 @@ RSpec.describe Yaks::Resource do
     end
 
     it 'should work without args' do
-      expect( Yaks::Resource.new ).to be_a Yaks::Resource
+      expect(Yaks::Resource.new).to be_a Yaks::Resource
     end
 
     it 'should take defaults when no args are passed' do
-      expect( Yaks::Resource.new.rels ).to eq []
+      expect(Yaks::Resource.new.rels).to eq []
     end
   end
 
@@ -57,7 +57,7 @@ RSpec.describe Yaks::Resource do
 
   describe '#self_link' do
     let(:init_opts) {
-      { links:
+      {links:
         [
           Yaks::Resource::Link.new(rel: :self, uri: 'foo'),
           Yaks::Resource::Link.new(rel: :self, uri: 'bar'),
@@ -90,9 +90,11 @@ RSpec.describe Yaks::Resource do
   end
 
   describe "#add_link" do
-    let(:init_opts) {{
-      links: [Yaks::Resource::Link.new(rel: :next, uri: '/next')]
-    }}
+    let(:init_opts) {
+      {
+        links: [Yaks::Resource::Link.new(rel: :next, uri: '/next')]
+      }
+    }
 
     it "should append to the links list" do
       expect(resource.add_link(Yaks::Resource::Link.new(rel: :previous, uri: '/previous')))
@@ -111,9 +113,11 @@ RSpec.describe Yaks::Resource do
   end
 
   describe "#add_subresource" do
-    let(:init_opts) {{
-      subresources: [Yaks::Resource.new(attributes: {foo: 1})]
-    }}
+    let(:init_opts) {
+      {
+        subresources: [Yaks::Resource.new(attributes: {foo: 1})]
+      }
+    }
     it "should append to the subresources list" do
       expect(resource.add_subresource(Yaks::Resource.new(attributes: {bar: 2})))
         .to eql Yaks::Resource.new(
@@ -125,7 +129,6 @@ RSpec.describe Yaks::Resource do
     end
   end
 
-
   describe '#members' do
     it 'should raise unsupported operation error' do
       expect { resource.members }.to raise_error(
@@ -135,7 +138,7 @@ RSpec.describe Yaks::Resource do
   end
 
   describe "#merge_attributes" do
-    let(:init_opts) {{ attributes: {foo: 1, bar: 2} }}
+    let(:init_opts) {{attributes: {foo: 1, bar: 2}}}
     it "should merge attributes into any existing attributes" do
       expect(resource.merge_attributes(bar: 3, baz: 4))
         .to eql Yaks::Resource.new(attributes: {foo: 1, bar: 3, baz: 4})
@@ -147,5 +150,4 @@ RSpec.describe Yaks::Resource do
       expect(described_class.new.with_collection([:foo])).to eql Yaks::Resource.new
     end
   end
-
 end

@@ -22,7 +22,6 @@ require 'yaks/default_policy'
 require 'yaks/serializer'
 require 'yaks/config'
 
-
 module Yaks
   Undefined = Module.new.freeze
 
@@ -40,7 +39,7 @@ module Yaks
     :mapper_namespace,
     :serializer,
     :json_serializer,
-    :map_to_primitive,
+    :map_to_primitive
   ]
 
   ConfigBuilder = Builder.new(Yaks::Config) do
@@ -58,7 +57,6 @@ module Yaks
     end
   end
 end
-
 
 require 'yaks/resource'
 require 'yaks/null_resource'

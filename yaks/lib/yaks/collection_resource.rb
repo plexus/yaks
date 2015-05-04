@@ -19,6 +19,5 @@ module Yaks
     def seq
       self
     end
-
   end
 end

@@ -13,7 +13,7 @@ module Yaks
             )
 
     class << self
-      alias create new
+      alias_method :create, :new
     end
 
     deprecated_alias :namespace, :mapper_namespace
@@ -80,7 +80,7 @@ module Yaks
     def call(object, options = {})
       runner(object, options).call
     end
-    alias serialize call
+    alias_method :serialize, :call
 
     def map(object, options = {})
       runner(object, options).map

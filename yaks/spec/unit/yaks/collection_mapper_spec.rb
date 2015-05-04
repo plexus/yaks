@@ -6,10 +6,10 @@ RSpec.describe Yaks::CollectionMapper, '#call' do
   let(:mapper_stack) { [] }
 
   let(:context) {
-    { item_mapper: item_mapper,
-      policy: policy,
-      env: {},
-      mapper_stack: mapper_stack }
+    {item_mapper: item_mapper,
+     policy: policy,
+     env: {},
+     mapper_stack: mapper_stack}
   }
 
   let(:collection) { [] }
@@ -32,7 +32,7 @@ RSpec.describe Yaks::CollectionMapper, '#call' do
 
   context 'when at the top of the stack' do
     it 'should have a "collection" rel derived from the type' do
-      expect(mapper.call(collection).rels).to eql  ['rel:the_types']
+      expect(mapper.call(collection).rels).to eql ['rel:the_types']
     end
   end
 
@@ -58,8 +58,8 @@ RSpec.describe Yaks::CollectionMapper, '#call' do
         links: [],
         attributes: {},
         members: [
-          Yaks::Resource.new(type: 'pet', attributes: {:id => 2, :species => "dog", :name => "boingboing"}),
-          Yaks::Resource.new(type: 'pet', attributes: {:id => 3, :species => "cat", :name => "wassup"})
+          Yaks::Resource.new(type: 'pet', attributes: {id: 2, species: "dog", name: "boingboing"}),
+          Yaks::Resource.new(type: 'pet', attributes: {id: 3, species: "cat", name: "wassup"})
         ],
         rels: ['rel:pets']
       )
@@ -82,8 +82,8 @@ RSpec.describe Yaks::CollectionMapper, '#call' do
         links: [],
         attributes: {},
         members: [
-          Yaks::Resource.new(type: 'pet', attributes: {:id => 2, :species => "dog", :name => "boingboing"}),
-          Yaks::Resource.new(type: 'pet', attributes: {:id => 3, :species => "cat", :name => "wassup"})
+          Yaks::Resource.new(type: 'pet', attributes: {id: 2, species: "dog", name: "boingboing"}),
+          Yaks::Resource.new(type: 'pet', attributes: {id: 3, species: "cat", name: "wassup"})
         ],
         rels: ['rel:pets']
       )
@@ -99,8 +99,13 @@ RSpec.describe Yaks::CollectionMapper, '#call' do
 
     let(:collection) {
       Class.new(SimpleDelegator) do
-        def foo ; 123 ; end
-        def bar ; 'pi la~~~' ; end
+        def foo
+          123
+        end
+
+        def bar
+          'pi la~~~'
+        end
       end.new([])
     }
 
@@ -108,7 +113,7 @@ RSpec.describe Yaks::CollectionMapper, '#call' do
       expect(mapper.call(collection)).to eql Yaks::CollectionResource.new(
         type: 'the_type',
         links: [],
-        attributes: { foo: 123, bar: 'pi la~~~' },
+        attributes: {foo: 123, bar: 'pi la~~~'},
         members: [],
         rels: ['rel:the_types']
       )
@@ -126,7 +131,7 @@ RSpec.describe Yaks::CollectionMapper, '#call' do
       expect(mapper.call(collection)).to eql Yaks::CollectionResource.new(
         type: 'the_type',
         links: [ Yaks::Resource::Link.new(rel: :self, uri: 'http://api.example.com/orders') ],
-        attributes: { },
+        attributes: {},
         members: [],
         rels: ['rel:the_types']
       )
@@ -153,7 +158,7 @@ RSpec.describe Yaks::CollectionMapper, '#call' do
         links: [],
         attributes: {},
         members: [
-          Yaks::Resource.new(type: 'pet', attributes: {:id => 3, :species => "cat", :name => "wassup"})
+          Yaks::Resource.new(type: 'pet', attributes: {id: 3, species: "cat", name: "wassup"})
         ],
         rels: ['rel:pets']
       )
@@ -161,12 +166,11 @@ RSpec.describe Yaks::CollectionMapper, '#call' do
   end
 
   context 'with an empty collection' do
-
     context 'without an item_mapper specified' do
       let(:context) { Yaks::Util.slice_hash(super(), :policy, :env, :mapper_stack) }
 
       it 'should use a rel of "collection"' do
-        expect(mapper.([]).rels).to eq ['collection']
+        expect(mapper.call([]).rels).to eq ['collection']
       end
     end
 
@@ -174,9 +178,8 @@ RSpec.describe Yaks::CollectionMapper, '#call' do
       let(:context) { Yaks::Util.slice_hash(super(), :policy, :env, :mapper_stack, :item_mapper) }
 
       it 'should derive the collection rel from the item mapper' do
-        expect(mapper.([]).rels).to eq ['rel:the_types']
+        expect(mapper.call([]).rels).to eq ['rel:the_types']
       end
     end
-
   end
 end

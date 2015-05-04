@@ -7,26 +7,26 @@ module Yaks
 
     def underscore(str)
       str.gsub(/::/, '/')
-        .gsub(/(?<!^|\/)([A-Z])(?=[a-z$])|(?<=[a-z])([A-Z])/, '_\1\2')
+        .gsub(%r{(?<!^|/)([A-Z])(?=[a-z$])|(?<=[a-z])([A-Z])}, '_\1\2')
         .tr("-", "_")
         .downcase
     end
 
     def camelize(str)
-      str.gsub(/\/(.?)/)     { "::#{ $1.upcase }" }
+      str.gsub(%r{/(.?)})    { "::#{ $1.upcase }" }
         .gsub!(/(?:^|_)(.)/) { $1.upcase          }
     end
 
     def slice_hash(hash, *keys)
-      keys.each_with_object({}) {|k,dest| dest[k] = hash[k] if hash.key?(k) }
+      keys.each_with_object({}) {|k, dest| dest[k] = hash[k] if hash.key?(k) }
     end
 
     def reject_keys(hash, *keys)
-      hash.keys.each_with_object({}) {|k,dest| dest[k] = hash[k] unless keys.include?(k) }
+      hash.keys.each_with_object({}) {|k, dest| dest[k] = hash[k] unless keys.include?(k) }
     end
 
     def symbolize_keys(hash)
-      hash.each_with_object({}) {|(k,v), hsh| hsh[k.to_sym] = v}
+      hash.each_with_object({}) {|(k, v), hsh| hsh[k.to_sym] = v}
     end
 
     def extract_options(args)
@@ -46,7 +46,7 @@ module Yaks
     #   A proc or a plain value
     # @param [Object] context
     #   (optional) A context used to instance_eval the proc
-    def Resolve(maybe_proc, context = nil)
+    def Resolve(maybe_proc, context = nil)    # rubocop:disable Style/MethodName
       if maybe_proc.respond_to?(:to_proc) && !maybe_proc.instance_of?(Symbol)
         if context
           if maybe_proc.arity > 0
@@ -71,6 +71,5 @@ module Yaks
         end
       end
     end
-
   end
 end

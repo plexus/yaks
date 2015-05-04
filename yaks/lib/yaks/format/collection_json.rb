@@ -29,7 +29,7 @@ module Yaks
               value: value
             }
           end
-          result = { data: attrs }
+          result = {data: attrs}
           result[:href] = item.self_link.uri if item.self_link
           item.links.each do |link|
             next if link.rel.equal? :self
@@ -43,7 +43,7 @@ module Yaks
 
       def serialize_links(resource)
         resource.links.each_with_object([]) do |link, result|
-          result << { href: link.uri, rel: link.rel }
+          result << {href: link.uri, rel: link.rel}
         end
       end
 
@@ -51,12 +51,12 @@ module Yaks
         resource.forms.each_with_object([]) do |form, result|
           next unless form_is_query? form
 
-          result << { rel: form.name, href: form.action }
+          result << {rel: form.name, href: form.action}
           result.last[:prompt] = form.title if form.title
 
           form.fields_flat.each do |field|
             result.last[:data] = [] unless result.last.key? :data
-            result.last[:data] << { name: field.name, value: nil.to_s }
+            result.last[:data] << {name: field.name, value: nil.to_s}
             result.last[:data].last[:prompt] = field.label if field.label
           end
         end

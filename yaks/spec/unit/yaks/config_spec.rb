@@ -33,7 +33,7 @@ RSpec.describe Yaks::Config do
     end
 
     its(:policy_class) { should equal MyPolicy }
-    its(:policy)       { should be_a  MyPolicy }
+    its(:policy)       { should be_a MyPolicy  }
   end
 
   describe '#rel_template' do
@@ -58,7 +58,7 @@ RSpec.describe Yaks::Config do
 
   describe '#json_serializer' do
     configure do
-      json_serializer {|resource| resource.upcase }
+      json_serializer(&:upcase)
     end
 
     specify do
@@ -152,7 +152,7 @@ RSpec.describe Yaks::Config do
                                      "species": "cat"}]}').members.first)
         .to eql Yaks::Resource.new(
                   type: "pet",
-                  attributes: {:id=>3, :name=>"wassup", :species=>"cat"}
+                  attributes: {id: 3, name: "wassup", species: "cat"}
                 )
     end
   end
@@ -161,7 +161,7 @@ RSpec.describe Yaks::Config do
     configure {}
 
     it 'provides a Yaks::Runner' do
-      expect(config.runner(:foo, {bar: 1}))
+      expect(config.runner(:foo, bar: 1))
         .to eql Yaks::Runner.new(config: config, object: :foo, options: {bar: 1})
     end
   end

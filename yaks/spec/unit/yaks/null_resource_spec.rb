@@ -3,26 +3,27 @@ RSpec.describe Yaks::NullResource do
 
   describe '#initialize' do
     it 'should have defaults for everything' do
-      expect( described_class.new.to_h ).to eql({
+      expect(described_class.new.to_h).to eql(
         type: nil,
         rels: [],
         links: [],
         attributes: {},
         subresources: [],
         forms: [],
-        collection: false})
+        collection: false
+      )
     end
 
     it 'should allow setting rels' do
-      expect( described_class.new(rels: [:self]).rels ).to eql [:self]
+      expect(described_class.new(rels: [:self]).rels).to eql [:self]
     end
 
     it 'should allow setting the collection flag' do
-      expect( described_class.new(collection: true).collection ).to be true
+      expect(described_class.new(collection: true).collection).to be true
     end
 
     it 'should not allow attributes in the contstructor' do
-      expect( described_class.new(attributes: {foo: :bar}).attributes ).to eql({})
+      expect(described_class.new(attributes: {foo: :bar}).attributes).to eql({})
     end
   end
 
@@ -46,7 +47,7 @@ RSpec.describe Yaks::NullResource do
     its(:collection?) { should be false }
 
     context 'when a collection' do
-      subject(:null_resource) { described_class.new( collection: true ) }
+      subject(:null_resource) { described_class.new(collection: true) }
       its(:collection?) { should be true }
     end
   end
@@ -61,7 +62,7 @@ RSpec.describe Yaks::NullResource do
 
   describe "#[]" do
     it 'should contain nothing' do
-      expect( null_resource[:key] ).to be_nil
+      expect(null_resource[:key]).to be_nil
     end
   end
 
@@ -73,7 +74,7 @@ RSpec.describe Yaks::NullResource do
     its(:each) { should be_a Enumerator }
 
     it 'should not yield anything' do
-      null_resource.each { fail }
+      null_resource.each { raise }
     end
   end
 
@@ -112,7 +113,7 @@ RSpec.describe Yaks::NullResource do
   describe '#map' do
     context 'when a collection' do
       it 'should always return []' do
-        expect( described_class.new(collection: true).map{} ).to eql []
+        expect(described_class.new(collection: true).map{}).to eql []
       end
     end
 

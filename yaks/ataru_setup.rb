@@ -3,12 +3,10 @@
 require "yaks"
 require "hamster"
 
-class Post < Struct.new(:id, :title, :author, :comments)
-end
+Post = Struct.new(:id, :title, :author, :comments)
 
 module MyAPI
-  class Product < Struct.new(:id, :label)
-  end
+  Product = Struct.new(:id, :label)
 
   class ProductMapper < Yaks::Mapper
     attributes :id, :label
@@ -30,8 +28,6 @@ class PostMapper < Yaks::Mapper
   has_many :comments
 end
 
-
-
 module Setup
   def setup
     # Do some nice setup that is run before every snippet
@@ -51,25 +47,21 @@ module Setup
   def my_env
     {'something' => true}
   end
-  alias rack_env my_env
+  alias_method :rack_env, :my_env
 
   def post
     Post.new(7, "Yaks is Al Dente", nil, [])
   end
-  alias foo post
-
+  alias_method :foo, :post
 
   def product
     MyAPI::Product.new(42, "Shiny thing")
   end
 
-
-
   # # Tell your web framework about the supported formats
   # Yaks::Format.all.each do |format|
   #   mime_type format.format_name, format.media_type
   # end
-  def mime_type(*args)
+  def mime_type(*_args)
   end
-
 end

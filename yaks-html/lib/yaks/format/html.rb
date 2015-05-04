@@ -12,7 +12,7 @@ module Yaks
       end
 
       def section(name)
-        template.select(".#{name}").first
+        template.find(".#{name}")
       end
 
       def serialize_resource(resource)
@@ -39,8 +39,8 @@ module Yaks
           .replace('.forms') {|div| render_forms(resource.forms).call(div) }
           .replace('.subresource') {|sub_templ| render_subresources(resource, templ, sub_templ) }
       end
-      alias render_collection_resource render_resource
-      alias render_null_resource render_resource
+      alias_method :render_collection_resource, :render_resource
+      alias_method :render_null_resource, :render_resource
 
       def render_attributes(attributes)
         ->(templ) do
@@ -69,7 +69,7 @@ module Yaks
               }
               .replace('.uri a') {|a|
                 a.attr('href', link.uri).content(link.uri)
-                 .attr('rel', link.rel.to_s)
+                  .attr('rel', link.rel.to_s)
               }
               .replace('.title') {|x| x.content(link.title.to_s) }
               .replace('.templated') {|x| x.content(link.templated?.inspect) }
@@ -79,8 +79,8 @@ module Yaks
 
       def render_subresources(resource, templ, sub_templ)
         templ = templ
-                  .replace('h1,h2,h3,h4') {|h| h.set_tag("h#{h.tag[/\d/].to_i.next}") }
-                  .add_class('collapsed')
+                .replace('h1,h2,h3,h4') {|h| h.set_tag("h#{h.tag[/\d/].to_i.next}") }
+                .add_class('collapsed')
         if resource.collection?
           resource.seq.map do |r|
             render(r, templ)
@@ -90,7 +90,7 @@ module Yaks
             rel = resources.rels.first
             sub_templ
               .replace('.rel a') {|a| a.attr('href', rel_href(rel)).content(rel.to_s) }
-              .replace('.value') {|x| x.content(resources.seq.map { |resource| render(resource, templ) })}
+              .replace('.value') {|x| x.content(resources.seq.map { |res| render(res, templ) })}
               .attr('rel', rel.to_s)
           end
         end
@@ -142,7 +142,7 @@ module Yaks
       end
 
       def render_fieldset(fieldset)
-        legend = fieldset.fields.select {|field| field.type == :legend}.first
+        legend = fieldset.fields.find {|field| field.type == :legend}
         fields = fieldset.fields.reject {|field| field.type == :legend}
         legend = legend ? legend.label : ''
 

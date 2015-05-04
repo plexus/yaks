@@ -1,11 +1,10 @@
 module Yaks
-
 # These are displayed in a post-install message when installing the
 # gem to aid upgraiding
 
 BreakingChanges = {
 
-    '0.7.6' => %q~
+  '0.7.6' => %q~
 Breaking Changes in Yaks 0.7.6
 ==============================
 Breaking change: using a symbol instead of link template no longer
@@ -27,7 +26,7 @@ with the attribute name in HTML. An alias is available but will output
 a deprecation warning.
 ~,
 
-    '0.7.0' => %q~
+  '0.7.0' => %q~
 Breaking Changes in Yaks 0.7.0
 ==============================
 Yaks::Resource#subresources is now an array, not a hash. The rel is
@@ -40,7 +39,7 @@ have custom implementations of any of these, or hooks that are not
 specified as ruby blocks, you will need to take this into account
 ~,
 
-    '0.5.0' => %q~
+  '0.5.0' => %q~
 
 Breaking Changes in Yaks 0.5.0
 ==============================
@@ -61,7 +60,7 @@ for full documentation.
 
 ~,
 
-    '0.4.3' => %q~
+  '0.4.3' => %q~
 
 Breaking Changes in Yaks 0.4.3
 ==============================
@@ -81,5 +80,4 @@ documentation.
 
 BreakingChanges['0.4.4'] = BreakingChanges['0.4.3']
 BreakingChanges['0.7.1'] = BreakingChanges['0.7.0']
-
 end

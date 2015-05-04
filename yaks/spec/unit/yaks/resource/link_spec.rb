@@ -3,7 +3,7 @@ RSpec.describe Yaks::Resource::Link do
 
   let(:rel)      { :foo_rel }
   let(:uri)      { 'http://api.example.org/rel/foo' }
-  let(:options)  { { title: 'mr. spectacular' } }
+  let(:options)  { {title: 'mr. spectacular'} }
 
   its(:rel)     { should eql :foo_rel }
   its(:uri)     { should eql 'http://api.example.org/rel/foo' }

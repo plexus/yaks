@@ -31,7 +31,7 @@ RSpec.describe Yaks::Mapper::Form::Fieldset do
         expect(fieldset.config)
           .to eql Yaks::Mapper::Form::Config.new(
             fields: [
-              Yaks::Mapper::Form::Field.new(name: :first_name, type: :text),
+              Yaks::Mapper::Form::Field.new(name: :first_name, type: :text)
             ],
             if: true
           )
@@ -50,7 +50,7 @@ RSpec.describe Yaks::Mapper::Form::Fieldset do
       }
 
       it "should render them based on the mapped object" do
-        mapper.call(fake(name: :anthony)) # hack to set the mapper's object
+        mapper.call(fake(name: :anthony)) # HACK: set the mapper's object
         expect(fieldset.to_resource_fields(mapper)).to eql(
           [
             Yaks::Resource::Form::Fieldset.new(
@@ -86,5 +86,4 @@ RSpec.describe Yaks::Mapper::Form::Fieldset do
       end
     end
   end
-
 end

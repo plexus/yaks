@@ -9,7 +9,7 @@ RSpec.describe Yaks::Format::Hal do
 
   context 'with multiple links on the same rel' do
     let(:format) {
-      described_class.new(:plural_links => 'my_plural_rel')
+      described_class.new(plural_links: 'my_plural_rel')
     }
 
     let(:resource) {
@@ -32,8 +32,8 @@ RSpec.describe Yaks::Format::Hal do
         'bar' => 'barval',
         '_links' => {
           "my_plural_rel" => [
-            {"href"=>"the_uri1"},
-            {"href"=>"the_uri2"}
+            {"href" => "the_uri1"},
+            {"href" => "the_uri2"}
           ]
         }
       )

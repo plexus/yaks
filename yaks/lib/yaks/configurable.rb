@@ -93,6 +93,5 @@ module Yaks
     ensure
       $VERBOSE = old_verbose
     end
-
   end
 end

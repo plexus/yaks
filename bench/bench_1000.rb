@@ -1,10 +1,11 @@
 #!/usr/bin/env ruby
 
+require 'English'
 require 'benchmark/ips'
-require 'yaks'
 require 'ruby-prof'
+require 'yaks'
 
-SIZE=20
+SIZE = 20
 $timestamp = Time.now.utc.iso8601.gsub('-', '').gsub(':', '')
 $yaks = Yaks.new
 
@@ -31,12 +32,11 @@ class DeepMapper < Yaks::Mapper
   has_one :next, mapper: DeepMapper
 end
 
-
 def profile!(name)
   RubyProf.start
   yield
   results = RubyProf.stop
-  File.open "/tmp/#{name}-#{$timestamp}.out.#{$$}", 'w' do |file|
+  File.open "/tmp/#{name}-#{$timestamp}.out.#{$PROCESS_ID}", 'w' do |file|
     RubyProf::CallTreePrinter.new(results).print(file)
   end
 end
@@ -53,7 +53,6 @@ exit
 
 Benchmark.ips(10) do |job|
   Yaks::Format.names.each do |format|
-
     job.report "#{format} ; #{SIZE} objects in a list ; no nesting", &do_flat.(format)
     job.report "#{format} ; #{SIZE} objects nested", &do_deep.(format)
   end

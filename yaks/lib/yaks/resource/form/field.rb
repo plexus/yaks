@@ -2,7 +2,7 @@ module Yaks
   class Resource
     class Form
       class Field
-        include Yaks::Mapper::Form::Field.attributes.add(:error => nil)
+        include Yaks::Mapper::Form::Field.attributes.add(error: nil)
 
         undef value
         def value

@@ -51,10 +51,10 @@ RSpec.describe Yaks::Mapper::Form::Config do
     }
 
     it "should pass the object to the config block" do
-        expect(config)
-          .to eql Yaks::Mapper::Form::Config.new(
-            title: "the_object"
-          )
+      expect(config)
+        .to eql Yaks::Mapper::Form::Config.new(
+          title: "the_object"
+        )
     end
   end
 
@@ -90,7 +90,6 @@ RSpec.describe Yaks::Mapper::Form::Config do
             ]
           )
         ]
-
     end
   end
 end

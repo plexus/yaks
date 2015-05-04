@@ -3,7 +3,7 @@ module Yaks
     class Hal
       include Util
 
-      def call(parsed_json, env = {})
+      def call(parsed_json, _env = {})
         attributes = parsed_json.dup
         links      = convert_links(attributes.delete('_links') || {})
         embedded   = convert_embedded(attributes.delete('_embedded') || {})
@@ -36,7 +36,6 @@ module Yaks
         x.instance_of?(Array) ? x : [x]
       end
 
-
       def convert_embedded(embedded)
         embedded.flat_map do |rel, resource|
           case resource
@@ -48,7 +47,8 @@ module Yaks
             else
               CollectionResource.new(
                 members: resource.map { |r|
-                  call(r).with(type: Util.singularize(rel[/\w+$/])) }
+                  call(r).with(type: Util.singularize(rel[/\w+$/]))
+                }
               )
             end
           else
@@ -56,7 +56,6 @@ module Yaks
           end.with(rels: [rel])
         end
       end
-
     end
   end
 end

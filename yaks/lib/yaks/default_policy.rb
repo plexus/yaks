@@ -27,12 +27,12 @@ module Yaks
           name = m.class.name.split('::').last + 'CollectionMapper'
           begin
             return @options[:namespace].const_get(name)
-          rescue NameError
+          rescue NameError               # rubocop:disable Lint/HandleExceptions
           end
         end
         begin
           return @options[:namespace].const_get(:CollectionMapper)
-        rescue NameError
+        rescue NameError                 # rubocop:disable Lint/HandleExceptions
         end
         CollectionMapper
       else
@@ -63,9 +63,9 @@ module Yaks
 
     # Derive the mapper type name from a collection
     #
-    # This inspects the first element of the collection, so it
-    # requires a non-empty collection. Will return nil if the
-    # collection is empty.
+    # This inspects the first element of the collection, so
+    # it requires a collection with truthy elements. Will
+    # return `nil` if the collection has no truthy elements.
     #
     # @param [#first] collection
     #
@@ -73,11 +73,8 @@ module Yaks
     #
     # @raise [NameError]
     def derive_type_from_collection(collection)
-      if collection.any?
-        derive_type_from_mapper_class(
-          derive_mapper_from_object(collection.first)
-        )
-      end
+      return if collection.none?
+      derive_type_from_mapper_class(derive_mapper_from_object(collection.first))
     end
 
     def derive_mapper_from_association(association)
@@ -87,7 +84,7 @@ module Yaks
     # @param association [Yaks::Mapper::Association]
     # @return [String]
     def derive_rel_from_association(association)
-      expand_rel( association.name )
+      expand_rel(association.name)
     end
 
     # @param relname [String]
@@ -95,6 +92,5 @@ module Yaks
     def expand_rel(relname)
       URITemplate.new(@options[:rel_template]).expand(rel: relname)
     end
-
   end
 end

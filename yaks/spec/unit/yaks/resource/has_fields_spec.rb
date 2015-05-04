@@ -24,10 +24,9 @@ RSpec.describe Yaks::Resource::HasFields do
   subject(:with_fields) { class_with_fields.new(fields: fields) }
 
   describe '#map_fields' do
-
     let(:update_fields) do
       ->(field) do
-        field.with({ value: "updated" })
+        field.with(value: "updated")
       end
     end
 
@@ -57,7 +56,7 @@ RSpec.describe Yaks::Resource::HasFields do
         ]),
         Yaks::Resource::Form::Fieldset.new(fields: [
           Yaks::Resource::Form::Fieldset.new(fields: [
-            Yaks::Resource::Form::Field.new(name: :qux, value: '777', type: 'text'),
+            Yaks::Resource::Form::Field.new(name: :qux, value: '777', type: 'text')
           ]),
           Yaks::Resource::Form::Field.new(name: :quux, value: '999', type: 'tel')
         ])
@@ -78,17 +77,15 @@ RSpec.describe Yaks::Resource::HasFields do
         Yaks::Resource::Form::Fieldset.new(fields: [
           Yaks::Resource::Form::Legend.new(label: 'a legend'),
           Yaks::Resource::Form::Field.new(name: :foo, value: '123', type: 'text', required: true),
-          Yaks::Resource::Form::Field.new(name: :bar, value: '+32 477 123 123', type: 'tel', required: true),
+          Yaks::Resource::Form::Field.new(name: :bar, value: '+32 477 123 123', type: 'tel', required: true)
         ]),
         Yaks::Resource::Form::Fieldset.new(fields: [
           Yaks::Resource::Form::Fieldset.new(fields: [
-            Yaks::Resource::Form::Field.new(name: :qux, value: '777', type: 'text', required: true),
+            Yaks::Resource::Form::Field.new(name: :qux, value: '777', type: 'text', required: true)
           ]),
-          Yaks::Resource::Form::Field.new(name: :quux, value: '999', type: 'tel', required: true),
+          Yaks::Resource::Form::Field.new(name: :quux, value: '999', type: 'tel', required: true)
         ])
       ]
     end
-
   end
-
 end

@@ -26,7 +26,7 @@ module Yaks
       @env = env
       serialize_resource(resource)
     end
-    alias serialize call
+    alias_method :serialize, :call
 
     # @abstract
     def serialize_resource(_resource)
@@ -80,8 +80,8 @@ module Yaks
       end
 
       def media_types
-        Format.all.each_with_object({}) do
-          |format, memo| memo[format.format_name] = format.media_type
+        Format.all.each_with_object({}) do |format, memo|
+          memo[format.format_name] = format.media_type
         end
       end
       deprecated_alias :mime_types, :media_types

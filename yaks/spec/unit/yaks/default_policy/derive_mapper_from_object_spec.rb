@@ -56,7 +56,7 @@ RSpec.describe Yaks::DefaultPolicy, '#derive_mapper_from_object' do
   end
 
   context 'when trying to lookup CollectionMapper results in something other than an NameError' do
-    let(:options) { { namespace: DislikesCollectionMapper } }
+    let(:options) { {namespace: DislikesCollectionMapper} }
 
     it 'should propagate the error' do
       expect {
@@ -66,7 +66,7 @@ RSpec.describe Yaks::DefaultPolicy, '#derive_mapper_from_object' do
   end
 
   context 'when trying to lookup a specific collection mapper results in something other than an NameError' do
-    let(:options) { { namespace: DislikesOtherMappers } }
+    let(:options) { {namespace: DislikesOtherMappers} }
 
     it 'should propagate the error' do
       expect {
@@ -90,5 +90,4 @@ RSpec.describe Yaks::DefaultPolicy, '#derive_mapper_from_object' do
       }.to raise_error /Failed to find a mapper for #<Namespace::Nested::Mung:0x\h+>. Did you mean to implement MungMapper\?/
     end
   end
-
 end

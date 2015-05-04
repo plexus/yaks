@@ -1,23 +1,23 @@
 module Yaks
   module Reader
     class JsonAPI
-      def call(parsed_json, env = {})
+      def call(parsed_json, _env = {})
         included = parsed_json['included'].nil? ? {} : parsed_json['included'].dup
 
         if parsed_json['data'].is_a?(Array)
           CollectionResource.new(
-              attributes: parsed_json['meta'].nil? ? nil : {meta: parsed_json['meta']},
-              members: parsed_json['data'].map { |data| call({'data'  => data, 'included' => included}) }
+            attributes: parsed_json['meta'].nil? ? nil : {meta: parsed_json['meta']},
+            members: parsed_json['data'].map { |data| call('data'  => data, 'included' => included) }
           )
         else
           attributes = parsed_json['data'].dup
           links = attributes.delete('links') || {}
           embedded   = convert_embedded(links, included)
           Resource.new(
-              type: Util.singularize(attributes.delete('type')[/\w+$/]),
-              attributes: Util.symbolize_keys(attributes),
-              subresources: embedded,
-              links: []
+            type: Util.singularize(attributes.delete('type')[/\w+$/]),
+            attributes: Util.symbolize_keys(attributes),
+            subresources: embedded,
+            links: []
           )
         end
       end
@@ -37,19 +37,18 @@ module Yaks
             nil
           elsif linkage.is_a? Array
             CollectionResource.new(
-                members: linkage.map { |link|
-                  data = included.find{ |item| (item['id'] == link['id']) && (item['type'] == link['type']) }
-                  call({'data'  => data, 'included' => included})
-                },
-                rels: [rel]
+              members: linkage.map { |link|
+                data = included.find{ |item| (item['id'] == link['id']) && (item['type'] == link['type']) }
+                call('data'  => data, 'included' => included)
+              },
+              rels: [rel]
             )
           else
             data = included.find{ |item| (item['id'] == linkage['id']) && (item['type'] == linkage['type']) }
-            call({'data'  => data, 'included' => included}).with(rels: [rel])
+            call('data'  => data, 'included' => included).with(rels: [rel])
           end
         end.compact
       end
-
     end
   end
 end

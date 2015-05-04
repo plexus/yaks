@@ -3,7 +3,7 @@ RSpec.describe Yaks::Mapper::Association do
 
   let(:association_class) {
     Class.new(described_class) do
-      def map_resource(object, context)
+      def map_resource(_object, _context)
       end
     end
   }
@@ -43,7 +43,7 @@ RSpec.describe Yaks::Mapper::Association do
   let(:parent_mapper)       { parent_mapper_class.new(yaks_context) }
 
   describe '#add_to_resource' do
-    let(:object) { fake(:shoes => []) }
+    let(:object) { fake(shoes: []) }
     let(:rel)    { 'rel:shoes' }
 
     before do
@@ -76,13 +76,12 @@ RSpec.describe Yaks::Mapper::Association do
         expect(association.add_to_resource(Yaks::Resource.new, parent_mapper, yaks_context).subresources.length).to be 0
       end
     end
-
   end
 
   describe '#render_as_link?' do
     let(:href)     { '/foo/{bar}/baz' }
     let(:link_if)  { -> { env.fetch('env_entry') == 123 } }
-    let(:rack_env) { { 'env_entry' => 123 } }
+    let(:rack_env) { {'env_entry' => 123} }
 
     let(:render_as_link?) { association.render_as_link?(parent_mapper) }
 
@@ -93,7 +92,7 @@ RSpec.describe Yaks::Mapper::Association do
     end
 
     context 'when evaluating to false' do
-      let(:rack_env) { { 'env_entry' => 0 } }
+      let(:rack_env) { {'env_entry' => 0} }
 
       it 'should resolve :link_if in the context of the mapper' do
         expect(render_as_link?).to be false

@@ -1,7 +1,7 @@
 RSpec.describe Yaks::Mapper::Form do
   include_context 'yaks context'
 
-  let(:form) { described_class.create( *full_args, &block_arg ) }
+  let(:form) { described_class.create(*full_args, &block_arg) }
   let(:name) { :the_name }
   let(:full_args) { [{name: name}.merge(args)] }
   let(:block_arg) { nil }
@@ -128,7 +128,7 @@ RSpec.describe Yaks::Mapper::Form do
       end
 
       it 'should render them based on the mapped object' do
-        mapper.call(fake(name: :anthony)) # hack to set the mapper's object
+        mapper.call(fake(name: :anthony)) # HACK: set the mapper's object
         expect(form.to_resource_form(mapper)).to eql(
           Yaks::Resource::Form.new(
             name: :the_name,
@@ -140,5 +140,4 @@ RSpec.describe Yaks::Mapper::Form do
       end
     end
   end
-
 end

@@ -27,7 +27,7 @@ module Matchers
     def recurse(target, expectation)
       # leave this in two lines so it doesn't short circuit
       result = DeepEql.new(expectation, stack, diffs).matches?(target)
-      @result = @result && result
+      @result &&= result
     end
 
     def stack_as_jsonpath
@@ -108,17 +108,19 @@ module Matchers
     def failure_message_for_should
       diffs.join("\n")
     end
-    alias failure_message failure_message_for_should
+    alias_method :failure_message, :failure_message_for_should
 
     def failure_message_for_should_not
       "expected #{@target.inspect} not to be in deep_eql with #{@expectation.inspect}"
     end
-    alias failure_message_when_negated failure_message_for_should_not
+    alias_method :failure_message_when_negated, :failure_message_for_should_not
   end
 end
 
-module RSpec::Matchers
-  def deep_eql(exp)
-    Matchers::DeepEql.new(exp)
+module RSpec
+  module Matchers
+    def deep_eql(exp)
+      ::Matchers::DeepEql.new(exp)
+    end
   end
 end

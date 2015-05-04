@@ -29,3 +29,5 @@ matrix:
       env: TASK=ataru
     - rvm: 2.2
       env: TASK=mutant
+    - rvm: 2.2
+      env: TASK=rubocop

@@ -36,25 +36,23 @@ RSpec.describe 'dynamic form fields' do
     expect(
       yaks.with(default_format: :halo, hooks: [[:skip, :serialize]]).call(:foo, mapper: mapper)
     ).to eql(
-      {
-        "_controls" => {
-          "foo" => {
-            "name" =>"foo",
-            "fields" => [
-              {
-                "type" => "fieldset",
-                "fields" => [
-                  {
-                    "label" => "I am legend",
-                    "type" => "legend"
-                  }, {
-                    "name" => "bar",
-                    "type" => "text"
-                  }
-                ]
-              }
-            ]
-          }
+      "_controls" => {
+        "foo" => {
+          "name" => "foo",
+          "fields" => [
+            {
+              "type" => "fieldset",
+              "fields" => [
+                {
+                  "label" => "I am legend",
+                  "type" => "legend"
+                }, {
+                  "name" => "bar",
+                  "type" => "text"
+                }
+              ]
+            }
+          ]
         }
       }
     )

@@ -45,7 +45,6 @@ module Yaks
         return item_mapper unless item_mapper.equal?(Undefined)
         policy.derive_mapper_from_association(self)
       end
-
     end
   end
 end

@@ -33,11 +33,9 @@ module Yaks
             fields: field.fields.map(&method(:serialize_form_field))
           }
         else
-          field.to_h_compact.each_with_object({}) do |(attr,value), hsh|
+          field.to_h_compact.each_with_object({}) do |(attr, value), hsh|
             if attr == :options # <option>s of a <select>
-              if !value.empty?
-                hsh[:options] = value.map(&:to_h_compact)
-              end
+              hsh[:options] = value.map(&:to_h_compact) unless value.empty?
             else
               hsh[attr] = value
             end

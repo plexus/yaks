@@ -4,7 +4,6 @@ module Yaks
   #
   # Does not aim to be complete, does aim to be a strict subset.
   module HTML5Forms
-
     INPUT_TYPES = [
       :checkbox,
       :color,
@@ -53,6 +52,5 @@ module Yaks
       checked: false,
       disabled: false
     }
-
   end
 end

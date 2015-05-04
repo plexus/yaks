@@ -1,6 +1,6 @@
 module Yaks
   class CollectionMapper < Mapper
-    alias collection object
+    alias_method :collection, :object
 
     # @param [Array] collection
     # @return [Array]
@@ -19,9 +19,7 @@ module Yaks
       # use a generic rel. This matters especially for HAL, where a
       # top-level collection is rendered as an object with the
       # collection as a subresource.
-      if context[:mapper_stack].empty?
-        attrs[:rels] = [collection_rel]
-      end
+      attrs[:rels] = [collection_rel] if context[:mapper_stack].empty?
 
       map_attributes(
         map_links(
@@ -34,7 +32,7 @@ module Yaks
 
     def collection_rel
       if collection_type
-        policy.expand_rel( pluralize( collection_type ) )
+        policy.expand_rel(pluralize(collection_type))
       else
         'collection'
       end

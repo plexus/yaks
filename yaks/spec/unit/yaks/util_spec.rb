@@ -49,7 +49,7 @@ RSpec.describe Yaks::Util do
 
   describe '#slice_hash' do
     it 'should retain the given keys from a hash' do
-      expect(slice_hash({a: 1, b: 2, c: 3}, :a, :c, :d)).to eql(a: 1, c:3)
+      expect(slice_hash({a: 1, b: 2, c: 3}, :a, :c, :d)).to eql(a: 1, c: 3)
     end
   end
 
@@ -61,7 +61,7 @@ RSpec.describe Yaks::Util do
 
   describe "#symbolize_keys" do
     it "should turn string keys into symbols" do
-      expect(symbolize_keys({'foo' => 1, 'bar' => 2})).to eql(foo: 1, bar: 2)
+      expect(symbolize_keys('foo' => 1, 'bar' => 2)).to eql(foo: 1, bar: 2)
     end
   end
 
@@ -81,7 +81,6 @@ RSpec.describe Yaks::Util do
       expect([args, opts]).to eql [[:a, :b], {}]
     end
   end
-
 end
 
 RSpec.describe Yaks::Util::Deprecated, '#deprecated_alias' do
@@ -89,8 +88,12 @@ RSpec.describe Yaks::Util::Deprecated, '#deprecated_alias' do
     Class.new do
       extend Yaks::Util::Deprecated
 
-      def self.to_s ; 'FancyClass' end
-      def foo(x); "#{x}yz#{yield}" end
+      def self.to_s
+        'FancyClass'
+      end
+      def foo(x)
+        "#{x}yz#{yield}"
+      end
       deprecated_alias :bar, :foo
     end
   }
@@ -113,6 +116,6 @@ RSpec.describe Yaks::Util::Deprecated, '#deprecated_alias' do
       capture_stderr do
         expect(klass.new.bar('x') {'a'}).to eql 'xyza'
       end
-    ).to match /WARNING: FancyClass#bar is deprecated, use `foo'\. at \/.*util_spec.rb:#{__LINE__ - 2}:in/
+    ).to match %r{WARNING: FancyClass#bar is deprecated, use `foo'\. at /.*util_spec.rb:#{__LINE__ - 2}:in}
   end
 end

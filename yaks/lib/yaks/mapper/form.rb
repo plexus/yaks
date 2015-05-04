@@ -3,7 +3,6 @@ module Yaks
     class Form
       extend Forwardable, Util
 
-
       def_delegators :config, :name, :action, :title, :method,
                               :media_type, :fields, :dynamic_blocks
 
@@ -35,7 +34,6 @@ module Yaks
 
         Resource::Form.new(attrs)
       end
-
     end
   end
 end

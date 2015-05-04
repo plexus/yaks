@@ -4,10 +4,10 @@ module Yaks
             Equalizer.new(:rels, :collection)
 
     def initialize(opts = {})
-      _opts = {}
-      _opts[:rels]       = opts[:rels]       if opts.key?(:rels)
-      _opts[:collection] = opts[:collection] if opts.key?(:collection)
-      super(_opts)
+      local_opts = {}
+      local_opts[:rels]       = opts[:rels]       if opts.key?(:rels)
+      local_opts[:collection] = opts[:collection] if opts.key?(:collection)
+      super(local_opts)
     end
 
     def each
@@ -17,7 +17,6 @@ module Yaks
     def collection?
       @collection
     end
-
 
     def null_resource?
       true

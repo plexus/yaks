@@ -11,7 +11,7 @@ module Yaks
         # Up to 0.9.0 legends were represented as Form::Field
         # instances with the label stored as name, hence this alias
         # for compatibility
-        alias name label
+        alias_method :name, :label
       end
     end
   end

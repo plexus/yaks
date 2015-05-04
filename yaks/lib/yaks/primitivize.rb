@@ -8,6 +8,7 @@ module Yaks
 
     def call(object)
       mappings.each do |pattern, block|
+        # rubocop:disable Style/CaseEquality
         return instance_exec(object, &block) if pattern === object
       end
       raise PrimitivizeError, "don't know how to turn #{object.class} (#{object.inspect}) into a primitive"

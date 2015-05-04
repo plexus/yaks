@@ -8,7 +8,7 @@ RSpec.describe Yaks::Mapper::HasMany do
       type 'closet'
       has_many :shoes,
         rel: 'http://foo/shoes',
-        item_mapper: Class.new(Yaks::Mapper) { type 'shoe' ; attributes :size, :color }
+        item_mapper: Class.new(Yaks::Mapper) { type 'shoe'; attributes :size, :color }
     end
   end
 
@@ -20,52 +20,52 @@ RSpec.describe Yaks::Mapper::HasMany do
 
   let(:closet) {
     fake(
-      :shoes => [
+      shoes: [
         fake(size: 9,    color: :blue),
-        fake(size: 11.5, color: :red),
+        fake(size: 11.5, color: :red)
       ]
     )
   }
 
   describe "#map_resource" do
-     it 'should map the subresources' do
-       expect(closet_mapper.call(closet).subresources).to eql([
-         Yaks::CollectionResource.new(
-           type: 'shoe',
-           members: [
-             Yaks::Resource.new(type: 'shoe', attributes: {size: 9, color: :blue}),
-             Yaks::Resource.new(type: 'shoe', attributes: {size: 11.5, color: :red})
-           ],
-           rels: ['http://foo/shoes']
-         )
-       ])
-     end
+    it 'should map the subresources' do
+      expect(closet_mapper.call(closet).subresources).to eql([
+        Yaks::CollectionResource.new(
+          type: 'shoe',
+          members: [
+            Yaks::Resource.new(type: 'shoe', attributes: {size: 9, color: :blue}),
+            Yaks::Resource.new(type: 'shoe', attributes: {size: 11.5, color: :red})
+          ],
+          rels: ['http://foo/shoes']
+        )
+      ])
+    end
 
-     it 'should map nil to a NullResource collection' do
-       expect(closet_mapper.call(fake(shoes: nil)).subresources).to eql([
-         Yaks::NullResource.new(collection: true, rels: ['http://foo/shoes'])
-       ])
-     end
+    it 'should map nil to a NullResource collection' do
+      expect(closet_mapper.call(fake(shoes: nil)).subresources).to eql([
+        Yaks::NullResource.new(collection: true, rels: ['http://foo/shoes'])
+      ])
+    end
 
-     context 'without an explicit mapper' do
-       let(:dress_mapper) {
-         Class.new(Yaks::Mapper) { type 'dress' ; attributes :color }
-       }
+    context 'without an explicit mapper' do
+      let(:dress_mapper) {
+        Class.new(Yaks::Mapper) { type 'dress'; attributes :color }
+      }
 
-       before do
-         closet_mapper_class.class_eval do
-           has_many :dresses
-         end
+      before do
+        closet_mapper_class.class_eval do
+          has_many :dresses
+        end
 
-         stub(closet_mapper.policy).derive_mapper_from_association(any_args) do
-           dress_mapper
-         end
-       end
+        stub(closet_mapper.policy).derive_mapper_from_association(any_args) do
+          dress_mapper
+        end
+      end
 
-       it 'should derive it from policy' do
-         expect(closet_mapper.policy).to equal policy
-         closet_mapper.call(fake(shoes: [], dresses: [fake(color: 'blue')]))
-       end
+      it 'should derive it from policy' do
+        expect(closet_mapper.policy).to equal policy
+        closet_mapper.call(fake(shoes: [], dresses: [fake(color: 'blue')]))
+      end
     end
   end
 

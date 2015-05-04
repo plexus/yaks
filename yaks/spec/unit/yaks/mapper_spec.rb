@@ -51,8 +51,8 @@ RSpec.describe Yaks::Mapper do
 
     context "with attribute" do
       let(:attributes) { [ Yaks::Mapper::Attribute.create(:foo) ] }
-      let(:attributes_from_model) { { foo: 'hello' } }
-      let(:non_filtered_attributes) { { } }
+      let(:attributes_from_model) { {foo: 'hello'} }
+      let(:non_filtered_attributes) { {} }
 
       context "called without block" do
         before do
@@ -63,9 +63,9 @@ RSpec.describe Yaks::Mapper do
       end
 
       context "called with a block" do
-        let(:block) { Proc.new { object.bar } }
+        let(:block) { proc { object.bar } }
         let(:attributes) { [ Yaks::Mapper::Attribute.create(:foo, &block) ] }
-        let(:attributes_from_model) { { foo: 'world' } }
+        let(:attributes_from_model) { {foo: 'world'} }
 
         before do
           mapper_class.attribute :foo, &block
@@ -83,8 +83,8 @@ RSpec.describe Yaks::Mapper do
         ]
       end
 
-      let(:attributes_from_model) { { foo: 'hello', bar: 'world' } }
-      let(:non_filtered_attributes) { { bar: 'world' } }
+      let(:attributes_from_model) { {foo: 'hello', bar: 'world'} }
+      let(:non_filtered_attributes) { {bar: 'world'} }
 
       before do
         mapper_class.attributes :foo, :bar
@@ -136,8 +136,8 @@ RSpec.describe Yaks::Mapper do
 
       describe 'has_one' do
         let(:has_one_opts) do
-          { mapper: widget_mapper,
-            rel: 'http://foo.bar/rels/widgets' }
+          {mapper: widget_mapper,
+           rel: 'http://foo.bar/rels/widgets'}
         end
 
         before do
@@ -145,22 +145,21 @@ RSpec.describe Yaks::Mapper do
           mapper_class.has_one(:widget, has_one_opts)
         end
 
-
         it 'should have the subresource in the resource' do
-          expect(resource.subresources).to eq([Yaks::Resource.new(type: 'widget', attributes: {:type => 'super_widget'}, rels: ['http://foo.bar/rels/widgets'])])
+          expect(resource.subresources).to eq([Yaks::Resource.new(type: 'widget', attributes: {type: 'super_widget'}, rels: ['http://foo.bar/rels/widgets'])])
         end
 
         context 'with explicit mapper and rel' do
           it 'should delegate to the given mapper' do
             expect(resource.subresources).to eq([
-              Yaks::Resource.new(type: 'widget', attributes: {:type => 'super_widget'}, rels: ['http://foo.bar/rels/widgets'])
+              Yaks::Resource.new(type: 'widget', attributes: {type: 'super_widget'}, rels: ['http://foo.bar/rels/widgets'])
             ])
           end
         end
 
         context 'with unspecified mapper' do
           let(:has_one_opts) do
-            { rel: 'http://foo.bar/rels/widgets' }
+            {rel: 'http://foo.bar/rels/widgets'}
           end
 
           before do
@@ -171,14 +170,14 @@ RSpec.describe Yaks::Mapper do
 
           it 'should derive the mapper based on policy' do
             expect(resource.subresources).to eq([
-              Yaks::Resource.new(type: 'widget', attributes: {:type => 'super_widget'}, rels: ['http://foo.bar/rels/widgets'])
+              Yaks::Resource.new(type: 'widget', attributes: {type: 'super_widget'}, rels: ['http://foo.bar/rels/widgets'])
             ])
           end
         end
 
         context 'with unspecified rel' do
           let(:has_one_opts) do
-            { mapper: widget_mapper }
+            {mapper: widget_mapper}
           end
 
           before do
@@ -189,7 +188,7 @@ RSpec.describe Yaks::Mapper do
 
           it 'should derive the rel based on policy' do
             expect(resource.subresources).to eq([
-              Yaks::Resource.new(type: 'widget', attributes: {:type => 'super_widget'}, rels: ['http://rel/rel'])
+              Yaks::Resource.new(type: 'widget', attributes: {type: 'super_widget'}, rels: ['http://rel/rel'])
             ])
           end
         end
@@ -280,7 +279,6 @@ RSpec.describe Yaks::Mapper do
     it "should optionally take a rack env" do
       expect { mapper.call(fake, {}) }.to_not raise_error
     end
-
   end # describe '#call'
 
   describe '.mapper_name' do
@@ -338,7 +336,7 @@ RSpec.describe Yaks::Mapper do
     let(:attribute) { fake('Attribute') }
 
     it 'should receive a context' do
-      stub(attribute).add_to_resource(any_args) {|r,_,_| Yaks::Resource.new}
+      stub(attribute).add_to_resource(any_args) {|_r, _, _| Yaks::Resource.new}
 
       mapper.config.attributes[0..-1] = [attribute]
       mapper.call(instance)
@@ -349,7 +347,7 @@ RSpec.describe Yaks::Mapper do
 
   shared_examples 'something that can be added to a resource' do
     it 'should receive a context' do
-      stub(object).add_to_resource(any_args) {|r,_,_| Yaks::Resource.new}
+      stub(object).add_to_resource(any_args) {|_r, _, _| Yaks::Resource.new}
 
       mapper.call(instance)
 
@@ -401,7 +399,11 @@ RSpec.describe Yaks::Mapper do
     subject(:expanded) { mapper.expand_uri(*args) }
 
     before do
-      mapper.call( Struct.new(:x, :y) { def foo ; '/foo/foo' ; end }.new(6, 7) )
+      mapper.call(Struct.new(:x, :y) {
+        def foo
+          '/foo/foo'
+        end
+      }.new(6, 7))
     end
 
     context "with full expansion" do
@@ -451,5 +453,4 @@ RSpec.describe Yaks::Mapper do
       end
     end
   end
-
 end

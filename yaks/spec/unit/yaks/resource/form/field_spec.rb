@@ -11,12 +11,12 @@ RSpec.describe Yaks::Resource::Form::Field do
         described_class.new(name: 'foo', type: :select, options: [
           Yaks::Resource::Form::Field::Option.new(label: 'foo', selected: false, value: 1),
           Yaks::Resource::Form::Field::Option.new(label: 'foo', selected: true, value: 2),
-          Yaks::Resource::Form::Field::Option.new(label: 'foo', selected: false, value: 3),
+          Yaks::Resource::Form::Field::Option.new(label: 'foo', selected: false, value: 3)
         ])
       end
 
       it 'should return the selected value' do
-        expect( subject.value ).to eql 2
+        expect(subject.value).to eql 2
       end
     end
 
@@ -25,12 +25,12 @@ RSpec.describe Yaks::Resource::Form::Field do
         described_class.new(name: 'foo', type: :select, options: [
           Yaks::Resource::Form::Field::Option.new(label: 'foo', selected: false, value: 1),
           Yaks::Resource::Form::Field::Option.new(label: 'foo', selected: false, value: 2),
-          Yaks::Resource::Form::Field::Option.new(label: 'foo', selected: false, value: 3),
+          Yaks::Resource::Form::Field::Option.new(label: 'foo', selected: false, value: 3)
         ])
       end
 
       it 'should return nothing' do
-        expect( subject.value ).to be nil
+        expect(subject.value).to be nil
       end
     end
   end
@@ -48,7 +48,7 @@ RSpec.describe Yaks::Resource::Form::Field do
           Yaks::Resource::Form::Field::Option.new(label: 'f', selected: true,  value: "1"),
           Yaks::Resource::Form::Field::Option.new(label: 'f', selected: false, value: "2"),
           Yaks::Resource::Form::Field::Option.new(label: 'f', selected: true,  value: "3"),
-          Yaks::Resource::Form::Field::Option.new(label: 'f', selected: false, value: "4"),
+          Yaks::Resource::Form::Field::Option.new(label: 'f', selected: false, value: "4")
         ])
       end
 

@@ -82,6 +82,5 @@ module Yaks
     def hooks
       config.hooks + options.fetch(:hooks, [])
     end
-
   end
 end
