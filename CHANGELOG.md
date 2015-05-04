@@ -1,15 +1,31 @@
 ### master
 [full changelog](http://github.com/plexus/yaks/compare/v0.9.0...master)
 
-Updated JSON-API Reader to handle collections
+* Updated JSON-API Reader to handle collections
 
-Further changes to bring JSONAPI formatting more in line with 1.0 format
+* Further changes to bring JSONAPI formatting more in line with 1.0
+  format
 
-- Changed `linked` to `included`
-- Change format of `links` to include 'linkages'
-- `included` no longer contains duplicates
+  - Changed `linked` to `included`
+  - Change format of `links` to include 'linkages'
+  - `included` no longer contains duplicates
+  - Render top level collection links
 
-### v0.9.0
+* yaks-html: Make nested resources expand/collapse, various small
+  improvements
+
+* In mapper/form declarations: make methods that take a lambda to also
+  accept a block
+
+* Instead of representing form fieldset legends as form fields, give
+  them their own class
+
+* Introduce `Yaks::Form#fields_flat`, an enumerator to traverse all
+  input fields in a form linearly, e.g. for validation
+
+* Bug fix: `json_serializer` configuration method not working as intended
+
+### v0.9.0 / 2015-03-17
 
 Make dynamic form fields respect the order in which they were declared
 in the form relative to other form fields.
@@ -50,13 +66,13 @@ be set in this way, but not `value` or `required`.
 Prevent `:if` on a form field to be rendered as a form element
 attribute.
 
-### v0.8.3
+### v0.8.3 / 2015-03-09
 
 The default policy for resolving mappers will now look up superclass
 names of the object being serialized, so you can define a single
 mapper to handle a class hierarchy.
 
-### v0.8.2
+### v0.8.2 / 2015-03-02
 
 Various improvements to the HTML formatter
 
@@ -72,12 +88,12 @@ Various improvements to the HTML formatter
 - show the name/value of hidden form fields
 - get rid of the all the border-radius, try a new color scheme
 
-### v0.8.1
+### v0.8.1 / 2015-02-20
 
 Add `disabled` as a possible attribute of a select option, so you can
 render form select controls with disabled options.
 
-### v0.8.0
+### v0.8.0 / 2015-02-18
 
 Allow to use procs for dynamic values in "option" form elements (as
 used inside a "select"). This makes the form API more consistent.
@@ -92,17 +108,17 @@ certain condition.
 Add an `:if` option to associtions, to only render them upon a certain
 condition.
 
-### 0.8.0.beta2
+### 0.8.0.beta2 / 2015-01-14
 
 In form select fields, allow the attributes of options to be generated
 dynamically by passing procs, in line with other form related
 attributes
 
-### 0.8.0.beta1
+### 0.8.0.beta1 / 2015-01-09
 
 Improved form support, HTML form rendering, CJ support.
 
-### 0.8.0.alpha
+### 0.8.0.alpha / 2014-12-17
 
 Improved Collection+JSON support, dynamically generated form fields.
 
@@ -167,7 +183,7 @@ Because of this work, two methods on Yaks::Config are considered deprecated. You
 
 Some work has happened on read/write support, but this is not considered stable yet.
 
-### 0.7.7
+### 0.7.7 / 2014-12-02
 
 General extension and improvements to form handling.
 
@@ -182,7 +198,7 @@ form by name.
 Introduce yaks.map() so you can only call the mapping step without
 running the whole pipeline.
 
-### 0.7.6
+### 0.7.6 / 2014-11-18
 
 Much expanded form support, simplified link DSL, pretty-print objects
 to Ruby code.
@@ -229,7 +245,7 @@ The Yaks::Resource#pp method has been lifted into Attributes so it's
 available on most immutable Yaks objects. It has also been adapted to
 produce, in most cases, output that is valid Ruby code.
 
-### 0.7.5
+### 0.7.5 / 2014-11-17
 
 Add the :replace option to link specifications. When used on a link
 when another link of the same rel was specified previously, then the
@@ -247,27 +263,27 @@ Use case:
     end
 
 
-### 0.7.4
+### 0.7.4 / 2014-11-17
 
 Fix a regression in around hooks introduced in 0.7.0.
 
 Improve pretty printing (Yaks::Resource#pp)
 
-### 0.7.3
+### 0.7.3 / 2014-11-11
 
 yaks-sinatra: Allow passing extra Yaks options to the helper method
 
-### 0.7.2
+### 0.7.2 / 2014-11-10
 
 Allow controls to use the same expansion mechanisms that are available
 in links, i.e. URI templates, symbol referring to a method. Added
 procs to that list as well.
 
-### 0.7.1
+### 0.7.1 / 2014-11-10
 
 Bugfix in CollectionMapper.
 
-### 0.7.0
+### 0.7.0 / 2014-11-10
 
 #### Introduces yaks-sinatra
 
@@ -304,11 +320,11 @@ a JSON equivalent, or needs to be handled explicitly with a conversion
 (known as "primitivizing"). instances of `URI` have been added to this
 list, they will automatically be represented as JSON strings.
 
-### 0.6.2
+### 0.6.2 / 2014-11-05
 
 Improvements to yaks-html: render form controls, make output prettier.
 
-### 0.6.1
+### 0.6.1 / 2014-10-30
 
 Make sure Resource, NullResource, and CollectionResource have
 identical public APIs.
@@ -318,7 +334,7 @@ error categories. This should make it easier to handle errors
 originating in Yaks. Note that not all code makes use of these yet, so
 you might still get a StandardError in some cases.
 
-### 0.6.0
+### 0.6.0 / 2014-10-30
 
 v0.6.0 saw some big internal overhaul to make things cleaner and more
 consistent. It also introduced some new features.
@@ -353,7 +369,7 @@ Provided as a separate gem, `yaks-html` allows Yaks to generate a
 version of your API that can be browsed from any web browser. This is
 still very rough around the edges.
 
-### 0.5.0
+### 0.5.0 / 2014-09-18
 
 * Yaks now serializes (returns a string), instead of returning a data
   structure. This is a preparatory step for supporting non-JSON
@@ -397,7 +413,7 @@ register :collection_json, :json, 'application/vnd.collection+json'
 
 * 100% mutation coverage :trumpet: :tada:
 
-### 0.4.3
+### 0.4.3 / 2014-08-25
 
 * when specifying a rel_template, instead of allowing for {src} and {dest} fields, now a single {rel} field is expected, which corresponds more with typical usage.
 
@@ -459,7 +475,7 @@ end
 * Give Attribute, Link, Association a common interface : `add_to_resource(resource, mapper, context)`
 * Add persistent update methods to `Yaks::Resource`
 
-### v0.4.2
+### v0.4.2 / 2014-06-24
 
 * JSON-API: render self links as href attributes
 * HAL: render has_one returning nil as null, not as {}
@@ -468,13 +484,13 @@ end
 * Make Yaks::CollectionMapper#collection overridable for pagination
 * Don't render links from custom link methods (link :foo, :method_that_generates_url) that return nil
 
-### v0.4.1
+### v0.4.1 / 2014-06-18
 
 * Change how env is passed to yaks.serialize to match docs
 * Fix JSON-API bug (#18 reported by Nicolas Blanco)
 * Don't pluralize has_one association names in JSON-API
 
-## v0.4.0
+### v0.4.0  / 2014-06-17
 
 * Introduce after {} post-processing hook
 * Streamline interfaces and variable names, especially the use of `call`
@@ -483,7 +499,7 @@ end
 * Switch back to using `src` and `dest` as the rel-template keys, instead of `association_name`
 * deprecate `mapper_namespace` in favor of `namespace`
 
-### v0.4.0.rc1
+### v0.4.0.rc1 / 2014-06-11
 
 * Introduce Yaks.new as the main public interface
 * Fix JsonApiSerializer and make it compliant with current spec
@@ -494,10 +510,14 @@ end
 * Honor the HTTP Accept header if it is present in the rack env
 * Add map_to_primitive configuration option
 
-## v0.3.0
+### v0.3.0 / 2014-05-15
 
 * Allow partial expansion of templates, expand certain fields, leave others as URI template in the result.
 
-## v0.2.0
+### v0.2.0 / 2014-03-31
 
 * links can now take a simple for a template to compute a link just like an attribute
+
+### v0.1.0 / 2014-03-07
+
+### v0.0.0 / 2013-12-09
