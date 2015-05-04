@@ -60,6 +60,9 @@ Style/FileName:
 Style/FirstParameterIndentation:
   Enabled: false
 
+Style/FormatString:
+  EnforcedStyle: percent
+
 Style/GlobalVars:
   Exclude:
     - bench/bench.rb

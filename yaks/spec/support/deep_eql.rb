@@ -42,7 +42,7 @@ module Matchers
     end
 
     def add_failure_message(message)
-      diffs << format("at %s, %s", stack_as_jsonpath, message)
+      diffs << "at %s, %s" % [stack_as_jsonpath, message]
       @result = false
     end
 
