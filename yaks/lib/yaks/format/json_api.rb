@@ -35,7 +35,12 @@ module Yaks
       # @param [Yaks::Resource] resource
       # @return [Hash]
       def serialize_resource(resource)
-        result = {type: pluralize(resource.type).to_sym}.merge(resource.attributes)
+        result = {}
+        result[:type] = pluralize(resource.type).to_sym
+        result[:id]   = resource[:id] if resource[:id]
+
+        attributes = resource.attributes.reject { |k, _| k == :id }
+        result[:attributes] = attributes if attributes.any?
 
         result[:links] = {}
         result[:links].update(serialize_subresource_links(resource.subresources))
