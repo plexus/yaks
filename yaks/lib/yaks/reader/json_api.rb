@@ -12,12 +12,15 @@ module Yaks
         else
           attributes = parsed_json['data'].dup
           links = attributes.delete('links') || {}
+          type  = attributes.delete('type')
+          attributes.merge!(attributes.delete('attributes') || {})
+
           association_links, resource_links = links.partition { |k, v| v.is_a?(Hash) }
           embedded   = convert_embedded(Hash[association_links], included)
           links      = convert_links(Hash[resource_links])
 
           Resource.new(
-            type: Util.singularize(attributes.delete('type')[/\w+$/]),
+            type: Util.singularize(type),
             attributes: Util.symbolize_keys(attributes),
             subresources: embedded,
             links: links

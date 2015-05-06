@@ -7,7 +7,7 @@ RSpec.describe Yaks::Format::JsonAPI do
 
     it 'should not include an "included" key' do
       expect(format.call(resource)).to eql(
-        data: {type: :wizards, foo: :bar}
+        data: {type: :wizards, attributes: {foo: :bar}}
       )
     end
   end
@@ -24,7 +24,7 @@ RSpec.describe Yaks::Format::JsonAPI do
     it 'should include the "meta" key' do
       expect(format.call(resource)).to eql(
         meta: {page: {limit: 20, offset: 0, count: 25}},
-        data: [{type: :wizards, foo: :bar}]
+        data: [{type: :wizards, attributes: {foo: :bar}}]
       )
     end
   end
@@ -74,7 +74,7 @@ RSpec.describe Yaks::Format::JsonAPI do
           type: :wizards,
           links: {'favourite_spell'  => {linkage: {type: 'spells', id: 777}}}
         },
-        included: [{type: :spells, id: 777, name: 'Lucky Sevens'}]
+        included: [{type: :spells, id: 777, attributes: {name: 'Lucky Sevens'}}]
       )
     end
   end
