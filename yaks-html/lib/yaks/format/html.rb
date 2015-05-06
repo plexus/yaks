@@ -12,7 +12,7 @@ module Yaks
       end
 
       def section(name)
-        template.find(".#{name}")
+        template.select(".#{name}").first   # rubocop:disable Performance/Detect
       end
 
       def serialize_resource(resource)
