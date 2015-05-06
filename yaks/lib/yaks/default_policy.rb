@@ -5,7 +5,7 @@ module Yaks
     # Default policy options.
     DEFAULTS = {
       rel_template: "rel:{rel}",
-      namespace: Kernel
+      namespace: Object
     }
 
     # @!attribute [r]
@@ -22,31 +22,8 @@ module Yaks
     #
     # @raise [NameError] only occurs when the model is anything but a collection.
     def derive_mapper_from_object(model)
-      if model.respond_to? :to_ary
-        if m = model.first
-          name = m.class.name.split('::').last + 'CollectionMapper'
-          begin
-            return @options[:namespace].const_get(name)
-          rescue NameError               # rubocop:disable Lint/HandleExceptions
-          end
-        end
-        begin
-          return @options[:namespace].const_get(:CollectionMapper)
-        rescue NameError                 # rubocop:disable Lint/HandleExceptions
-        end
-        CollectionMapper
-      else
-        klass = model.class
-        begin
-          name = klass.name.split('::').last
-          return @options[:namespace].const_get(name + 'Mapper')
-        rescue NameError
-          klass = klass.superclass
-          retry if klass
-        end
-        name = model.class.name.split('::').last
-        raise "Failed to find a mapper for #{model.inspect}. Did you mean to implement #{name}Mapper?"
-      end
+      return derive_mapper_from_collection(model) if model.respond_to? :to_ary
+      derive_mapper_from_single_object(model)
     end
 
     # Derive the a mapper type name
@@ -91,6 +68,44 @@ module Yaks
     # @return [String]
     def expand_rel(relname)
       URITemplate.new(@options[:rel_template]).expand(rel: relname)
+    end
+
+    private
+
+    def derive_mapper_from_collection(collection)
+      if m = collection.first
+        name = "#{m.class.name.split('::').last}CollectionMapper"
+        begin
+          return @options[:namespace].const_get(name)
+        rescue NameError               # rubocop:disable Lint/HandleExceptions
+        end
+      end
+      begin
+        return @options[:namespace].const_get(:CollectionMapper)
+      rescue NameError                 # rubocop:disable Lint/HandleExceptions
+      end
+      CollectionMapper
+    end
+
+    def derive_mapper_from_single_object(model)
+      klass = model.class
+      splitted_class_name = klass.name.split("::")
+      model_namespace = splitted_class_name[0...-1]
+      model_class_name = splitted_class_name.last
+      begin
+        mapper_class_parts = [*model_namespace, "#{klass.name.split('::').last}Mapper"]
+        return mapper_class_parts.inject(@options[:namespace]) do |prefix, suffix|
+          prefix.const_get(suffix, false)
+        end
+      rescue NameError
+        klass = klass.superclass
+        unless model_namespace.empty? || klass
+          model_namespace = []
+          klass = model.class
+        end
+        retry if klass
+      end
+      raise "Failed to find a mapper for #{model.inspect}. Did you mean to implement #{model_class_name}Mapper?"
     end
   end
 end

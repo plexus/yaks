@@ -25,6 +25,8 @@
 
 * Bug fix: `json_serializer` configuration method not working as intended
 
+* Improved mapper lookup to deal with model inside namespace
+
 ### v0.9.0 / 2015-03-17
 
 Make dynamic form fields respect the order in which they were declared
