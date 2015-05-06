@@ -29,40 +29,31 @@ RSpec.describe Yaks::Format::JsonAPI do
     end
   end
 
-  context 'with both a "href" attribute and a self link' do
+  context 'with links and subresources' do
     let(:resource) {
       Yaks::Resource.new(
         type: 'wizard',
-        attributes: {
-          href: '/the/href'
+        subresources: [
+          Yaks::Resource.new(rels: ['rel:favourite_spell'], type: 'spell', attributes: {id: 1}),
+        ],
+        links: [
+          Yaks::Resource::Link.new(rel: :self, uri: '/the/self/link'),
+          Yaks::Resource::Link.new(rel: :profile, uri: '/the/profile/link'),
+        ]
+      )
+    }
+
+    it 'should include the links in the "links" key' do
+      expect(format.call(resource)).to eql(
+        data: {
+          type: :wizards,
+          links: {
+            self: "/the/self/link",
+            profile: "/the/profile/link",
+            'favourite_spell' => {linkage: {type: "spells", id: 1}},
+          }
         },
-        links: [
-          Yaks::Resource::Link.new(rel: :self, uri: '/the/self/link')
-        ]
-      )
-    }
-
-    # TODO: should it really behave this way? better to give preference to self link.
-    it 'should give preference to the href attribute' do
-      expect(format.call(resource)).to eql(
-        data: {type: :wizards, href: '/the/href'}
-      )
-    end
-  end
-
-  context 'with a self link' do
-    let(:resource) {
-      Yaks::Resource.new(
-        type: 'wizard',
-        links: [
-          Yaks::Resource::Link.new(rel: :self, uri: '/the/self/link')
-        ]
-      )
-    }
-
-    it 'should use the self link in output' do
-      expect(format.call(resource)).to eql(
-        data: {type: :wizards, href: '/the/self/link'}
+        included: [{type: :spells, id: 1}]
       )
     end
   end

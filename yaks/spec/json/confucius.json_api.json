@@ -2,11 +2,13 @@
   "data": {
     "id": 9,
     "type": "scholars",
-    "href": "http://literature.example.com/authors/kongzi",
     "name": "孔子",
     "pinyin": "Kongzi",
     "latinized": "Confucius",
     "links": {
+      "profile": "http://literature.example.com/profiles/scholar",
+      "self": "http://literature.example.com/authors/kongzi",
+      "http://literature.example.com/rels/quotes": "http://literature.example.com/quotes/?author=kongzi&q={query}",
       "works": {"linkage": [{"type": "works", "id": 11}, {"type": "works", "id": 12}]}
     }
   },
@@ -14,10 +16,11 @@
       {
         "id": 11,
         "type": "works",
-        "href": "http://literature.example.com/work/11",
         "chinese_name": "論語",
         "english_name": "Analects",
         "links": {
+          "profile": "http://literature.example.com/profiles/work",
+          "self": "http://literature.example.com/work/11",
           "quotes": {"linkage": [{"type": "quotes", "id": 17}, {"type": "quotes", "id": 18}]},
           "era": {"linkage": {"type": "erae", "id": 99}}
         }
@@ -40,9 +43,12 @@
       {
         "id": 12,
         "type": "works",
-        "href": "http://literature.example.com/work/12",
         "chinese_name": "易經",
-        "english_name": "Commentaries to the Yi-jing"
+        "english_name": "Commentaries to the Yi-jing",
+        "links": {
+          "profile": "http://literature.example.com/profiles/work",
+          "self": "http://literature.example.com/work/12"
+        }
       }
   ]
 }

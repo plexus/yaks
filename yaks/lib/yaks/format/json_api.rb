@@ -20,6 +20,7 @@ module Yaks
         end
         output[:included] = included if included.any?
         output[:meta] = resource[:meta] if resource[:meta]
+
         output
       end
 
@@ -27,7 +28,8 @@ module Yaks
       # @return [Hash]
       def serialize_links(links)
         links.inject({}) do |hash, link|
-          hash.update(link.rel => link.uri)
+          hash[link.rel] = link.uri
+          hash
         end
       end
 
@@ -36,12 +38,10 @@ module Yaks
       def serialize_resource(resource)
         result = {type: pluralize(resource.type).to_sym}.merge(resource.attributes)
 
-        links = serialize_subresource_links(resource.subresources)
-        result[:links] = links unless links.empty?
-
-        if resource.self_link && !result.key?(:href)
-          result[:href]  = resource.self_link.uri
-        end
+        result[:links] = {}
+        result[:links].update(serialize_subresource_links(resource.subresources))
+        result[:links].update(serialize_links(resource.links))
+        result.delete(:links) if result[:links].empty?
 
         result
       end
