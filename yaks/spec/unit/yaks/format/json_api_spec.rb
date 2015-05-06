@@ -18,7 +18,7 @@ RSpec.describe Yaks::Format::JsonAPI do
         type: 'wizard',
         members: [Yaks::Resource.new(type: 'wizard', attributes: {foo: :bar})],
         attributes: {meta: {page: {limit: 20, offset: 0, count: 25}}}
-    )
+      )
     }
 
     it 'should include the "meta" key' do
@@ -59,6 +59,7 @@ RSpec.describe Yaks::Format::JsonAPI do
         ]
       )
     }
+
     it 'should use the self link in output' do
       expect(format.call(resource)).to eql(
         data: {type: :wizards, href: '/the/self/link'}
@@ -75,7 +76,8 @@ RSpec.describe Yaks::Format::JsonAPI do
         ]
       )
     }
-    it 'should include links and included' do
+
+    it 'should include subresource links and included' do
       expect(format.call(resource)).to eql(
         data: {
           type: :wizards,
@@ -90,28 +92,50 @@ RSpec.describe Yaks::Format::JsonAPI do
     let(:resource) {
       Yaks::Resource.new(
         type: 'wizard',
-        subresources: [
-          Yaks::NullResource.new
-        ]
+        subresources: [Yaks::NullResource.new]
       )
     }
-    it 'should not include links' do
+
+    it 'should not include subresource links' do
       expect(format.call(resource)).to eql(
         data: {type: :wizards}
       )
     end
   end
 
-  context 'with no subresources or links' do
+  context 'with no subresources or subresource links' do
     let(:resource) {
       Yaks::Resource.new(
         type: 'wizard',
         subresources: []
       )
     }
-    it 'should not include links' do
+
+    it 'should not include subresource links' do
       expect(format.call(resource)).to eql(
         data: {type: :wizards}
+      )
+    end
+  end
+
+  context 'with links as collection' do
+    let(:resource) {
+      Yaks::CollectionResource.new(
+        type: 'wizard',
+        links: [
+          Yaks::Resource::Link.new(rel: :prev, uri: '/prev/page/link'),
+          Yaks::Resource::Link.new(rel: :next, uri: '/next/page/link'),
+        ]
+      )
+    }
+
+    it 'should include links' do
+      expect(format.call(resource)).to eql(
+        data: [],
+        links: {
+          prev: '/prev/page/link',
+          next: '/next/page/link',
+        }
       )
     end
   end

@@ -135,3 +135,6 @@ Style/StringLiterals:
 Style/UnneededPercentQ:
   Exclude:
     - yaks/lib/yaks/breaking_changes.rb
+
+Style/TrailingComma:
+  Enabled: false

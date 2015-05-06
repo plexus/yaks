@@ -8,14 +8,26 @@ module Yaks
       # @param [Yaks::Resource] resource
       # @return [Hash]
       def call(resource, _env = nil)
-        main_object = resource.seq.map(&method(:serialize_resource))
-        main_object = main_object.first unless resource.collection?
-        output = resource.attributes.select{|k| k.equal?(:meta)}
-        output.merge(data: main_object).tap do |serialized|
-          included = resource.seq.each_with_object([]) do |res, array|
-            serialize_included_subresources(res.subresources, array)
-          end
-          serialized.merge!(included: included) unless included.empty?
+        output = {}
+        if resource.collection?
+          output[:data]  = resource.map(&method(:serialize_resource))
+          output[:links] = serialize_links(resource.links) if resource.links.any?
+        else
+          output[:data] = serialize_resource(resource)
+        end
+        included = resource.seq.each_with_object([]) do |res, array|
+          serialize_included_subresources(res.subresources, array)
+        end
+        output[:included] = included if included.any?
+        output[:meta] = resource[:meta] if resource[:meta]
+        output
+      end
+
+      # @param [Yaks::Resource] resource
+      # @return [Hash]
+      def serialize_links(links)
+        links.inject({}) do |hash, link|
+          hash.update(link.rel => link.uri)
         end
       end
 
@@ -24,7 +36,7 @@ module Yaks
       def serialize_resource(resource)
         result = {type: pluralize(resource.type).to_sym}.merge(resource.attributes)
 
-        links = serialize_links(resource.subresources)
+        links = serialize_subresource_links(resource.subresources)
         result[:links] = links unless links.empty?
 
         if resource.self_link && !result.key?(:href)
@@ -36,16 +48,16 @@ module Yaks
 
       # @param [Yaks::Resource] subresource
       # @return [Hash]
-      def serialize_links(subresources)
+      def serialize_subresource_links(subresources)
         subresources.each_with_object({}) do |resource, hsh|
           next if resource.null_resource?
-          hsh[resource.rels.first.sub(/^rel:/, '')] = serialize_link(resource)
+          hsh[resource.rels.first.sub(/^rel:/, '')] = serialize_subresource_link(resource)
         end
       end
 
       # @param [Yaks::Resource] resource
       # @return [Array, String]
-      def serialize_link(resource)
+      def serialize_subresource_link(resource)
         if resource.collection?
           {linkage: resource.map{|r| {type: pluralize(r.type), id: r[:id]} }}
         else
