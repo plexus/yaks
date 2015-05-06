@@ -4,7 +4,7 @@ RSpec.describe Yaks::DefaultPolicy, '#derive_mapper_from_object' do
   let(:options) { {} }
 
   it 'should use const_get with second argument set to false' do
-    stub(Object).const_get { SoyMapper }
+    stub(Object).const_get(any_args) { SoyMapper }
     policy.derive_mapper_from_object(Soy.new)
     expect(Object).to have_received.const_get("SoyMapper", false)
   end
