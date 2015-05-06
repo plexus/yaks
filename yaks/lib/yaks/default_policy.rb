@@ -71,6 +71,7 @@ module Yaks
     end
 
     private
+
     def derive_mapper_from_collection(collection)
       if m = collection.first
         name = "#{m.class.name.split('::').last}CollectionMapper"
@@ -92,8 +93,10 @@ module Yaks
       model_namespace = splitted_class_name[0...-1]
       model_class_name = splitted_class_name.last
       begin
-        mapper_class_parts = [*model_namespace, "#{klass.name.split("::").last}Mapper"]
-        return mapper_class_parts.inject(@options[:namespace]) { |prefix, suffix| prefix.const_get(suffix, false) }
+        mapper_class_parts = [*model_namespace, "#{klass.name.split('::').last}Mapper"]
+        return mapper_class_parts.inject(@options[:namespace]) do |prefix, suffix|
+          prefix.const_get(suffix, false)
+        end
       rescue NameError
         klass = klass.superclass
         unless model_namespace.empty? || klass
