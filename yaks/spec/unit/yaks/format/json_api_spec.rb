@@ -50,10 +50,10 @@ RSpec.describe Yaks::Format::JsonAPI do
           links: {
             self: "/the/self/link",
             profile: "/the/profile/link",
-            'favourite_spell' => {linkage: {type: "spells", id: 1}},
+            'favourite_spell' => {linkage: {type: "spells", id: "1"}},
           }
         },
-        included: [{type: :spells, id: 1}]
+        included: [{type: :spells, id: "1"}]
       )
     end
   end
@@ -72,9 +72,9 @@ RSpec.describe Yaks::Format::JsonAPI do
       expect(format.call(resource)).to eql(
         data: {
           type: :wizards,
-          links: {'favourite_spell'  => {linkage: {type: 'spells', id: 777}}}
+          links: {'favourite_spell'  => {linkage: {type: 'spells', id: "777"}}}
         },
-        included: [{type: :spells, id: 777, attributes: {name: 'Lucky Sevens'}}]
+        included: [{type: :spells, id: "777", attributes: {name: 'Lucky Sevens'}}]
       )
     end
   end

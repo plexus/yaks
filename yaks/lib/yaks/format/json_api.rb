@@ -38,7 +38,7 @@ module Yaks
       def serialize_resource(resource)
         result = {}
         result[:type] = pluralize(resource.type).to_sym
-        result[:id]   = resource[:id] if resource[:id]
+        result[:id]   = resource[:id].to_s if resource[:id]
 
         attributes = resource.attributes.reject { |k, _| k == :id }
         result[:attributes] = attributes if attributes.any?
@@ -64,9 +64,9 @@ module Yaks
       # @return [Array, String]
       def serialize_subresource_link(resource)
         if resource.collection?
-          {linkage: resource.map{|r| {type: pluralize(r.type), id: r[:id]} }}
+          {linkage: resource.map{|r| {type: pluralize(r.type), id: r[:id].to_s} }}
         else
-          {linkage: {type: pluralize(resource.type), id: resource[:id]}}
+          {linkage: {type: pluralize(resource.type), id: resource[:id].to_s}}
         end
       end
 
