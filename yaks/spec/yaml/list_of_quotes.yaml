@@ -1,0 +1,13 @@
+- !ruby/object:Quote
+  id: 17
+  chinese: "廄焚。子退朝，曰：“傷人乎？” 不問馬。"
+  english: "When the stables were burnt down, on returning from court Confucius said, “Was anyone hurt?” He did not ask about the horses."
+  sources: "Analects X.11 (tr. Waley), 10–13 (tr. Legge), or X-17 (tr. Lau)"
+- !ruby/object:Quote
+  id: 18
+  chinese: "子曰：“其恕乎！己所不欲、勿施於人。”"
+  english: "The Master replied: “How about 'reciprocity'! Never impose on others what you would not choose for yourself.”"
+  sources: "Analects XV.24, tr. David Hinton"
+- !ruby/object:Quote
+  id: 99
+  english: "How do you know they are happy? You are not a fish."
