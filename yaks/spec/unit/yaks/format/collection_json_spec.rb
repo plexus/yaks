@@ -4,7 +4,7 @@ RSpec.describe Yaks::Format::CollectionJson do
 
     subject { Yaks::Primitivize.create.call(described_class.new.call(resource)) }
 
-    it { should deep_eql(load_json_fixture('plant_collection.collection')) }
+    it { should deep_eql(load_json_fixture('plant_collection.collection_json')) }
   end
 
   describe '#links?' do

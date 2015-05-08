@@ -29,7 +29,6 @@
       }
     ],
     "links": [
-      { "href": "http://api.example.com/plants", "rel": "self" },
       { "href": "http://api.example.com/doc/plant_collection", "rel": "profile" }
     ]
   }
