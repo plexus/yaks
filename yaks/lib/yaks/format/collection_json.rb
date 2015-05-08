@@ -3,8 +3,6 @@ module Yaks
     class CollectionJson < self
       register :collection_json, :json, 'application/vnd.collection+json'
 
-      include FP
-
       # @param [Yaks::Resource] resource
       # @return [Hash]
       def serialize_resource(resource)
@@ -43,6 +41,7 @@ module Yaks
 
       def serialize_links(resource)
         resource.links.each_with_object([]) do |link, result|
+          next if link.rel == :self
           result << {href: link.uri, rel: link.rel}
         end
       end
@@ -67,7 +66,7 @@ module Yaks
       end
 
       def links?(resource)
-        resource.collection? && resource.links.any?
+        resource.collection? && resource.links.reject { |link| link.rel == :self }.any?
       end
 
       def template?(resource)
