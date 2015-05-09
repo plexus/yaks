@@ -157,6 +157,17 @@ RSpec.describe Yaks::Config do
     end
   end
 
+  describe '#format' do
+    configure {
+      default_format :hal
+    }
+
+    it 'invokes the formatter on a resource' do
+      expect(config.format(Yaks::Resource.new(attributes: {shape: "round"})))
+        .to eql({"shape" => "round"})
+    end
+  end
+
   describe '#runner' do
     configure {}
 
