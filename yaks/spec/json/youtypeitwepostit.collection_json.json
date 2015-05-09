@@ -3,6 +3,10 @@
     "version": "1.0",
     "href": "http://www.youtypeitwepostit.com/api/",
 
+    "links": [
+      { "rel": "self", "href": "http://www.youtypeitwepostit.com/api/" }
+    ],
+
     "items": [
       {
         "href": "http://www.youtypeitwepostit.com/api/12091295723803341",
