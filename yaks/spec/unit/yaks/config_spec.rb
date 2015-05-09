@@ -164,7 +164,7 @@ RSpec.describe Yaks::Config do
 
     it 'invokes the formatter on a resource' do
       expect(config.format(Yaks::Resource.new(attributes: {shape: "round"})))
-        .to eql({"shape" => "round"})
+        .to eql("shape" => "round")
     end
   end
 

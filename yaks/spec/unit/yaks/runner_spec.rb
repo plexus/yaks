@@ -61,8 +61,8 @@ RSpec.describe Yaks::Runner do
            :primitivize,
            :add_prefix,
            ->(hsh, env) {
-             hsh.each_with_object({}) do |(k,v), hsh|
-               hsh[env['api.key_prefix'] + k] = v
+             hsh.each_with_object({}) do |(k, v), h|
+               h[env['api.key_prefix'] + k] = v
              end
            }
           ]
@@ -71,7 +71,7 @@ RSpec.describe Yaks::Runner do
     }
 
     it 'should run the formatter and primitivizer plus hooks' do
-      expect(runner.format).to eql({"pre_kristel" => "christa", "pre_ronny" => "jonny"})
+      expect(runner.format).to eql("pre_kristel" => "christa", "pre_ronny" => "jonny")
     end
   end
 
@@ -106,8 +106,7 @@ RSpec.describe Yaks::Runner do
 
     it 'should run the parser and reader plus hooks' do
       expect(runner.read)
-        .to eql Yaks::Resource.new(attributes: {:ronny=>"jonny", :kristel=>"christa"})
-
+        .to eql Yaks::Resource.new(attributes: {ronny: "jonny", kristel: "christa"})
     end
   end
 
@@ -334,7 +333,7 @@ RSpec.describe Yaks::Runner do
     let(:options) {
       {
         mapper: mapper_class,
-        env: { 'api.prefix' => 'pre_' }
+        env: {'api.prefix' => 'pre_'}
       }
     }
 
