@@ -23,25 +23,25 @@ RSpec.describe Yaks::DefaultPolicy, '#derive_mapper_from_collection' do
     it 'should look for a CollectionMapper in the namespace' do
       expect(policy.derive_mapper_from_collection([WildSoy.new])).to be(Namespace::CollectionMapper)
     end
-  end
 
-  context 'when trying to lookup CollectionMapper results in something other than an NameError' do
-    let(:options) { {namespace: DislikesCollectionMapper} }
+    context 'when trying to lookup CollectionMapper results in something other than an NameError' do
+      let(:options) { {namespace: DislikesCollectionMapper} }
 
-    it 'should propagate the error' do
-      expect {
-        policy.derive_mapper_from_object([])
-      }.to raise_error
+      it 'should propagate the error' do
+        expect {
+          policy.derive_mapper_from_object([])
+        }.to raise_error
+      end
     end
-  end
 
-  context 'when trying to lookup a specific collection mapper results in something other than an NameError' do
-    let(:options) { {namespace: DislikesOtherMappers} }
+    context 'when trying to lookup a specific collection mapper results in something other than an NameError' do
+      let(:options) { {namespace: DislikesOtherMappers} }
 
-    it 'should propagate the error' do
-      expect do
-        policy.derive_mapper_from_object([Namespace::Nested::Rye.new])
-      end.to raise_error
+      it 'should propagate the error' do
+        expect do
+          policy.derive_mapper_from_object([Namespace::Nested::Rye.new])
+        end.to raise_error
+      end
     end
   end
 end
