@@ -17,6 +17,7 @@ module Grain
   end
 
   class SoyMapper; end
+  class SoyCollectionMapper; end
 end
 
 class WheatMapper; end

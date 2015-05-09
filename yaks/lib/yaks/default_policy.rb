@@ -1,3 +1,4 @@
+
 module Yaks
   class DefaultPolicy
     include Util
@@ -17,13 +18,64 @@ module Yaks
       @options = DEFAULTS.merge(options)
     end
 
+    # Main point of entry for mapper derivation. Calls
+    # derive_mapper_from_collection or derive_mapper_from_single_object
+    # depending on the model.
+    #
     # @param model [Object]
     # @return [Class] A mapper, typically a subclass of Yaks::Mapper
     #
-    # @raise [NameError] only occurs when the model is anything but a collection.
+    # @raise [RuntimeError] occurs when no mapper is found
     def derive_mapper_from_object(model)
       return derive_mapper_from_collection(model) if model.respond_to? :to_ary
       derive_mapper_from_single_object(model)
+    end
+
+    # Derives a mapper from the given collection.
+    #
+    # @param collection [Object]
+    # @return [Class] A mapper, typically a subclass of Yaks::Mapper
+    def derive_mapper_from_collection(collection)
+      if m = collection.first
+        name = "#{m.class.name.split('::').last}CollectionMapper"
+        begin
+          return @options[:namespace].const_get(name)
+        rescue NameError               # rubocop:disable Lint/HandleExceptions
+        end
+      end
+      begin
+        return @options[:namespace].const_get(:CollectionMapper)
+      rescue NameError                 # rubocop:disable Lint/HandleExceptions
+      end
+      CollectionMapper
+    end
+
+    # Derives a mapper from the given object. This object should not
+    # be a collection.
+    #
+    # @param object [Object]
+    # @return [Class] A mapper, typically a subclass of Yaks::Mapper
+    #
+    # @raise [RuntimeError] only occurs when no mapper is found for the given object.
+    def derive_mapper_from_single_object(object)
+      klass = object.class
+      splitted_class_name = klass.name.split("::")
+      object_namespace = splitted_class_name[0...-1]
+      object_class_name = splitted_class_name.last
+      begin
+        mapper_class_parts = [*object_namespace, "#{klass.name.split('::').last}Mapper"]
+        return mapper_class_parts.inject(@options[:namespace]) do |prefix, suffix|
+          prefix.const_get(suffix, false)
+        end
+      rescue NameError
+        klass = klass.superclass
+        unless object_namespace.empty? || klass
+          object_namespace = []
+          klass = object.class
+        end
+        retry if klass
+      end
+      raise "Failed to find a mapper for #{object.inspect}. Did you mean to implement #{object_class_name}Mapper?"
     end
 
     # Derive the a mapper type name
@@ -68,44 +120,6 @@ module Yaks
     # @return [String]
     def expand_rel(relname)
       URITemplate.new(@options[:rel_template]).expand(rel: relname)
-    end
-
-    private
-
-    def derive_mapper_from_collection(collection)
-      if m = collection.first
-        name = "#{m.class.name.split('::').last}CollectionMapper"
-        begin
-          return @options[:namespace].const_get(name)
-        rescue NameError               # rubocop:disable Lint/HandleExceptions
-        end
-      end
-      begin
-        return @options[:namespace].const_get(:CollectionMapper)
-      rescue NameError                 # rubocop:disable Lint/HandleExceptions
-      end
-      CollectionMapper
-    end
-
-    def derive_mapper_from_single_object(model)
-      klass = model.class
-      splitted_class_name = klass.name.split("::")
-      model_namespace = splitted_class_name[0...-1]
-      model_class_name = splitted_class_name.last
-      begin
-        mapper_class_parts = [*model_namespace, "#{klass.name.split('::').last}Mapper"]
-        return mapper_class_parts.inject(@options[:namespace]) do |prefix, suffix|
-          prefix.const_get(suffix, false)
-        end
-      rescue NameError
-        klass = klass.superclass
-        unless model_namespace.empty? || klass
-          model_namespace = []
-          klass = model.class
-        end
-        retry if klass
-      end
-      raise "Failed to find a mapper for #{model.inspect}. Did you mean to implement #{model_class_name}Mapper?"
     end
   end
 end
