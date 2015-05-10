@@ -143,4 +143,4 @@ Style/TrailingComma:
 # e.g. JSON tests this can be more explicit and clear
 Style/BracesAroundHashParameters:
   Exclude:
-    - yaks/spec/*
+    - yaks/spec/**/*
