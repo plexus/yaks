@@ -29,7 +29,7 @@ module Yaks
             rel = rel.to_sym if rel =~ /\A\w+\z/
             Resource::Link.new(rel: rel, uri: l['href'], options: options)
           end
-        end.to_set
+        end
       end
 
       def array(x)

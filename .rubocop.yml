@@ -138,3 +138,9 @@ Style/UnneededPercentQ:
 
 Style/TrailingComma:
   Enabled: false
+
+# Allow redundant braces in foo.bar({"qux" => "quz"}), when writing
+# e.g. JSON tests this can be more explicit and clear
+Style/BracesAroundHashParameters:
+  Exclude:
+    - yaks/spec/**/*

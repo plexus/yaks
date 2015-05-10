@@ -2,59 +2,74 @@ require 'acceptance/models'
 require 'acceptance/json_shared_examples'
 
 RSpec.describe Yaks::Format::Hal do
-  yaks_rel_template = Yaks.new do
-    format_options :hal, plural_links: ['http://literature.example.com/rels/quotes']
-    rel_template "http://literature.example.com/rel/{rel}"
-    skip :serialize
+  let(:format_name) { :hal }
+
+  context 'with a configured rel template' do
+    let(:yaks_config) {
+      Yaks.new do
+        format_options :hal, plural_links: ['http://literature.example.com/rels/quotes']
+        rel_template "http://literature.example.com/rel/{rel}"
+      end
+    }
+
+    include_examples 'JSON Writer',     'confucius'
+    include_examples 'JSON round trip', 'confucius'
   end
 
-  yaks_policy_dsl = Yaks.new do
-    format_options :hal, plural_links: ['http://literature.example.com/rels/quotes']
-    derive_rel_from_association do |association|
-      "http://literature.example.com/rel/#{association.name}"
-    end
-    skip :serialize
+  context 'with a rel computed by a policy override' do
+    let(:yaks_config) {
+      Yaks.new do
+        format_options :hal, plural_links: ['http://literature.example.com/rels/quotes']
+        derive_rel_from_association do |association|
+          "http://literature.example.com/rel/#{association.name}"
+        end
+      end
+    }
+
+    include_examples 'JSON Writer',     'confucius'
+    include_examples 'JSON round trip', 'confucius'
+    include_examples 'JSON Writer',     'list_of_quotes'
+    include_examples 'JSON round trip', 'list_of_quotes'
   end
-
-  include_examples 'JSON output format', yaks_rel_template, :hal, 'confucius'
-  include_examples 'JSON output format', yaks_policy_dsl,   :hal, 'confucius'
-
-  include_examples 'JSON round trip',    yaks_rel_template, :hal, 'confucius'
-  include_examples 'JSON round trip',    yaks_policy_dsl,   :hal, 'confucius'
 end
 
 RSpec.describe Yaks::Format::Halo do
-  yaks = Yaks.new do
-    default_format :halo
-    rel_template "http://literature.example.com/rel/{rel}"
-    skip :serialize
-  end
+  let(:format_name) { :halo }
+  let(:yaks_config) {
+    Yaks.new do
+      default_format :halo
+      rel_template "http://literature.example.com/rel/{rel}"
+    end
+  }
 
-  include_examples 'JSON output format', yaks, :halo, 'confucius'
+  include_examples 'JSON Writer', 'confucius'
 end
 
 RSpec.describe Yaks::Format::JsonAPI do
-  config = Yaks.new do
-    default_format :json_api
-    skip :serialize
-  end
+  let(:format_name) { :json_api }
+  let(:yaks_config) { Yaks.new }
 
-  include_examples 'JSON output format', config, :json_api, 'confucius'
-  include_examples 'JSON round trip',    config, :json_api, 'confucius'
+  include_examples 'JSON Writer', 'confucius'
+  # include_examples 'JSON Reader', 'confucius'
+  include_examples 'JSON round trip', 'confucius'
+  include_examples 'JSON Writer', 'list_of_quotes'
+  # include_examples 'JSON round trip', 'list_of_quotes'
 end
 
 RSpec.describe Yaks::Format::CollectionJson do
-  youtypeit_yaks = Yaks.new do
-    default_format :collection_json
-    mapper_namespace Youtypeitwepostit
-    skip :serialize
-  end
+  let(:format_name) { :collection_json }
+  let(:yaks_config) { Yaks.new }
 
-  confucius_yaks = Yaks.new do
-    default_format :collection_json
-    skip :serialize
-  end
+  include_examples 'JSON Writer', 'confucius'
+  include_examples 'JSON Writer', 'list_of_quotes'
 
-  include_examples 'JSON output format', youtypeit_yaks, :collection, 'youtypeitwepostit'
-  include_examples 'JSON output format', confucius_yaks, :collection, 'confucius'
+  context 'with a namespace' do
+    let(:yaks_config) {
+      Yaks.new do
+        mapper_namespace Youtypeitwepostit
+      end
+    }
+
+    include_examples 'JSON Writer',  'youtypeitwepostit'
+  end
 end

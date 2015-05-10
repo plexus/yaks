@@ -86,6 +86,10 @@ module Yaks
       runner(object, options).map
     end
 
+    def format(data, options = {})
+      runner(data, options).format
+    end
+
     def read(data, options = {})
       runner(data, options).read
     end

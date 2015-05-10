@@ -8,7 +8,15 @@ RSpec.describe Yaks::Runner do
   let(:options) { {} }
 
   shared_examples 'high-level runner test' do
-    let(:options) { {env: {foo: "from_env"}} }
+    let(:object) { 7 }
+
+    let(:options) {
+      {
+        env: {foo: "from_env"},
+        hooks: [[:after, :step2, :upcase, ->(x, _env) { x.upcase }]]
+      }
+    }
+
     let(:runner) {
       Class.new(described_class) do
         def steps
@@ -18,10 +26,8 @@ RSpec.describe Yaks::Runner do
       end.new(object: object, config: config, options: options)
     }
 
-    let(:object) { 7 }
-
     it 'should go through all the steps' do
-      expect(runner.call).to eql "from_env[42 42]"
+      expect(runner.call).to eql "FROM_ENV[42 42]"
     end
   end
 
@@ -31,6 +37,77 @@ RSpec.describe Yaks::Runner do
 
   describe '#process' do
     include_examples 'high-level runner test'
+  end
+
+  describe '#format' do
+    let(:object) {
+      Yaks::Resource.new(attributes: {ronny: :jonny})
+    }
+
+    let(:options) {
+      {
+        env: {
+          'api.key_prefix' => 'pre_'
+        },
+        hooks: [
+          [:before,
+           :format,
+           :add_kristel,
+           ->(resource, _env) {
+             resource.merge_attributes(kristel: :christa)
+           },
+          ],
+          [:after,
+           :primitivize,
+           :add_prefix,
+           ->(hsh, env) {
+             hsh.each_with_object({}) do |(k, v), h|
+               h[env['api.key_prefix'] + k] = v
+             end
+           }
+          ]
+        ]
+      }
+    }
+
+    it 'should run the formatter and primitivizer plus hooks' do
+      expect(runner.format).to eql("pre_kristel" => "christa", "pre_ronny" => "jonny")
+    end
+  end
+
+  describe '#read' do
+    let(:object) {
+      '{"pre_ronny": "jonny"}'
+    }
+
+    let(:options) {
+      {
+        env: {
+          'api.key_prefix' => 'pre_'
+        },
+        hooks: [
+          [:after,
+           :read,
+           :add_kristel,
+           ->(resource, _env) {
+             resource.merge_attributes(kristel: 'christa')
+           },
+          ],
+          [:before,
+           :parse,
+           :strip_prefix,
+           ->(json, env) {
+             json.gsub(env['api.key_prefix'], '')
+           }
+          ]
+        ]
+      }
+    }
+
+    it 'should run the parser and reader plus hooks' do
+      expect(runner.read)
+        .to eql Yaks::Resource.new(attributes: {ronny: "jonny", kristel: "christa"})
+    end
   end
 
   describe '#context' do
@@ -253,7 +330,13 @@ RSpec.describe Yaks::Runner do
       end
     end
 
-    let(:options) { {mapper: mapper_class} }
+    let(:options) {
+      {
+        mapper: mapper_class,
+        env: {'api.prefix' => 'pre_'}
+      }
+    }
+
     let(:object)  { "foo" }
 
     it 'should only run the mapper' do
@@ -264,13 +347,13 @@ RSpec.describe Yaks::Runner do
       let(:config)  do
         Yaks.new do
           around(:map) do |res, env, &block|
-            "around[#{block.call(res, env)}]"
+            "#{env['api.prefix']}around[#{block.call(res, env)}]"
           end
         end
       end
 
-      it 'should invoke the hook as well' do
-        expect(runner.map).to eql "around[mapped[foo]]"
+      it 'should invoke the hook and pass in the env' do
+        expect(runner.map).to eql "pre_around[mapped[foo]]"
       end
     end
   end

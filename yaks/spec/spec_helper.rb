@@ -23,8 +23,10 @@ RSpec.configure do |rspec|
   rspec.backtrace_exclusion_patterns = [] if ENV['FULLSTACK']
   rspec.disable_monkey_patching!
   rspec.raise_errors_for_deprecations!
-  rspec.around(:each) do |example|
-    Timeout.timeout(1, &example)
+  if defined?(Mutant)
+    rspec.around(:each) do |example|
+      Timeout.timeout(1, &example)
+    end
   end
 end
 
