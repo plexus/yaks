@@ -12,12 +12,18 @@ module Yaks
         else
           attributes = parsed_json['data'].dup
           links = attributes.delete('links') || {}
-          embedded   = convert_embedded(links, included)
+          type  = attributes.delete('type')
+          attributes.merge!(attributes.delete('attributes') || {})
+
+          association_links, resource_links = links.partition { |_k, v| v.is_a?(Hash) }
+          embedded   = convert_embedded(Hash[association_links], included)
+          links      = convert_links(Hash[resource_links])
+
           Resource.new(
-            type: Util.singularize(attributes.delete('type')[/\w+$/]),
+            type: Util.singularize(type),
             attributes: Util.symbolize_keys(attributes),
             subresources: embedded,
-            links: []
+            links: links
           )
         end
       end
@@ -48,6 +54,12 @@ module Yaks
             call('data'  => data, 'included' => included).with(rels: [rel])
           end
         end.compact
+      end
+
+      def convert_links(links)
+        links.map do |rel, link|
+          Resource::Link.new(rel: rel.to_sym, uri: link)
+        end
       end
     end
   end

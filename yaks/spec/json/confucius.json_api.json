@@ -1,48 +1,66 @@
 {
   "data": {
-    "id": 9,
+    "id": "9",
     "type": "scholars",
-    "href": "http://literature.example.com/authors/kongzi",
-    "name": "孔子",
-    "pinyin": "Kongzi",
-    "latinized": "Confucius",
+    "attributes": {
+      "name": "孔子",
+      "pinyin": "Kongzi",
+      "latinized": "Confucius"
+    },
     "links": {
-      "works": {"linkage": [{"type": "works", "id": 11}, {"type": "works", "id": 12}]}
+      "profile": "http://literature.example.com/profiles/scholar",
+      "self": "http://literature.example.com/authors/kongzi",
+      "http://literature.example.com/rels/quotes": "http://literature.example.com/quotes/?author=kongzi&q={query}",
+      "works": {"linkage": [{"type": "works", "id": "11"}, {"type": "works", "id": "12"}]}
     }
   },
   "included": [
       {
-        "id": 11,
+        "id": "11",
         "type": "works",
-        "href": "http://literature.example.com/work/11",
-        "chinese_name": "論語",
-        "english_name": "Analects",
+        "attributes": {
+          "chinese_name": "論語",
+          "english_name": "Analects"
+        },
         "links": {
-          "quotes": {"linkage": [{"type": "quotes", "id": 17}, {"type": "quotes", "id": 18}]},
-          "era": {"linkage": {"type": "erae", "id": 99}}
+          "profile": "http://literature.example.com/profiles/work",
+          "self": "http://literature.example.com/work/11",
+          "quotes": {"linkage": [{"type": "quotes", "id": "17"}, {"type": "quotes", "id": "18"}]},
+          "era": {"linkage": {"type": "erae", "id": "99"}}
         }
       },
       {
-        "id": 17,
+        "id": "17",
         "type": "quotes",
-        "chinese": "廄焚。子退朝，曰：“傷人乎？” 不問馬。"
+        "attributes": {
+          "chinese": "廄焚。子退朝，曰：“傷人乎？” 不問馬。"
+        }
       },
       {
-        "id": 18,
+        "id": "18",
         "type": "quotes",
-        "chinese": "子曰：“其恕乎！己所不欲、勿施於人。”"
+        "attributes": {
+          "chinese": "子曰：“其恕乎！己所不欲、勿施於人。”"
+        }
       },
       {
-        "id": 99,
+        "id": "99",
         "type": "erae",
-        "name": "Zhou Dynasty"
+        "attributes": {
+          "name": "Zhou Dynasty"
+        }
       },
       {
-        "id": 12,
+        "id": "12",
         "type": "works",
-        "href": "http://literature.example.com/work/12",
-        "chinese_name": "易經",
-        "english_name": "Commentaries to the Yi-jing"
+        "attributes": {
+          "chinese_name": "易經",
+          "english_name": "Commentaries to the Yi-jing"
+        },
+        "links": {
+          "profile": "http://literature.example.com/profiles/work",
+          "self": "http://literature.example.com/work/12"
+        }
       }
   ]
 }

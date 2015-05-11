@@ -20,28 +20,32 @@ module Yaks
         end
         output[:included] = included if included.any?
         output[:meta] = resource[:meta] if resource[:meta]
+
         output
       end
 
       # @param [Yaks::Resource] resource
       # @return [Hash]
       def serialize_links(links)
-        links.inject({}) do |hash, link|
-          hash.update(link.rel => link.uri)
+        links.each_with_object({}) do |link, hash|
+          hash[link.rel] = link.uri
         end
       end
 
       # @param [Yaks::Resource] resource
       # @return [Hash]
       def serialize_resource(resource)
-        result = {type: pluralize(resource.type).to_sym}.merge(resource.attributes)
+        result = {}
+        result[:type] = pluralize(resource.type)
+        result[:id]   = resource[:id].to_s if resource[:id]
 
-        links = serialize_subresource_links(resource.subresources)
-        result[:links] = links unless links.empty?
+        attributes = resource.attributes.reject { |k| k.equal?(:id) }
+        result[:attributes] = attributes if attributes.any?
 
-        if resource.self_link && !result.key?(:href)
-          result[:href]  = resource.self_link.uri
-        end
+        result[:links] = {}
+        result[:links].update(serialize_subresource_links(resource.subresources))
+        result[:links].update(serialize_links(resource.links))
+        result.delete(:links) if result[:links].empty?
 
         result
       end
@@ -59,9 +63,9 @@ module Yaks
       # @return [Array, String]
       def serialize_subresource_link(resource)
         if resource.collection?
-          {linkage: resource.map{|r| {type: pluralize(r.type), id: r[:id]} }}
+          {linkage: resource.map{|r| {type: pluralize(r.type), id: r[:id].to_s} }}
         else
-          {linkage: {type: pluralize(resource.type), id: resource[:id]}}
+          {linkage: {type: pluralize(resource.type), id: resource[:id].to_s}}
         end
       end
 
@@ -83,14 +87,14 @@ module Yaks
         end
       end
 
-      # {shows => [{id: 3, name: 'foo'}]}
+      # {shows => [{id: '3', name: 'foo'}]}
       #
       # @param [Yaks::Resource] resource
       # @param [Hash] included
       # @return [Hash]
       def serialize_subresource(resource, included)
         included << serialize_resource(resource) unless included.any? do |item|
-          item[:id].equal?(resource[:id]) && item[:type].equal?(pluralize(resource.type).to_sym)
+          item[:id].eql?(resource[:id].to_s) && item[:type].eql?(pluralize(resource.type))
         end
         serialize_included_subresources(resource.subresources, included)
       end

@@ -7,7 +7,7 @@ RSpec.describe Yaks::Format::JsonAPI do
 
     it 'should not include an "included" key' do
       expect(format.call(resource)).to eql(
-        data: {type: :wizards, foo: :bar}
+        data: {type: 'wizards', attributes: {foo: :bar}}
       )
     end
   end
@@ -24,45 +24,36 @@ RSpec.describe Yaks::Format::JsonAPI do
     it 'should include the "meta" key' do
       expect(format.call(resource)).to eql(
         meta: {page: {limit: 20, offset: 0, count: 25}},
-        data: [{type: :wizards, foo: :bar}]
+        data: [{type: 'wizards', attributes: {foo: :bar}}]
       )
     end
   end
 
-  context 'with both a "href" attribute and a self link' do
+  context 'with links and subresources' do
     let(:resource) {
       Yaks::Resource.new(
         type: 'wizard',
-        attributes: {
-          href: '/the/href'
+        subresources: [
+          Yaks::Resource.new(rels: ['rel:favourite_spell'], type: 'spell', attributes: {id: 1}),
+        ],
+        links: [
+          Yaks::Resource::Link.new(rel: :self, uri: '/the/self/link'),
+          Yaks::Resource::Link.new(rel: :profile, uri: '/the/profile/link'),
+        ]
+      )
+    }
+
+    it 'should include the links in the "links" key' do
+      expect(format.call(resource)).to eql(
+        data: {
+          type: 'wizards',
+          links: {
+            self: "/the/self/link",
+            profile: "/the/profile/link",
+            'favourite_spell' => {linkage: {type: "spells", id: "1"}},
+          }
         },
-        links: [
-          Yaks::Resource::Link.new(rel: :self, uri: '/the/self/link')
-        ]
-      )
-    }
-
-    # TODO: should it really behave this way? better to give preference to self link.
-    it 'should give preference to the href attribute' do
-      expect(format.call(resource)).to eql(
-        data: {type: :wizards, href: '/the/href'}
-      )
-    end
-  end
-
-  context 'with a self link' do
-    let(:resource) {
-      Yaks::Resource.new(
-        type: 'wizard',
-        links: [
-          Yaks::Resource::Link.new(rel: :self, uri: '/the/self/link')
-        ]
-      )
-    }
-
-    it 'should use the self link in output' do
-      expect(format.call(resource)).to eql(
-        data: {type: :wizards, href: '/the/self/link'}
+        included: [{type: 'spells', id: "1"}]
       )
     end
   end
@@ -80,10 +71,48 @@ RSpec.describe Yaks::Format::JsonAPI do
     it 'should include subresource links and included' do
       expect(format.call(resource)).to eql(
         data: {
-          type: :wizards,
-          links: {'favourite_spell'  => {linkage: {type: 'spells', id: 777}}}
+          type: 'wizards',
+          links: {'favourite_spell'  => {linkage: {type: 'spells', id: "777"}}}
         },
-        included: [{type: :spells, id: 777, name: 'Lucky Sevens'}]
+        included: [{type: 'spells', id: "777", attributes: {name: 'Lucky Sevens'}}]
+      )
+    end
+  end
+
+  context 'with duplicate subresources' do
+    let(:resource) {
+      Yaks::CollectionResource.new(
+        type: 'wizard',
+        members: [
+          Yaks::Resource.new(type: 'wizard', attributes: {id: 7}, subresources: [
+            Yaks::Resource.new(type: 'spell', attributes: {id: 1}, rels: ['rel:favourite_spell']),
+          ]),
+          Yaks::Resource.new(type: 'wizard', attributes: {id: 3}, subresources: [
+            Yaks::Resource.new(type: 'spell', attributes: {id: 1}, rels: ['rel:favourite_spell']),
+          ]),
+          Yaks::Resource.new(type: 'wizard', attributes: {id: 2}, subresources: [
+            Yaks::Resource.new(type: 'spell', attributes: {id: 12}, rels: ['rel:favourite_spell']),
+          ]),
+          Yaks::Resource.new(type: 'wizard', attributes: {id: 9}, subresources: [
+            Yaks::Resource.new(type: 'wand', attributes: {id: 1}, rels: ['rel:wand']),
+          ]),
+        ],
+      )
+    }
+
+    it 'should include the each subresource only once' do
+      expect(format.call(resource)).to eql(
+        data: [
+          {type: 'wizards', id: '7', links: {'favourite_spell' => {linkage: {type: 'spells', id: '1'}}}},
+          {type: 'wizards', id: '3', links: {'favourite_spell' => {linkage: {type: 'spells', id: '1'}}}},
+          {type: 'wizards', id: '2', links: {'favourite_spell' => {linkage: {type: 'spells', id: '12'}}}},
+          {type: 'wizards', id: '9', links: {'wand'            => {linkage: {type: 'wands',  id: '1'}}}},
+        ],
+        included: [
+          {type: 'spells', id: '1'},
+          {type: 'spells', id: '12'},
+          {type: 'wands',  id: '1'},
+        ]
       )
     end
   end
@@ -98,7 +127,7 @@ RSpec.describe Yaks::Format::JsonAPI do
 
     it 'should not include subresource links' do
       expect(format.call(resource)).to eql(
-        data: {type: :wizards}
+        data: {type: 'wizards'}
       )
     end
   end
@@ -113,7 +142,7 @@ RSpec.describe Yaks::Format::JsonAPI do
 
     it 'should not include subresource links' do
       expect(format.call(resource)).to eql(
-        data: {type: :wizards}
+        data: {type: 'wizards'}
       )
     end
   end
