@@ -15,7 +15,7 @@ module Yaks
           type  = attributes.delete('type')
           attributes.merge!(attributes.delete('attributes') || {})
 
-          association_links, resource_links = links.partition { |k, v| v.is_a?(Hash) }
+          association_links, resource_links = links.partition { |_k, v| v.is_a?(Hash) }
           embedded   = convert_embedded(Hash[association_links], included)
           links      = convert_links(Hash[resource_links])
 

@@ -27,9 +27,8 @@ module Yaks
       # @param [Yaks::Resource] resource
       # @return [Hash]
       def serialize_links(links)
-        links.inject({}) do |hash, link|
+        links.each_with_object({}) do |link, hash|
           hash[link.rel] = link.uri
-          hash
         end
       end
 
@@ -40,7 +39,7 @@ module Yaks
         result[:type] = pluralize(resource.type).to_sym
         result[:id]   = resource[:id].to_s if resource[:id]
 
-        attributes = resource.attributes.reject { |k, _| k == :id }
+        attributes = resource.attributes.reject { |k| k.equal?(:id) }
         result[:attributes] = attributes if attributes.any?
 
         result[:links] = {}
@@ -88,14 +87,14 @@ module Yaks
         end
       end
 
-      # {shows => [{id: 3, name: 'foo'}]}
+      # {shows => [{id: '3', name: 'foo'}]}
       #
       # @param [Yaks::Resource] resource
       # @param [Hash] included
       # @return [Hash]
       def serialize_subresource(resource, included)
         included << serialize_resource(resource) unless included.any? do |item|
-          item[:id].equal?(resource[:id]) && item[:type].equal?(pluralize(resource.type).to_sym)
+          item[:id].eql?(resource[:id].to_s) && item[:type].equal?(pluralize(resource.type).to_sym)
         end
         serialize_included_subresources(resource.subresources, included)
       end

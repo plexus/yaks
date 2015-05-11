@@ -79,6 +79,44 @@ RSpec.describe Yaks::Format::JsonAPI do
     end
   end
 
+  context 'with duplicate subresources' do
+    let(:resource) {
+      Yaks::CollectionResource.new(
+        type: 'wizard',
+        members: [
+          Yaks::Resource.new(type: 'wizard', attributes: {id: 7}, subresources: [
+            Yaks::Resource.new(type: 'spell', attributes: {id: 1}, rels: ['rel:favourite_spell']),
+          ]),
+          Yaks::Resource.new(type: 'wizard', attributes: {id: 3}, subresources: [
+            Yaks::Resource.new(type: 'spell', attributes: {id: 1}, rels: ['rel:favourite_spell']),
+          ]),
+          Yaks::Resource.new(type: 'wizard', attributes: {id: 2}, subresources: [
+            Yaks::Resource.new(type: 'spell', attributes: {id: 12}, rels: ['rel:favourite_spell']),
+          ]),
+          Yaks::Resource.new(type: 'wizard', attributes: {id: 9}, subresources: [
+            Yaks::Resource.new(type: 'wand', attributes: {id: 1}, rels: ['rel:wand']),
+          ]),
+        ],
+      )
+    }
+
+    it 'should include the each subresource only once' do
+      expect(format.call(resource)).to eql(
+        data: [
+          {type: :wizards, id: '7', links: {'favourite_spell' => {linkage: {type: 'spells', id: '1'}}}},
+          {type: :wizards, id: '3', links: {'favourite_spell' => {linkage: {type: 'spells', id: '1'}}}},
+          {type: :wizards, id: '2', links: {'favourite_spell' => {linkage: {type: 'spells', id: '12'}}}},
+          {type: :wizards, id: '9', links: {'wand'            => {linkage: {type: 'wands',  id: '1'}}}},
+        ],
+        included: [
+          {type: :spells, id: '1'},
+          {type: :spells, id: '12'},
+          {type: :wands,  id: '1'},
+        ]
+      )
+    end
+  end
+
   context 'with null subresources' do
     let(:resource) {
       Yaks::Resource.new(
