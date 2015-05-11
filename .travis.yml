@@ -10,6 +10,8 @@ rvm:
   - rbx
   - ruby-head
 
+cache: bundler
+
 sudo: false
 
 script: bundle exec rake $TASK
