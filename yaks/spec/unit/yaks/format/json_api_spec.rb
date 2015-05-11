@@ -7,7 +7,7 @@ RSpec.describe Yaks::Format::JsonAPI do
 
     it 'should not include an "included" key' do
       expect(format.call(resource)).to eql(
-        data: {type: :wizards, attributes: {foo: :bar}}
+        data: {type: 'wizards', attributes: {foo: :bar}}
       )
     end
   end
@@ -24,7 +24,7 @@ RSpec.describe Yaks::Format::JsonAPI do
     it 'should include the "meta" key' do
       expect(format.call(resource)).to eql(
         meta: {page: {limit: 20, offset: 0, count: 25}},
-        data: [{type: :wizards, attributes: {foo: :bar}}]
+        data: [{type: 'wizards', attributes: {foo: :bar}}]
       )
     end
   end
@@ -46,14 +46,14 @@ RSpec.describe Yaks::Format::JsonAPI do
     it 'should include the links in the "links" key' do
       expect(format.call(resource)).to eql(
         data: {
-          type: :wizards,
+          type: 'wizards',
           links: {
             self: "/the/self/link",
             profile: "/the/profile/link",
             'favourite_spell' => {linkage: {type: "spells", id: "1"}},
           }
         },
-        included: [{type: :spells, id: "1"}]
+        included: [{type: 'spells', id: "1"}]
       )
     end
   end
@@ -71,10 +71,10 @@ RSpec.describe Yaks::Format::JsonAPI do
     it 'should include subresource links and included' do
       expect(format.call(resource)).to eql(
         data: {
-          type: :wizards,
+          type: 'wizards',
           links: {'favourite_spell'  => {linkage: {type: 'spells', id: "777"}}}
         },
-        included: [{type: :spells, id: "777", attributes: {name: 'Lucky Sevens'}}]
+        included: [{type: 'spells', id: "777", attributes: {name: 'Lucky Sevens'}}]
       )
     end
   end
@@ -103,15 +103,15 @@ RSpec.describe Yaks::Format::JsonAPI do
     it 'should include the each subresource only once' do
       expect(format.call(resource)).to eql(
         data: [
-          {type: :wizards, id: '7', links: {'favourite_spell' => {linkage: {type: 'spells', id: '1'}}}},
-          {type: :wizards, id: '3', links: {'favourite_spell' => {linkage: {type: 'spells', id: '1'}}}},
-          {type: :wizards, id: '2', links: {'favourite_spell' => {linkage: {type: 'spells', id: '12'}}}},
-          {type: :wizards, id: '9', links: {'wand'            => {linkage: {type: 'wands',  id: '1'}}}},
+          {type: 'wizards', id: '7', links: {'favourite_spell' => {linkage: {type: 'spells', id: '1'}}}},
+          {type: 'wizards', id: '3', links: {'favourite_spell' => {linkage: {type: 'spells', id: '1'}}}},
+          {type: 'wizards', id: '2', links: {'favourite_spell' => {linkage: {type: 'spells', id: '12'}}}},
+          {type: 'wizards', id: '9', links: {'wand'            => {linkage: {type: 'wands',  id: '1'}}}},
         ],
         included: [
-          {type: :spells, id: '1'},
-          {type: :spells, id: '12'},
-          {type: :wands,  id: '1'},
+          {type: 'spells', id: '1'},
+          {type: 'spells', id: '12'},
+          {type: 'wands',  id: '1'},
         ]
       )
     end
@@ -127,7 +127,7 @@ RSpec.describe Yaks::Format::JsonAPI do
 
     it 'should not include subresource links' do
       expect(format.call(resource)).to eql(
-        data: {type: :wizards}
+        data: {type: 'wizards'}
       )
     end
   end
@@ -142,7 +142,7 @@ RSpec.describe Yaks::Format::JsonAPI do
 
     it 'should not include subresource links' do
       expect(format.call(resource)).to eql(
-        data: {type: :wizards}
+        data: {type: 'wizards'}
       )
     end
   end

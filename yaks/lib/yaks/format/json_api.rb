@@ -36,7 +36,7 @@ module Yaks
       # @return [Hash]
       def serialize_resource(resource)
         result = {}
-        result[:type] = pluralize(resource.type).to_sym
+        result[:type] = pluralize(resource.type)
         result[:id]   = resource[:id].to_s if resource[:id]
 
         attributes = resource.attributes.reject { |k| k.equal?(:id) }
@@ -94,7 +94,7 @@ module Yaks
       # @return [Hash]
       def serialize_subresource(resource, included)
         included << serialize_resource(resource) unless included.any? do |item|
-          item[:id].eql?(resource[:id].to_s) && item[:type].equal?(pluralize(resource.type).to_sym)
+          item[:id].eql?(resource[:id].to_s) && item[:type].eql?(pluralize(resource.type))
         end
         serialize_included_subresources(resource.subresources, included)
       end
