@@ -4,6 +4,7 @@ require "yaks"
 require "hamster"
 
 Post = Struct.new(:id, :title, :author, :comments)
+Author = Struct.new(:name)
 
 module MyAPI
   Product = Struct.new(:id, :label)
@@ -28,7 +29,9 @@ class PostMapper < Yaks::Mapper
   has_many :comments
 end
 
-class SpecialMapper; end
+class HomeMapper < Yaks::Mapper; end
+
+class SpecialMapper < Yaks::Mapper; end
 
 module Setup
   def setup

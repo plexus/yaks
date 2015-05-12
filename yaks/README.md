@@ -685,11 +685,22 @@ to `to_ary` it is considered a collection.
 
 ### mapper_for
 
-This method allows you to define one-to-one mapping between a class
-and its mapper class. For example, when using `mapper_for(Post, SpecialMapper)`,
-Yaks would always derive `SpecialMapper` from an instance of `Post`.
+This method allows you to define a one-to-one mapping between a mapping rule and a mapper class.
+During the lookup, Yaks will check if any mapping rule matches the given object using the `#===`
+operator.
 
-A mapping defined this way will have the highest priority during lookup.
+Here are a few examples on how to use it:
+```ruby
+yaks = Yaks.new do
+  mapper_for(:home, HomeMapper)
+  mapper_for(Post, SpecialMapper)
+  mapper_for(->(author) { author.respond_to?(:name) && author.name == 'doh' }, AuthorMapper)
+end
+
+yaks.call(:home) # would map using HomeMapper
+yaks.call(Post.new) # would map using PostMapper
+yaks.call(Author.new(name: 'doh')) # would map using AuthorMapper
+```
 
 ### derive_mapper_from_collection
 This method will try various constant lookups based on naming. These all happen

@@ -20,6 +20,7 @@ module Grain
   class SoyCollectionMapper; end
 end
 
+class HomeMapper; end
 class WheatMapper; end
 
 module MyMappers

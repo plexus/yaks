@@ -22,12 +22,31 @@ RSpec.describe Yaks::DefaultPolicy, '#derive_mapper_from_object' do
   end
 
   context 'mapper_for options set' do
-    let(:object) { Soy.new }
-    let(:options) { {mapper_rules: {WildSoy => MyMappers::SoyMapper, Soy => MyMappers::WheatMapper}} }
     subject(:policy) { described_class.new(options) }
 
-    it 'should use the mapping' do
-      expect(policy.derive_mapper_from_object(object)).to be MyMappers::WheatMapper
+    context 'when mapping a class' do
+      let(:options) { {mapper_rules: {home: HomeMapper, Soy => MyMappers::WheatMapper}} }
+
+      it 'should use the mapping' do
+        expect(policy.derive_mapper_from_object(Soy.new)).to be MyMappers::WheatMapper
+      end
+    end
+
+    context 'when mapping a symbol' do
+      let(:options) { {mapper_rules: {soy: SoyMapper}} }
+
+      it 'should use the mapping' do
+        expect(policy.derive_mapper_from_object(:soy)).to be SoyMapper
+      end
+    end
+
+    context 'when mapping a lambda' do
+      let(:user) { fake(logged_in?: true) }
+      let(:options) { {mapper_rules: {->(user){ user.logged_in? } => SoyMapper}} }
+
+      it 'should use the mapping' do
+        expect(policy.derive_mapper_from_object(user)).to be SoyMapper
+      end
     end
   end
 end
