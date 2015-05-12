@@ -19,7 +19,7 @@ module Yaks
     end
 
     # Main point of entry for mapper derivation. Calls
-    # derive_mapper_from_collection or derive_mapper_from_single_object
+    # derive_mapper_from_collection or derive_mapper_from_item
     # depending on the model.
     #
     # @param model [Object]
@@ -28,7 +28,7 @@ module Yaks
     # @raise [RuntimeError] occurs when no mapper is found
     def derive_mapper_from_object(model)
       return derive_mapper_from_collection(model) if model.respond_to? :to_ary
-      derive_mapper_from_single_object(model)
+      derive_mapper_from_item(model)
     end
 
     # Derives a mapper from the given collection.
@@ -50,32 +50,32 @@ module Yaks
       CollectionMapper
     end
 
-    # Derives a mapper from the given object. This object should not
+    # Derives a mapper from the given item. This item should not
     # be a collection.
     #
-    # @param object [Object]
+    # @param item [Object]
     # @return [Class] A mapper, typically a subclass of Yaks::Mapper
     #
-    # @raise [RuntimeError] only occurs when no mapper is found for the given object.
-    def derive_mapper_from_single_object(object)
-      klass = object.class
+    # @raise [RuntimeError] only occurs when no mapper is found for the given item.
+    def derive_mapper_from_item(item)
+      klass = item.class
       splitted_class_name = klass.name.split("::")
-      object_namespace = splitted_class_name[0...-1]
-      object_class_name = splitted_class_name.last
+      item_namespace = splitted_class_name[0...-1]
+      item_class_name = splitted_class_name.last
       begin
-        mapper_class_parts = [*object_namespace, "#{klass.name.split('::').last}Mapper"]
+        mapper_class_parts = [*item_namespace, "#{klass.name.split('::').last}Mapper"]
         return mapper_class_parts.inject(@options[:namespace]) do |prefix, suffix|
           prefix.const_get(suffix, false)
         end
       rescue NameError
         klass = klass.superclass
-        unless object_namespace.empty? || klass
-          object_namespace = []
-          klass = object.class
+        unless item_namespace.empty? || klass
+          item_namespace = []
+          klass = item.class
         end
         retry if klass
       end
-      raise "Failed to find a mapper for #{object.inspect}. Did you mean to implement #{object_class_name}Mapper?"
+      raise "Failed to find a mapper for #{item.inspect}. Did you mean to implement #{item_class_name}Mapper?"
     end
 
     # Derive the a mapper type name

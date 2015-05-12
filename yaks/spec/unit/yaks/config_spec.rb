@@ -133,11 +133,11 @@ RSpec.describe Yaks::Config do
     end
   end
 
-  describe '#derive_mapper_from_single_object' do
+  describe '#derive_mapper_from_item' do
     configure { }
     let(:object) { Pet.new(id: 7, name: 'fifi', species: 'cat') }
     subject do
-      config.derive_mapper_from_single_object do |object|
+      config.derive_mapper_from_item do |object|
         mapper_class = super(object)
         Object.const_get("Great#{mapper_class.name}")
       end
@@ -146,7 +146,7 @@ RSpec.describe Yaks::Config do
     its(:policy_class) { should <= Yaks::DefaultPolicy }
 
     it 'should override the policy method' do
-      expect(subject.policy.derive_mapper_from_single_object(object)).to be GreatPetMapper
+      expect(subject.policy.derive_mapper_from_item(object)).to be GreatPetMapper
       expect(subject.policy.derive_mapper_from_object(object)).to be GreatPetMapper
     end
   end

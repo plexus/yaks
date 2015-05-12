@@ -630,7 +630,7 @@ yaks = Yaks.new do
     # ...
   end
 
-  derive_mapper_from_single_object do |model|
+  derive_mapper_from_item do |model|
     # ...
   end
 
@@ -676,7 +676,7 @@ yaks.call(array_of_widgets, mapper: MyCollectionMapper, item_mapper: WidgetMappe
 ```
 
 If the mapper is left unspecified, Yaks will inspect whatever you pass
-it, and call `derive_mapper_from_single_object` or `derive_mapper_from_collection`
+it, and call `derive_mapper_from_item` or `derive_mapper_from_collection`
 depending on whether the given object is a collection or not. If the object responds
 to `to_ary` it is considered a collection.
 
@@ -697,7 +697,7 @@ it's important that empty collections are handled by the right mapper
 (e.g. to set a specific `self` or `profile` link), then you have to be
 explicit.
 
-### derive_mapper_from_single_object
+### derive_mapper_from_item
 
 When using this method, the lookup happens based on the class name,
 and will traverse up the class hierarchy in the configured namespace if
