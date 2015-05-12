@@ -31,6 +31,7 @@ module Yaks
   DSL_METHODS = [
     :format_options,
     :rel_template,
+    :mapper_for,
     :before,
     :after,
     :around,

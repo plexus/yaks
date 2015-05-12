@@ -6,7 +6,8 @@ module Yaks
     # Default policy options.
     DEFAULTS = {
       rel_template: "rel:{rel}",
-      namespace: Object
+      namespace: Object,
+      mapper_rules: {}
     }
 
     # @!attribute [r]
@@ -27,6 +28,8 @@ module Yaks
     #
     # @raise [RuntimeError] occurs when no mapper is found
     def derive_mapper_from_object(model)
+      mapper = detect_configured_mapper_for(model)
+      return mapper if mapper
       return derive_mapper_from_collection(model) if model.respond_to? :to_ary
       derive_mapper_from_item(model)
     end
@@ -120,6 +123,15 @@ module Yaks
     # @return [String]
     def expand_rel(relname)
       URITemplate.new(@options[:rel_template]).expand(rel: relname)
+    end
+
+    private
+
+    def detect_configured_mapper_for(object)
+      @options[:mapper_rules].each do |rule, mapper_class|
+        return mapper_class if rule === object # rubocop:disable Style/CaseEquality
+      end
+      nil
     end
   end
 end

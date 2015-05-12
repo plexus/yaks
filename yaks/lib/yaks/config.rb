@@ -44,6 +44,12 @@ module Yaks
       with(policy_options: policy_options.merge(namespace: namespace))
     end
 
+    def mapper_for(rule, mapper_class)
+      policy_options[:mapper_rules] ||= {}
+      mapper_rules = policy_options[:mapper_rules].merge(rule => mapper_class)
+      with(policy_options: policy_options.merge(mapper_rules: mapper_rules))
+    end
+
     def map_to_primitive(*args, &block)
       with(primitivize: primitivize.dup.tap { |prim| prim.map(*args, &block) })
     end

@@ -28,6 +28,8 @@ class PostMapper < Yaks::Mapper
   has_many :comments
 end
 
+class SpecialMapper; end
+
 module Setup
   def setup
     # Do some nice setup that is run before every snippet

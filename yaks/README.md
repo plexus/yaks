@@ -622,6 +622,8 @@ In Yaks whenever missing values need to be inferred, like finding an unspecified
 
 ```ruby
 yaks = Yaks.new do
+  mapper_for Post, SpecialMapper
+
   derive_mapper_from_object do |model|
     # ...
   end
@@ -676,9 +678,18 @@ yaks.call(array_of_widgets, mapper: MyCollectionMapper, item_mapper: WidgetMappe
 ```
 
 If the mapper is left unspecified, Yaks will inspect whatever you pass
-it, and call `derive_mapper_from_item` or `derive_mapper_from_collection`
+it. First it will test the given object against the mappings defined using `mapper_for`.
+If no mapper is found, it will call `derive_mapper_from_item` or `derive_mapper_from_collection`
 depending on whether the given object is a collection or not. If the object responds
 to `to_ary` it is considered a collection.
+
+### mapper_for
+
+This method allows you to define one-to-one mapping between a class
+and its mapper class. For example, when using `mapper_for(Post, SpecialMapper)`,
+Yaks would always derive `SpecialMapper` from an instance of `Post`.
+
+A mapping defined this way will have the highest priority during lookup.
 
 ### derive_mapper_from_collection
 This method will try various constant lookups based on naming. These all happen

@@ -20,4 +20,14 @@ RSpec.describe Yaks::DefaultPolicy, '#derive_mapper_from_object' do
       expect(policy).to have_received.derive_mapper_from_collection(object)
     end
   end
+
+  context 'mapper_for options set' do
+    let(:object) { Soy.new }
+    let(:options) { {mapper_rules: {WildSoy => MyMappers::SoyMapper, Soy => MyMappers::WheatMapper}} }
+    subject(:policy) { described_class.new(options) }
+
+    it 'should use the mapping' do
+      expect(policy.derive_mapper_from_object(object)).to be MyMappers::WheatMapper
+    end
+  end
 end

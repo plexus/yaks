@@ -45,6 +45,22 @@ RSpec.describe Yaks::Config do
     its(:policy_options) { should eql(namespace: Object, rel_template: 'http://rel/foo') }
   end
 
+  describe '#mapper_for' do
+    let(:expected_options) do
+      {
+        namespace: Object,
+        mapper_rules: {Grain::Wheat => SoyMapper, Soy => MyMappers::WheatMapper}
+      }
+    end
+    configure do
+      mapper_namespace Object
+      mapper_for Soy, MyMappers::WheatMapper
+      mapper_for Grain::Wheat, SoyMapper
+    end
+
+    its(:policy_options) { should eql(expected_options) }
+  end
+
   describe '#format_options' do
     configure do
       format_options :hal, plural_links: [:self, :profile]
