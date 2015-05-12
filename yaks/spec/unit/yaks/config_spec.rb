@@ -116,6 +116,59 @@ RSpec.describe Yaks::Config do
     end
   end
 
+  describe '#derive_mapper_from_object' do
+    configure { }
+    let(:object) { Pet.new(id: 7, name: 'fifi', species: 'cat') }
+    subject do
+      config.derive_mapper_from_object do |object|
+        mapper_class = super(object)
+        Object.const_get("Great#{mapper_class.name}")
+      end
+    end
+
+    its(:policy_class) { should <= Yaks::DefaultPolicy }
+
+    it 'should override the policy method' do
+      expect(subject.policy.derive_mapper_from_object(object)).to be GreatPetMapper
+    end
+  end
+
+  describe '#derive_mapper_from_single_object' do
+    configure { }
+    let(:object) { Pet.new(id: 7, name: 'fifi', species: 'cat') }
+    subject do
+      config.derive_mapper_from_single_object do |object|
+        mapper_class = super(object)
+        Object.const_get("Great#{mapper_class.name}")
+      end
+    end
+
+    its(:policy_class) { should <= Yaks::DefaultPolicy }
+
+    it 'should override the policy method' do
+      expect(subject.policy.derive_mapper_from_single_object(object)).to be GreatPetMapper
+      expect(subject.policy.derive_mapper_from_object(object)).to be GreatPetMapper
+    end
+  end
+
+  describe '#derive_mapper_from_collection' do
+    configure { }
+    let(:object) { [Pet.new(id: 7, name: 'fifi', species: 'cat')] }
+    subject do
+      config.derive_mapper_from_collection do |object|
+        mapper_class_name = super(object).name.split('::').last
+        Object.const_get("GreatPet#{mapper_class_name}")
+      end
+    end
+
+    its(:policy_class) { should <= Yaks::DefaultPolicy }
+
+    it 'should override the policy method' do
+      expect(subject.policy.derive_mapper_from_collection(object)).to be GreatPetCollectionMapper
+      expect(subject.policy.derive_mapper_from_object(object)).to be GreatPetCollectionMapper
+    end
+  end
+
   describe '#call' do
     configure do
       rel_template 'http://api.mysuperfriends.com/{rel}'
