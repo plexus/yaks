@@ -626,6 +626,14 @@ yaks = Yaks.new do
     # ...
   end
 
+  derive_mapper_from_collection do |collection|
+    # ...
+  end
+
+  derive_mapper_from_single_object do |model|
+    # ...
+  end
+
   derive_type_from_mapper_class do |mapper_class|
     # ...
   end
@@ -639,6 +647,9 @@ yaks = Yaks.new do
   end
 end
 ```
+
+Note that within these blocks, you may call `super()` which would call
+the default implementation.
 
 You can also subclass or create from scratch your own policy class
 
@@ -665,11 +676,15 @@ yaks.call(array_of_widgets, mapper: MyCollectionMapper, item_mapper: WidgetMappe
 ```
 
 If the mapper is left unspecified, Yaks will inspect whatever you pass
-it, and try various constant lookups based on naming. These all happen
+it, and call `derive_mapper_from_single_object` or `derive_mapper_from_collection`
+depending on whether the given object is a collection or not. If the object responds
+to `to_ary` it is considered a collection.
+
+### derive_mapper_from_collection
+This method will try various constant lookups based on naming. These all happen
 in the configured namespace, which defaults to the Ruby top level.
 
-If the object responds to `to_ary` it is considered a collection. If
-the first object in the collection has a class of `Widget`, and the
+If the first object in the collection has a class of `Widget`, and the
 configured namespace is `API`, then these are tried in turn
 
 * `API::WidgetCollectionMapper`
@@ -682,9 +697,11 @@ it's important that empty collections are handled by the right mapper
 (e.g. to set a specific `self` or `profile` link), then you have to be
 explicit.
 
-If the object is not a collection, then lookup happens based on the
-class name, and will traverse up the class hierarchy if no suitable
-mapper is found. Take the following
+### derive_mapper_from_single_object
+
+When using this method, the lookup happens based on the class name,
+and will traverse up the class hierarchy in the configured namespace if
+no suitable mapper is found. Take the following
 code:
 ```ruby
 module Stuff
