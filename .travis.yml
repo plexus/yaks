@@ -7,7 +7,6 @@ rvm:
   - 2.2
   - jruby
   - jruby-head
-  - rbx
   - ruby-head
 
 sudo: false
@@ -25,6 +24,10 @@ matrix:
     - env: TASK=mutant
   fast_finish: true
   include:
+    - rvm: rbx
+      env: TASK="yaks:rspec --trace"
+    - rvm: rbx
+      env: TASK="yaks-html:rspec --trace"
     - rvm: 2.2
       env: TASK=ataru
     - rvm: 2.2
