@@ -62,23 +62,14 @@ module Yaks
     # @raise [RuntimeError] only occurs when no mapper is found for the given item.
     def derive_mapper_from_item(item)
       klass = item.class
-      splitted_class_name = klass.name.split("::")
-      item_namespace = splitted_class_name[0...-1]
-      item_class_name = splitted_class_name.last
+      namespaces = klass.name.split("::")[0...-1]
       begin
-        mapper_class_parts = [*item_namespace, "#{klass.name.split('::').last}Mapper"]
-        return mapper_class_parts.inject(@options[:namespace]) do |prefix, suffix|
-          prefix.const_get(suffix, false)
-        end
+        return build_mapper_class(namespaces, klass)
       rescue NameError
-        klass = klass.superclass
-        unless item_namespace.empty? || klass
-          item_namespace = []
-          klass = item.class
-        end
+        klass = next_class_for_lookup(item, namespaces, klass)
         retry if klass
       end
-      raise "Failed to find a mapper for #{item.inspect}. Did you mean to implement #{item_class_name}Mapper?"
+      raise_mapper_not_found(item)
     end
 
     # Derive the a mapper type name
@@ -126,6 +117,26 @@ module Yaks
     end
 
     private
+
+    def build_mapper_class(namespaces, klass)
+      mapper_class = "#{klass.name.split('::').last}Mapper"
+      [*namespaces, mapper_class].inject(@options[:namespace]) do |namespace, module_or_class|
+        namespace.const_get(module_or_class, false)
+      end
+    end
+
+    def next_class_for_lookup(item, namespaces, klass)
+      superclass = klass.superclass
+      return superclass if namespaces.empty? || superclass
+      namespaces.clear
+      item.class
+    end
+
+    def raise_mapper_not_found(item)
+      namespace = "#{@options[:namespace]}::" unless Object.equal?(@options[:namespace])
+      mapper_class = "#{namespace}#{item.class}Mapper"
+      raise "Failed to find a mapper for #{item.inspect}. Did you mean to implement #{mapper_class}?"
+    end
 
     def detect_configured_mapper_for(object)
       @options[:mapper_rules].each do |rule, mapper_class|

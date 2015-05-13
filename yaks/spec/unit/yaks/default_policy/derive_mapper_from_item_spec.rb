@@ -83,7 +83,17 @@ RSpec.describe Yaks::DefaultPolicy, '#derive_mapper_from_item' do
     it 'should give a nice message' do
       expect do
         policy.derive_mapper_from_item(Namespace::Nested::Mung.new)
-      end.to raise_error /Failed to find a mapper for #<Namespace::Nested::Mung:0x\h+>. Did you mean to implement MungMapper\?/
+      end.to raise_error /Failed to find a mapper for #<Namespace::Nested::Mung:0x\h+>. Did you mean to implement Namespace::Nested::MungMapper\?/
+    end
+
+    context 'with namespace option specified' do
+      let(:options) { {namespace: MyMappers} }
+
+      it 'should give a nice message' do
+        expect do
+          policy.derive_mapper_from_item(Namespace::Nested::Rye.new)
+        end.to raise_error /Failed to find a mapper for #<Namespace::Nested::Rye:0x\h+>. Did you mean to implement MyMappers::Namespace::Nested::RyeMapper\?/
+      end
     end
   end
 end
