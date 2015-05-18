@@ -622,7 +622,17 @@ In Yaks whenever missing values need to be inferred, like finding an unspecified
 
 ```ruby
 yaks = Yaks.new do
+  mapper_for Post, SpecialMapper
+
   derive_mapper_from_object do |model|
+    # ...
+  end
+
+  derive_mapper_from_collection do |collection|
+    # ...
+  end
+
+  derive_mapper_from_item do |model|
     # ...
   end
 
@@ -639,6 +649,9 @@ yaks = Yaks.new do
   end
 end
 ```
+
+Note that within these blocks, you may call `super()` which would call
+the default implementation.
 
 You can also subclass or create from scratch your own policy class
 
@@ -665,11 +678,35 @@ yaks.call(array_of_widgets, mapper: MyCollectionMapper, item_mapper: WidgetMappe
 ```
 
 If the mapper is left unspecified, Yaks will inspect whatever you pass
-it, and try various constant lookups based on naming. These all happen
+it. First it will test the given object against the mappings defined using `mapper_for`.
+If no mapper is found, it will call `derive_mapper_from_item` or `derive_mapper_from_collection`
+depending on whether the given object is a collection or not. If the object responds
+to `to_ary` it is considered a collection.
+
+### mapper_for
+
+This method allows you to define a one-to-one mapping between a mapping rule and a mapper class.
+During the lookup, Yaks will check if any mapping rule matches the given object using the `#===`
+operator.
+
+Here are a few examples on how to use it:
+```ruby
+yaks = Yaks.new do
+  mapper_for(:home, HomeMapper)
+  mapper_for(Post, SpecialMapper)
+  mapper_for(->(author) { author.respond_to?(:name) && author.name == 'doh' }, AuthorMapper)
+end
+
+yaks.call(:home) # would map using HomeMapper
+yaks.call(Post.new) # would map using PostMapper
+yaks.call(Author.new(name: 'doh')) # would map using AuthorMapper
+```
+
+### derive_mapper_from_collection
+This method will try various constant lookups based on naming. These all happen
 in the configured namespace, which defaults to the Ruby top level.
 
-If the object responds to `to_ary` it is considered a collection. If
-the first object in the collection has a class of `Widget`, and the
+If the first object in the collection has a class of `Widget`, and the
 configured namespace is `API`, then these are tried in turn
 
 * `API::WidgetCollectionMapper`
@@ -682,9 +719,11 @@ it's important that empty collections are handled by the right mapper
 (e.g. to set a specific `self` or `profile` link), then you have to be
 explicit.
 
-If the object is not a collection, then lookup happens based on the
-class name, and will traverse up the class hierarchy if no suitable
-mapper is found. Take the following
+### derive_mapper_from_item
+
+When using this method, the lookup happens based on the class name,
+and will traverse up the class hierarchy in the configured namespace if
+no suitable mapper is found. Take the following
 code:
 ```ruby
 module Stuff
