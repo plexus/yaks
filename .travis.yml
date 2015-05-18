@@ -23,6 +23,7 @@ matrix:
   allow_failures:
     - rvm: ruby-head
     - rvm: jruby-head
+    - rvm: rbx
     - env: TASK=mutant
   fast_finish: true
   include:
