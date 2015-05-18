@@ -22,6 +22,8 @@ end
 
 class HomeMapper; end
 class WheatMapper; end
+class ObjectMapper; end
+class BasicObjectMapper; end
 
 module MyMappers
   class SoyMapper; end

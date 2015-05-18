@@ -740,8 +740,6 @@ The lookup we'll be done as followed.
  * `Mappers::Stuff::BasicObjectMapper`
  * `Mappers::WidgetMapper`
  * `Mappers::ThingMapper`
- * `Mappers::ObjectMapper`
- * `Mappers::BasicObjectMapper`
 
 * If the `namespace` option is not set:
  * `Stuff::WidgetMapper`
@@ -750,8 +748,6 @@ The lookup we'll be done as followed.
  * `Stuff::BasicObjectMapper`
  * `WidgetMapper`
  * `ThingMapper`
- * `ObjectMapper`
- * `BasicObjectMapper`
 
 If none of these are found an error is raised.
 

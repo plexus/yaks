@@ -127,7 +127,8 @@ module Yaks
 
     def next_class_for_lookup(item, namespaces, klass)
       superclass = klass.superclass
-      return superclass if namespaces.empty? || superclass
+      return superclass if superclass < Object
+      return nil if namespaces.empty?
       namespaces.clear
       item.class
     end

@@ -96,4 +96,19 @@ RSpec.describe Yaks::DefaultPolicy, '#derive_mapper_from_item' do
       end
     end
   end
+
+  context 'Object instance' do
+    it 'return ObjectMapper' do
+      expect(policy.derive_mapper_from_item(Object.new)).to be ObjectMapper
+    end
+
+    context 'no mapper available' do
+      before { Object.send(:remove_const, "ObjectMapper") }
+      after  { Object::ObjectMapper = Class.new }
+
+      it 'raise error' do
+        expect { policy.derive_mapper_from_item(Object.new) }.to raise_error RuntimeError
+      end
+    end
+  end
 end
