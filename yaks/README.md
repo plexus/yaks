@@ -804,6 +804,8 @@ For JSON based formats, the "syntax tree" is merely a structure of Ruby primitiv
 
 ```ruby
 Yaks.new do
+  # JSON specification doesn't standardize time formats, so Yaks doesn't imply
+  # any as well, but in most cases it's best you use the global ISO8601 standard.
   map_to_primitive Date, Time, DateTime do |date|
     date.iso8601
   end
