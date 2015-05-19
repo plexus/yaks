@@ -552,6 +552,43 @@ yaks = Yaks.new do
 end
 ```
 
+Yaks also has support for respecting the `include` query parameter (e.g.
+`include=author,comments`), which is a behaviour you can include in
+your mappers:
+
+```ruby
+require "yaks/behaviour/optional_includes"
+
+class PostMapper < Yaks::Mapper
+  include Yaks::Behaviour::OptionalIncludes
+
+  has_one :author
+  has_many :comments
+end
+
+# ...
+
+yaks = Yaks.new
+yaks.call(post, env: rack_env)
+```
+
+Now all your associations will be included only if specified in the `include`
+query. Note that you need to pass the Rack env to Yaks, and that you need to
+explicitly require `yaks/behaviour/optional_includes`. If you want some
+associations to always be included regardless of the `include` query parameter,
+just specify `:if` that returns true:
+
+```ruby
+require "yaks/behaviour/optional_includes"
+
+class PostMapper < Yaks::Mapper
+  include Yaks::Behaviour::OptionalIncludes
+
+  has_one :author
+  has_many :comments, if: ->{ true }
+end
+```
+
 ### Collection+JSON
 
 Collection+JSON has support for write templates. To use them, the `:template`
