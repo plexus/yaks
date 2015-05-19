@@ -1,5 +1,8 @@
 ### master
-[full changelog](http://github.com/plexus/yaks/compare/v0.9.0...master)
+[all changes](http://github.com/plexus/yaks/compare/v0.10.0...master)
+
+### v0.10.0 / 2015-05-19
+[all changes](http://github.com/plexus/yaks/compare/v0.9.0...v0.10.0)
 
 * Updated JSON-API Reader to handle collections
 
@@ -10,9 +13,13 @@
   - Change format of `links` to include 'linkages'
   - `included` no longer contains duplicates
   - Render top level collection links
+  - Don't include "rel" in links output
 
 * yaks-html: Make nested resources expand/collapse, various small
   improvements
+
+* yaks-html: render "rel" attributes, making the HTML output more suitable
+  for use in integration tests
 
 * In mapper/form declarations: make methods that take a lambda to also
   accept a block
@@ -21,11 +28,28 @@
   them their own class
 
 * Introduce `Yaks::Form#fields_flat`, an enumerator to traverse all
-  input fields in a form linearly, e.g. for validation
+  input fields in a form linearly, e.g. for validation. Will skip over
+  legend elements
+
+* Introduce `Yaks::Form#map_fields`, a way to map over fields and fieldsets
+  recursively, yielding a new nested object
 
 * Bug fix: `json_serializer` configuration method not working as intended
 
 * Improved mapper lookup to deal with model inside namespace
+
+* Introduce `mapper_for`, a configuration option for setting up one-off
+  mapper derivation rules
+
+* Reify Form::Legend, making it easier to handle form objects with field sets
+
+* Improve test coverage. We are now at 97.30% mutation coverage
+
+* Improve documentation. Code examples in the README are now verified with
+  Ataru
+
+* Make code warning-free
+
 
 ### v0.9.0 / 2015-03-17
 
