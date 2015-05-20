@@ -7,10 +7,11 @@ require 'yard'
 def mutant_task(_gem)
   require 'mutant'
   task :mutant do
-    pattern = ENV.fetch('PATTERN', 'Yaks*')
-    opts    = ENV.fetch('MUTANT_OPTS', '').split(' ')
-    args    = %w[-Ilib -ryaks --use rspec --score 100] + opts + [pattern]
-    result  = Mutant::CLI.run(args)
+    pattern  = ENV.fetch('PATTERN', 'Yaks*')
+    opts     = ENV.fetch('MUTANT_OPTS', '').split(' ')
+    requires = %w[-ryaks -ryaks/behaviour/optional_includes]
+    args     = %w[-Ilib --use rspec --score 100] + requires + opts + [pattern]
+    result   = Mutant::CLI.run(args)
     raise unless result == Mutant::CLI::EXIT_SUCCESS
   end
 end
