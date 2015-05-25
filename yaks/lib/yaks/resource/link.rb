@@ -1,7 +1,7 @@
 module Yaks
   class Resource
     class Link
-      include Attribs.new(:rel, :uri, options: {})
+      include Attribs.new(:rel, :uri, options: {}.freeze)
 
       def title
         options[:title]
