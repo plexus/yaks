@@ -1,6 +1,7 @@
 AllCops:
   Exclude:
     - 'pkg/**/*'
+    - 'vendor/**/*'
 
 Lint/AmbiguousRegexpLiteral:
   Enabled: false
