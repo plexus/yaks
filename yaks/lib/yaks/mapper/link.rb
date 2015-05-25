@@ -25,7 +25,7 @@ module Yaks
     #   it will receive the mapper instance as argument. Otherwise it is evaluated in the mapper context
     class Link
       extend Forwardable, Util
-      include Attribs.new(:rel, :template, options: {}), Util
+      include Attribs.new(:rel, :template, options: {}.freeze), Util
 
       def self.create(*args)
         args, options = extract_options(args)
@@ -62,11 +62,16 @@ module Yaks
         uri = mapper.expand_uri(template, options.fetch(:expand, true))
         return if uri.nil?
 
-        Resource::Link.new(
+        attrs = {
           rel: rel,
-          uri: uri,
-          options: resource_link_options(mapper)
-        )
+          uri: uri
+        }
+
+        resource_link_options(mapper).tap do |opts|
+          attrs[:options] = opts unless opts.empty?
+        end
+
+        Resource::Link.new(attrs)
       end
 
       private
