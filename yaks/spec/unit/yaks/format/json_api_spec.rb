@@ -47,10 +47,12 @@ RSpec.describe Yaks::Format::JsonAPI do
       expect(format.call(resource)).to eql(
         data: {
           type: 'wizards',
+          relationships: {
+            'favourite_spell' => {data: {type: "spells", id: "1"}}
+          },
           links: {
             self: "/the/self/link",
-            profile: "/the/profile/link",
-            'favourite_spell' => {linkage: {type: "spells", id: "1"}},
+            profile: "/the/profile/link"
           }
         },
         included: [{type: 'spells', id: "1"}]
@@ -72,7 +74,7 @@ RSpec.describe Yaks::Format::JsonAPI do
       expect(format.call(resource)).to eql(
         data: {
           type: 'wizards',
-          links: {'favourite_spell'  => {linkage: {type: 'spells', id: "777"}}}
+          relationships: {'favourite_spell'  => {data: {type: 'spells', id: "777"}}}
         },
         included: [{type: 'spells', id: "777", attributes: {name: 'Lucky Sevens'}}]
       )
@@ -103,10 +105,10 @@ RSpec.describe Yaks::Format::JsonAPI do
     it 'should include the each subresource only once' do
       expect(format.call(resource)).to eql(
         data: [
-          {type: 'wizards', id: '7', links: {'favourite_spell' => {linkage: {type: 'spells', id: '1'}}}},
-          {type: 'wizards', id: '3', links: {'favourite_spell' => {linkage: {type: 'spells', id: '1'}}}},
-          {type: 'wizards', id: '2', links: {'favourite_spell' => {linkage: {type: 'spells', id: '12'}}}},
-          {type: 'wizards', id: '9', links: {'wand'            => {linkage: {type: 'wands',  id: '1'}}}},
+          {type: 'wizards', id: '7', relationships: {'favourite_spell' => {data: {type: 'spells', id: '1'}}}},
+          {type: 'wizards', id: '3', relationships: {'favourite_spell' => {data: {type: 'spells', id: '1'}}}},
+          {type: 'wizards', id: '2', relationships: {'favourite_spell' => {data: {type: 'spells', id: '12'}}}},
+          {type: 'wizards', id: '9', relationships: {'wand'            => {data: {type: 'wands',  id: '1'}}}},
         ],
         included: [
           {type: 'spells', id: '1'},

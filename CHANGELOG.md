@@ -1,6 +1,8 @@
 ### master
 [all changes](http://github.com/plexus/yaks/compare/v0.10.0...master)
 
+* Updated JSON-API to match 1.0 format.
+
 ### v0.10.0 / 2015-05-19
 [all changes](http://github.com/plexus/yaks/compare/v0.9.0...v0.10.0)
 

@@ -42,31 +42,28 @@ module Yaks
         attributes = resource.attributes.reject { |k| k.equal?(:id) }
         result[:attributes] = attributes if attributes.any?
 
-        result[:links] = {}
-        result[:links].update(serialize_subresource_links(resource.subresources))
-        result[:links].update(serialize_links(resource.links))
-        result.delete(:links) if result[:links].empty?
+        relationships = serialize_relationships(resource.subresources)
+        result[:relationships] = relationships unless relationships.empty?
+        links = serialize_links(resource.links)
+        result[:links] = links unless links.empty?
 
         result
       end
 
-      # @param [Yaks::Resource] subresource
+      # @param [Array] subresources
       # @return [Hash]
-      def serialize_subresource_links(subresources)
+      def serialize_relationships(subresources)
         subresources.each_with_object({}) do |resource, hsh|
           next if resource.null_resource?
-          hsh[resource.rels.first.sub(/^rel:/, '')] = serialize_subresource_link(resource)
+          hsh[resource.rels.first.sub(/^rel:/, '')] = serialize_relationship(resource)
         end
       end
 
       # @param [Yaks::Resource] resource
-      # @return [Array, String]
-      def serialize_subresource_link(resource)
-        if resource.collection?
-          {linkage: resource.map{|r| {type: pluralize(r.type), id: r[:id].to_s} }}
-        else
-          {linkage: {type: pluralize(resource.type), id: resource[:id].to_s}}
-        end
+      # @return [Array, Hash]
+      def serialize_relationship(resource)
+        return {data: resource.map{|r| {type: pluralize(r.type), id: r[:id].to_s} }} if resource.collection?
+        {data: {type: pluralize(resource.type), id: resource[:id].to_s}}
       end
 
       # @param [Hash] subresources
