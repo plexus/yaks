@@ -48,7 +48,7 @@ RSpec.describe Yaks::Format::JsonAPI do
         data: {
           type: 'wizards',
           relationships: {
-            'favourite_spell' => {data: {type: "spells", id: "1"}}
+            favourite_spell: {data: {type: "spells", id: "1"}}
           },
           links: {
             self: "/the/self/link",
@@ -74,7 +74,7 @@ RSpec.describe Yaks::Format::JsonAPI do
       expect(format.call(resource)).to eql(
         data: {
           type: 'wizards',
-          relationships: {'favourite_spell'  => {data: {type: 'spells', id: "777"}}}
+          relationships: {favourite_spell: {data: {type: 'spells', id: "777"}}}
         },
         included: [{type: 'spells', id: "777", attributes: {name: 'Lucky Sevens'}}]
       )
@@ -105,10 +105,10 @@ RSpec.describe Yaks::Format::JsonAPI do
     it 'should include the each subresource only once' do
       expect(format.call(resource)).to eql(
         data: [
-          {type: 'wizards', id: '7', relationships: {'favourite_spell' => {data: {type: 'spells', id: '1'}}}},
-          {type: 'wizards', id: '3', relationships: {'favourite_spell' => {data: {type: 'spells', id: '1'}}}},
-          {type: 'wizards', id: '2', relationships: {'favourite_spell' => {data: {type: 'spells', id: '12'}}}},
-          {type: 'wizards', id: '9', relationships: {'wand'            => {data: {type: 'wands',  id: '1'}}}},
+          {type: 'wizards', id: '7', relationships: {favourite_spell: {data: {type: 'spells', id: '1'}}}},
+          {type: 'wizards', id: '3', relationships: {favourite_spell: {data: {type: 'spells', id: '1'}}}},
+          {type: 'wizards', id: '2', relationships: {favourite_spell: {data: {type: 'spells', id: '12'}}}},
+          {type: 'wizards', id: '9', relationships: {wand:            {data: {type: 'wands',  id: '1'}}}},
         ],
         included: [
           {type: 'spells', id: '1'},
@@ -123,14 +123,38 @@ RSpec.describe Yaks::Format::JsonAPI do
     let(:resource) {
       Yaks::Resource.new(
         type: 'wizard',
-        subresources: [Yaks::NullResource.new]
+        subresources: [subresource]
       )
     }
 
-    it 'should not include subresource links' do
-      expect(format.call(resource)).to eql(
-        data: {type: 'wizards'}
-      )
+    context "non-collection subresouce" do
+      let(:subresource) { Yaks::NullResource.new.add_rel("rel:wand") }
+
+      it 'should include a nil linkage object' do
+        expect(format.call(resource)).to eql(
+          data: {
+            type: 'wizards',
+            relationships: {
+              wand: {data: nil}
+            }
+          }
+        )
+      end
+    end
+
+    context "collection subresouce" do
+      let(:subresource) { Yaks::NullResource.new(collection: true).add_rel("rel:wands") }
+
+      it 'should include a nil linkage object' do
+        expect(format.call(resource)).to eql(
+          data: {
+            type: 'wizards',
+            relationships: {
+              wands: {data: []}
+            }
+          }
+        )
+      end
     end
   end
 

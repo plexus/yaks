@@ -54,16 +54,19 @@ module Yaks
       # @return [Hash]
       def serialize_relationships(subresources)
         subresources.each_with_object({}) do |resource, hsh|
-          next if resource.null_resource?
-          hsh[resource.rels.first.sub(/^rel:/, '')] = serialize_relationship(resource)
+          hsh[resource.rels.first.sub(/^rel:/, '').to_sym] = serialize_relationship(resource)
         end
       end
 
       # @param [Yaks::Resource] resource
       # @return [Array, Hash]
       def serialize_relationship(resource)
-        return {data: resource.map{|r| {type: pluralize(r.type), id: r[:id].to_s} }} if resource.collection?
-        {data: {type: pluralize(resource.type), id: resource[:id].to_s}}
+        if resource.collection?
+          data = resource.map { |r| {type: pluralize(r.type), id: r[:id].to_s} }
+        elsif !resource.null_resource?
+          data = {type: pluralize(resource.type), id: resource[:id].to_s}
+        end
+        {data: data}
       end
 
       # @param [Hash] subresources

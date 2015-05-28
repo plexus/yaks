@@ -65,6 +65,10 @@
           "chinese_name": "易經",
           "english_name": "Commentaries to the Yi-jing"
         },
+        "relationships": {
+          "quotes": { "data": [] },
+          "era": { "data": null }
+        },
         "links": {
           "profile": "http://literature.example.com/profiles/work",
           "self": "http://literature.example.com/work/12"

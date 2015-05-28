@@ -28,11 +28,11 @@ module Yaks
         end
       end
 
-      def convert_embedded(links, included)
-        links.flat_map do |rel, link_data|
+      def convert_embedded(relationships, included)
+        relationships.flat_map do |rel, relationship|
           # A Link doesn't have to contain a `data` member.
           # It can contain URLs instead, or as well, but we are only worried about *embedded* links here.
-          data = link_data['data']
+          data = relationship['data']
           # Resource data MUST be represented as one of the following:
           #
           # * `null` for empty to-one relationships.
@@ -40,15 +40,19 @@ module Yaks
           # * an empty array ([]) for empty to-many relationships.
           # * an array of resource identifier objects for non-empty to-many relationships.
           if data.nil?
-            nil
+            NullResource.new(rels: [rel])
           elsif data.is_a? Array
-            CollectionResource.new(
-              members: data.map { |link|
-                data = included.find{ |item| (item['id'] == link['id']) && (item['type'] == link['type']) }
-                call('data'  => data, 'included' => included)
-              },
-              rels: [rel]
-            )
+            if data.empty?
+              NullResource.new(collection: true, rels: [rel])
+            else
+              CollectionResource.new(
+                members: data.map { |link|
+                  data = included.find{ |item| (item['id'] == link['id']) && (item['type'] == link['type']) }
+                  call('data'  => data, 'included' => included)
+                },
+                rels: [rel]
+              )
+            end
           else
             data = included.find{ |item| (item['id'] == data['id']) && (item['type'] == data['type']) }
             call('data'  => data, 'included' => included).with(rels: [rel])
