@@ -839,17 +839,38 @@ end
 
 For JSON based formats, the "syntax tree" is merely a structure of Ruby primitives that have a JSON equivalent. If your mappers return non-primitive attribute values, you can define how they should be converted. For example, JSON has no notion of dates. If your mappers return these types as attributes, then Yaks needs to know how to turn these into primitives. To add extra types, use `map_to_primitive`
 
+Here's an example with a custom `Currency` class, which can be represented as an integer.
+
 ```ruby
 Yaks.new do
-  # JSON specification doesn't standardize time formats, so Yaks doesn't imply
-  # any as well, but in most cases it's best you use the global ISO8601 standard.
-  map_to_primitive Date, Time, DateTime do |date|
-    date.iso8601
+  map_to_primitive Currency do |currency|
+    currency.to_i
   end
 end
 ```
 
-This can also be used to transform alternative data structures, like those from Hamster, into Ruby arrays and hashes. Use `call()` to recursively turn things into primitives.
+One notable use case is representing dates and times. The JSON
+specification does not define any syntax for these, so the only
+solution is to represent them either as numbers or strings. If you're
+not sure what to do with these then the ISO8601 standard is a safe
+bet. It defines a way to represent times and dates as strings, and is
+also adopted by the W3C in [RFC3339](http://tools.ietf.org/html/rfc3339).
+
+An alternative representation that is sometimes used is "unix time",
+defined as the numbers of seconds passed since 1 January 1970.
+
+Here's an example for a Rails app, so including ActiveSupport's `TimeWithZone`.
+
+```ruby
+Yaks.new do
+  map_to_primitive Date, Time, DateTime, ActiveSupport::TimeWithZone, &:iso8601
+end
+```
+
+`map_to_primitive` can also be used to transform alternative data
+structures, like those from [Hamster](https://github.com/hamstergem/hamster),
+into Ruby arrays and hashes. Use `call()` to recursively turn things into
+primitives.
 
 ```ruby
 Yaks.new do
