@@ -12,12 +12,12 @@ module Yaks
         else
           attributes = parsed_json['data'].dup
           links = attributes.delete('links') || {}
+          relationships = attributes.delete('relationships') || {}
           type  = attributes.delete('type')
           attributes.merge!(attributes.delete('attributes') || {})
 
-          association_links, resource_links = links.partition { |_k, v| v.is_a?(Hash) }
-          embedded   = convert_embedded(Hash[association_links], included)
-          links      = convert_links(Hash[resource_links])
+          embedded   = convert_embedded(Hash[relationships], included)
+          links      = convert_links(Hash[links])
 
           Resource.new(
             type: Util.singularize(type),
@@ -28,29 +28,33 @@ module Yaks
         end
       end
 
-      def convert_embedded(links, included)
-        links.flat_map do |rel, link_data|
-          # A Link doesn't have to contain a `linkage` member.
+      def convert_embedded(relationships, included)
+        relationships.flat_map do |rel, relationship|
+          # A Link doesn't have to contain a `data` member.
           # It can contain URLs instead, or as well, but we are only worried about *embedded* links here.
-          linkage = link_data['linkage']
-          # Resource linkage MUST be represented as one of the following:
+          data = relationship['data']
+          # Resource data MUST be represented as one of the following:
           #
           # * `null` for empty to-one relationships.
-          # * a "linkage object" for non-empty to-one relationships.
+          # * a "resource identifier object" for non-empty to-one relationships.
           # * an empty array ([]) for empty to-many relationships.
-          # * an array of linkage objects for non-empty to-many relationships.
-          if linkage.nil?
-            nil
-          elsif linkage.is_a? Array
-            CollectionResource.new(
-              members: linkage.map { |link|
-                data = included.find{ |item| (item['id'] == link['id']) && (item['type'] == link['type']) }
-                call('data'  => data, 'included' => included)
-              },
-              rels: [rel]
-            )
+          # * an array of resource identifier objects for non-empty to-many relationships.
+          if data.nil?
+            NullResource.new(rels: [rel])
+          elsif data.is_a? Array
+            if data.empty?
+              NullResource.new(collection: true, rels: [rel])
+            else
+              CollectionResource.new(
+                members: data.map { |link|
+                  data = included.find{ |item| (item['id'] == link['id']) && (item['type'] == link['type']) }
+                  call('data'  => data, 'included' => included)
+                },
+                rels: [rel]
+              )
+            end
           else
-            data = included.find{ |item| (item['id'] == linkage['id']) && (item['type'] == linkage['type']) }
+            data = included.find{ |item| (item['id'] == data['id']) && (item['type'] == data['type']) }
             call('data'  => data, 'included' => included).with(rels: [rel])
           end
         end.compact

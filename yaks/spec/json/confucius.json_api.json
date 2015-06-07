@@ -7,12 +7,16 @@
       "pinyin": "Kongzi",
       "latinized": "Confucius"
     },
-    "links": {
-      "profile": "http://literature.example.com/profiles/scholar",
+    "relationships": {
+      "works": {
+        "data": [{"type": "works", "id": "11"}, {"type": "works", "id": "12"}]
+      }
+    },
+		"links": {
+  	  "profile": "http://literature.example.com/profiles/scholar",
       "self": "http://literature.example.com/authors/kongzi",
-      "http://literature.example.com/rels/quotes": "http://literature.example.com/quotes/?author=kongzi&q={query}",
-      "works": {"linkage": [{"type": "works", "id": "11"}, {"type": "works", "id": "12"}]}
-    }
+			"http://literature.example.com/rels/quotes": "http://literature.example.com/quotes/?author=kongzi&q={query}"
+	  }
   },
   "included": [
       {
@@ -22,11 +26,15 @@
           "chinese_name": "論語",
           "english_name": "Analects"
         },
+        "relationships": {
+          "quotes": {
+            "data": [{"type": "quotes", "id": "17"}, {"type": "quotes", "id": "18"}]
+          },
+          "era": {"data": {"type": "erae", "id": "99"}}
+        },
         "links": {
           "profile": "http://literature.example.com/profiles/work",
-          "self": "http://literature.example.com/work/11",
-          "quotes": {"linkage": [{"type": "quotes", "id": "17"}, {"type": "quotes", "id": "18"}]},
-          "era": {"linkage": {"type": "erae", "id": "99"}}
+          "self": "http://literature.example.com/work/11"
         }
       },
       {
@@ -56,6 +64,10 @@
         "attributes": {
           "chinese_name": "易經",
           "english_name": "Commentaries to the Yi-jing"
+        },
+        "relationships": {
+          "quotes": { "data": [] },
+          "era": { "data": null }
         },
         "links": {
           "profile": "http://literature.example.com/profiles/work",
