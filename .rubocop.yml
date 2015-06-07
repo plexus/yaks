@@ -118,6 +118,9 @@ Style/Semicolon:
 Style/SignalException:
   EnforcedStyle: only_raise
 
+Style/SpaceBeforeSemicolon:
+  Enabled: false
+
 # FIXME: this should be enforced to either space or no_space
 Style/SpaceBeforeBlockBraces:
   Enabled: false
@@ -149,3 +152,9 @@ Style/TrailingComma:
 Style/BracesAroundHashParameters:
   Exclude:
     - yaks/spec/**/*
+
+Style/SpaceInsideStringInterpolation:
+  Enabled: false
+
+Style/LambdaCall:
+  Enabled: false

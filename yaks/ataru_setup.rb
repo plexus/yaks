@@ -33,6 +33,12 @@ class HomeMapper < Yaks::Mapper; end
 
 class SpecialMapper < Yaks::Mapper; end
 
+module ActiveSupport
+  class TimeWithZone < Time ; end
+end
+
+class Currency ; end
+
 module Setup
   def setup
     # Do some nice setup that is run before every snippet
