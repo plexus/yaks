@@ -136,6 +136,9 @@ Style/SpaceInsideBrackets:
 Style/SpaceInsideHashLiteralBraces:
   EnforcedStyle: no_space
 
+Style/SpaceInsideStringInterpolation:
+  Enabled: false
+
 # FIXME: enforce either single_quotes (fewer fixes) or double_quotes
 Style/StringLiterals:
   Enabled: false
