@@ -16,6 +16,12 @@ module Sinatra
         end
       end
     end
+
+    def registered(app)
+      ::Yaks::Format.all.each do |format|
+        app.settings.add_charset << format.media_type
+      end
+    end
   end
 
   module YaksHelpers
