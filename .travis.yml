@@ -18,6 +18,7 @@ script: bundle exec rake $TASK
 env:
   - TASK=yaks:rspec
   - TASK=yaks-html:rspec
+  - TASK=yaks-sinatra:rspec
 
 matrix:
   allow_failures:
@@ -31,6 +32,8 @@ matrix:
       env: TASK="yaks:rspec --trace"
     - rvm: rbx
       env: TASK="yaks-html:rspec --trace"
+    - rvm: rbx
+      env: TASK="yaks-sinatra:rspec --trace"
     - rvm: 2.2
       env: TASK=ataru
     - rvm: 2.2
