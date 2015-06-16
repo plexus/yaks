@@ -3,7 +3,10 @@ Provide basic integration for using Yaks in sinatra. It gives you a top level `c
 This will register all media types known to Yaks, make sure the right one is picked based on the `Accept` header, and it will put the correct `Content-Type` header on the response.
 
 
-``` ruby
+In a classic Sinatra app, you use it like so:
+
+```ruby
+require 'sinatra'
 require 'yaks-sinatra'
 
 configure_yaks do
@@ -26,5 +29,22 @@ end
 
 get '/posts' do
   yaks Post.all
+end
+```
+
+In a modular Sinatra app, you need to register the extension explicitly:
+
+```ruby
+require 'sinatra/base'
+require 'yaks-sinatra'
+
+class MyApp < Sinatra::Base
+  register Yaks::Sinatra
+
+  configure_yaks do
+    # ...
+  end
+
+  # ...
 end
 ```

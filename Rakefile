@@ -53,7 +53,7 @@ task :push_all => [
 task :push => :push_all
 
 desc "Run all the tests"
-task :rspec => ["yaks:rspec", "yaks-html:rspec"]
+task :rspec => ["yaks:rspec", "yaks-html:rspec", "yaks-sinatra:rspec"]
 
 desc 'Run mutation tests'
 delegate_task :yaks, :mutant

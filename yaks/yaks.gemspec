@@ -38,8 +38,10 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'benchmark-ips'
   gem.add_development_dependency 'bogus'
   gem.add_development_dependency 'hamster'
-  gem.add_development_dependency 'mutant'       if RUBY_VERSION >= '2.1.0'
-  gem.add_development_dependency 'mutant-rspec' if RUBY_VERSION >= '2.1.0'
+  if RUBY_VERSION >= "2.1.0"
+    gem.add_development_dependency 'mutant'
+    gem.add_development_dependency 'mutant-rspec'
+  end
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rubocop'
   gem.add_development_dependency 'rspec', '~> 3.0'

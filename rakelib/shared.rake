@@ -21,7 +21,7 @@ def gem_tasks(gem)
     task.package_dir = '../pkg'
   end
 
-  mutant_task(gem) if RUBY_ENGINE == 'ruby'
+  mutant_task(gem) if RUBY_ENGINE == 'ruby' && RUBY_VERSION >= "2.1.0"
 
   RSpec::Core::RakeTask.new(:rspec) do |t, _task_args|
     t.rspec_opts = "-Ispec"

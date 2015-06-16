@@ -22,4 +22,5 @@ Gem::Specification.new do |gem|
 
   gem.add_runtime_dependency 'yaks', Yaks::VERSION
   gem.add_runtime_dependency 'sinatra', '~> 1.4'
+  gem.add_development_dependency 'rack-test', '~> 0.6'
 end
