@@ -54,7 +54,7 @@ module Yaks
         :map_links,
         :map_subresources,
         :map_forms
-      ].inject(Resource.new(type: mapper_name)) do |resource, method|
+      ].inject(MutableResource.new(type: mapper_name)) do |resource, method|
         __send__(method, resource)
       end
     end

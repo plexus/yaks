@@ -60,6 +60,7 @@ module Yaks
 end
 
 require 'yaks/resource'
+require 'yaks/mutable_resource'
 require 'yaks/null_resource'
 require 'yaks/resource/link'
 require 'yaks/collection_resource'
