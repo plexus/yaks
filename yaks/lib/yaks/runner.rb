@@ -63,13 +63,12 @@ module Yaks
     end
 
     def primitivizer
-      proc do |input|
+      @primitivizer ||=
         if format_class.serializer.equal? :json
-          primitivize.call(input)
+          primitivize.method(:call)
         else
-          input
+          ->(x) { x }
         end
-      end
     end
 
     def serializer
