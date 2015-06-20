@@ -3,9 +3,9 @@
 require 'pathname'
 
 gem "active_model_serializers", "0.10.0.rc2"
-gem "activerecord"
-gem "yaks", path: Pathname(__FILE__).dirname.parent.join('yaks').to_s
-gem "benchmark-ips"
+gem "activerecord", "4.2.2"
+gem "benchmark-ips", "2.2.0"
+gem "ruby-prof", "0.15.8"
 
 module Rails
   class Railtie
@@ -14,27 +14,27 @@ module Rails
   end
 end
 
+$:.unshift Pathname(__FILE__).dirname.parent.join('yaks/lib')
+
 require "yaks"
 require "active_record"
+require "active_support"
 require "active_model_serializers"
 require "benchmark/ips"
+require "pp"
+require 'ruby-prof'
 
-ActiveRecord::Base.establish_connection(adapter: "sqlite3", database: "bench.sqlite3")
-ActiveRecord::Schema.define do
-  create_table :users, force: true do |t|
-    t.string :first_name
-    t.string :last_name
-    t.string :email
-    t.string :password
-    t.date :date_of_birth
-    t.timestamps null: false
+class User
+  include Anima.new(:id, :first_name, :last_name, :email, :password, :date_of_birth)
+  extend ActiveModel::Naming
+
+  def read_attribute_for_serialization(x)
+    to_h[x]
   end
 end
 
-class User < ActiveRecord::Base
-end
-
-user = User.create(
+user = User.new(
+  id: 100,
   first_name: "Janko",
   last_name: "Marohnić",
   email: "janko.marohnic@gmail.com",
@@ -43,16 +43,43 @@ user = User.create(
 )
 
 class UserMapper < Yaks::Mapper
-  attributes *User.column_names
+  attributes *User.anima.attributes.map(&:name)
 end
 
 class UserSerializer < ActiveModel::Serializer
-  attributes *User.column_names
+  attributes *User.anima.attributes.map(&:name)
 end
+
+Timer = Hash.new do |hsh, key|
+  hsh[key] = ->(val, env, &block) do
+    start = Time.now
+    GC.disable
+    block.call(val, env).tap do
+      hsh[:results][key] += Time.now - start
+      GC.enable
+    end
+  end
+end
+Timer[:results] = Hash.new(0)
+
+
+# RubyProf.start
+# RubyProf.pause
 
 yaks = Yaks.new do
   default_format :json_api
-  map_to_primitive Date, Time, &:iso8601
+  map_to_primitive(Date, Time) {|x,e| x.iso8601 }
+
+  around :map, &Timer[:map]
+  around :format, &Timer[:format]
+  # around :primitivize do |val, env, &block|
+  #   RubyProf.resume
+  #   result = block.call(val, env)
+  #   RubyProf.pause
+  #   result
+  # end
+  around :primitivize, &Timer[:primitivize]
+  around :serialize, &Timer[:serialize]
 end
 
 Benchmark.ips do |x|
@@ -62,8 +89,26 @@ Benchmark.ips do |x|
     adapter = ActiveModel::Serializer::Adapter::JsonApi
     adapter.new(serializer).as_json
   end
-  x.report("database") { User.all.to_a }
   x.compare!
+end
+
+Timer[:results] = Hash.new(0)
+
+5000.times do
+  yaks.call(user, mapper: UserMapper)
+end
+
+pp Timer[:results]
+
+def make_timestamp
+  Time.now.utc.iso8601.gsub('-', '').gsub(':', '')
+end
+
+RubyProf.start
+yaks.call(user, mapper: UserMapper)
+results = RubyProf.stop
+File.open "/tmp/yaks-#{make_timestamp}.out.#{$$}", 'w' do |file|
+  RubyProf::CallTreePrinter.new(results).print(file)
 end
 
 # -- create_table(:users, {:force=>true})
