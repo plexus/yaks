@@ -7,6 +7,10 @@ module Yaks
     end
 
     def call(object)
+      if object.is_a?(String) || object.is_a?(Numeric) || [true, false, nil].include?(object)
+        return object
+      end
+
       mappings.each do |pattern, block|
         # rubocop:disable Style/CaseEquality
         return instance_exec(object, &block) if pattern === object
@@ -22,10 +26,6 @@ module Yaks
 
     def self.create
       new.tap do |p|
-        p.map String, Numeric, true, false, nil do |object|
-          object
-        end
-
         p.map Symbol, URI do |object|
           object.to_s
         end
