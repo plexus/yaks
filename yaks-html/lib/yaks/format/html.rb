@@ -120,22 +120,32 @@ module Yaks
       end
 
       def render_field(field)
-        extra_info = reject_keys(field.to_h_compact, :type, :name, :value, :label, :options)
+        attrs = field.to_h_compact
+
+        if attrs.key? :checked
+          if attrs[:checked]
+            attrs[:checked] = 'checked'
+          else
+            attrs.delete(:checked)
+          end
+        end
+
+        extra_info = reject_keys(attrs, :type, :name, :value, :label, :options)
         H[:tr,
           H[:td,
             H[:label, {for: field.name}, [field.label || field.name.to_s, field.required ? '*' : ''].join]],
           H[:td,
             case field.type
             when /select/
-              H[:select, reject_keys(field.to_h_compact, :options), render_select_options(field.options)]
+              H[:select, reject_keys(attrs, :options), render_select_options(field.options)]
             when /textarea/
-              H[:textarea, reject_keys(field.to_h_compact, :value), field.value || '']
+              H[:textarea, reject_keys(attrs, :value), field.value || '']
             when /hidden/
               [ field.value.inspect,
-                H[:input, field.to_h_compact]
+                H[:input, attrs]
               ]
             else
-              H[:input, field.to_h_compact]
+              H[:input, attrs]
             end],
           H[:td, extra_info.empty? ? '' : extra_info.inspect]
          ]
