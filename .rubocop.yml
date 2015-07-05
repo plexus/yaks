@@ -2,36 +2,35 @@ AllCops:
   Exclude:
     - 'pkg/**/*'
     - 'vendor/**/*'
+    - 'bench/**/*'
 
 Lint/AmbiguousRegexpLiteral:
+  Enabled: false
+
+Lint/AmbiguousOperator:
   Enabled: false
 
 Lint/AssignmentInCondition:
   Enabled: false
 
-# FIXME: lower by fixing the biggest offenders
 Metrics/AbcSize:
-  Max: 54
+  Enabled: false
 
-# FIXME: lower by fixing the biggest offenders
 Metrics/ClassLength:
-  Max: 135
+  Enabled: false
 
-# FIXME: lower by fixing the biggest offenders
 Metrics/CyclomaticComplexity:
-  Max: 8
+  Enabled: false
 
 # FIXME: lower by fixing the biggest offenders
 Metrics/LineLength:
   Max: 184
 
-# FIXME: lower by fixing the biggest offenders
 Metrics/MethodLength:
-  Max: 33
+  Enabled: false
 
-# FIXME: lower by fixing the biggest offenders
 Metrics/PerceivedComplexity:
-  Max: 8
+  Enabled: false
 
 # def_delegators’ first symbol is the target, the rest are calls
 Style/AlignParameters:
