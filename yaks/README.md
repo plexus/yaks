@@ -68,6 +68,12 @@ requested. These formats are presently supported:
 - [How to contribute](#user-content-how-to-contribute)
 - [License](#user-content-license)
 
+## Packages
+
+- [yaks-sinatra](yaks-sinatra/README.md)
+- [yaks-html](yaks-html/README.md)
+- [yaks-transit](yaks-transit/README.md)
+
 ## State of Development
 
 Recent focus has been on stabilizing the core classes, improving

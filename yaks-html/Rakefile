@@ -1,3 +1,3 @@
-load '../rakelib/shared.rake'
+load '../shared/rake_tasks.rb'
 
 gem_tasks(:"yaks-html")

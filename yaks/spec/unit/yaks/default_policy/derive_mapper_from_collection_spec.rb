@@ -30,7 +30,7 @@ RSpec.describe Yaks::DefaultPolicy, '#derive_mapper_from_collection' do
       it 'should propagate the error' do
         expect {
           policy.derive_mapper_from_object([])
-        }.to raise_error
+        }.to raise_error(RuntimeError)
       end
     end
 
@@ -38,9 +38,9 @@ RSpec.describe Yaks::DefaultPolicy, '#derive_mapper_from_collection' do
       let(:options) { {namespace: DislikesOtherMappers} }
 
       it 'should propagate the error' do
-        expect do
+        expect {
           policy.derive_mapper_from_object([Namespace::Nested::Rye.new])
-        end.to raise_error
+        }.to raise_error(RuntimeError)
       end
     end
   end
