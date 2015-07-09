@@ -1,5 +1,8 @@
 ### master
-[all changes](http://github.com/plexus/yaks/compare/v0.10.0...master)
+[all changes](http://github.com/plexus/yaks/compare/v0.11.0...master)
+
+### v0.11.0 / 2015-07-09
+[all changes](http://github.com/plexus/yaks/compare/v0.10.0...v0.11.0)
 
 * Updated JSON-API to match 1.0 format. ([Yohan Robert](https://github.com/groyoh) and [Janko Marohnić](https://github.com/janko-m))
 * Added Yaks::Behaviour::OptionalIncludes, to support JSON-API style
