@@ -22,4 +22,9 @@ Gem::Specification.new do |gem|
 
   gem.add_runtime_dependency 'yaks', Yaks::VERSION
   gem.add_runtime_dependency 'hexp', '>= 0.4'
+
+  gem.add_development_dependency 'yaks-sinatra'
+  gem.add_development_dependency 'rspec', '~> 3.0'
+  gem.add_development_dependency 'rack-test'
+  gem.add_development_dependency 'capybara'
 end

@@ -1,7 +1,13 @@
 ### master
 [all changes](http://github.com/plexus/yaks/compare/v0.10.0...master)
 
-* Updated JSON-API to match 1.0 format.
+* Updated JSON-API to match 1.0 format. ([Yohan Robert](https://github.com/groyoh) and [Janko Marohnić](https://github.com/janko-m))
+* Added Yaks::Behaviour::OptionalIncludes, to support JSON-API style
+  optional associations ([Janko Marohnić](https://github.com/janko-m))
+* Renamed Sinatra::Yaks to Yaks::Sinatra ([Matt Patterson](https://github.com/fidothe))
+* Correctly handle 'charset' in Yaks::Sinatra ([Matt Patterson](https://github.com/fidothe))
+* Fix rendering of checkboxes in yaks-html
+* Add integration for testing through RSpec/Capybara/Rack::Test
 
 ### v0.10.0 / 2015-05-19
 [all changes](http://github.com/plexus/yaks/compare/v0.9.0...v0.10.0)
