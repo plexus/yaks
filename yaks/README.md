@@ -43,6 +43,7 @@ requested. These formats are presently supported:
     - [Filtering](#user-content-filtering)
   - [Links](#user-content-links)
   - [Associations](#user-content-associations)
+  - [Behaviours](#user-content-behaviours)
 - [Calling Yaks](#user-content-calling-yaks)
   - [Rack env](#user-content-rack-env)
 - [Namespace](#user-content-namespace)
@@ -315,6 +316,59 @@ class ShowMapper < Yaks::Mapper
 end
 ```
 
+### Behaviours
+
+Yaks provides mixins to change how your mappers work. These need to be
+required separately, they are not loaded by default.
+
+#### OptionalIncludes
+
+You may choose to not render associations by default, but to only do
+so when the client explicitly asks for them. This can be done by
+including `Yaks::Behaviour::OptionalIncludes`.
+
+Which associations to load is specified with the the `include` query
+parameter. You can use dots to load nested associated.
+
+```ruby
+require "yaks/behaviour/optional_includes"
+
+class PostMapper < Yaks::Mapper
+  include Yaks::Behaviour::OptionalIncludes
+
+  has_one :author
+  has_many :comments
+end
+
+class AuthorMapper < Yaks::Mapper
+  include Yaks::Behaviour::OptionalIncludes
+
+  has_one :profile
+end
+```
+
+```
+GET /post/42?include=comments,author.profile
+```
+
+Note that this will only work when Yaks has access to the Rack
+environment. When using an existing integration like `yaks-sinatra`
+this will be handled for you.
+
+To force an association to always be included, override its `if`
+condition to always return true.
+
+```ruby
+require "yaks/behaviour/optional_includes"
+
+class PostMapper < Yaks::Mapper
+  include Yaks::Behaviour::OptionalIncludes
+
+  has_one :author
+  has_many :comments, if: ->{ true }
+end
+```
+
 ## Calling Yaks
 
 Once you have a Yaks instance, you can call it with `call`
@@ -519,19 +573,6 @@ at your API entry point should do the trick.
 
 ### JSON-API
 
-The JSON-API spec has evolved since the Yaks formatter was
-implemented. It is also not the most suitable format for Yaks
-feature-set due to its strong convention-driven nature and weak
-support for hypermedia.
-
-At this time, The JSON-API specification has not reached a 1.0 release.
-Some changes to the Yaks JSON-API formatter may still be required
-before it is completely compatible with the latest version of the
-specification.
-
-If you would like to see better JSON-API support, get in touch. We
-might be able to work something out.
-
 ```ruby
 Yaks.new do
   default_format :json_api
@@ -558,42 +599,7 @@ yaks = Yaks.new do
 end
 ```
 
-Yaks also has support for respecting the `include` query parameter (e.g.
-`include=author,comments`), which is a behaviour you can include in
-your mappers:
-
-```ruby
-require "yaks/behaviour/optional_includes"
-
-class PostMapper < Yaks::Mapper
-  include Yaks::Behaviour::OptionalIncludes
-
-  has_one :author
-  has_many :comments
-end
-
-# ...
-
-yaks = Yaks.new
-yaks.call(post, env: rack_env)
-```
-
-Now all your associations will be included only if specified in the `include`
-query. Note that you need to pass the Rack env to Yaks, and that you need to
-explicitly require `yaks/behaviour/optional_includes`. If you want some
-associations to always be included regardless of the `include` query parameter,
-just specify `:if` that returns true:
-
-```ruby
-require "yaks/behaviour/optional_includes"
-
-class PostMapper < Yaks::Mapper
-  include Yaks::Behaviour::OptionalIncludes
-
-  has_one :author
-  has_many :comments, if: ->{ true }
-end
-```
+For optional includes, see [`Yaks::Behaviour::OptionalIncludes`](#user-content-behaviours).
 
 ### Collection+JSON
 
