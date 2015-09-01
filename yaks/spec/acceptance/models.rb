@@ -16,6 +16,10 @@ class Era
   include Anima.new(:id, :name)
 end
 
+class Error
+  include Anima.new(:id, :title, :detail, :code, :status, :source, :links)
+end
+
 class LiteratureBaseMapper < Yaks::Mapper
   link :profile, 'http://literature.example.com/profiles/{mapper_name}', expand: true
   link :self, 'http://literature.example.com/{mapper_name}/{id}'
@@ -54,4 +58,11 @@ end
 
 class EraMapper < Yaks::Mapper
   attributes :id, :name
+end
+
+class ErrorMapper < Yaks::Mapper
+  type :error
+  attributes :id, :title, :detail, :code, :status, :source, :links
+
+  link :about, 'http://example.com/errors/{code}'
 end
