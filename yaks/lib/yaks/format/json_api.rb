@@ -9,7 +9,7 @@ module Yaks
       # @return [Hash]
       def call(resource, _env = nil)
         output = {}
-        if resource.type == :error
+        if resource.type.to_s == 'error'
           output[:errors]  = resource.seq.map(&method(:serialize_error))
         elsif resource.collection?
           output[:data]  = resource.map(&method(:serialize_resource))
