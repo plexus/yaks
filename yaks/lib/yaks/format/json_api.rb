@@ -9,10 +9,10 @@ module Yaks
       # @return [Hash]
       def call(resource, _env = nil)
         output = {}
-          output[:errors]  = resource.seq.map(&method(:serialize_error))
         if resource.type.to_s.eql?('error')
+          output[:errors] = resource.seq.map(&method(:serialize_error))
         elsif resource.collection?
-          output[:data]  = resource.map(&method(:serialize_resource))
+          output[:data] = resource.map(&method(:serialize_resource))
           output[:links] = serialize_links(resource.links) if resource.links.any?
         else
           output[:data] = serialize_resource(resource)
