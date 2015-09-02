@@ -57,7 +57,7 @@ module Yaks
       def serialize_error(resource)
         result = {}
 
-        resource.attributes.each { |k,v| result[k] = v }
+        resource.attributes.each { |k, v| result[k] = v }
 
         links = serialize_links(resource.links)
         result[:links] = links unless links.empty?
