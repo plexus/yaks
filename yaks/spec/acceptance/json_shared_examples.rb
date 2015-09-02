@@ -1,6 +1,6 @@
 RSpec.shared_examples_for 'JSON Writer' do |fixture_name|
   describe 'Yaks::Resource => JSON' do
-    let(:object)  { load_yaml_fixture(fixture_name) }
+    let(:object) { load_yaml_fixture(fixture_name) }
     let(:json_fixture) { load_json_fixture("#{fixture_name}.#{format_name}") }
     let(:serialized) {
       yaks_config.call(object, hooks: [[:skip, :serialize]], format: format_name)

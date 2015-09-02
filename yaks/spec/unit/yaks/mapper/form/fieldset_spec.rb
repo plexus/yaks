@@ -22,7 +22,7 @@ RSpec.describe Yaks::Mapper::Form::Fieldset do
 
     context "with extra options" do
       let(:fieldset) {
-        described_class.create if: true  do
+        described_class.create if: true do
           text :first_name
         end
       }

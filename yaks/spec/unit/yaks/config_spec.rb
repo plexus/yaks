@@ -12,9 +12,9 @@ RSpec.describe Yaks::Config do
       its(:default_format)      { should equal :hal }
       its(:policy_class)        { should <= Yaks::DefaultPolicy }
       its(:primitivize)         { should be_a Yaks::Primitivize }
-      its(:serializers)         { should eql(Yaks::Serializer.all)  }
-      its(:hooks)               { should eql([])  }
-      its(:format_options_hash) { should eql({})}
+      its(:serializers)         { should eql(Yaks::Serializer.all) }
+      its(:hooks)               { should eql([]) }
+      its(:format_options_hash) { should eql({}) }
     end
   end
 

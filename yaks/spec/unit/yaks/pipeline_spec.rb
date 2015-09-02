@@ -16,7 +16,7 @@ RSpec.describe Yaks::Pipeline do
   end
 
   describe '#insert_hooks' do
-    let(:hooks)   { [] }
+    let(:hooks) { [] }
 
     describe 'before' do
       let(:hooks) { [[:before, :step2, :before_step2, ->(i, _e) { i - (i % 100) }]] }

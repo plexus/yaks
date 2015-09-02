@@ -56,7 +56,7 @@ RSpec.describe Yaks::Mapper::Association do
     end
 
     context 'with a truthy condition' do
-      let(:if)     { ->{ true } }
+      let(:if) { ->{ true } }
 
       it 'should add the association' do
         expect(association.add_to_resource(Yaks::Resource.new, parent_mapper, yaks_context).subresources.length).to be 1
@@ -70,7 +70,7 @@ RSpec.describe Yaks::Mapper::Association do
     end
 
     context 'with a falsey condition' do
-      let(:if)     { ->{ false } }
+      let(:if) { ->{ false } }
 
       it 'should not add the association' do
         expect(association.add_to_resource(Yaks::Resource.new, parent_mapper, yaks_context).subresources.length).to be 0
@@ -182,7 +182,7 @@ RSpec.describe Yaks::Mapper::Association do
     end
 
     it 'should not munge the options hash' do
-      opts  = {mapper: :foo}
+      opts = {mapper: :foo}
       association_class.create(:foo, opts)
       expect(opts).to eql(mapper: :foo)
     end

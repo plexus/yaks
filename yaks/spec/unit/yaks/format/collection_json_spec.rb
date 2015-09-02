@@ -322,7 +322,7 @@ RSpec.describe Yaks::Format::CollectionJson do
               ],
               "queries" => [
                 {"href" => "/foo", "rel" => "search", "prompt" => "My query prompt",
-                 "data" =>                   [
+                 "data" => [
                     {"name" => "foo", "value" => ""},
                     {"name" => "bar", "value" => "", "prompt" => "My Bar Field"}
                   ]

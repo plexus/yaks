@@ -3,7 +3,7 @@ RSpec.describe Yaks::Mapper::HasOne do
 
   AuthorMapper = Class.new(Yaks::Mapper) { attributes :name }
 
-  subject(:has_one)  do
+  subject(:has_one) do
     described_class.new(
       name: :author,
       item_mapper: association_mapper,
