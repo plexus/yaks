@@ -14,7 +14,7 @@ module Yaks
       to_enum
     end
 
-    def collection?
+    def collection? # rubocop:disable Style/TrivialAccessors
       @collection
     end
 
