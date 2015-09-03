@@ -2,6 +2,16 @@
 RSpec.describe Yaks::Format::JsonAPI do
   let(:format) { Yaks::Format::JsonAPI.new }
 
+  context 'error object should not include type' do
+    let(:resource) { Yaks::Resource.new(type: 'error', attributes: {foo: :bar}) }
+
+    it 'should not include "type" for errors' do
+      expect(format.call(resource)).to eql(
+        errors: [{foo: :bar}]
+      )
+    end
+  end
+
   context 'with no subresources' do
     let(:resource) { Yaks::Resource.new(type: 'wizard', attributes: {foo: :bar}) }
 

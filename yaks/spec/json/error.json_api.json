@@ -1,0 +1,15 @@
+{
+  "errors": [
+    {
+      "id": 23,
+      "title": "Record not found",
+      "detail": "The record identified by 25 could not be found",
+      "code": "1123",
+      "status": "404",
+      "source": null,
+      "links": {
+        "about": "http://example.com/errors/1123"
+      }  
+    }
+  ]
+} 

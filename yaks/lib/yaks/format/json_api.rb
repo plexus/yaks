@@ -9,8 +9,10 @@ module Yaks
       # @return [Hash]
       def call(resource, _env = nil)
         output = {}
-        if resource.collection?
-          output[:data]  = resource.map(&method(:serialize_resource))
+        if resource.type.to_s.eql?('error')
+          output[:errors] = resource.seq.map(&method(:serialize_error))
+        elsif resource.collection?
+          output[:data] = resource.map(&method(:serialize_resource))
           output[:links] = serialize_links(resource.links) if resource.links.any?
         else
           output[:data] = serialize_resource(resource)
@@ -44,6 +46,19 @@ module Yaks
 
         relationships = serialize_relationships(resource.subresources)
         result[:relationships] = relationships unless relationships.empty?
+        links = serialize_links(resource.links)
+        result[:links] = links unless links.empty?
+
+        result
+      end
+
+      # @param [Yaks::Resource] resource
+      # @return [Hash]
+      def serialize_error(resource)
+        result = {}
+
+        resource.attributes.each { |k, v| result[k] = v }
+
         links = serialize_links(resource.links)
         result[:links] = links unless links.empty?
 

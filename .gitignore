@@ -6,3 +6,6 @@ Gemfile.lock
 .yardoc
 doc
 FORMATS.html
+
+*.swp
+*.swo

@@ -50,6 +50,7 @@ RSpec.describe Yaks::Format::JsonAPI do
   let(:yaks_config) { Yaks.new }
 
   include_examples 'JSON Writer', 'confucius'
+  include_examples 'JSON Writer', 'error'
   # include_examples 'JSON Reader', 'confucius'
   include_examples 'JSON round trip', 'confucius'
   include_examples 'JSON Writer', 'list_of_quotes'
