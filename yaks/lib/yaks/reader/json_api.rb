@@ -7,13 +7,13 @@ module Yaks
         if parsed_json['data'].is_a?(Array)
           CollectionResource.new(
             attributes: parsed_json['meta'].nil? ? nil : {meta: parsed_json['meta']},
-            members: parsed_json['data'].map { |data| call('data'  => data, 'included' => included) }
+            members: parsed_json['data'].map { |data| call('data' => data, 'included' => included) }
           )
         else
           attributes = parsed_json['data'].dup
           links = attributes.delete('links') || {}
           relationships = attributes.delete('relationships') || {}
-          type  = attributes.delete('type')
+          type = attributes.delete('type')
           attributes.merge!(attributes.delete('attributes') || {})
 
           embedded   = convert_embedded(Hash[relationships], included)
@@ -48,14 +48,14 @@ module Yaks
               CollectionResource.new(
                 members: data.map { |link|
                   data = included.find{ |item| (item['id'] == link['id']) && (item['type'] == link['type']) }
-                  call('data'  => data, 'included' => included)
+                  call('data' => data, 'included' => included)
                 },
                 rels: [rel]
               )
             end
           else
             data = included.find{ |item| (item['id'] == data['id']) && (item['type'] == data['type']) }
-            call('data'  => data, 'included' => included).with(rels: [rel])
+            call('data' => data, 'included' => included).with(rels: [rel])
           end
         end.compact
       end

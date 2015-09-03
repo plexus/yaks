@@ -21,7 +21,7 @@ module Yaks
 
       def serialize_form(form)
         raw = form.to_h_compact
-        raw[:href]  = raw.delete(:action) if raw[:action]
+        raw[:href] = raw.delete(:action) if raw[:action]
         raw[:fields] = form.fields.map(&method(:serialize_form_field))
         raw
       end

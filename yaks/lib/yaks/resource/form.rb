@@ -18,7 +18,7 @@ module Yaks
         !method.nil? && method.downcase.to_sym == meth.downcase.to_sym
       end
 
-      def has_action?                      # rubocop:disable Style/PredicateName
+      def has_action? # rubocop:disable Style/PredicateName
         !action.nil?
       end
     end

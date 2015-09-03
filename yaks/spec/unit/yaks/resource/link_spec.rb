@@ -10,7 +10,7 @@ RSpec.describe Yaks::Resource::Link do
   its(:options) { should eql(title: 'mr. spectacular') }
 
   describe '#title' do
-    its(:title)      { should eql('mr. spectacular') }
+    its(:title) { should eql('mr. spectacular') }
   end
 
   describe '#templated?' do

@@ -20,7 +20,7 @@ RSpec.describe Yaks::Runner do
     let(:runner) {
       Class.new(described_class) do
         def steps
-          [ [:step1, proc { |x| x + 35      }],
+          [ [:step1, proc { |x| x + 35 }],
             [:step2, proc { |x, env| "#{env[:foo]}[#{x} #{x}]" }] ]
         end
       end.new(object: object, config: config, options: options)
@@ -337,7 +337,7 @@ RSpec.describe Yaks::Runner do
       }
     }
 
-    let(:object)  { "foo" }
+    let(:object) { "foo" }
 
     it 'should only run the mapper' do
       expect(runner.map).to eql "mapped[foo]"

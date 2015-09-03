@@ -70,6 +70,6 @@ RSpec.describe Yaks::Format::CollectionJson do
       end
     }
 
-    include_examples 'JSON Writer',  'youtypeitwepostit'
+    include_examples 'JSON Writer', 'youtypeitwepostit'
   end
 end

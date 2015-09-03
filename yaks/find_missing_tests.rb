@@ -20,7 +20,7 @@ env = Mutant::Env::Bootstrap.call(Mutant::CLI.call(args))
 integration = env.config.integration
 
 integration.setup
-binding.pry if integration.all_tests.empty?      # rubocop:disable Lint/Debugger
+binding.pry if integration.all_tests.empty? # rubocop:disable Lint/Debugger
 
 env.subjects.each do |subject|
   match_expression = subject.match_expressions.first
