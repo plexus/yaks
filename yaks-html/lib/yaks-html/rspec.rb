@@ -35,11 +35,11 @@ module YaksHTML
     end
 
     def within_form(name, &block)
-      within(all("form[@name=\"#{name}\"]").first, &block)
+      within(find_form(name), &block)
     end
 
     def submit_form(name, &block)
-      within(all("form[@name=\"#{name}\"]").first) do
+      within(find_form(name)) do
         yield block
         submit!
       end
@@ -51,6 +51,20 @@ module YaksHTML
 
     def env
       YaksHTML::RACK_ENV
+    end
+
+    private
+
+    def find_form(name)
+      forms = all("form[@name=\"#{name}\"]")
+
+      if forms.empty?
+        fname = "/tmp/page-#{rand(999999999999999)}.html"
+        File.write(fname, page.body)
+        raise "No form found with name #{name}. Page saved as #{fname}"
+      end
+
+      forms.first
     end
   end
 end
