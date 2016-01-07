@@ -21,7 +21,11 @@ module Yaks
         end.replace('.yaks-version') do |ver|
           ver.content(Yaks::VERSION)
         end.replace('.request-info') do |req|
-          req.content(env['REQUEST_METHOD'], ' ', env['PATH_INFO'])
+          if env['REQUEST_METHOD'] && env['PATH_INFO']
+            req.content(env['REQUEST_METHOD'], ' ', env['PATH_INFO'])
+          else
+            req
+          end
         end
       end
 
