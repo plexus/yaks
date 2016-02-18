@@ -2,6 +2,7 @@ RSpec.describe Yaks::Mapper::Attribute do
   include_context 'yaks context'
 
   let(:attribute_with_block) { described_class.create(:the_name) { "Alice" } }
+  let(:attribute_with_options) { described_class.create(:the_name, options) }
 
   subject(:attribute) { described_class.create(:the_name) }
   fake(:mapper)
@@ -26,6 +27,28 @@ RSpec.describe Yaks::Mapper::Attribute do
 
       it "should store the given block" do
         expect(subject.block.call).to eq("Alice")
+      end
+    end
+
+    context 'with :if defined and resolving to false' do
+      let(:options) { {if: ->{ false }} }
+      subject(:attribute) { attribute_with_options }
+
+      it 'should render the attribute' do
+        expect(attribute.add_to_resource(Yaks::Resource.new, mapper, yaks_context)).to eql(
+          Yaks::Resource.new
+        )
+      end
+    end
+
+    context 'with :if defined and resolving to true' do
+      let(:options) { {if: ->{ true }} }
+      subject(:attribute) { attribute_with_options }
+
+      it 'should render the attribute' do
+        expect(attribute.add_to_resource(Yaks::Resource.new, mapper, yaks_context)).to eql(
+          Yaks::Resource.new(attributes: {the_name: 123})
+        )
       end
     end
   end
