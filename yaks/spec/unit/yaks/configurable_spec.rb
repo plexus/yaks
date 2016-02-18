@@ -1,3 +1,5 @@
+require 'securerandom'
+
 class Kitten
   include Attribs.new(:furriness)
 
