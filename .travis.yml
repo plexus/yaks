@@ -5,6 +5,7 @@ rvm:
   - 2.0
   - 2.1
   - 2.2
+  - 2.3.0
   - jruby
   - jruby-head
   - ruby-head
@@ -38,5 +39,3 @@ matrix:
       env: TASK=ataru
     - rvm: 2.2
       env: TASK=mutant
-    - rvm: 2.2
-      env: TASK=rubocop
