@@ -7,3 +7,5 @@ Gemfile.lock
 doc
 FORMATS.html
 scratch
+.ruby-version
+.ruby-gemset
