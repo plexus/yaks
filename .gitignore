@@ -9,3 +9,4 @@ FORMATS.html
 scratch
 .ruby-version
 .ruby-gemset
+Jarfile.lock
