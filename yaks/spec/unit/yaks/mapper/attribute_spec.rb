@@ -28,6 +28,45 @@ RSpec.describe Yaks::Mapper::Attribute do
         expect(subject.block.call).to eq("Alice")
       end
     end
+
+    describe "options" do
+
+      let(:object) { Struct.new(:x, :y, :returns_nil).new(3, 4, nil) }
+
+      let(:mapper_class) do
+        Class.new(Yaks::Mapper) do
+          type 'foo'
+        end
+      end
+
+      let(:mapper) do
+        mapper_class.new(yaks_context).tap do |mapper|
+          mapper.call(object) # set @object
+        end
+      end
+
+      subject(:attribute) { described_class.create(:the_name, options) }
+
+      context 'with :if defined and resolving to false' do
+
+        let(:options) { {if: ->{ false }} }
+
+        it 'should not render the attribute' do
+          expect(attribute.add_to_resource(Yaks::Resource.new, mapper, yaks_context)).to be_nil
+        end
+      end
+
+      context 'with :if defined and resolving to true' do
+        let(:options) { {if: ->{ true }} }
+
+        it 'should render the attribute' do
+          expect(attribute.add_to_resource(Yaks::Resource.new, mapper, yaks_context)).to eql(
+            Yaks::Resource.new(attributes: {the_name: 123})
+          )
+        end
+      end
+    end
+
   end
 
   describe "#add_to_resource" do

@@ -1,14 +1,18 @@
 module Yaks
   class Mapper
     class Attribute
-      include Attribs.new(:name, :block)
+      extend Forwardable, Util
       include Util
+      include Attribs.new(:name, :block, options: {}.freeze)
 
-      def self.create(name, _options = nil, &block)
-        new(name: name, block: block)
+      def self.create(*args, &block)
+        args, options = extract_options(args)
+        new(name: args.first, options: options, block: block)
       end
 
       def add_to_resource(resource, mapper, _context)
+        return unless mapper.expand_value(options.fetch(:if, true))
+
         if block
           attribute = Resolve(block, mapper)
         else
