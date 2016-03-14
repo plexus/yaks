@@ -11,7 +11,9 @@ module Yaks
       end
 
       def add_to_resource(resource, mapper, _context)
-        return unless mapper.expand_value(options.fetch(:if, true))
+        if_option = options.fetch(:if, true)
+        if_option = if_option.call() if if_option.class == Proc
+        return resource if if_option == false
 
         if block
           attribute = Resolve(block, mapper)
