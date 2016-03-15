@@ -2,7 +2,7 @@ RSpec.describe Yaks::Mapper::Attribute do
   include_context 'yaks context'
 
   let(:attribute_with_block) { described_class.create(:the_name) { "Alice" } }
-    subject(:attribute) { described_class.create(:the_name) }
+  subject(:attribute) { described_class.create(:the_name) }
   fake(:mapper)
 
   before do
@@ -15,7 +15,7 @@ RSpec.describe Yaks::Mapper::Attribute do
     its(:block) { should be_nil }
 
     it "should accept two parameter" do
-      expect{described_class.create(:the_name, {})}.not_to raise_error()
+      expect{described_class.create(:the_name)}.not_to raise_error()
     end
 
     context "with block" do
