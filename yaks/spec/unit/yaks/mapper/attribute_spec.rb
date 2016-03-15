@@ -12,9 +12,10 @@ RSpec.describe Yaks::Mapper::Attribute do
 
   describe ".create" do
     its(:name) { should be :the_name }
+    its(:if) { should be_truthy }
     its(:block) { should be_nil }
 
-    it "should accept two parameter" do
+    it "should accept only the name" do
       expect{described_class.create(:the_name)}.not_to raise_error()
     end
 
