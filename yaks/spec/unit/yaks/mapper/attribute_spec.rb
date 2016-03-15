@@ -67,6 +67,16 @@ RSpec.describe Yaks::Mapper::Attribute do
           )
         end
       end
+
+      context 'with :if defined and resolving to true via instance_eval' do
+        let(:options) { {if: ->{ object.name.length > 2 } } }
+
+        it 'should render the attribute' do
+          expect(attribute.add_to_resource(Yaks::Resource.new, mapper, yaks_context)).to eql(
+            Yaks::Resource.new(attributes: {the_name: 123})
+          )
+        end
+      end
     end
 
   end
