@@ -5,9 +5,7 @@ module Yaks
       include Attribs.new(:name, :block, if: true), Util
 
       def self.create(name, options = {}, &block)
-        options[:name] = name
-        options[:block] = block
-        new(options)
+        new(options.merge({name: name, block: block}))
       end
 
       def add_to_resource(resource, mapper, _context)
