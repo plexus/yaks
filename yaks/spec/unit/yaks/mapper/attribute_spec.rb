@@ -2,7 +2,6 @@ RSpec.describe Yaks::Mapper::Attribute do
   include_context 'yaks context'
 
   let(:attribute_with_block) { described_class.create(:the_name) { "Alice" } }
-
   subject(:attribute) { described_class.create(:the_name) }
   fake(:mapper)
 
@@ -13,10 +12,11 @@ RSpec.describe Yaks::Mapper::Attribute do
 
   describe ".create" do
     its(:name) { should be :the_name }
+    its(:if) { should be_truthy }
     its(:block) { should be_nil }
 
-    it "should accept two parameter" do
-      expect{described_class.create(:the_name, {})}.not_to raise_error()
+    it "should accept only the name" do
+      expect{described_class.create(:the_name)}.not_to raise_error()
     end
 
     context "with block" do
@@ -52,7 +52,9 @@ RSpec.describe Yaks::Mapper::Attribute do
         let(:options) { {if: ->{ false }} }
 
         it 'should not render the attribute' do
-          expect(attribute.add_to_resource(Yaks::Resource.new, mapper, yaks_context)).to be_nil
+          expect(attribute.add_to_resource(Yaks::Resource.new, mapper, yaks_context)).not_to eql(
+            Yaks::Resource.new(attributes: {the_name: 123})
+          )
         end
       end
 
@@ -65,14 +67,54 @@ RSpec.describe Yaks::Mapper::Attribute do
           )
         end
       end
+
+      context 'with :if defined and resolving to true via instance_eval' do
+        let(:options) { {if: ->{ object.name.length > 2 } } }
+
+        it 'should render the attribute' do
+          expect(attribute.add_to_resource(Yaks::Resource.new, mapper, yaks_context)).to eql(
+            Yaks::Resource.new(attributes: {the_name: 123})
+          )
+        end
+      end
     end
 
   end
 
   describe "#add_to_resource" do
+
+    let(:options) { {if: ->{ true }} }
+    let(:options_false) { {if: ->{ 0 == 1 }} }
+    let(:attribute_with_block_and_false_options) {described_class.create(:the_name,options_false) { "Alice" } }
+    let(:attribute_with_block_and_options) { described_class.create(:the_name,options) { "Alice" } }
+
+
+
     it "should add itself to a resource based on a lookup" do
       expect(attribute.add_to_resource(Yaks::Resource.new, mapper, yaks_context))
         .to eql(Yaks::Resource.new(attributes: {the_name: 123}))
+    end
+
+    context "when the attribute has a block and true options" do
+      subject(:attribute) { attribute_with_block_and_options }
+
+      it "should add itself to a resource with the block value" do
+        expect(attribute.add_to_resource(Yaks::Resource.new, mapper, yaks_context))
+          .to eql(Yaks::Resource.new(attributes: {the_name: "Alice"}))
+      end
+
+      
+    end
+
+    context "when the attribute has a block and false options" do
+      subject(:attribute) { attribute_with_block_and_false_options }
+
+      it "should not add itself to a resource with the block value" do
+        expect(attribute.add_to_resource(Yaks::Resource.new, mapper, yaks_context))
+          .not_to eql(Yaks::Resource.new(attributes: {the_name: "Alice"}))
+      end
+
+      
     end
 
     context "when the attribute has a block" do
