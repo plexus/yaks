@@ -1,5 +1,10 @@
 ### master
-[all changes](http://github.com/plexus/yaks/compare/v0.11.0...master)
+[all changes](http://github.com/plexus/yaks/compare/v0.12.0...master)
+
+### v0.12.0 / 2016-03-28
+[all changes](http://github.com/plexus/yaks/compare/v0.11.0...v0.12.0)
+
+* `attribute` can now take an `if` parameter, just like links and forms
 
 ### v0.11.0 / 2015-07-09
 [all changes](http://github.com/plexus/yaks/compare/v0.10.0...v0.11.0)
