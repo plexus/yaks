@@ -10,7 +10,7 @@
 
 # Yaks
 
-<img align="left" src="https://raw.githubusercontent.com/plexus/yaks/master/logo.png">
+<img align="left" src="https://raw.githubusercontent.com/plexus/yaks/master/graphics/logo.png">
 
 The library that understands hypermedia.
 
