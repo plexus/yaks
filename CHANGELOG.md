@@ -1,5 +1,10 @@
 ### master
-[all changes](http://github.com/plexus/yaks/compare/v0.12.0...master)
+[all changes](http://github.com/plexus/yaks/compare/v0.13.0...master)
+
+### v0.13.0 / 2017-11-13
+[all changes](http://github.com/plexus/yaks/compare/v0.12.0...v0.13.0)
+
+* Maintenance release to upgrade dependencies
 
 ### v0.12.0 / 2016-03-28
 [all changes](http://github.com/plexus/yaks/compare/v0.11.0...v0.12.0)
